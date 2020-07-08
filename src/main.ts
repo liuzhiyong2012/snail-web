@@ -1,22 +1,33 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
-
-// import Vue from 'vue';
+import Vue from 'vue';
+import App from './App.vue';
+import router from './router';
+import store from './store';
+//引入Vant
 import Vant from 'vant';
 import 'vant/lib/index.css';
+import VueI18n from 'vue-i18n'
+
 
 Vue.use(Vant);
-Vue.config.productionTip = false;
+Vue.use(VueI18n);
 
-//定义全局事件监听
+let locale = localStorage.getItem('lang') || 'zh';
+let i18n = new VueI18n({ 
+ locale: locale,
+ messages: {   
+    'zh': require('./assets/i18n/zh.json'),   
+    'en': require('./assets/i18n/en.json') 
+  }
+});
+
+localStorage.setItem('lang',locale);
+
+Vue.config.productionTip = false;
 Vue.prototype.$globalEvent = new Vue;
 
 // function getHostUrl(){
 //    return window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
 // }
-
 //可根据具体环境配置
 /* if(location.href.indexOf('localhost') > -1 ){
   Vue.config.SERVER_API = 'http://kf.vpclub.cn/guangmei/api';
@@ -30,5 +41,6 @@ Vue.prototype.$globalEvent = new Vue;
 new Vue({
   router,
   store,
+  i18n,
   render: h => h(App)
 }).$mount('#app')

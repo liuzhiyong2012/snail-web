@@ -25,10 +25,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+	
 .van-row {
   flex-wrap: wrap;
   justify-content: space-around;
 }
+
 .van-col {
   margin-bottom: 10px;
   color: #fff;
