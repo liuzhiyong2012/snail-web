@@ -1,34 +1,94 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-	<van-button type="default">默认按钮</van-button>
-	<van-button type="primary">主要按钮</van-button>
-	<van-button type="info">信息按钮</van-button>
-	<van-button type="warning">警告按钮</van-button>
-	<van-button type="danger">危险按钮</van-button>
+    <van-sticky>
+      <van-nav-bar title="Airbus">
+        <template #right>
+          <van-icon name="scan" size="18" />
+        </template>
+        <template #left>
+          <van-icon name="chat" size="18" />
+        </template>
+      </van-nav-bar>
+    </van-sticky>
+    <van-tabs
+      v-model="active"
+      scrollspy
+      sticky
+      offset-top="46"
+      line-width="20"
+      line-height="4"
+      color="rgb(0,32,91)"
+      title-active-color="rgb(0,32,91)"
+    >
+      <van-tab v-for="(val,index) in navTar" :title="val" title-active-color="#3056EF" :key="index">
+        <div v-if="val == 'Flight'" class="flight">
+          <HomeFlight />
+        </div>
+        <div v-else-if="val == 'Dish'">
+          <HomeDish />
+        </div>
+        <div v-else-if="val == 'Shopping'">
+          <HomeShopping />
+        </div>
+        <div v-else-if="val == 'Music'">
+          <HomeMusic />
+        </div>
+        <div v-else-if="val == 'Game'">
+          <h3>Game</h3>
+          <div class style="height:150px;"></div>
+        </div>
+        <div v-else-if="val == 'Video'">
+          <h3>Video</h3>
+          <div class style="height:150px;"></div>
+        </div>
+        <div v-else-if="val == 'News'">
+          <h3>News</h3>
+          <div class style="height:150px;"></div>
+        </div>
+      </van-tab>
+    </van-tabs>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 
-import HelloWorld from '@/components/HelloWorld.vue'
-import {getApprovalDetail} from '@/service/center'
+import HomeFlight from "@/views/flight/home-flight";
+import HomeDish from "@/views/dish/home-dish";
+import HomeShopping from "@/views/shopping/home-shopping";
+import HomeMusic from "@/views/music/home-music";
+// import { getApprovalDetail } from "@/service/center";
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
-    HelloWorld
+    HomeFlight,
+    HomeDish,
+    HomeShopping,
+    HomeMusic
   },
-  created(){
-	 getApprovalDetail({}).then((res) => {
-	    let  data = res.data; 
-		
-	  }).finally(() => {
-	    
-	  })
-	  
+  data() {
+    return {
+      navTar: ["Flight", "Dish", "Shopping", "Music", "Game", "Video", "News"]
+    };
+  },
+  created() {
+    //  getApprovalDetail({}).then((res) => {
+    //     let  data = res.data;
+    //   }).finally(() => {
+    //   })
   }
-}
+};
 </script>
+
+<style scoped lang="scss">
+@import "../assets/style/variables.scss";
+.box {
+  height: 400px;
+  background: $background-color-theme;
+}
+.van-tabs__line {
+  // background: $background-color-theme;
+  bottom: 10px;
+}
+</style>

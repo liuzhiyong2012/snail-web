@@ -32,9 +32,18 @@ module.exports = {
         'style-resources-loader': {
             preProcessor: 'scss',
             patterns: [
-                // path.resolve(__dirname, 'src/assets/style/_variables.scss'),
+                // path.resolve(__dirname, 'src/assets/style/variables.scss'),
                 // path.resolve(__dirname, 'src/assets/style/_mixins.scss')
             ]
         }
-    }
+    },
+    // css: {
+    //     loaderOptions: {
+    //         sass: {
+    //             data: `
+    //                 @import "~@/variables.scss"
+    //             `
+    //         }
+    //     }
+    // }
 }
