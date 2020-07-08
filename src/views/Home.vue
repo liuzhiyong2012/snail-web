@@ -22,16 +22,16 @@
     >
       <van-tab v-for="(val,index) in navTar" :title="val" title-active-color="#3056EF" :key="index">
         <div v-if="val == 'Flight'" class="flight">
-          <HomeFlight />
+          <home-flight />
         </div>
         <div v-else-if="val == 'Dish'">
-          <HomeDish />
+          <home-dish />
         </div>
         <div v-else-if="val == 'Shopping'">
-          <HomeShopping />
+          <home-shopping />
         </div>
         <div v-else-if="val == 'Music'">
-          <HomeMusic />
+          <home-music />
         </div>
         <div v-else-if="val == 'Game'">
           <h3>Game</h3>
@@ -53,10 +53,10 @@
 <script>
 // @ is an alias to /src
 
-import HomeFlight from "@/views/flight/home-flight";
-import HomeDish from "@/views/dish/home-dish";
-import HomeShopping from "@/views/shopping/home-shopping";
-import HomeMusic from "@/views/music/home-music";
+import HomeFlight from "@/views/home/HomeFlight";
+import HomeDish from "@/views/home/HomeDish";
+import HomeShopping from "@/views/home/HomeShopping";
+import HomeMusic from "@/views/home/HomeMusic";
 // import { getApprovalDetail } from "@/service/center";
 
 export default {
@@ -82,13 +82,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../assets/style/variables.scss";
-.box {
-  height: 400px;
-  background: $background-color-theme;
-}
-.van-tabs__line {
-  // background: $background-color-theme;
-  bottom: 10px;
-}
+
 </style>
