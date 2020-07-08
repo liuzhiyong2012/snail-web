@@ -7,43 +7,45 @@
         </template>
       </van-cell>
     </h2>
-    <div class="music-box">
-      <div class="music-list">
-        <div class="music-l">
-          <!-- <img src="" alt=""> -->
+    <div class="abus_scroller_box music_box">
+      <div v-for="(item,index) in musicData" class="music_list" :key="index">
+        <div class="music_l">
+          <img :src="item.img" :alt="item.name" />
         </div>
         <div class="f1">
-          <div class="music-name">Name</div>
-          <div class="music-author">suthor</div>
+          <div class="name">{{item.name}}</div>
+          <div class="author">{{item.author}}</div>
         </div>
-        <van-icon name="play-circle" color="rgb(229,232,228)" size="20"/>
-      </div>
-      <div class="music-list">
-        <div class="music-l">
-          <!-- <img src="" alt=""> -->
-        </div>
-        <div class="f1">
-          <div class="music-name">Name</div>
-          <div class="music-author">suthor</div>
-        </div>
-        <van-icon name="play-circle" color="rgb(229,232,228)" size="20"/>
-      </div>
-      <div class="music-list">
-        <div class="music-l">
-          <!-- <img src="" alt=""> -->
-        </div>
-        <div class="f1">
-          <div class="music-name">Name</div>
-          <div class="music-author">suthor</div>
-        </div>
-        <van-icon name="play-circle" color="rgb(229,232,228)" size="20"/>
+        <van-icon name="play-circle" color="rgb(229,232,228)" size="20" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      musicData: [
+        {
+          img: require("./images/music.jpg"),
+          name: "Let Me Down Slowly",
+          author: "Alec Benjamin / Alessia Cara"
+        },
+        {
+          img: require("./images/music.jpg"),
+          name: "Let Me Down Slowly",
+          author: "Alec Benjamin / Alessia Cara"
+        },
+        {
+          img: require("./images/music.jpg"),
+          name: "Let Me Down Slowly",
+          author: "Alec Benjamin / Alessia Cara"
+        }
+      ]
+    };
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -51,50 +53,53 @@ export default {};
   background-color: #fafafa00;
 }
 .van-cell {
-  font-size: 18px;
+  font-size: 0.36rem;
 }
-.music-box {
+.music_box {
   background-color: #fff;
-  padding: 0 14px ;
-  margin: 0 14px;
+  padding: 0 0.28rem;
+  margin: 0 0.28rem;
   background-color: #fff;
-  border-radius: 5px;
-  box-shadow: 0 0 5px #efefef;
-  :last-child{
-      border-bottom: none;
+  border-radius: 0.1rem;
+  :last-child {
+    border-bottom: none;
   }
 }
-.music-list {
+.music_list {
   display: flex;
-  padding: 14px 0;
-  border-bottom: 1px solid #efefef;
+  padding: 0.28rem 0;
+  border-bottom: 0.02rem solid #efefef;
   align-items: center;
-  .music-l {
-    width: 50px;
-    height: 50px;
-    background-color: darkorange;
-    border-radius: 6px;
+  .music_l {
+    width: 1rem;
+    height: 1rem;
+    overflow: hidden;
+    border-radius: 0.12rem;
+    img {
+      width: 100%;
+    }
   }
- 
+
   .f1 {
     flex: 1;
-    margin: 0 0 0 8px;
+    margin: 0 0 0 0.16rem;
     display: flex;
     flex-direction: column;
     align-content: center;
     justify-content: center;
 
-    .music-name {
+    .name {
       flex: 1;
-      font-size: 14px;
+      font-size: 0.28rem;
       color: #666;
-      line-height: 25px;
+      line-height: 0.5rem;
+      font-weight: 500;
     }
-    .music-author {
+    .author {
       flex: 1;
-      font-size: 12px;
+      font-size: 0.24rem;
       color: #999;
-      line-height: 25px;
+      line-height: 0.5rem;
     }
   }
 }

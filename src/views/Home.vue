@@ -34,16 +34,13 @@
           <home-music />
         </div>
         <div v-else-if="val == 'Game'">
-          <h3>Game</h3>
-          <div class style="height:150px;"></div>
+          <home-game :imgData="imagesData" />
         </div>
         <div v-else-if="val == 'Video'">
-          <h3>Video</h3>
-          <div class style="height:150px;"></div>
+          <home-video />
         </div>
         <div v-else-if="val == 'News'">
-          <h3>News</h3>
-          <div class style="height:150px;"></div>
+          <home-news />
         </div>
       </van-tab>
     </van-tabs>
@@ -57,6 +54,9 @@ import HomeFlight from "@/views/home/HomeFlight";
 import HomeDish from "@/views/home/HomeDish";
 import HomeShopping from "@/views/home/HomeShopping";
 import HomeMusic from "@/views/home/HomeMusic";
+import HomeGame from "@/views/home/HomeGame";
+import HomeVideo from "@/views/home/HomeVideo";
+import HomeNews from "@/views/home/HomeNews";
 // import { getApprovalDetail } from "@/service/center";
 
 export default {
@@ -65,11 +65,31 @@ export default {
     HomeFlight,
     HomeDish,
     HomeShopping,
-    HomeMusic
+    HomeMusic,
+    HomeGame,
+    HomeVideo,
+    HomeNews
   },
   data() {
     return {
-      navTar: ["Flight", "Dish", "Shopping", "Music", "Game", "Video", "News"]
+      navTar: ["Flight", "Dish", "Shopping", "Music", "Game", "Video", "News"],
+      imagesData: [
+        {
+          img: require("./home/images/game.jpg"),
+          name: "name0",
+          details: "details"
+        },
+        {
+          img: require("./home/images/game.jpg"),
+          name: "name",
+          details: "details"
+        },
+        {
+          img: require("./home/images/game.jpg"),
+          name: "name",
+          details: "details"
+        }
+      ]
     };
   },
   created() {
@@ -82,5 +102,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
+.home {
+  padding: 0 0 0.5rem 0;
+}
 </style>

@@ -3,7 +3,7 @@
     <h2 class="abus_block_title">
       <van-cell value="Flight" class="block_title_background" />
     </h2>
-    <div class="home_flight_box">
+    <div class="abus_scroller_box home_flight_box">
       <div class="home_flight_t">Visian Airlines VA3928</div>
       <div class="home_flight_info">
         <span class="home_flight_seat">
@@ -46,7 +46,6 @@ export default {};
   margin: 0 0.28rem;
   background-color: #fff;
   border-radius: 0.1rem;
-  box-shadow: 0 0 0.1rem #efefef;
 }
 .home_flight_t {
   font-size: 0.44rem;
