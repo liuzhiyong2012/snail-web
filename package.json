@@ -12,7 +12,9 @@
   "dependencies": {
     "@nutui/nutui": "^2.2.6",
     "@types/crypto-js": "^3.1.47",
+    "@types/echarts": "^4.6.3",
     "@types/js-md5": "^0.4.2",
+    "@types/ol": "^6.3.1",
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
     "crypto-js": "^4.0.0",

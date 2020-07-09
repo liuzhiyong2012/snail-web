@@ -35,12 +35,12 @@
 		<div class="bottom-ctn">
 			<van-swipe class="swipe-ctn" :autoplay="3000" indicator-color="#cccccc">
 			  <van-swipe-item class="swipe-item">
-				   <div id="chart1" class="chart"></div>
+				   <div  class="chart-ctn" ref="chartCtn"></div>
 			  </van-swipe-item>
 			  <van-swipe-item class="swipe-item">
-				   <div id="map" ref="rootmap">
+				   <div  id="map" class="map-ctn" ref="mapCtn">
 				  
-				      </div>
+				   </div>
 			  </van-swipe-item>
 			</van-swipe>
 			
@@ -102,7 +102,7 @@ export default class VoyageInfo extends Vue {
 	}
 	
 	private renderMap(){
-		 var mapcontainer = this.$refs.rootmap;
+		 var mapcontainer = this.$refs.mapCtn;
 		    this.map = new Map({
 		      target: "map",
 		      layers: [
@@ -117,8 +117,9 @@ export default class VoyageInfo extends Vue {
 		      })
 		    });
 	}
+	
 	private renderCharts() {
-		  this.chart = echarts.init(document.getElementById('chart1'));
+		  this.chart = echarts.init((this as any).$refs.chartCtn);
 		                          this.chart.clear();
 		  
 		  const optionData = {
@@ -264,7 +265,12 @@ export default class VoyageInfo extends Vue {
 				// background:blue;
 				tetx-align:center;
 				font-size: 0.60rem;
-				.chart{
+				.chart-ctn{
+					margin:auto;
+					width: 6.00rem;
+					height: 100%;
+				}
+				.map-ctn{
 					margin:auto;
 					width: 6.00rem;
 					height: 100%;
