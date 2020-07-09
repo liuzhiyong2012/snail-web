@@ -4,6 +4,8 @@ import Home from '../views/Home.vue';
 import About from '../views/About.vue';
 import Layout from '../views/layout/index.vue';
 import Login from '../views/login/login.vue';
+import FlightRouter from './flight/router';
+
 
   Vue.use(VueRouter);
 
@@ -13,6 +15,7 @@ import Login from '../views/login/login.vue';
 			name: 'layout',
 			component: Layout,
 			children:[
+				...FlightRouter,
 				{
 					path: '/home',
 					name: 'home',
@@ -32,8 +35,8 @@ import Login from '../views/login/login.vue';
 			}
 	]
 
-const router = new VueRouter({
-  routes
-})
+	const router = new VueRouter({
+	  routes
+	})
 
 export default router

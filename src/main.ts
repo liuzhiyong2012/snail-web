@@ -6,8 +6,11 @@ import store from './store';
 import Vant from 'vant';
 import 'vant/lib/index.css';
 import VueI18n from 'vue-i18n'
+// import myCharts from './comm/js/myCharts.js';
 
 
+
+// Vue.use(myCharts);
 Vue.use(Vant);
 Vue.use(VueI18n);
 

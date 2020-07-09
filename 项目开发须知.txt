@@ -1,5 +1,20 @@
 
-
+templated代码规范。
+<template>
+	<section class="main-ctn">
+		<section class="header-ctn">
+			
+		</section>
+		<section class="content-ctn">
+			顺序:1.指令。2.静态的id,class,style,其他  3.变量属性：id,class,style  4，原生事件，自定义事件
+			<plugin-test 指令 v-show=""  静态属性 pro1="pro1" 变量属性 :var1="var1" @click="" @emit="">
+			</plugin-test>
+		</section>
+		<section class="footer-ctn">
+			
+		</section>
+	</section>
+</template>	
 
 js模板代码：
 <script>
