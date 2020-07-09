@@ -23,7 +23,7 @@
 					<time class="time">09:18</time>
 				</div>
 
-				<div class="airplane"><img src="../imgs/index/plane.png" alt="" /></div>
+				<div class="airplane"><img src="../images/index/plane.png" alt="" /></div>
 
 				<div class="point-item end-point">
 					<div class="address">ShenZhen T3</div>

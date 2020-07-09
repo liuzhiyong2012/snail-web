@@ -1,7 +1,7 @@
 import VueRouter, {
 	RouteConfig
 } from 'vue-router';
-import FlightIndex from '../../views/flight_old/Index.vue';
+import FlightIndex from '../../views/flight/Index.vue';
 
 
 /* let PersonCenter = (resolve) => {

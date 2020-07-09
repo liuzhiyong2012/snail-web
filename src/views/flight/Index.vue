@@ -2,22 +2,22 @@
   <section class="main-ctn">
 	 <section class="header-ctn">
 		 <div class="camera-ctn" :class="{active:activeCamera == 'header'}">
-			 <img src="./imgs/index/camera_header.png" alt="">
+			 <img src="./images/index/camera_header.png" alt="">
 		 </div>
 		 <div class="camera-ctn" :class="{active:activeCamera == 'header'}">
-		 	<img src="./imgs/index/camera_body.png" alt="">
+		 	<img src="./images/index/camera_body.png" alt="">
 		 </div>
 		 <div class="camera-ctn" :class="{active:activeCamera == 'header'}">
-		 	<img src="./imgs/index/camera_footer.png" alt="">
+		 	<img src="./images/index/camera_footer.png" alt="">
 		 </div>
 	 </section>
 	 <section class="content-ctn">
 		 <div class="switch-ctn">
 			 <div class="switch-item album">
-				 <img src="./imgs/index/album.png" alt="">
+				 <img src="./images/index/album.png" alt="">
 			 </div>
 			 <div class="switch-item camera">
-			 	 <img src="./imgs/index/camera.png" alt="">
+			 	 <img src="./images/index/camera.png" alt="">
 			 </div>
 		 </div>
 		 <div class="voyage-ctn">
