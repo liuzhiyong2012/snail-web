@@ -32,12 +32,12 @@ export default {
     return {
       musicData: [
         {
-          img: require("./images/news.jpg"),
+          img: require("../images/news.jpg"),
           name: "Let Me Down Slowly",
           details: "Alec Benjamin / Alessia Cara"
         },
         {
-          img: require("./images/news.jpg"),
+          img: require("../images/news.jpg"),
           name:
             "Let Me Down SlowlyLet Me Down SlowlyLet Me Down SlowlyLet Me Down Slowly",
           details: "Alec Benjamin / Alessia CaraAlec Benjamin / Alessia Cara"

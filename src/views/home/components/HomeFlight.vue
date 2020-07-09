@@ -24,7 +24,7 @@
         </div>
       </div>
       <div class="map_box">
-        <img src="./images/map.jpg" alt />
+        <img src="../images/map.jpg" alt />
       </div>
     </div>
   </div>

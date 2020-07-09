@@ -45,49 +45,49 @@ export default {
     return {
       dishData: [
         {
-          img: require("./images/food.png"),
+          img: require("../images/food.png"),
           name: "Pock rice",
           price: "10",
           oldPrice: "23"
         },
         {
-          img: require("./images/shopping.jpg"),
+          img: require("../images/shopping.jpg"),
           name: "Pock rice",
           price: "14",
           oldPrice: "10000"
         },
         {
-          img: require("./images/food.png"),
+          img: require("../images/food.png"),
           name: "Pock ricePock ricePock rice",
           price: "10",
           oldPrice: "23"
         },
         {
-          img: require("./images/shopping.jpg"),
+          img: require("../images/shopping.jpg"),
           name: "Pock rice",
           price: "14",
           oldPrice: "23"
         },
         {
-          img: require("./images/food.png"),
+          img: require("../images/food.png"),
           name: "Pock rice",
           price: "10",
           oldPrice: "23"
         },
         {
-          img: require("./images/shopping.jpg"),
+          img: require("../images/shopping.jpg"),
           name: "Pock rice",
           price: "14",
           oldPrice: "23"
         },
         {
-          img: require("./images/food.png"),
+          img: require("../images/food.png"),
           name: "Pock rice",
           price: "10",
           oldPrice: "23"
         },
         {
-          img: require("./images/shopping.jpg"),
+          img: require("../images/shopping.jpg"),
           name: "Pock rice",
           price: "14",
           oldPrice: "23"
