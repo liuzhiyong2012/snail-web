@@ -14,41 +14,29 @@
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 14px;
+  font-size: 0.28rem;
   color: $font-color-theme;
   background-color: $background-color-theme;
 }
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
 .abus_block_title {
   margin: 0;
-  padding: 10px 0px 0px;
+  padding: 0.2rem 0 0;
   color: rgb(51, 51, 51);
   font-weight: normal;
-  font-size: 16px;
-  line-height: 16px;
+  font-size: 0.32rem;
+  line-height: 0.32rem;
 }
 .block_title_background {
   color: rgb(51, 51, 51);
-  font-size: 18px;
+  font-size: 0.36rem;
   font-weight: bold;
 }
 .abus_scroller_box {
-  margin: 0 14px;
-  padding: 14px 0 10px;
+  margin: 0 0.28rem;
+  padding: 0.28rem 0 0.2rem;
   background-color: #fff;
-  border-radius: 5px;
-  box-shadow: 0 0 5px #efefef;
+  border-radius: 0.1rem;
+  box-shadow: 0 0 0.1rem #efefef;
 }
 </style>
