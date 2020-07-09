@@ -1,0 +1,35 @@
+
+.zaoban-animat-ease-in{
+	
+	animation: zaoban-keyfra-ease-in 0.3s;
+}
+
+.zb-animat-rotate{
+	animation: zaoban-keyfra-rotate  2s infinite linear;
+}
+
+.zb-animat-ease-in{
+	animation: zaoban-keyfra-ease-in 0.3s;
+}
+
+@keyframes zaoban-keyfra-ease-in {
+		from {
+			opacity: 0;
+		}
+
+		to {
+			opacity: 1;
+		}
+	}
+
+@keyframes zaoban-keyfra-rotate {
+		from {
+			transform: rotate(0deg);
+			transform-origin: center;
+		}
+
+		to {
+			transform: rotate(360deg);
+			transform-origin: center;
+		}
+	}

@@ -46,14 +46,17 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
   (response: AxiosResponse<ZCTAPI.Res>) => {
+	  // debugger;
     /**
      * TODO: 补充服务端状态码规范
      */
-    if (response.data.code === 1000 || response.data.code === 0) {
-      return response
+	//response.data.code === 1000 || response.data.code === 0
+	// debugger;
+    if (response.status === 200&&(!response.data.error)) {
+      return response.data;
     } else {
       // Message.error(response.data.message || '网络错误')
-      return Promise.reject(response)
+      return Promise.reject(response.data)
     }
   },
   (error: customError) => {
