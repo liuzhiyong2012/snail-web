@@ -24,7 +24,6 @@
 			 <voyage-info></voyage-info>
 		 </div>
 	 </section>
-	 
   </section>
 </template>
 
@@ -34,7 +33,7 @@ import VoyageInfo from './components/VoyageInfo.vue';
 import { Component, Prop, Vue } from 'vue-property-decorator';  
 
 @Component({
-  name: 'Pagination',
+  name: 'VoyageInfo',
   components:{
 	  VoyageInfo
   }

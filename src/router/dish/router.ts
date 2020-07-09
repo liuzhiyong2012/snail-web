@@ -16,4 +16,5 @@ const routes: Array < RouteConfig > = [{
 	children: []
 }]
 
+
 export default routes

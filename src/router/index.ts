@@ -5,6 +5,7 @@ import About from '../views/About.vue';
 import Layout from '../views/layout/index.vue';
 import Login from '../views/login/login.vue';
 import FlightRouter from './flight/router';
+import DishRouter from './dish/router';
 
 
   Vue.use(VueRouter);
@@ -16,6 +17,7 @@ import FlightRouter from './flight/router';
 			component: Layout,
 			children:[
 				...FlightRouter,
+				...DishRouter,
 				{
 					path: '/home',
 					name: 'home',
