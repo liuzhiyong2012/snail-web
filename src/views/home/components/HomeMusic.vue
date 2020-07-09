@@ -28,17 +28,17 @@ export default {
     return {
       musicData: [
         {
-          img: require("./images/music.jpg"),
+          img: require("../images/music.jpg"),
           name: "Let Me Down Slowly",
           author: "Alec Benjamin / Alessia Cara"
         },
         {
-          img: require("./images/music.jpg"),
+          img: require("../images/music.jpg"),
           name: "Let Me Down Slowly",
           author: "Alec Benjamin / Alessia Cara"
         },
         {
-          img: require("./images/music.jpg"),
+          img: require("../images/music.jpg"),
           name: "Let Me Down Slowly",
           author: "Alec Benjamin / Alessia Cara"
         }

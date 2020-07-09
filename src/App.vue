@@ -10,6 +10,15 @@
 
 <style lang="scss">
 @import "./assets/style/variables.scss";
+@font-face {
+  font-family: 'iconfont';  /* project id 1932862 */
+  src: url('//at.alicdn.com/t/font_1932862_adx9qr7koph.eot');
+  src: url('//at.alicdn.com/t/font_1932862_adx9qr7koph.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_1932862_adx9qr7koph.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_1932862_adx9qr7koph.woff') format('woff'),
+  url('//at.alicdn.com/t/font_1932862_adx9qr7koph.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_1932862_adx9qr7koph.svg#iconfont') format('svg');
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
