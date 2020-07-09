@@ -4,6 +4,7 @@ import Home from '../views/home/index.vue';
 import About from '../views/About.vue';
 import Layout from '../views/layout/index.vue';
 import Shopping from '../views/shopping/index.vue';
+import News from '../views/news/index.vue';
 import Login from '../views/login/login.vue';
 import FlightRouter from './flight/router';
 import DishRouter from './dish/router';
@@ -33,6 +34,11 @@ import DishRouter from './dish/router';
 					path: '/shopping',
 					name: 'shopping',
 					component: Shopping
+				},
+				{
+					path: '/news',
+					name: 'news',
+					component: News
 				},
 				{
 					path: '/login',
