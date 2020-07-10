@@ -105,4 +105,7 @@ export default {
 .home {
   padding: 0 0 0.5rem 0;
 }
+.van-tab--active {
+  font-weight: 600;
+}
 </style>

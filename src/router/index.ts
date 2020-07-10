@@ -4,6 +4,7 @@ import Home from '../views/home/index.vue';
 import About from '../views/About.vue';
 import Layout from '../views/layout/index.vue';
 import Shopping from '../views/shopping/index.vue';
+import ShoppingDetails from '../views/shopping/ShoppingDetails.vue';
 import Login from '../views/login/login.vue';
 
   Vue.use(VueRouter);
@@ -28,6 +29,11 @@ import Login from '../views/login/login.vue';
 					path: '/shopping',
 					name: 'shopping',
 					component: Shopping
+				},
+				{
+					path: '/shopping-details',
+					name: 'shopping-details',
+					component: ShoppingDetails
 				},
 				{
 					path: '/login',
