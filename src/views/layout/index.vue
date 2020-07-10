@@ -1,8 +1,8 @@
 <template>
-  <section id="layout" class="layout-ctn">
-	  <section class="layout-content">
+  <section class="abus-layout-ctn">
+	  <section class="abus-layout-main-ctn">
 		  <keep-alive>
-		    <router-view class="view"/>
+		    <router-view class="abus-layout-view-ctn"/>
 		  </keep-alive>
 	  </section>
   </section>
@@ -19,8 +19,10 @@ export default class HelloWorld extends Vue {
 </script>
 
 
-<style scoped lang="scss">
-	.layout-ctn{
+<style lang="scss">
+	@import '../../assets/style/index.scss';
+	
+	.abus-layout-ctn{
 		
 	}
 </style>
