@@ -46,7 +46,7 @@ export default {
 <style lang="scss" scoped>
 .news_list_wrap {
   width: 92%;
-  background-color: #fff;
+  background: #fff;
   margin: 0 auto;
   border-radius: 0.1rem;
 
@@ -94,7 +94,8 @@ export default {
         color: #999;
         .line_one {
           width: 100%;
-          height: 0.3rem;
+          height: 0.35rem;
+          line-height: 0.35rem;
           display: flex;
           justify-content: space-between;
 
@@ -106,7 +107,7 @@ export default {
             display: -webkit-box;
             -webkit-line-clamp: 1;
             -webkit-box-orient: vertical;
-            width: 93%;
+            width: 92%;
           }
           .author_right_heart {
             display: inline-block;

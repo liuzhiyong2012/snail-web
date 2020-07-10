@@ -8,6 +8,7 @@ import News from '../views/news/index.vue';
 import Login from '../views/login/login.vue';
 import FlightRouter from './flight/router';
 import DishRouter from './dish/router';
+import NewsRouter from './news/router';
 
 
   Vue.use(VueRouter);
@@ -20,6 +21,7 @@ import DishRouter from './dish/router';
 			children:[
 				...FlightRouter,
 				...DishRouter,
+				...NewsRouter,
 				{
 					path: '/home',
 					name: 'home',

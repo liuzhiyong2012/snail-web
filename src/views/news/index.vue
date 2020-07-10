@@ -8,16 +8,26 @@
       </van-nav-bar>
     </van-sticky>
 
-    <div class="banner">
-      <banner :bannerData="goodsData" />
+    <div class="abus_scroller_box">
+      <banner :bannerData="bannerData" />
     </div>
 
-    <div>
-      <van-dropdown-menu>
-        <van-dropdown-item v-model="value1" :options="option1" />
-        <van-dropdown-item v-model="value2" :options="option2" />
-      </van-dropdown-menu>
-    </div>
+    <h2 class="abus_block_title">
+      <van-cell center title="Filter" icon="filter-o">
+        <span>Sort by:</span>
+        <template #right-icon>
+          <div class="news_filter">
+            <van-dropdown-menu>
+              <van-dropdown-item
+                v-model="filterValue"
+                :options="filterOption"
+                @change="filterFun"
+              />
+            </van-dropdown-menu>
+          </div>
+        </template>
+      </van-cell>
+    </h2>
 
     <ul class="news_list">
       <li
@@ -41,35 +51,29 @@ export default {
   },
   data() {
     return {
-      goodsData: [
+      bannerData: [
         {
-          img: require("./images/goods.jpg"),
+          img: require("./images/news_banner.png"),
           name: "goodsName",
           details: "goodsDetails",
         },
         {
-          img: require("./images/goods.jpg"),
+          img: require("./images/news_banner.png"),
           name: "goodsName",
           details: "goodsDetails",
         },
         {
-          img: require("./images/goods.jpg"),
+          img: require("./images/news_banner.png"),
           name: "goodsName",
           details: "goodsDetails",
         },
       ],
 
-      value1: 0,
-      value2: "a",
-      option1: [
-        { text: "全部商品", value: 0 },
-        { text: "新款商品", value: 1 },
-        { text: "活动商品", value: 2 },
-      ],
-      option2: [
-        { text: "默认排序", value: "a" },
-        { text: "好评排序", value: "b" },
-        { text: "销量排序", value: "c" },
+      filterValue: 0,
+      filterOption: [
+        { text: "recommend", value: 0 },
+        { text: "default", value: 1 },
+        { text: "hot-most", value: 2 },
       ],
 
       newsList: [
@@ -77,23 +81,22 @@ export default {
           id: "3249853",
           isCollect: true,
           img: require("./images/news.jpg"),
-
           name:
-            "The 2020 Olympic Games will be postponed Other space data indica… Other space data indica…",
+            "The 2020 Olympic Games will be postponed Other space data indica Other space data indica",
           details:
-            "The duo have had a t Other space data indica… Other space data indica…",
+            "The duo have had a t Other space data indica 工会 Other space data indica",
         },
         {
           id: "32453654",
           isCollect: true,
-          img: require("./images/news.jpg"),
+          img: require("./images/goods.jpg"),
           name: "Taylor Swift and Kanye West's phone call leaks",
           details: "Thousands of passengers",
         },
         {
           id: "32654453",
           isCollect: false,
-          img: require("./images/news.jpg"),
+          img: require("./images/news_banner.png"),
           name: "Earth's deepest ice canyon vulnerable to melting",
           details: "Other space data indica",
         },
@@ -108,7 +111,7 @@ export default {
           id: "3243253",
           isCollect: true,
           img: require("./images/news.jpg"),
-          name: "Tom Hanks and Rita Wilson ‘feel better’ after coron…gfdgf",
+          name: "Tom Hanks and Rita Wilson ‘feel better’ after coron gfdgf grdg ",
           details: "Other space data indica 规范和投入让他",
         },
       ],
@@ -123,14 +126,16 @@ export default {
     goBack() {
       this.$router.go(-1);
     },
+    filterFun(val) {
+      console.log("11", val);
+      console.log("22", this.filterValue);
+    },
     goToDetail(id) {
-      //进入商品详情
+      //进入新闻详情
       this.$router.push({
         name: "newsDetail",
         query: {
-          productId: id,
-          lastFrom: "home",
-          //   productId: 15922656
+          newsId: id,
         },
       }); //跳转链接
     },
@@ -139,13 +144,38 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.banner {
-  width: 92%;
-  margin: 0 auto;
-  border-radius: 0.1rem;
-  height: 2.6rem;
+.abus_scroller_box {
+  margin: 0.3rem auto 0.1rem;
+  padding: 0;
+  width: 93%;
+  overflow: hidden;
+  height: 3.14rem;
+  background: #fff;
+}
+.van-cell {
+  font-weight: 500;
+  padding-top: 0;
+  padding-bottom: 0;
+  span {
+    color: #2e2e2e;
+  }
+}
+.news_filter {
+  /deep/ .van-ellipsis {
+    font-size: 0.13rem;
+  }
+  /deep/ .van-dropdown-menu__bar {
+    height: 0.7rem;
+    box-shadow: 0 0 0 rgba(100, 101, 102, 0.08);
+  }
+  /deep/ .van-cell__title, .van-cell__value {
+    font-size: 0.12rem;
+  }
+  .filter_btn {
+    color: linear-gradient(to right, #4bb0ff, #6149f6);
+  }
 }
 .news_list {
-  background: #ffffff;
+  background: #fff;
 }
 </style>
