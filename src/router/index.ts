@@ -7,6 +7,7 @@ import Login from '../views/login/login.vue';
 import FlightRouter from './flight/router';
 import DishRouter from './dish/router';
 import ShoppingRouter from './shopping/router'
+import VideoRouter from './video/router'
 
 
   Vue.use(VueRouter);
@@ -20,6 +21,7 @@ import ShoppingRouter from './shopping/router'
 				...FlightRouter,
 				...DishRouter,
 				...ShoppingRouter,
+				...VideoRouter,
 				{
 					path: '/home',
 					name: 'home',
