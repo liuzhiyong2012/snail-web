@@ -45,7 +45,8 @@ service.interceptors.request.use(
 )
 
 service.interceptors.response.use(
-  (response: AxiosResponse<ZCTAPI.Res>) => {
+  (response:any) => {
+	 // AxiosResponse<ZCTAPI.Res>
 	  // debugger;
     /**
      * TODO: 补充服务端状态码规范
