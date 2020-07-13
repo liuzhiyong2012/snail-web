@@ -3,11 +3,10 @@ import VueRouter, { RouteConfig } from 'vue-router'
 import Home from '../views/home/index.vue';
 import About from '../views/About.vue';
 import Layout from '../views/layout/index.vue';
-import Shopping from '../views/shopping/index.vue';
-import ShoppingDetails from '../views/shopping/ShoppingDetails.vue';
 import Login from '../views/login/login.vue';
 import FlightRouter from './flight/router';
 import DishRouter from './dish/router';
+import ShoppingRouter from './shopping/router'
 
 
   Vue.use(VueRouter);
@@ -20,6 +19,7 @@ import DishRouter from './dish/router';
 			children:[
 				...FlightRouter,
 				...DishRouter,
+				...ShoppingRouter,
 				{
 					path: '/home',
 					name: 'home',
@@ -29,16 +29,6 @@ import DishRouter from './dish/router';
 					path: '/about',
 					name: 'about',
 					component: About
-				},
-				{
-					path: '/shopping',
-					name: 'shopping',
-					component: Shopping
-				},
-				{
-					path: '/shopping-details',
-					name: 'shopping-details',
-					component: ShoppingDetails
 				},
 				{
 					path: '/login',

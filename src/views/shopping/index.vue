@@ -1,15 +1,22 @@
 <template>
   <div>
-    <van-nav-bar title="Shopping" left-arrow>
-      <template #right>
-        <van-icon name="scan" size="18" />
-      </template>
-    </van-nav-bar>
     <div class="banner">
-      <banner :bannerData="bannerData" />
-      <div :class="[isActive? 'menu active': 'menu']">
+      <van-swipe :autoplay="3000">
+        <van-swipe-item
+          class="shopping-recomend-item"
+          v-for="(item, index) in recomendList"
+          :key="index"
+        >
+          <div
+            class="shopping-recomend-img"
+            :style="{backgroundImage:`url(${item.BannerImgPath})`}"
+          ></div>
+        </van-swipe-item>
+      </van-swipe>
+      <!-- <banner :bannerData="bannerData" /> -->
+      <!-- <div :class="[isActive? 'menu active': 'menu']">
         <van-icon name="wap-nav" size="24" />
-      </div>
+      </div>-->
     </div>
     <div class="shopping_box">
       <van-tabs
@@ -22,26 +29,13 @@
         animated
         sticky
       >
-        <van-tab v-for="(item,index) in option1" :title="item.text" :key="index">
-          <van-sticky>
-            <!-- <div class="filter_box">
-              <div class></div>
-            </div>-->
-            <van-dropdown-menu>
-              <van-dropdown-item v-model="value" :options="option" />
-              <van-dropdown-item title="筛选" ref="item">
-                <van-switch-cell v-model="switch1" title="包邮" />
-                <van-switch-cell v-model="switch2" title="团购" />
-                <van-button block type="info" @click="onConfirm">确认</van-button>
-              </van-dropdown-item>
-            </van-dropdown-menu>
-          </van-sticky>
+        <van-tab v-for="(item,index) in options1" :title="item.text" :key="index">
           <div class="goods_box">
-            <div class="goods_item" v-for="(item,index) in goodsData" :key="index">
+            <div class="goods_item" v-for="(item,index) in shoppingList" :key="index">
               <div class="goods">
-                <img :src="item.img" :alt="item.name" />
-                <div class="price">${{item.price}}</div>
-                <div class="name">{{item.name}}</div>
+                <img :src="item.GoodsImgPath" :alt="item.Name" />
+                <div class="price">${{item.Price}}</div>
+                <div class="name">{{item.Name}}</div>
                 <div class="qty">
                   QTY {{item.qty}}
                   <span class="buy">Buy</span>
@@ -50,116 +44,72 @@
             </div>
           </div>
         </van-tab>
-        <van-tab disabled></van-tab>
+        <!-- <van-tab disabled></van-tab> -->
       </van-tabs>
       <div class="nav_menu"></div>
     </div>
   </div>
 </template>
 
-<script>
-import Banner from "@/components/banner";
-export default {
-  components: {
-    Banner
-  },
-  data() {
-    return {
-      isActive: false,
-      value1: 0,
-      value2: "a",
-      value: 0,
-      switch1: false,
-      switch2: false,
-      option: [
-        { text: "全部商品", value: 0 },
-        { text: "新款商品", value: 1 },
-        { text: "活动商品", value: 2 }
-      ],
-      option1: [
-        { text: "Handbags", value: 0 },
-        { text: "Shoes", value: 1 },
-        { text: "Jewellery", value: 1 },
-        { text: "Sunglasses", value: 1 },
-        { text: "Sunglasses", value: 1 }
-      ],
-      option2: [
-        { text: "默认排序", value: "a" },
-        { text: "好评排序", value: "b" },
-        { text: "销量排序", value: "c" }
-      ],
-      bannerData: [
-        {
-          img: require("./images/goods.jpg"),
-          name: "goodsName",
-          details: "goodsDetails"
-        },
-        {
-          img: require("./images/goods.jpg"),
-          name: "goodsName",
-          details: "goodsDetails"
-        },
-        {
-          img: require("./images/goods.jpg"),
-          name: "goodsName",
-          details: "goodsDetails"
-        }
-      ],
-      goodsData: [
-        {
-          img: require("./images/goods_1.jpg"),
-          name: "Vietnamese Summer Rolls",
-          price: 20,
-          qty: 30
-        },
-        {
-          img: require("./images/goods_1.jpg"),
-          name: "Vietnamese Summer Rolls",
-          price: 20,
-          qty: 30
-        },
-        {
-          img: require("./images/goods_1.jpg"),
-          name: "Vietnamese Summer Rolls",
-          price: 20,
-          qty: 30
-        },
-        {
-          img: require("./images/goods_1.jpg"),
-          name: "Vietnamese Summer Rolls",
-          price: 20,
-          qty: 30
-        },
-        {
-          img: require("./images/goods_1.jpg"),
-          name: "Vietnamese Summer Rolls",
-          price: 20,
-          qty: 30
-        }
-      ]
-    };
-  },
-  created() {},
-  mounted() {
-    window.addEventListener("scroll", this.handleScroll, true);
-    var object = document.getElementById("box");
-  },
-  methods: {
-    handleScroll() {
-      var object = document.getElementById("box");
-      var rectObject = object.getBoundingClientRect().top;
-      if (rectObject <= 0) {
-        this.isActive = true;
-      } else {
-        this.isActive = false;
-      }
-    }
-  },
-  computed: {}
-};
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+import DishService from "../../service/shopping";
+import ShoppingService from "../../service/shopping";
+// import Banner from "@/components/banner";
+@Component({
+  name: "Shopping",
+  components: {}
+})
+export default class ShoppingIndex extends Vue {
+  private recomendList: Array<any> = [];
+  private shoppingList: Array<any> = [];
+  private options1: Array<any> = [];
+
+  private created() {
+    this.getShoppingRecommendedList();
+    this.getShoppingList();
+    this.options1 = [
+      { text: "Jewellery", value: 1 },
+      { text: "Jewellery", value: 1 },
+      { text: "Jewellery", value: 1 }
+    ];
+  }
+
+  private getShoppingRecommendedList() {
+    ShoppingService.getShoppingRecommendedList({}).then((res: any) => {
+      this.recomendList = res.RecommendedShopping;
+
+      this.recomendList.forEach((item, index) => {
+        item.BannerImgPath = "http://172.16.125.11:8010/50.jpg";
+      });
+    });
+  }
+
+  private getShoppingList() {
+    ShoppingService.getShoppingList({}).then((res: any) => {
+      this.shoppingList = res.Dishes;
+
+      this.shoppingList.forEach((item, index) => {
+        item.GoodsImgPath = "http://172.16.125.11:8010/50.jpg";
+      });
+    });
+  }
+}
 </script>
 
 <style lang="scss" scoped>
+.shopping-recomend-item {
+  position: relative;
+  width: 100%;
+  height: 2.5rem;
+  .shopping-recomend-img {
+    width: 100%;
+    height: 100%;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
 .f1 {
   position: relative;
 }
@@ -184,10 +134,8 @@ export default {
 .banner {
   position: relative;
   width: 100%;
-  // height: 2.5rem;
 }
 .shopping_box {
-  // display: flex;
   width: 100%;
   .f1 {
     // flex: 1;
@@ -205,6 +153,7 @@ export default {
   padding-right: 1rem;
 }
 .goods_box {
+  margin: 0.3rem 0 0 0;
   display: flex;
   flex-wrap: wrap;
   .goods_item {

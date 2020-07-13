@@ -7,16 +7,16 @@
         </template>
       </van-cell>
     </h2>
-    <div class="abus_scroller_box music_box">
-      <div v-for="(item,index) in musicData" class="music_list" :key="index">
-        <div class="music_l">
+    <div class="abus_scroller_box news_box">
+      <div v-for="(item,index) in musicData" class="news_list" :key="index">
+        <div class="news_l">
           <img :src="item.img" :alt="item.name" />
         </div>
         <div class="f1">
           <div class="name">
             <div class="line_two">{{item.name}}</div>
           </div>
-          <div class="author">
+          <div class="details">
             <div class="line_one">{{item.details}}</div>
           </div>
         </div>
@@ -56,22 +56,21 @@ export default {
 .van-cell {
   font-size: 0.36rem;
 }
-.music_box {
+.news_box {
   background-color: #fff;
   padding: 0 0.28rem;
   margin: 0 0.28rem;
-  background-color: #fff;
   border-radius: 0.1rem;
   :last-child {
     border-bottom: none;
   }
 }
-.music_list {
+.news_list {
   display: flex;
   padding: 0.28rem 0;
   border-bottom: 0.02rem solid #efefef;
   align-items: center;
-  .music_l {
+  .news_l {
     width: 2.1rem;
     height: 1.38rem;
     border-radius: 0.12rem;
@@ -103,12 +102,12 @@ export default {
         -webkit-box-orient: vertical;
       }
     }
-    .author {
+    .details {
       flex: 1;
       font-size: 0.24rem;
       color: #999;
+      line-height: .4rem;
       .line_one {
-        height: 0.3rem;
         text-overflow: -o-ellipsis-lastline;
         overflow: hidden;
         text-overflow: ellipsis;
