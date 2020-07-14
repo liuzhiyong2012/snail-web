@@ -1,20 +1,22 @@
 import VueRouter, {
 	RouteConfig
 } from 'vue-router';
+import News from '@/views/news/index.vue';
 import NewsDetail from '@/views/news/components/NewsDetail.vue';
 
-
-/* let PersonCenter = (resolve) => {
-	return require.ensure([], () => {
-		resolve(require('@/pages/PersonCenter/personCenter'))
-	}, 'personCenter')
-} */
-const routes: Array < RouteConfig > = [{
-	path: '/news/detail',
-	name: 'newsDetail',
-	component: NewsDetail,
-	children: []
-}]
+const routes: Array < RouteConfig > = [
+	{
+		path: '/news',
+		name: 'news',
+		component: News,
+		children: []
+	},
+	{
+		path: '/news/detail',
+		name: 'newsDetail',
+		component: NewsDetail,
+	},
+]
 
 
 export default routes

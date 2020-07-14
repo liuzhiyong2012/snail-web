@@ -10,15 +10,15 @@
 
 <style lang="scss">
 @import "./assets/style/variables.scss";
-@font-face {
-  font-family: 'iconfont';  /* project id 1932862 */
-  src: url('//at.alicdn.com/t/font_1932862_adx9qr7koph.eot');
-  src: url('//at.alicdn.com/t/font_1932862_adx9qr7koph.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_1932862_adx9qr7koph.woff2') format('woff2'),
-  url('//at.alicdn.com/t/font_1932862_adx9qr7koph.woff') format('woff'),
-  url('//at.alicdn.com/t/font_1932862_adx9qr7koph.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_1932862_adx9qr7koph.svg#iconfont') format('svg');
-}
+// @font-face {
+//   font-family: 'iconfont';  /* project id 1932862 */
+//   src: url('//at.alicdn.com/t/font_1932862_adx9qr7koph.eot');
+//   src: url('//at.alicdn.com/t/font_1932862_adx9qr7koph.eot?#iefix') format('embedded-opentype'),
+//   url('//at.alicdn.com/t/font_1932862_adx9qr7koph.woff2') format('woff2'),
+//   url('//at.alicdn.com/t/font_1932862_adx9qr7koph.woff') format('woff'),
+//   url('//at.alicdn.com/t/font_1932862_adx9qr7koph.ttf') format('truetype'),
+//   url('//at.alicdn.com/t/font_1932862_adx9qr7koph.svg#iconfont') format('svg');
+// }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -27,7 +27,12 @@
   color: $font-color-theme;
   background-color: $background-color-theme;
 }
-
+.abus_icon {
+width: 1em; height: 1em;
+vertical-align: -0.15em;
+fill: currentColor;
+overflow: hidden;
+}
 .abus_block_title {
   margin: 0;
   padding: 0.2rem 0 0;

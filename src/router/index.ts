@@ -3,13 +3,13 @@ import VueRouter, { RouteConfig } from 'vue-router'
 import Home from '../views/home/index.vue';
 import About from '../views/About.vue';
 import Layout from '../views/layout/index.vue';
-import Shopping from '../views/shopping/index.vue';
-import News from '../views/news/index.vue';
-import Login from '../views/login/login.vue';
+// import Login from '../views/login/login.vue';
 import FlightRouter from './flight/router';
 import DishRouter from './dish/router';
-import NewsRouter from './news/router';
-
+import ShoppingRouter from './shopping/router'
+import VideoRouter from './video/router'
+import LoginRouter from './login/router'
+import NewsRouter from './news/router';
 
   Vue.use(VueRouter);
 
@@ -21,7 +21,10 @@ import NewsRouter from './news/router';
 			children:[
 				...FlightRouter,
 				...DishRouter,
+				...ShoppingRouter,
 				...NewsRouter,
+				...VideoRouter,
+				...LoginRouter,
 				{
 					path: '/home',
 					name: 'home',
@@ -31,22 +34,12 @@ import NewsRouter from './news/router';
 					path: '/about',
 					name: 'about',
 					component: About
-				},
-				{
-					path: '/shopping',
-					name: 'shopping',
-					component: Shopping
-				},
-				{
-					path: '/news',
-					name: 'news',
-					component: News
-				},
-				{
-					path: '/login',
-					name: 'login',
-					component: Login
 				}
+				// {
+				// 	path: '/login',
+				// 	name: 'login',
+				// 	component: Login
+				// }
 			]
 			}
 	]
