@@ -18,7 +18,7 @@
         <van-icon name="wap-nav" size="24" />
       </div>-->
     </div>
-    <div class="shopping_box">
+    <div class="shopping-box">
       <van-tabs
         id="box"
         class="f1"
@@ -30,8 +30,8 @@
         sticky
       >
         <van-tab v-for="(item,index) in options1" :title="item.text" :key="index">
-          <div class="goods_box">
-            <div class="goods_item" v-for="(item,index) in shoppingList" :key="index">
+          <div class="goods-box">
+            <div class="goods-item" v-for="(item,index) in shoppingList" :key="index">
               <div class="goods">
                 <img :src="item.GoodsImgPath" :alt="item.Name" />
                 <div class="price">${{item.Price}}</div>
@@ -46,7 +46,7 @@
         </van-tab>
         <!-- <van-tab disabled></van-tab> -->
       </van-tabs>
-      <div class="nav_menu"></div>
+      <div class="nav-menu"></div>
     </div>
   </div>
 </template>
@@ -135,12 +135,12 @@ export default class ShoppingIndex extends Vue {
   position: relative;
   width: 100%;
 }
-.shopping_box {
+.shopping-box {
   width: 100%;
   .f1 {
     // flex: 1;
   }
-  .nav_menu {
+  .nav-menu {
     width: 1rem;
     height: 1rem;
   }
@@ -152,11 +152,11 @@ export default class ShoppingIndex extends Vue {
 .van-tabs__wrap--scrollable .van-tabs__nav {
   padding-right: 1rem;
 }
-.goods_box {
+.goods-box {
   margin: 0.3rem 0 0 0;
   display: flex;
   flex-wrap: wrap;
-  .goods_item {
+  .goods-item {
     box-sizing: border-box;
     width: 50%;
     padding: 0 0.13rem 0.3rem 0.3rem;
@@ -210,7 +210,7 @@ export default class ShoppingIndex extends Vue {
     padding: 0 0.3rem 0.3rem 0.13rem;
   }
 }
-.filter_box {
+.filter-box {
   font-size: 0.26rem;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;

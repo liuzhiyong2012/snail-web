@@ -5,28 +5,28 @@
         <van-icon name="scan" size="18" />
       </template>
     </van-nav-bar>
-    <div calss="shopping_details">
+    <div calss="shopping-details">
       <banner :bannerData="bannerData" />
     </div>
-    <div class="m_box">
+    <div class="m-box">
       <div class="title">Three Band Ouroboros Ring In Gold</div>
-      <div class="info_box">
+      <div class="info-box">
         <div class="qty">QTY 300</div>
         <div class="f1">$30</div>
-        <div class="stepper_box">
+        <div class="stepper-box">
           <i class="minus">-</i>
           <span class="f1">111111</span>
           <i class="plus">+</i>
         </div>
       </div>
     </div>
-    <div class="details_box">
+    <div class="details-box">
       <div class="top">Product Details</div>
       <div
         class="details"
       >Crafted from yellow gold with turquoise stone-set eyes, the ring features an ancient Egyptian symbol, the Ouroboros—a snake eating its own tail. In medieval alchemical tradition.</div>
     </div>
-    <div class="button_box">
+    <div class="button-box">
       <div class="button">Buy Now</div>
     </div>
   </div>
@@ -54,10 +54,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.shopping_details {
+.shopping-details {
   width: 100%;
 }
-.m_box {
+.m-box {
   margin: 0 0 0.2rem 0;
   padding: 0.1rem 0.3rem 0.4rem;
   background-color: #fff;
@@ -75,7 +75,7 @@ export default {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
   }
-  .info_box {
+  .info-box {
     display: flex;
     padding: 0.1rem 0 0 0;
     // height: 0.58rem;
@@ -94,7 +94,7 @@ export default {
       color: rgba(46, 46, 46, 1);
       line-height: 0.58rem;
     }
-    .stepper_box {
+    .stepper-box {
       display: flex;
       margin: 0 0 0 0.25rem;
       background-color: #f2f4f7;
@@ -128,7 +128,7 @@ export default {
     }
   }
 }
-.details_box {
+.details-box {
   margin: 0 0 0.2rem 0;
   padding: 0.3rem;
   background-color: #fff;
@@ -147,7 +147,7 @@ export default {
     line-height: 0.36rem;
   }
 }
-.button_box {
+.button-box {
   margin: 0.4rem 0.3rem 0.5rem;
   .button {
     width: 100%;

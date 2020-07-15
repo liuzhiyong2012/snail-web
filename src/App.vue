@@ -27,13 +27,13 @@
   color: $font-color-theme;
   background-color: $background-color-theme;
 }
-.abus_icon {
+.abus-icon {
 width: 1em; height: 1em;
 vertical-align: -0.15em;
 fill: currentColor;
 overflow: hidden;
 }
-.abus_block_title {
+.abus-block-title {
   margin: 0;
   padding: 0.2rem 0 0;
   color: rgb(51, 51, 51);
@@ -41,12 +41,12 @@ overflow: hidden;
   font-size: 0.32rem;
   line-height: 0.32rem;
 }
-.block_title_background {
+.block-title-background {
   color: rgb(51, 51, 51);
   font-size: 0.36rem;
   font-weight: bold;
 }
-.abus_scroller_box {
+.abus-scroller-box {
   margin: 0 0.28rem;
   padding: 0.28rem 0 0.2rem;
   background-color: #fff;
