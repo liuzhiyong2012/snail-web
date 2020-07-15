@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="shopping_cart">
     <van-notice-bar
       color="#2E2E2E"
       background="#E5E8EE"
@@ -41,7 +41,7 @@
         <i class="plus">+</i>
       </div>
     </van-swipe-cell>
-    <van-cell-group>
+    <!-- <van-cell-group>
       <van-cell title="Subtotal" value="$ 3300" />
       <van-cell value-class="discount" title="Discount" value="$ 10" />
       <van-cell
@@ -51,7 +51,21 @@
         title="Total amount"
         value="$ 3300"
       />
-    </van-cell-group>
+    </van-cell-group>-->
+    <div class="cell_group">
+      <div class="cell">
+        <div class="cell_l">12323123</div>
+        <div class="cell_r">$12332</div>
+      </div>
+      <div class="cell">
+        <div class="cell_l">12323123</div>
+        <div class="cell_r">$12332</div>
+      </div>
+      <div class="cell">
+        <div class="cell_l t_bold">12323123</div>
+        <div class="cell_r t_bold">$12332</div>
+      </div>
+    </div>
     <div class="button_box">
       <div class="button">Pay</div>
     </div>
@@ -63,6 +77,9 @@ export default {};
 </script>
 
 <style lang="scss" scoped>
+.shopping_cart{
+  min-height: 100vh;
+}
 .goods-card {
   margin: 0 0 1px 0;
   padding: 0.3rem;
@@ -114,6 +131,30 @@ export default {};
   width: 1rem;
   height: 1rem;
   background-color: red;
+}
+.cell_group {
+  margin: 0.3rem;
+  .cell {
+    margin: 0 0 0.3rem 0;
+    display: flex;
+    font-size: 0.3rem;
+    font-family: Helvetica;
+    color: rgba(155, 154, 170, 1);
+    line-height: 0.36rem;
+    .cell_l {
+    }
+    .cell_r {
+      flex: 1;
+      text-align: right;
+    }
+    .t_bold {
+      font-size: 0.35rem;
+      font-family: Helvetica-Bold, Helvetica;
+      font-weight: bold;
+      color: rgba(46, 46, 46, 1);
+      line-height: 0.42rem;
+    }
+  }
 }
 .stepper_box {
   position: absolute;
@@ -177,7 +218,7 @@ export default {};
     font-weight: bold;
   }
 }
-.discount{
+.discount {
   text-decoration: line-through;
 }
 </style>
