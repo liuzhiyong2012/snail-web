@@ -1,32 +1,32 @@
 <template>
-  <div class="internet_cart">
+  <div class="internet-cart">
     <div class="cart">
-      <div class="name_bg">ALL DAY</div>
+      <div class="name-bg">ALL DAY</div>
       <div class="f1">
         <div class="name">123213</div>
         <div class="price">$123123</div>
       </div>
-      <div class="stepper_box">
+      <div class="stepper-box">
         <i class="minus">-</i>
         <span class="f1">111111</span>
         <i class="plus">+</i>
       </div>
     </div>
-    <div class="cell_group">
+    <div class="cell-group">
       <div class="cell">
-        <div class="cell_l">12323123</div>
-        <div class="cell_r">$12332</div>
+        <div class="cell-l">12323123</div>
+        <div class="cell-r">$12332</div>
       </div>
       <div class="cell">
-        <div class="cell_l">12323123</div>
-        <div class="cell_r">$12332</div>
+        <div class="cell-l">12323123</div>
+        <div class="cell-r">$12332</div>
       </div>
       <div class="cell">
-        <div class="cell_l t_bold">12323123</div>
-        <div class="cell_r t_bold">$12332</div>
+        <div class="cell-l t-bold">12323123</div>
+        <div class="cell-r t-bold">$12332</div>
       </div>
     </div>
-    <div class="button_box">
+    <div class="button-box">
       <div class="button">Pay</div>
     </div>
   </div>
@@ -37,14 +37,14 @@ export default {};
 </script>
 
 <style lang="scss" scoped>
-.internet_cart {
+.internet-cart {
   min-height: 100vh;
   .cart {
     position: relative;
     display: flex;
     padding: 0.3rem;
     background-color: #fff;
-    .name_bg {
+    .name-bg {
       margin: 0 0.3rem 0 0;
       padding: 0.15rem;
       width: 0.8rem;
@@ -79,7 +79,7 @@ export default {};
     }
   }
 }
-.cell_group {
+.cell-group {
   margin: 0.3rem;
   .cell {
     margin: 0 0 0.3rem 0;
@@ -88,13 +88,13 @@ export default {};
     font-family: Helvetica;
     color: rgba(155, 154, 170, 1);
     line-height: 0.36rem;
-    .cell_l {
+    .cell-l {
     }
-    .cell_r {
+    .cell-r {
       flex: 1;
       text-align: right;
     }
-    .t_bold {
+    .t-bold {
       font-size: 0.35rem;
       font-family: Helvetica-Bold, Helvetica;
       font-weight: bold;
@@ -103,7 +103,7 @@ export default {};
     }
   }
 }
-.stepper_box {
+.stepper-box {
   position: absolute;
   right: 0.3rem;
   bottom: 0.3rem;
@@ -138,7 +138,7 @@ export default {};
     font-size: 0.4rem;
   }
 }
-.button_box {
+.button-box {
   margin: 0.4rem 0.3rem 0.5rem;
   .button {
     width: 100%;

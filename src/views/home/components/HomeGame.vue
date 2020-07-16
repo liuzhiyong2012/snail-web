@@ -1,13 +1,13 @@
 <template>
   <div>
-    <h2 class="abus_block_title">
-      <van-cell title="Game" class="block_title_background">
+    <h2 class="abus-block-title">
+      <van-cell title="Game" class="block-title-background">
         <template #right-icon>
           <van-icon name="ellipsis" style="line-height: inherit;" size="25" />
         </template>
       </van-cell>
     </h2>
-    <div class="abus_scroller_box">
+    <div class="abus-scroller-box">
       <banner :bannerData="imgData"/>
     </div>
   </div>
@@ -31,13 +31,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.block_title_background {
+.block-title-background {
   background-color: #fafafa00;
 }
 .van-cell {
   font-size: 0.36rem;
 }
-.abus_scroller_box {
+.abus-scroller-box {
   padding: 0;
   overflow: hidden;
   height: 3.14rem;

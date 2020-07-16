@@ -1,5 +1,5 @@
 <template>
-  <div class="shopping_cart">
+  <div class="shopping-cart">
     <van-notice-bar
       color="#2E2E2E"
       background="#E5E8EE"
@@ -16,7 +16,7 @@
         <van-button square text="删除" type="danger" class="delete-button" />
       </template>
       <div class="price">$1232</div>
-      <div class="stepper_box">
+      <div class="stepper-box">
         <i class="minus">-</i>
         <span class="f1">111111</span>
         <i class="plus">+</i>
@@ -35,7 +35,7 @@
         $1232
         <span class="before">$2323</span>
       </div>
-      <div class="stepper_box">
+      <div class="stepper-box">
         <i class="minus">-</i>
         <span class="f1">111111</span>
         <i class="plus">+</i>
@@ -45,28 +45,28 @@
       <van-cell title="Subtotal" value="$ 3300" />
       <van-cell value-class="discount" title="Discount" value="$ 10" />
       <van-cell
-        title-class="total_amount"
-        value-class="total_amount"
+        title-class="total-amount"
+        value-class="total-amount"
         border="false"
         title="Total amount"
         value="$ 3300"
       />
     </van-cell-group>-->
-    <div class="cell_group">
+    <div class="cell-group">
       <div class="cell">
-        <div class="cell_l">12323123</div>
-        <div class="cell_r">$12332</div>
+        <div class="cell-l">12323123</div>
+        <div class="cell-r">$12332</div>
       </div>
       <div class="cell">
-        <div class="cell_l">12323123</div>
-        <div class="cell_r">$12332</div>
+        <div class="cell-l">12323123</div>
+        <div class="cell-r">$12332</div>
       </div>
       <div class="cell">
-        <div class="cell_l t_bold">12323123</div>
-        <div class="cell_r t_bold">$12332</div>
+        <div class="cell-l t-bold">12323123</div>
+        <div class="cell-r t-bold">$12332</div>
       </div>
     </div>
-    <div class="button_box">
+    <div class="button-box">
       <div class="button">Pay</div>
     </div>
   </div>
@@ -77,7 +77,7 @@ export default {};
 </script>
 
 <style lang="scss" scoped>
-.shopping_cart{
+.shopping-cart{
   min-height: 100vh;
 }
 .goods-card {
@@ -85,12 +85,12 @@ export default {};
   padding: 0.3rem;
   background-color: #fff;
 
-  .van-card__thumb {
+  .van-card-thumb {
     margin-right: 0.3rem;
     width: 1.8rem;
     height: 1.8rem;
   }
-  .van-card__title {
+  .van-card-title {
     max-height: none;
     font-size: 0.36rem;
     font-family: Helvetica;
@@ -132,7 +132,7 @@ export default {};
   height: 1rem;
   background-color: red;
 }
-.cell_group {
+.cell-group {
   margin: 0.3rem;
   .cell {
     margin: 0 0 0.3rem 0;
@@ -141,13 +141,13 @@ export default {};
     font-family: Helvetica;
     color: rgba(155, 154, 170, 1);
     line-height: 0.36rem;
-    .cell_l {
+    .cell-l {
     }
-    .cell_r {
+    .cell-r {
       flex: 1;
       text-align: right;
     }
-    .t_bold {
+    .t-bold {
       font-size: 0.35rem;
       font-family: Helvetica-Bold, Helvetica;
       font-weight: bold;
@@ -156,7 +156,7 @@ export default {};
     }
   }
 }
-.stepper_box {
+.stepper-box {
   position: absolute;
   right: 0.3rem;
   bottom: 0.3rem;
@@ -191,7 +191,7 @@ export default {};
     font-size: 0.4rem;
   }
 }
-.total_amount {
+.total-amount {
   font-size: 0.35rem;
   font-family: Helvetica-Bold, Helvetica;
   font-weight: bold;
@@ -204,7 +204,7 @@ export default {};
     border: none;
   }
 }
-.button_box {
+.button-box {
   margin: 0.4rem 0.3rem 0.5rem;
   .button {
     width: 100%;
