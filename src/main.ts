@@ -2,12 +2,17 @@ import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
-//引入Vant
+import filters from './utils/filters/index';
+//引入Vant  
 import Vant from 'vant';
 import 'vant/lib/index.css';
 import VueI18n from 'vue-i18n'
 // import myCharts from './comm/js/myCharts.js';
 
+
+filters.forEach((filter:any,index)=>{
+	Vue.filter(filter.name, filter.handler)
+});
 
 
 // Vue.use(myCharts);
