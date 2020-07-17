@@ -1,15 +1,15 @@
 <template>
   <div>
-    <h2 class="abus_block_title">
-      <van-cell title="Music" class="block_title_background">
+    <h2 class="abus-block-title">
+      <van-cell title="Music" class="block-title-background">
         <template #right-icon>
           <van-icon name="ellipsis" style="line-height: inherit;" size="25" />
         </template>
       </van-cell>
     </h2>
-    <div class="abus_scroller_box music_box">
-      <div v-for="(item,index) in musicData" class="music_list" :key="index">
-        <div class="music_l">
+    <div class="abus-scroller-box music-box">
+      <div v-for="(item,index) in musicData" class="music-list" :key="index">
+        <div class="music-l">
           <img :src="item.img" :alt="item.name" />
         </div>
         <div class="f1">
@@ -49,13 +49,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.block_title_background {
+.block-title-background {
   background-color: #fafafa00;
 }
 .van-cell {
   font-size: 0.36rem;
 }
-.music_box {
+.music-box {
   background-color: #fff;
   padding: 0 0.28rem;
   margin: 0 0.28rem;
@@ -65,12 +65,12 @@ export default {
     border-bottom: none;
   }
 }
-.music_list {
+.music-list {
   display: flex;
   padding: 0.28rem 0;
   border-bottom: 0.02rem solid #efefef;
   align-items: center;
-  .music_l {
+  .music-l {
     width: 1rem;
     height: 1rem;
     overflow: hidden;

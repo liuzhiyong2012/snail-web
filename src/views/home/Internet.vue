@@ -7,7 +7,7 @@
           <div class="price">${{item.Price}}</div>
         </div>
         <div class="con">
-          <div class="con_l">{{item.details}}
+          <div class="con-l">{{item.details}}
             </div>
           <div class="pay">Pay</div>
         </div>
@@ -15,15 +15,15 @@
         <div class="bottom">
           <div class="f1">
             <img class="icon" src="./images/icon_01.png" alt="icon_01" />
-            <span class="time_t">{{item.time}}</span>
+            <span class="time-t">{{item.time}}</span>
           </div>
           <div class="f1">
             <img class="icon" src="./images/icon_02.png" alt="icon_02" />
-            <span class="time_t">{{item.time}}</span>
+            <span class="time-t">{{item.time}}</span>
           </div>
           <div class="f1 f2">
             <img class="icon" src="./images/icon_03.png" alt="icon_03" />
-            <span class="time_t">{{item.time}}</span>
+            <span class="time-t">{{item.time}}</span>
           </div>
         </div>
       </div>
@@ -99,7 +99,7 @@ export default class InternetIndex extends Vue{
       .con {
         display: flex;
         margin: 0.3rem 0 0 0;
-        .con_l {
+        .con-l {
           flex: 1;
           font-size: 0.22rem;
           font-family: Helvetica;
@@ -148,7 +148,7 @@ export default class InternetIndex extends Vue{
             width: 0.36rem;
             height: 0.36rem;
           }
-          .time_t {
+          .time-t {
             flex: 1;
             margin-left: 0.1rem;
             font-size: 0.24rem;

@@ -1,16 +1,16 @@
 <template>
   <div>
-    <h2 class="abus_block_title">
-      <van-cell title="Shopping" class="block_title_background">
+    <h2 class="abus-block-title">
+      <van-cell title="Shopping" class="block-title-background">
         <template #right-icon>
           <van-icon name="ellipsis" style="line-height: inherit;" size="25" />
         </template>
       </van-cell>
     </h2>
-    <div class="abus_scroller_box">
+    <div class="abus-scroller-box">
       <scroller>
         <div slot="list" v-for="(item, index) of dishData" :key="index">
-          <div class="s_box s_box_right" v-if="index+1 == dishData.length">
+          <div class="s-box s-box-right" v-if="index+1 == dishData.length">
             <img :src="item.img" :alt="item.name" />
             <div class="name">{{item.name}}</div>
             <div class="price">
@@ -18,7 +18,7 @@
               <span>${{item.oldPrice}}</span>
             </div>
           </div>
-          <div class="s_box" v-else>
+          <div class="s-box" v-else>
             <img :src="item.img" :alt="item.name" />
             <div class="name">{{item.name}}</div>
             <div class="price">
@@ -99,14 +99,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.block_title_background {
+.block-title-background {
   background-color: #fafafa00;
 }
 .van-cell {
   font-size: 0.36rem;
 }
 
-.s_box {
+.s-box {
   float: left;
   // height: 1.6rem;
   margin: 0 0 0 0.28rem;
@@ -144,7 +144,7 @@ export default {
     }
   }
 }
-.s_box_right {
+.s-box-right {
   margin-right: 0.82rem;
 }
 </style>

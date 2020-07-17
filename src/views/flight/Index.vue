@@ -48,6 +48,7 @@ export default class FlightIndex extends Vue {
     // this.getRuleList()
   }
   
+  
   private handleSetting(data?: any) {
 	  
   }

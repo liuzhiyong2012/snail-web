@@ -1,45 +1,61 @@
 <template>
   <div class="login">
+    <ad-model v-if="isActive"></ad-model>
     <div class="title">LOGIN</div>
     <div class="form">
-      <div class="user_details">
+      <div class="user-details">
         <div class="icon"></div>
-        <input class="form_input" placeholder="You phone" type="text" />
+        <input class="form-input" placeholder="You phone" type="text" />
       </div>
-      <div class="user_details m40">
+      <div class="user-details m40">
         <div class="icon"></div>
-        <input class="form_input" placeholder="Password" type="password" />
+        <input class="form-input" placeholder="Password" type="password" />
       </div>
     </div>
-    <div class="forgot_password">Forgot Password?</div>
-    <div class="button_box">
+    <div class="forgot-password">Forgot Password?</div>
+    <div class="button-box">
       <button class="button">Login</button>
     </div>
     <div class="registery">Registery</div>
-    <div class="login_other">
+    <div class="login-other">
       <div class="f1">
         <img src="./images/facebook.png" alt />
-        <div class="login_other_name">facebook</div>
+        <div class="login-other-name">facebook</div>
       </div>
       <div class="f1">
         <img src="./images/facebook.png" alt />
-        <div class="login_other_name">facebook</div>
+        <div class="login-other-name">facebook</div>
       </div>
       <div class="f1">
         <img src="./images/facebook.png" alt />
-        <div class="login_other_name">facebook</div>
+        <div class="login-other-name">facebook</div>
       </div>
     </div>
     <div class="line">
         <div class="other"></div>
     </div>
-    <div class="airbus_bg"></div>
+    <div class="airbus-bg"></div>
   </div>
 </template>
 
 <script>
+import AdModel from './components/ADModel'
 export default {
-  name: "login"
+  name: "login",
+  components: {
+    AdModel
+  },
+  data() {
+    return {
+      isActive: true
+    }
+  },
+  created(){
+    clearTimeout();
+    setTimeout(()=>{
+      this.isActive = false
+    },1000)
+  }
 };
 </script>
 
@@ -66,7 +82,7 @@ export default {
   .form {
     margin: 1.72rem 0.3rem 0;
     //   background-color: rgba(0, 32, 91, 0.8);
-    .user_details {
+    .user-details {
       display: flex;
       border: 1px solid #fff;
       border-radius: 0.05rem;
@@ -76,7 +92,7 @@ export default {
         height: 1rem;
         background-color: #fff;
       }
-      .form_input {
+      .form-input {
         box-sizing: border-box;
         padding: 0 0 0 0.1rem;
         flex: 1;
@@ -89,7 +105,7 @@ export default {
       margin: 0.4rem 0 0 0;
     }
   }
-  .forgot_password {
+  .forgot-password {
     margin: 0.3rem 0 0 0;
     width: 100%;
     padding: 0 0.3rem;
@@ -99,7 +115,7 @@ export default {
     font-size: 0.26rem;
     color: rgb(102, 121, 156);
   }
-  .button_box {
+  .button-box {
     box-sizing: border-box;
     margin: 0.65rem 0 0;
     padding: 0 0.3rem;
@@ -124,7 +140,7 @@ export default {
     color: #fff;
     text-decoration: underline;
   }
-  .login_other {
+  .login-other {
     display: flex;
     height: 1rem;
     margin: 0.4rem 0 0 0;
@@ -137,7 +153,7 @@ export default {
         width: 0.64rem;
         height: 0.64rem;
       }
-      .login_other_name {
+      .login-other-name {
         font-size: 0.22rem;
         color: rgb(102, 121, 156);
       }
@@ -156,7 +172,7 @@ export default {
         border-bottom: 0.06rem solid #fff;
     }
   }
-  .airbus_bg{
+  .airbus-bg{
       width: 100%;
       height: 25vh;
       background: url('./images/airbus.jpg') no-repeat;

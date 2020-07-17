@@ -7,6 +7,11 @@ templated代码规范。
 		</section>
 		<section class="content-ctn">
 			顺序:1.指令。2.静态的id,class,style,其他  3.变量属性：id,class,style  4，原生事件，自定义事件
+			     2.id使用驼峰命名，class使用中划线进行连接。
+				   id:前缀(一般组件的根元素采用)-功能-元素类型   dishMainCtn 
+				   class命名规则：前缀(一般组件的根元素采用)-功能-元素类型： dish-main-ctn 
+				   状态等参考boostrap命名规则。
+				 
 			<plugin-test 指令 v-show=""  静态属性 pro1="pro1" 变量属性 :var1="var1" @click="" @emit="">
 			</plugin-test>
 		</section>
@@ -18,6 +23,7 @@ templated代码规范。
 
 js模板代码：
 <script>
+    路径全部用相对路径，因为有些编辑器对@这些路径无法跳转
 	import HomeParter from "./components/HomeParter";
 	//vue属性以及方法顺序如下
 	export default {
@@ -56,8 +62,16 @@ js模板代码：
 
 style模板代码：
 //样式按照容器盒子从外到内的原则
+//样式命名规则
+container:ctn
+
+input:input
+button:btn
+
+
+
 <style lang="less" scoped>
-	.homePage-ctn{
+	.homepage-ctn{
 		cursor:'';
 		display:'';
 		position:'';

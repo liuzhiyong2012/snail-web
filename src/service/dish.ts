@@ -24,9 +24,6 @@ export default class DishService {
 		});
 	}
 	
-	
-	
-	
 	/* static getDishesRecommendedList(data: Object) {
 		return request({
 			url: '/v1/api/Video/Like/',
