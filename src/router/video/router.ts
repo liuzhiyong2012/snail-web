@@ -2,6 +2,7 @@ import VueRouter, {
     RouteConfig
 } from 'vue-router';
 import Video from '../../views/video/index.vue';
+import VideoPlay from '../../views/video/Play.vue';
 
 
 const routes: Array<RouteConfig> = [
@@ -10,6 +11,11 @@ const routes: Array<RouteConfig> = [
         name: 'video',
         component: Video,
         children: []
+    },
+    {
+        path: '/video/play',
+        name: 'videoPlay',
+        component: VideoPlay
     }
 
 ]

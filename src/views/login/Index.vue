@@ -16,7 +16,7 @@
     <div class="button-box">
       <button class="button">Login</button>
     </div>
-    <div class="registery">Registery</div>
+    <router-link to='/registery'><div class="registery">Registery</div></router-link>
     <div class="login-other">
       <div class="f1">
         <img src="./images/facebook.png" alt />

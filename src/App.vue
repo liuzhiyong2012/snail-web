@@ -20,12 +20,12 @@
 //   url('//at.alicdn.com/t/font_1932862_adx9qr7koph.svg#iconfont') format('svg');
 // }
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 0.28rem;
   color: $font-color-theme;
   background-color: $background-color-theme;
+  font-family:Helvetica-Bold,Helvetica;
 }
 .abus-icon {
 width: 1em; height: 1em;
