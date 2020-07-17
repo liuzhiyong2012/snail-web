@@ -1,30 +1,30 @@
 <template>
   <div>
-    <h2 class="abus_block_title">
-      <van-cell title="Hot game" class="block_title_background">
+    <h2 class="abus-block-title">
+      <van-cell title="Hot game" class="block-title-background">
         <template #right-icon>
           <van-icon name="ellipsis" style="line-height: inherit;" size="25" />
         </template>
       </van-cell>
     </h2>
-    <!-- <div class="abus_scroller_box"> -->
-    <div class="scroller_box">
+    <!-- <div class="abus-scroller-box"> -->
+    <div class="scroller-box">
       <scroller>
         <div slot="list" v-for="(item, index) of gameData" :key="index">
-          <div class="s_box s_box_right" v-if="index + 1 == gameData.length">
-            <div class="s_imgbox">
-              <img :src="item.img" :alt="item.name" />
-              <!-- <div class="cover"></div> -->
-              <p class="s_name">{{ item.name }}</p>
-              <p class="s_tips">{{ item.tips }}</p>
-            </div>
-          </div>
-          <div class="s_box" v-else>
-            <div class="s_imgbox">
+          <div class="s-box s-box-right" v-if="index + 1 == gameData.length">
+            <div class="s-imgbox">
               <img :src="item.img" :alt="item.name" />
               <div class="cover"></div>
-              <p class="s_name">{{ item.name }}</p>
-              <p class="s_tips">{{ item.tips }}</p>
+              <p class="s-name">{{ item.name }}</p>
+              <p class="s-tips">{{ item.tips }}</p>
+            </div>
+          </div>
+          <div class="s-box" v-else>
+            <div class="s-imgbox">
+              <img :src="item.img" :alt="item.name" />
+              <div class="cover"></div>
+              <p class="s-name">{{ item.name }}</p>
+              <p class="s-tips">{{ item.tips }}</p>
             </div>
           </div>
         </div>
@@ -82,15 +82,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.block_title_background {
+.block-title-background {
   background-color: #fafafa00;
   font-size: 0.36rem;
 }
-.scroller_box {
+.scroller-box {
   margin-right: 0.28rem;
 }
 
-.s_box {
+.s-box {
   float: left;
   margin: 0 0 0 0.28rem;
   border-radius: 0.08rem;
@@ -101,7 +101,7 @@ export default {
     border-radius: 0.1rem;
     box-shadow: 0 0 0.08rem #efefef;
   }
-  .s_imgbox {
+  .s-imgbox {
     position: relative;
     .cover {
       position: absolute;
@@ -114,7 +114,7 @@ export default {
       opacity: 0.4;
     }
 
-    .s_name {
+    .s-name {
       position: absolute;
       bottom: 0.56rem;
       left: 0;
@@ -127,7 +127,7 @@ export default {
       color: #fff;
       text-shadow: 0px 2px 4px rgba(15, 35, 61, 0.14);
     }
-    .s_tips {
+    .s-tips {
       position: absolute;
       bottom: 0.22rem;
       left: 0;
@@ -140,7 +140,7 @@ export default {
     }
   }
 }
-.s_box_right {
+.s-box-right {
   // margin-right: 0.82rem;
   margin-right: 0.28rem;
 }

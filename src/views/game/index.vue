@@ -8,39 +8,39 @@
       </van-nav-bar>
     </van-sticky>
 
-    <div class="scroller_box">
+    <div class="scroller-box">
       <div
-        class="scroller_item"
+        class="scroller-item"
         v-for="(item, index) of gameBannerData"
         :key="index"
       >
         <img :src="item.img" alt="" />
-        <p class="scoller_name">{{ item.name }}</p>
+        <p class="scoller-name">{{ item.name }}</p>
       </div>
     </div>
 
     <hot-game-list />
 
-    <h2 class="abus_block_title">
-      <van-cell title="Popular series" class="block_title_background">
+    <h2 class="abus-block-title">
+      <van-cell title="Popular series" class="block-title-background">
         <template #right-icon>
           <van-icon name="ellipsis" style="line-height: inherit;" size="25" />
         </template>
       </van-cell>
     </h2>
 
-    <div class="game_box">
-      <div class="game_item" v-for="(item, index) in gameList" :key="index">
+    <div class="game-box">
+      <div class="game-item" v-for="(item, index) in gameList" :key="index">
         <div class="game">
-          <div class="game_img">
-            <img class="game_img_up" :src="item.imgUp" alt="" />
-            <div class="game_img_down">
+          <div class="game-img">
+            <img class="game-img-up" :src="item.imgUp" alt="" />
+            <div class="game-img-down">
               <img :src="item.imgLeft" alt="" />
               <img :src="item.imgRight" alt="" />
             </div>
           </div>
-          <div class="game_name game_word">{{ item.name }}</div>
-          <div class="game_tips game_word">{{ item.details }}</div>
+          <div class="game-name game-word">{{ item.name }}</div>
+          <div class="game-tips game-word">{{ item.details }}</div>
         </div>
       </div>
     </div>
@@ -148,7 +148,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.scroller_box {
+.scroller-box {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -157,7 +157,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  .scroller_item {
+  .scroller-item {
     width: 33.33%;
     display: flex;
     justify-content: center;
@@ -166,23 +166,23 @@ export default {
     font-size: 0.24rem;
     font-family: Helvetica;
     color: #2e2e2e;
-    .scoller_name {
+    .scoller-name {
       margin-top: 0.17rem;
     }
   }
 }
 
-.block_title_background {
+.block-title-background {
   background-color: #fafafa00;
   font-size: 0.36rem;
 }
 
-.game_box {
+.game-box {
   display: flex;
   flex-wrap: wrap;
   margin: 0;
 
-  .game_item {
+  .game-item {
     box-sizing: border-box;
     width: 44%;
     margin: 0 0.13rem 0.3rem 0.3rem;
@@ -194,20 +194,20 @@ export default {
       box-shadow: 0 0 0.1rem #efefef;
       box-sizing: border-box;
       padding-bottom: 0.2rem;
-      .game_img {
+      .game-img {
         width: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
 
-        .game_img_up {
+        .game-img-up {
           width: 100%;
           border-radius: 0.14rem 0.14rem 0 0;
           margin-bottom: 0.02rem;
         }
 
-        .game_img_down {
+        .game-img-down {
           margin: 0;
           width: 100%;
           display: flex;
@@ -221,18 +221,18 @@ export default {
           }
         }
       }
-      .game_name {
+      .game-name {
         font-family: Helvetica-Bold, Helvetica;
         font-weight: bold;
         font-size: 0.26rem;
         color: #2e2e2e;
       }
-      .game_tips {
+      .game-tips {
         font-family: Helvetica;
         font-size: 0.22rem;
         color: #333333;
       }
-      .game_word {
+      .game-word {
         margin: 0;
         padding: 0.15rem 0.2rem 0 0.15rem;
         text-overflow: -o-ellipsis-lastline;

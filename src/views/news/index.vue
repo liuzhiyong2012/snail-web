@@ -8,15 +8,15 @@
       </van-nav-bar>
     </van-sticky>
 
-    <div class="abus_scroller_box">
+    <div class="abus-scroller-box">
       <banner :bannerData="bannerData" />
     </div>
 
-    <!-- <h2 class="abus_block_title">
+    <!-- <h2 class="abus-block-title">
       <van-cell center title="Filter" icon="filter-o">
         <span>Sort by:</span>
         <template #right-icon>
-          <div class="news_filter">
+          <div class="news-filter">
             <van-dropdown-menu>
               <van-dropdown-item
                 v-model="filterValue"
@@ -45,7 +45,7 @@
         :key="index"
       >
         <div v-if="val == navTar[index]" class="">
-          <ul class="news_list">
+          <ul class="news-list">
             <news-list-item
               v-for="(item, index) in newsListBackup"
               :key="index"
@@ -193,7 +193,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.abus_scroller_box {
+.abus-scroller-box {
   margin: 0.3rem auto 0.1rem;
   padding: 0;
   width: 93%;
@@ -209,7 +209,7 @@ export default {
     color: #2e2e2e;
   }
 }
-.news_filter {
+.news-filter {
   /deep/ .van-ellipsis {
     font-size: 0.13rem;
   }
@@ -221,11 +221,11 @@ export default {
   .van-cell__value {
     font-size: 0.12rem;
   }
-  .filter_btn {
+  .filter-btn {
     color: linear-gradient(to right, #4bb0ff, #6149f6);
   }
 }
-.news_list {
+.news-list {
   background: #fff;
 }
 </style>

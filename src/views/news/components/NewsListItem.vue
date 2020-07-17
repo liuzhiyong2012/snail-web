@@ -1,23 +1,23 @@
 <template>
-  <li class="news_list_wrap">
-    <div class="news_list_item">
-      <div class="item_img" @click="goToDetail(recommedNewsItem.id)">
+  <li class="news-list-wrap">
+    <div class="news-list-item">
+      <div class="item-img" @click="goToDetail(recommedNewsItem.id)">
         <img v-lazy="recommedNewsItem.img" />
       </div>
 
-      <div class="item_info">
+      <div class="item-info">
         <div class="name" @click="goToDetail(recommedNewsItem.id)">
-          <div class="line_two">{{ recommedNewsItem.name }}</div>
+          <div class="line-two">{{ recommedNewsItem.name }}</div>
         </div>
         <div class="author">
-          <div class="line_one">
-            <span class="author_left_info">{{ recommedNewsItem.details }}</span>
+          <div class="line-one">
+            <span class="author-left-info">{{ recommedNewsItem.details }}</span>
 
             <div @click="changeHot(recommedNewsItem.id)">
-              <span class="author_right_heart" v-if="recommedNewsItem.isCollect">
+              <span class="author-right-heart" v-if="recommedNewsItem.isCollect">
                 <img :src="loveTrue" alt=""/>
               </span>
-              <span class="author_right_heart" v-else>
+              <span class="author-right-heart" v-else>
                 <img :src="loveFalse" alt=""/>
               </span>
             </div>
@@ -62,18 +62,18 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.news_list_wrap {
+.news-list-wrap {
   width: 92%;
   background: #fff;
   margin: 0 auto;
   border-radius: 0.1rem;
 
-  .news_list_item {
+  .news-list-item {
     display: flex;
     padding: 0.28rem 0;
     align-items: center;
 
-    .item_img {
+    .item-img {
       width: 2.1rem;
       height: 1.38rem;
       border-radius: 0.12rem;
@@ -83,7 +83,7 @@ export default {
       }
     }
 
-    .item_info {
+    .item-info {
       flex: 1;
       margin: 0 0 0 0.16rem;
       display: flex;
@@ -96,7 +96,7 @@ export default {
         color: #333333;
         line-height: 0.35rem;
         font-weight: 600;
-        .line_two {
+        .line-two {
           height: 0.7rem;
           text-overflow: -o-ellipsis-lastline;
           overflow: hidden;
@@ -110,14 +110,14 @@ export default {
         flex: 1;
         font-size: 0.24rem;
         color: #999;
-        .line_one {
+        .line-one {
           width: 100%;
           height: 0.35rem;
           line-height: 0.35rem;
           display: flex;
           justify-content: space-between;
 
-          .author_left_info {
+          .author-left-info {
             display: inline-block;
             text-overflow: -o-ellipsis-lastline;
             overflow: hidden;
@@ -127,7 +127,7 @@ export default {
             -webkit-box-orient: vertical;
             width: 92%;
           }
-          .author_right_heart {
+          .author-right-heart {
             display: inline-block;
             width: 0.3rem;
             img {

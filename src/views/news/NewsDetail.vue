@@ -1,15 +1,15 @@
 <template>
-  <section class="news_detail">
+  <section class="news-detail">
     <van-sticky>
       <van-nav-bar title="News">
         <template #left>
           <van-icon name="arrow-left" size="18" @click="goBack" />
         </template>
         <template #right>
-          <span class="news_right_heart" v-if="newsDetail.isCollect">
+          <span class="news-right-heart" v-if="newsDetail.isCollect">
             <img :src="loveTrue" alt="" @click="changeCollect" />
           </span>
-          <span class="news_right_heart" v-else>
+          <span class="news-right-heart" v-else>
             <img :src="loveFalse" alt="" @click="changeCollect" />
           </span>
         </template>
@@ -19,9 +19,9 @@
     <div class="">
       <banner :bannerData="bannerData" />
     </div>
-    <div class="news_title">{{ newsDetail.name }}</div>
-    <div class="news_time">{{ newsDetail.time }}</div>
-    <div class="news_info" v-html="newsDetail.details"></div>
+    <div class="news-title">{{ newsDetail.name }}</div>
+    <div class="news-time">{{ newsDetail.time }}</div>
+    <div class="news-info" v-html="newsDetail.details"></div>
   </section>
 </template>
 <script>
@@ -100,7 +100,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.news_right_heart {
+.news-right-heart {
   display: inline-block;
   img {
     position: absolute;
@@ -111,7 +111,7 @@ export default {
   }
 }
 
-.news_title {
+.news-title {
   padding: 0.25rem;
   line-height: 0.46rem;
   background: #fff;
@@ -120,7 +120,7 @@ export default {
   font-size: 0.32rem;
   color: #2e2e2e;
 }
-.news_time {
+.news-time {
   padding: 0.1rem 0.25rem;
   height: 0.2rem;
   background: #fff;
@@ -129,7 +129,7 @@ export default {
   font-size: 0.24rem;
   color: #ddc8c8;
 }
-.news_info {
+.news-info {
   padding: 0.25rem;
   background: #fff;
   line-height: 0.36rem;
