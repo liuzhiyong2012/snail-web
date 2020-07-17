@@ -33,13 +33,13 @@ export default {
   },
   data() {
     return {
-      loveTrue: require("../images/love_true.png"),
-      loveFalse: require("../images/love_false.png"),
+      loveTrue: require("./images/love_true.png"),
+      loveFalse: require("./images/love_false.png"),
       newsDetail: {
         id: "3249853",
         time: "2020.03.04",
         isCollect: false,
-        img: require("../images/news.jpg"),
+        img: require("./images/news.jpg"),
         name:
             "The 2020 Olympic Games will be postponed Other space data indica Other space data indica The 2020 Olympic Games will be postponed Other space data indica Other space data indica",
         details: `A private healthcare clinic in London has defended its decision to charge £375 ($434) for a coronavirus test.<br />
@@ -60,12 +60,12 @@ export default {
       },
       bannerData: [
         {
-          img: require("../images/news_banner.png"),
+          img: require("./images/news_banner.png"),
           name: "goodsName",
           details: "goodsDetails",
         },
         {
-          img: require("../images/news_banner.png"),
+          img: require("./images/news_banner.png"),
           name: "goodsName",
           details: "goodsDetails",
         },

@@ -1,23 +1,26 @@
 <template>
   <li class="news_list_wrap">
     <div class="news_list_item">
-      <div class="item_img">
+      <div class="item_img" @click="goToDetail(recommedNewsItem.id)">
         <img v-lazy="recommedNewsItem.img" />
       </div>
 
       <div class="item_info">
-        <div class="name">
+        <div class="name" @click="goToDetail(recommedNewsItem.id)">
           <div class="line_two">{{ recommedNewsItem.name }}</div>
         </div>
         <div class="author">
           <div class="line_one">
             <span class="author_left_info">{{ recommedNewsItem.details }}</span>
-            <span class="author_right_heart" v-if="recommedNewsItem.isCollect"
-              ><img :src="loveTrue" alt=""
-            /></span>
-            <span class="author_right_heart" v-else
-              ><img :src="loveFalse" alt=""
-            /></span>
+
+            <div @click="changeHot(recommedNewsItem.id)">
+              <span class="author_right_heart" v-if="recommedNewsItem.isCollect">
+                <img :src="loveTrue" alt=""/>
+              </span>
+              <span class="author_right_heart" v-else>
+                <img :src="loveFalse" alt=""/>
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -30,7 +33,6 @@ export default {
   data() {
     return {
       recommedNewsItem: this.newsItem,
-      //   defaultImg: require("../images/goods.jpg"),
       loveTrue: require("../images/love_true.png"),
       loveFalse: require("../images/love_false.png"),
     };
@@ -40,6 +42,22 @@ export default {
     newsItem(val) {
       this.recommedNewsItem = val;
     },
+  },
+  methods: {
+    goToDetail(id) {
+      //进入新闻详情
+      this.$router.push({
+        name: "newsDetail",
+        query: {
+          newsId: id,
+        },
+      });
+    },
+
+    changeHot(val) {
+      this.recommedNewsItem.isCollect = !this.recommedNewsItem.isCollect;
+    },
+
   },
 };
 </script>

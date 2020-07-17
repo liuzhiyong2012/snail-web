@@ -6,12 +6,17 @@ import store from './store';
 import Vant from 'vant';
 import 'vant/lib/index.css';
 import VueI18n from 'vue-i18n'
+import {Lazyload} from 'vant';
 // import myCharts from './comm/js/myCharts.js';
 
 
 
 // Vue.use(myCharts);
 Vue.use(Vant);
+Vue.use(Lazyload);
+Vue.use(Lazyload, {
+  lazyComponent: true,
+});
 Vue.use(VueI18n);
 
 let locale = localStorage.getItem('lang') || 'zh';
