@@ -1,7 +1,9 @@
 export default {
   state: {  
 	voyageInfo:{
-		seatNumber:'A34'
+		seatNumber:'A34',
+		seatClass:'G'
+		
 	},
     userInfo:{
 		

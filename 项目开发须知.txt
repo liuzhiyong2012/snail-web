@@ -21,9 +21,21 @@ templated代码规范。
 	</section>
 </template>	
 
-js模板代码：
+1.js模板代码:
 <script>
+    import的顺序：css样式,图片,不带括号的npm包,带括号的npm包,平台级组件，模块级别的组件
+	import "ol/ol.css";
+	import TileLayer from "ol/layer/Tile";
+	import {Component,Prop,Vue} from 'vue-property-decorator';
+	import { Map, View } from "ol";
+	
+	import OSM from "ol/source/OSM";
+	
+	
+	import  FlightService from '../../../service/flight';
+	
     路径全部用相对路径，因为有些编辑器对@这些路径无法跳转
+	
 	import HomeParter from "./components/HomeParter";
 	//vue属性以及方法顺序如下
 	export default {
@@ -67,8 +79,6 @@ container:ctn
 
 input:input
 button:btn
-
-
 
 <style lang="less" scoped>
 	.homepage-ctn{

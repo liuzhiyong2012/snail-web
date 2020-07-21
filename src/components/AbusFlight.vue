@@ -1,11 +1,9 @@
 <template>
-	<section class="homeflight-main-ctn" @click="stepToFlight()">
-		<h2 class="abus-block-title"><van-cell value="Flight" class="block-title-background" /></h2>
-		<div class="abus-scroller-box home-flight-box">
+	<section class="homeflight-main-ctn">
+		<div class="home-flight-box">
 			<div class="home-flight-t">
 				<span classs="flight-model">{{ airplane.AirplaneModels }}</span>
 				<span classs="flight-number">{{ baseInfo.FlightNumber }}</span>
-				<!-- <i class="icon  icon-search"></i> -->
 			</div>
 
 			<div class="home-flight-info">
@@ -48,7 +46,11 @@
 					<div class="address">{{ baseInfo.ArrivalPlanTimestamp | dateFormate('hh:mm') }}</div>
 				</div>
 			</div>
-			<div class="map-box"><home-map></home-map></div>
+			
+			<div class="map-box">
+				<!-- <home-map></home-map> -->
+				<slot></slot>
+			</div>
 		</div>
 	</section>
 </template>
@@ -66,13 +68,13 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import HomeMap from './HomeMap.vue';
-import FlightService from '../../../service/flight';
+// import HomeMap from './HomeMap.vue';
+import FlightService from '../service/flight';
 
 @Component({
 	name: 'HomeFlight',
 	components: {
-		HomeMap
+		// HomeMap
 	}
 })
 export default class HomeFlight extends Vue {
@@ -96,67 +98,15 @@ export default class HomeFlight extends Vue {
 
 	public getFlightInfo(): void {
 		FlightService.getFlightInfo().then((res: any) => {
-			this.flightResData = res;
-			this.baseInfo = res.Flight.BaseInfo;
-			this.airplane = res.Flight.Airplane;
-			this.flightAltitudes = res.FlightAltitudes;
-			this.weather = res.Weather;
+			if(res.code== 200){
+				this.flightResData = res.data;
+				this.baseInfo = this.flightResData.Flight.BaseInfo;
+				this.airplane = this.flightResData.Flight.Airplane;
+				this.flightAltitudes = this.flightResData.FlightAltitudes;
+				this.weather = this.flightResData.Weather;
+			}
+			
 		});
-
-		let a = {
-			Flight: {
-				Airplane: {
-					AirplaneModels: '空客 A330-243',
-					AirplaneImg: 'http:\/\/disk.service.osp.connectivity.aero\/airplane@3x.png',
-					CabinImg: 'http:\/\/disk.service.osp.connectivity.aero\/Airbus330-200-iphones.png',
-					Id: '4cfc4d33-2c1e-e911-bad5-f44d307124c0'
-				},
-				BaseInfo: {
-					Id: '4cfc4d33-2c1e-e911-bad5-f44d307124c0',
-					DepartureTimezone: 28800,
-					ArrivalTimezone: 28800,
-					FlightNumber: 'VA3928',
-					AirlinesCode: 'VA',
-					AirlinesName: 'Vision Airlines',
-					AirlineEnName: 'Vision Airlines',
-					AirlineIcon: 'http:\/\/disk.service.osp.connectivity.aero\/AirlineIcon-veryzhun.png',
-					DepartureCode: 'SZX',
-					DepAirport: '深圳宝安',
-					DepartureTerminal: 'T3',
-					Door: '4-6号门',
-					ArrivalCode: 'PEK',
-					ArrAirport: '北京首都',
-					ArrivalTerminal: 'T1',
-					DeparturePlanTimestamp: 1550625600,
-					ArrivalPlanTimestamp: 1550637300,
-					Departure: '深圳',
-					Arrival: '北京',
-					OntimeRate: '91.4%',
-					DepartPosition: {
-						Lat: '22.6033',
-						Lng: '113.829'
-					},
-					ArrivalPosition: {
-						Lat: '40.1321',
-						Lng: '116.5881'
-					},
-					Checkinend: '航班当日 08:30',
-					Tips: '准时起飞'
-				}
-			},
-
-			FlightAltitudes: [],
-			FlightPaths: [],
-			FlightSpeeds: [],
-			Weather: {
-				Status: 0,
-				Temper: '18℃',
-				Desc: '晴',
-				Img: 'http:\/\/disk.service.osp.connectivity.aero\/weather@3x.png'
-			},
-			DepartureTime: 1550625600,
-			ArrivalTime: 1550637300
-		};
 	}
 
 	public stepToFlight(): void {
@@ -169,20 +119,12 @@ export default class HomeFlight extends Vue {
 
 <style lang="scss" scoped>
 .homeflight-main-ctn {
-	.abus-block-title {
-		.block-title-background {
-			background-color: #fafafa00;
-		}
-	}
 
-		/* .van-cell {
-	  font-size: 0.36rem;
-	} */
 		.home-flight-box {
 			border-radius: 0.12rem;
-			margin: 0 0.3rem;
+			// margin: 0 0.3rem;
 			padding: 0.32rem 0.3rem;
-			height: 5.34rem;
+			// height: 5.34rem;
 			background: rgba(255, 255, 255, 1);
 			box-sizing: border-box;
 			.home-flight-t {
@@ -205,7 +147,6 @@ export default class HomeFlight extends Vue {
 				.home-flight-seat {
 					display: flex;
 					align-items: center;
-					// padding:
 					padding:0 0.04rem 0 0.10rem;
 					line-height: 0.32rem;
 					background:rgba(0,32,91,1);
@@ -217,12 +158,6 @@ export default class HomeFlight extends Vue {
 					> *{
 						font-size: 0.20rem;
 					}
-					/* padding: 0.06rem 0.08rem 0.06rem 0.2rem;
-					line-height: 0.32rem;
-					font-size: 0.2rem;
-					color: #fff;
-					background-color: rgb(0, 32, 91);
-					border-radius: 0.2rem; */
 			
 					.home-flight-g {
 						margin-left: 0.12rem;
@@ -263,12 +198,6 @@ export default class HomeFlight extends Vue {
 						}
 					}
 					
-					/* >span:nth-child(1){
-						
-					}
-					>span:nth-child(2){
-						
-					} */
 				}
 			
 				.home-flight-c {
@@ -291,7 +220,6 @@ export default class HomeFlight extends Vue {
 			
 			.home-flight-place {
 				display: flex;
-				// align-items: f;
 				justify-content: center;
 				height: 1.30rem;
 				background:rgba(242,244,247,1);
@@ -336,7 +264,6 @@ export default class HomeFlight extends Vue {
 					height: 0.36rem;
 					width:1.80rem;
 					font-size: 0;
-					// border-top: 0.02rem dotted rgb(0, 32, 91);
 					
 					>i{
 						&:not(:last-child){
@@ -349,7 +276,6 @@ export default class HomeFlight extends Vue {
 						width:0.04rem;
 						height: 0.04rem;
 						border-radius: 50%;
-						// margin-right: 0.04rem;
 						&.dark{
 							background:rgba(0,0,0,1);
 						}
@@ -373,11 +299,7 @@ export default class HomeFlight extends Vue {
 				
 			
 				.map-box {
-					img {
-						width: 100%;
-						height: 1.9rem;
-						display: block;
-					}
+					display: none;
 				}
 			}
 	}
