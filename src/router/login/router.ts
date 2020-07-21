@@ -7,8 +7,8 @@ import Registery from '../../views/login/Registery.vue';
 
 const routes: Array<RouteConfig> = [
 	{
-		path: '/login/index',
-		name: 'loginIndex',
+		path: '/login',
+		name: 'login',
 		component: LoginIndex,
 		children: []
 	},

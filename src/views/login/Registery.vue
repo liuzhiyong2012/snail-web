@@ -3,7 +3,12 @@
     <div class="con">
       <div class="main-item">
         <div class="title line-h">Name</div>
-        <input class="main-item-con" type="text" placeholder="Please enter  your name" />
+        <input
+          v-model="nickname"
+          class="main-item-con"
+          type="text"
+          placeholder="Please enter  your name"
+        />
       </div>
       <div class="main-item">
         <div class="title line-h">Portrait</div>
@@ -17,37 +22,70 @@
           checked-color="#00205B"
           icon-size="12px"
         >
+          <van-radio name="0">
+            <template #icon="props">
+              <svg class="icon icon-text" aria-hidden="true">
+                <use v-if="props.checked" xlink:href="#icon-selected" />
+                <use v-else xlink:href="#icon-unselected" />
+              </svg>
+              <!-- <i
+                :class="[props.checked ? 'icon icon-selected icon-text': 'icon icon-unselected icon-text']"
+              ></i>-->
+              <span :class="[props.checked ? 'text-selected': 'text-unselected']">Female</span>
+            </template>
+          </van-radio>
           <van-radio name="1">
             <template #icon="props">
-              <img class="img-icon" :src="props.checked ? activeIcon : inactiveIcon" />
+              <svg class="icon icon-text" aria-hidden="true">
+                <use v-if="props.checked" xlink:href="#icon-selected" />
+                <use v-else xlink:href="#icon-unselected" />
+              </svg>
+              <!-- <i
+                :class="[props.checked ? 'icon icon-selected icon-text': 'icon icon-unselected icon-text']"
+              ></i>-->
+              <span :class="[props.checked ? 'text-selected': 'text-unselected']">Male</span>
             </template>
-            Female
-          </van-radio>
-          <van-radio name="2">
-            <template #icon="props">
-              <img class="img-icon" :src="props.checked ? activeIcon : inactiveIcon" />
-            </template>
-            Male
           </van-radio>
         </van-radio-group>
       </div>
       <div class="main-item">
         <div class="title line-h">Phone</div>
-        <input class="main-item-con" type="text" placeholder="Please enter your phone number" />
+        <input
+          v-model="phone"
+          class="main-item-con"
+          type="text"
+          placeholder="Please enter your phone number"
+        />
+      </div>
+      <div class="main-item">
+        <div class="title line-h">IDCard</div>
+        <input v-model="idCard" class="main-item-con" type="text" placeholder="Please enter IDCard" />
       </div>
       <div class="main-item">
         <div class="title line-h">Password</div>
-        <input class="main-item-con" type="password" placeholder="Please enter password" />
+        <input
+          v-model="password"
+          class="main-item-con"
+          type="password"
+          placeholder="Please enter password"
+        />
       </div>
       <div class="main-item">
         <div class="title">Confirm password</div>
-        <input class="main-item-con" type="password" placeholder="Please Confirm password" />
+        <input
+          v-model="confirmPassword"
+          @blur="checkPassword"
+          class="main-item-con"
+          type="password"
+          placeholder="Please Confirm password"
+        />
       </div>
       <div class="main-item">
         <div class="title line-h">Date</div>
         <input
           class="main-item-con"
           @click="showPopup"
+          :value="datetime"
           type="text"
           placeholder="Please select your date"
         />
@@ -66,44 +104,157 @@
       </div>
       <div class="main-item">
         <div class="title">Security issues</div>
-        <input class="main-item-con" type="text" placeholder="Please enter Security issues" />
+        <input
+          @click="showQuestion"
+          class="main-item-con"
+          type="text"
+          :value="question"
+          placeholder="Please enter Security issues"
+        />
+        <van-popup v-model="showIssues" position="bottom" :style="{ height: '30%' }">
+          <van-picker
+            show-toolbar
+            :columns="columns"
+            @cancel="showIssues = false"
+            @confirm="onConfirm"
+            :default-index="1"
+            cancel-button-text="cancel"
+            confirm-button-text="determine"
+          />
+        </van-popup>
       </div>
       <div class="main-item">
         <div class="title">Security answer</div>
-        <input class="main-item-con" type="text" placeholder="Please enter Security answer" />
+        <input
+          v-model="answer"
+          class="main-item-con"
+          type="text"
+          placeholder="Please enter Security answer"
+        />
       </div>
     </div>
-    <p class="policy">《Privacy policy》《Terms of service》</p>
+    <p class="policy">
+      <svg class="icon icon-read" aria-hidden="true" @click="onClickRead">
+        <use v-if="isReaded" xlink:href="#icon-readed1" />
+        <use v-else xlink:href="#icon-unread" />
+      </svg>
+      《Privacy policy》《Terms of service》
+    </p>
     <div class="button-box">
-      <div class="button">Registery</div>
+      <div class="button" @click="onClickRegistery">Registery</div>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      fileList: [],
-      radio: "1",
-      show: false,
-      activeIcon: require("./images/sel.png"),
-      inactiveIcon: require("./images/no_sel.png"),
-      minDate: new Date(2020, 0, 1),
-      maxDate: new Date(2025, 10, 1),
-      currentDate: new Date()
-    };
-  },
-  methods: {
-    showPopup() {
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+import LoginServe from "../../service/login";
+
+@Component({
+  name: "Registery",
+  components: {}
+})
+export default class Register extends Vue {
+  private fileList: Array<any> = [];
+  private radio: string = "0";
+  private show: boolean = false;
+  private showIssues: boolean = false;
+  private isReaded: boolean = false;
+  // date
+  private minDate: Date = new Date(1920, 1, 1);
+  private maxDate: Date = new Date();
+  private currentDate: Date = new Date(2000, 1, 15);
+  private datetime: string = "";
+  private columns: Array<any> = [
+    "My father's name?",
+    "My mother's name?",
+    "My favorite singer?",
+    "My favorite animal?"
+  ];
+  // 校验密码是否一致
+  private isCheckPassword: boolean = false;
+  // 用户输入信息
+  private nickname: string = "";
+  private phone: string = "";
+  private idCard: string = "";
+  private birthday: string = "";
+  private password: string = "";
+  private confirmPassword: string = "";
+  private question: string = "";
+  private answer: string = "";
+  showPopup() {
+    if (this.isCheckPassword) {
       this.show = true;
-    },
-    getConfirmData(val) {
-      console.log(val);
-      return val;
     }
   }
-};
+  showQuestion() {
+    this.showIssues = true;
+  }
+  onConfirm(value: any) {
+    this.question = value;
+    this.showIssues = false;
+  }
+  onClickRead() {
+    this.isReaded = !this.isReaded;
+  }
+  getConfirmData(val: any) {
+    this.show = false;
+    this.currentDate = val;
+    this.datetime =
+      val.getFullYear() + "-" + (val.getMonth() + 1) + "-" + val.getDate();
+    this.birthday =
+      this.datetime +
+      " " +
+      val.getHours() +
+      ":" +
+      val.getMinutes() +
+      ":" +
+      val.getSeconds();
+    return val;
+  }
+  checkPassword() {
+    if (this.password != this.confirmPassword) {
+      this.isCheckPassword = false;
+      this.$toast("Password inconsistency");
+    } else {
+      this.isCheckPassword = true;
+    }
+  }
+  onClickRegistery() {
+    if (
+      this.phone != "" &&
+      this.idCard != "" &&
+      this.isCheckPassword &&
+      this.isReaded
+    ) {
+      // (['nickname','gender','phone','idCard','password','birthday','question','answer']);
+      var data = {
+        nickname: this.nickname,
+        gander: this.radio,
+        phone: this.phone,
+        idCard: this.idCard,
+        password: this.password,
+        birthday: this.birthday,
+        question: this.question,
+        answer: this.answer
+      };
+      LoginServe.postUserRegistery(data).then((res: any) => {
+        console.log(res);
+        if (res.code == 200) {
+          this.$router.push({
+            path: "/login"
+          });
+        } else {
+          this.$toast(res);
+        }
+      });
+    } else if (!this.isReaded) {
+      this.$toast("Have you read the 《Privacy policy》《Terms of service》");
+    } else {
+      this.$toast("Please complete the information");
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -143,14 +294,14 @@ export default {
   height: 0.24rem;
 }
 .policy {
-    margin-left: .3rem;
+  margin-left: 0.3rem;
   font-weight: 400;
   color: rgba(51, 51, 51, 1);
   line-height: 0.64rem;
-  font-size: .28rem;
+  font-size: 0.28rem;
 }
 .button-box {
-  margin: 0.4rem 0.3rem 0.5rem;
+  margin: 0.1rem 0.3rem 0.5rem;
   .button {
     width: 100%;
     height: 0.8rem;
@@ -162,5 +313,26 @@ export default {
     font-family: Helvetica-Bold, Helvetica;
     font-weight: bold;
   }
+}
+.text-selected {
+  margin: 0 0 0 0.1rem;
+  color: rgba(51, 51, 51, 1);
+  line-height: 0.32rem;
+  transition: all ease-in-out 0.3s;
+}
+.text-unselected {
+  margin: 0 0 0 0.1rem;
+  color: rgba(51, 51, 51, 0.3);
+  line-height: 0.32rem;
+  transition: all ease-in-out 0.3s;
+}
+.icon-text {
+  font-size: 0.22rem;
+  width: 0.22rem;
+  height: 0.22rem;
+}
+.icon-read {
+  width: 0.3rem;
+  height: 0.3rem;
 }
 </style>

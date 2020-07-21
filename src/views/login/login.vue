@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-      <div class="login_top">LOGIN</div>
+      <div class="login_top">LOGIN </div>
     <van-form @submit="onSubmit" >
       <van-field
         class="v_field_control"

@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
-import Home from "../views/home/index.vue";
+import Home from "../views/home/Index.vue";
 import Internet from "../views/home/Internet.vue";
 import InternetCart from "../views/home/components/InternetCart.vue";
 import About from "../views/About.vue";

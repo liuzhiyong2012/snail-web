@@ -21,21 +21,27 @@
         <div class="f1">
           <div class="main-box">
             <div class="title">Phone</div>
-            <input class="flex1" placeholder="Enter your phone number" type="text" />
+            <!-- @change="getPhoneNum($event)" -->
+            <input
+              class="flex1"
+              placeholder="Enter your phone number"
+              v-model="phone"
+              type="number"
+            />
           </div>
-          <div class="next" @click="onClickOne">Next</div>
+          <div class="next" @click="postCheckPhone">Next</div>
         </div>
         <div class="f1">
           <ul class="ul-box">
             <li :class="[isShowSMS? 'collapse-item active': 'collapse-item']">
               <div class="collapse-item-title" @click="showSMS">SMS verification</div>
               <div class="collapse-item-con">
-                  <div class="collapse-item-main">
+                <div class="collapse-item-main">
                   <div class="title">Phone</div>
                   <div class="flex1 no-inp">123123123123</div>
                 </div>
                 <div class="collapse-item-main no-pad">
-                  <div class="title ">Verification Code</div>
+                  <div class="title">Verification Code</div>
                   <input class="flex1" placeholder="Enter Verification Code" type="text" />
                 </div>
               </div>
@@ -45,14 +51,20 @@
                 class="collapse-item-title"
                 @click="showSecurityProblem"
               >Security problem verification</div>
-              <div class="collapse-item-con">
-                  <div class="collapse-item-main">
-                  <div class="title">Phone</div>
-                  <div class="flex1 no-inp">123123123123</div>
+              <div class="collapse-item-con add-height">
+                <div class="collapse-item-main">
+                  <div class="title">Security issues</div>
+                  <div class="flex1 no-inp add-line-h">{{question}}</div>
                 </div>
                 <div class="collapse-item-main no-pad">
-                  <div class="title ">Security answer</div>
-                  <input class="flex1" placeholder="Please enter your answer" type="text" />
+                  <div class="title">Security answer</div>
+                  <input
+                   
+                    v-model="answer"
+                    class="flex1"
+                    placeholder="Please enter your answer"
+                    type="text"
+                  />
                 </div>
               </div>
             </li>
@@ -62,13 +74,23 @@
         <div class="f1">
           <div class="main-box line-height">
             <div class="title pad">New password</div>
-            <input class="flex1" placeholder="Please set new password" type="password" />
+            <input
+              v-model="newPassword"
+              class="flex1"
+              placeholder="Please set new password"
+              type="password"
+            />
           </div>
           <div class="main-box no-pad line-height">
             <div class="title pad">Confirm password</div>
-            <input class="flex1" placeholder="Please Confirm password" type="password" />
+            <input
+              v-model="confirmPassword"
+              class="flex1"
+              placeholder="Please Confirm password"
+              type="password"
+            />
           </div>
-          <div class="next" @click="onClickThree">Confirm</div>
+          <div class="next" @click="onClickConfirm">Confirm</div>
         </div>
       </div>
     </div>
@@ -78,48 +100,111 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      isActiveTwo: false,
-      isActiveThr: false,
-      isShowSMS: false,
-      isshowSecurityProblem: false,
-      fullWidth: document.documentElement.clientWidth,
-      aLeft: 0
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+import LoginService from "../../service/login";
+@Component({
+  name: "ForgotPassword",
+  components: {}
+})
+export default class ForgotPassword extends Vue {
+  private isActiveTwo: boolean = false;
+  private isActiveThr: boolean = false;
+  private isShowSMS: boolean = false;
+  private isshowSecurityProblem: boolean = false;
+  private fullWidth: number = 750;
+  private aLeft: number = 0;
+  private phone: number = 13692169349; // 测试手机号
+  private question: string = "";
+  private answer: string = "";
+  private password: string = "";
+  private newPassword: string = "";
+  private confirmPassword: string = "";
+  private userId: string = "";
+
+  created() {
+    this.fullWidth = document.documentElement.clientWidth;
+  }
+  
+  postCheckPhone() {
+    var data = {
+      phone: this.phone
     };
-  },
-  mounted() {},
-  methods: {
-    onClickOne() {
-      this.aLeft = -this.fullWidth;
-      this.isActiveTwo = true;
-    },
-    onClickTwo() {
+    //JSON.stringify(data)
+    LoginService.postCheckPhone(data)
+      .then((res: any) => {
+        console.log(res);
+        this.userId = res.id;
+        this.question = res.question;
+        this.aLeft = -this.fullWidth;
+        this.isActiveTwo = true;
+      })
+      .catch((reason: any) => {
+        console.log("=== Error ===");
+        console.log(reason);
+      });
+  }
+  onClickTwo() {
+    if (this.isshowSecurityProblem) {
+      var data = {
+        id: this.userId,
+        answer: this.answer
+      };
+      LoginService.postCheckAnswer(data)
+        .then((res: any)=> {
+          console.log(res);
+          this.password = res.password
+          this.aLeft = -(this.fullWidth * 2);
+          this.isActiveThr = true;
+        })
+        .catch((reason: any) => {
+          console.log("=== Error ===");
+          console.log(reason);
+        });
+    } else if (this.isShowSMS) {
       this.aLeft = -(this.fullWidth * 2);
       this.isActiveThr = true;
-    },
-    onClickThree() {
-      this.$router.push({
-        path: "/login/index"
-      });
-    },
-    showSMS() {
-      this.isShowSMS = true;
-      this.isshowSecurityProblem = false;
-    },
-    showSecurityProblem() {
-      this.isShowSMS = false;
-      this.isshowSecurityProblem = true;
+    } else {
+      this.$toast("Please select an item from the list");
     }
   }
-};
+  onClickConfirm() {
+    if (this.newPassword != "" && this.newPassword == this.confirmPassword) {
+      var data = {
+        id: this.userId,
+        password: this.password,
+        newPassword: this.newPassword
+      }
+      LoginService.postResetPassword(data).then((res: any) => {
+        console.log(res);
+        this.aLeft = 0;
+        this.isActiveTwo = false;
+        this.isActiveThr = false;
+        this.$router.push({
+          path: "/login"
+        });
+      });
+    } else if (this.newPassword != "" && this.newPassword != this.confirmPassword) {
+      this.$toast('Password inconsistency')
+    } else{
+      this.$toast('Please set new password')
+    }
+  }
+  showSMS() {
+    this.isShowSMS = true;
+    this.isshowSecurityProblem = false;
+  }
+  showSecurityProblem() {
+    this.isShowSMS = false;
+    this.isshowSecurityProblem = true;
+  }
+}
 </script>
 
 <style lang="scss" scoped>
 .forgot-password {
   min-height: 100vh;
+  overflow: hidden;
   .tab {
     box-sizing: border-box;
     display: flex;
@@ -178,7 +263,7 @@ export default {
   .tab-con {
     position: relative;
     width: 100%;
-    height: 100vh;
+    min-height: 60vh;
     overflow: hidden;
     .item {
       display: flex;
@@ -250,10 +335,10 @@ export default {
                 display: flex;
                 padding: 0.3rem;
                 color: rgba(51, 51, 51, 1);
-                line-height: .32rem;
+                line-height: 0.32rem;
                 .title {
                   width: 1.6rem;
-                  line-height: .5rem;
+                  line-height: 0.5rem;
                 }
                 .title.pad {
                   padding: 0.2rem 0 0 0;
@@ -265,13 +350,17 @@ export default {
                   border-radius: 0.04rem;
                   background-color: #f3f2f9;
                 }
-                .flex1.no-inp{
-                    line-height: .5rem;
-                    border: none;
+                .flex1.no-inp {
+                  padding: 0;
+                  line-height: 0.5rem;
+                  border: none;
+                }
+                .flex1.add-line-h {
+                  line-height: 1rem;
                 }
               }
               .collapse-item-main.no-pad {
-                padding: 0 .3rem .3rem;
+                padding: 0 0.3rem 0.3rem;
                 height: 1.3rem;
               }
               .main-boxcollapse-item-main.line-height {
@@ -285,6 +374,12 @@ export default {
               .main-boxcollapse-item-main.no-pad {
                 padding: 0 0.3rem 0.3rem;
               }
+            }
+            .add-height {
+              height: 2.9rem;
+            }
+            .add-line-h {
+              line-height: 1rem;
             }
             .collapse-item-title {
               color: #001f5b;

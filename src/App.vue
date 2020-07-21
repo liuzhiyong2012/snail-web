@@ -10,28 +10,27 @@
 
 <style lang="scss">
 @import "./assets/style/variables.scss";
-// @font-face {
-//   font-family: 'iconfont';  /* project id 1932862 */
-//   src: url('//at.alicdn.com/t/font_1932862_adx9qr7koph.eot');
-//   src: url('//at.alicdn.com/t/font_1932862_adx9qr7koph.eot?#iefix') format('embedded-opentype'),
-//   url('//at.alicdn.com/t/font_1932862_adx9qr7koph.woff2') format('woff2'),
-//   url('//at.alicdn.com/t/font_1932862_adx9qr7koph.woff') format('woff'),
-//   url('//at.alicdn.com/t/font_1932862_adx9qr7koph.ttf') format('truetype'),
-//   url('//at.alicdn.com/t/font_1932862_adx9qr7koph.svg#iconfont') format('svg');
-// }
+svg.icon {
+  width: .4rem;
+  height: .4rem;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 0.28rem;
   color: $font-color-theme;
   background-color: $background-color-theme;
-  font-family:Helvetica-Bold,Helvetica;
+  font-family: Helvetica-Bold, Helvetica;
 }
 .abus-icon {
-width: 1em; height: 1em;
-vertical-align: -0.15em;
-fill: currentColor;
-overflow: hidden;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
 }
 .abus-block-title {
   margin: 0;
