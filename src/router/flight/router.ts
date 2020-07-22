@@ -1,7 +1,7 @@
 import VueRouter, {
 	RouteConfig
 } from 'vue-router';
-import DishIndex from '../../views/dish/Index.vue';
+import FlightIndex from '../../views/flight/Index.vue';
 
 
 /* let PersonCenter = (resolve) => {
@@ -10,9 +10,9 @@ import DishIndex from '../../views/dish/Index.vue';
 	}, 'personCenter')
 } */
 const routes: Array < RouteConfig > = [{
-	path: '/dish/index',
-	name: 'dishIndex',
-	component: DishIndex,
+	path: '/flight/index',
+	name: 'flightIndex',
+	component: FlightIndex,
 	children: []
 }]
 

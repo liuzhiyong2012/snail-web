@@ -1,11 +1,9 @@
 <template>
-	<section class="homeflight-main-ctn" @click="stepToFlight()">
-		<h2 class="abus-block-title"><van-cell value="Flight" class="block-title-background" /></h2>
-		<div class="abus-scroller-box home-flight-box">
+	<section class="homeflight-main-ctn">
+		<div class="home-flight-box">
 			<div class="home-flight-t">
 				<span classs="flight-model">{{ airplane.AirplaneModels }}</span>
 				<span classs="flight-number">{{ baseInfo.FlightNumber }}</span>
-				<!-- <i class="icon  icon-search"></i> -->
 			</div>
 
 			<div class="home-flight-info">
@@ -48,9 +46,10 @@
 					<div class="address">{{ baseInfo.ArrivalPlanTimestamp | dateFormate('hh:mm') }}</div>
 				</div>
 			</div>
+			
 			<div class="map-box">
-				<abus-map zoom = '4'></abus-map>
 				<!-- <home-map></home-map> -->
+				<slot></slot>
 			</div>
 		</div>
 	</section>
@@ -69,15 +68,13 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import HomeMap from './HomeMap.vue';
-import AbusMap from '../../../components/AbusMap.vue';
-import FlightService from '../../../service/flight';
+// import HomeMap from './HomeMap.vue';
+import FlightService from '../service/flight';
 
 @Component({
 	name: 'HomeFlight',
 	components: {
-		HomeMap,
-		AbusMap
+		// HomeMap
 	}
 })
 export default class HomeFlight extends Vue {
@@ -101,7 +98,7 @@ export default class HomeFlight extends Vue {
 
 	public getFlightInfo(): void {
 		FlightService.getFlightInfo().then((res: any) => {
-			if(res.code == 200){
+			if(res.code== 200){
 				this.flightResData = res.data;
 				this.baseInfo = this.flightResData.Flight.BaseInfo;
 				this.airplane = this.flightResData.Flight.Airplane;
@@ -110,7 +107,6 @@ export default class HomeFlight extends Vue {
 			}
 			
 		});
-
 	}
 
 	public stepToFlight(): void {
@@ -123,20 +119,12 @@ export default class HomeFlight extends Vue {
 
 <style lang="scss" scoped>
 .homeflight-main-ctn {
-	.abus-block-title {
-		.block-title-background {
-			background-color: #fafafa00;
-		}
-	}
 
-		/* .van-cell {
-	  font-size: 0.36rem;
-	} */
 		.home-flight-box {
 			border-radius: 0.12rem;
-			margin: 0 0.3rem;
+			// margin: 0 0.3rem;
 			padding: 0.32rem 0.3rem;
-			height: 5.34rem;
+			// height: 5.34rem;
 			background: rgba(255, 255, 255, 1);
 			box-sizing: border-box;
 			.home-flight-t {
@@ -159,7 +147,6 @@ export default class HomeFlight extends Vue {
 				.home-flight-seat {
 					display: flex;
 					align-items: center;
-					// padding:
 					padding:0 0.04rem 0 0.10rem;
 					line-height: 0.32rem;
 					background:rgba(0,32,91,1);
@@ -171,12 +158,6 @@ export default class HomeFlight extends Vue {
 					> *{
 						font-size: 0.20rem;
 					}
-					/* padding: 0.06rem 0.08rem 0.06rem 0.2rem;
-					line-height: 0.32rem;
-					font-size: 0.2rem;
-					color: #fff;
-					background-color: rgb(0, 32, 91);
-					border-radius: 0.2rem; */
 			
 					.home-flight-g {
 						margin-left: 0.12rem;
@@ -217,12 +198,6 @@ export default class HomeFlight extends Vue {
 						}
 					}
 					
-					/* >span:nth-child(1){
-						
-					}
-					>span:nth-child(2){
-						
-					} */
 				}
 			
 				.home-flight-c {
@@ -245,7 +220,6 @@ export default class HomeFlight extends Vue {
 			
 			.home-flight-place {
 				display: flex;
-				// align-items: f;
 				justify-content: center;
 				height: 1.30rem;
 				background:rgba(242,244,247,1);
@@ -290,7 +264,6 @@ export default class HomeFlight extends Vue {
 					height: 0.36rem;
 					width:1.80rem;
 					font-size: 0;
-					// border-top: 0.02rem dotted rgb(0, 32, 91);
 					
 					>i{
 						&:not(:last-child){
@@ -303,7 +276,6 @@ export default class HomeFlight extends Vue {
 						width:0.04rem;
 						height: 0.04rem;
 						border-radius: 50%;
-						// margin-right: 0.04rem;
 						&.dark{
 							background:rgba(0,0,0,1);
 						}
@@ -326,11 +298,9 @@ export default class HomeFlight extends Vue {
 			
 				
 			
-				
-			}
-			.map-box {
-				height:1.9rem;
-				
+				.map-box {
+					display: none;
+				}
 			}
 	}
 }
