@@ -43,9 +43,12 @@
           <br />& Privacy Policy
         </div>
         <div class="con">
-          We have updated our <span class="txt">privacy policy</span>
+          We have updated our
+          <span class="txt">privacy policy</span>
           to comply with the latest laws and regulations. The updated policy explains the mechanism of how we collect and treat your personal data.
-          <span class="txt">tems of service</span>
+          <span
+            class="txt"
+          >tems of service</span>
           You can learn more about the rights you have by reading our .Please read them carefully.By clicking AGREE,you indicate that you have read and agreed to our privacy policies.
         </div>
         <div class="btn">Agree</div>
@@ -53,7 +56,6 @@
       </div>
     </van-popup>
     <van-tabs
-      v-model="active"
       scrollspy
       sticky
       offset-top="46"
@@ -64,25 +66,37 @@
     >
       <van-tab v-for="(val,index) in navTar" :title="val" title-active-color="#3056EF" :key="index">
         <div v-if="val == 'Flight'" class="flight">
-          <home-flight />
+          <home-flight></home-flight>
         </div>
         <div v-else-if="val == 'Dish'">
-          <home-dish />
+          <home-components :title="navTar[1]">
+            <home-dish />
+          </home-components>
         </div>
         <div v-else-if="val == 'Shopping'">
-          <home-shopping />
+          <home-components :title="navTar[2]">
+            <home-shopping />
+          </home-components>
         </div>
         <div v-else-if="val == 'Music'">
-          <home-music />
+          <home-components :title="navTar[3]">
+            <home-music />
+          </home-components>
         </div>
         <div v-else-if="val == 'Game'">
-          <home-game :imgData="imagesData" />
+          <home-components :title="navTar[4]">
+            <home-game :imgData="imagesData" />
+          </home-components>
         </div>
         <div v-else-if="val == 'Video'">
-          <home-video />
+          <home-components :title="navTar[5]">
+            <home-video />
+          </home-components>
         </div>
         <div v-else-if="val == 'News'">
-          <home-news />
+          <home-components :title="navTar[6]">
+            <home-news />
+          </home-components>
         </div>
       </van-tab>
     </van-tabs>
@@ -91,8 +105,8 @@
 
 <script>
 // @ is an alias to /src
-
-import HomeFlight from "@/views/home/components/HomeFlight";
+import HomeComponents from "./components/HomeComponents";
+import HomeFlight from "./components/HomeFlight";
 import HomeDish from "@/views/home/components/HomeDish";
 import HomeShopping from "@/views/home/components/HomeShopping";
 import HomeMusic from "@/views/home/components/HomeMusic";
@@ -110,12 +124,14 @@ export default {
     HomeMusic,
     HomeGame,
     HomeVideo,
-    HomeNews
+    HomeNews,
+    HomeComponents
   },
   data() {
     return {
       show: false,
       showService: true,
+      Dish: "12312",
       navTar: ["Flight", "Dish", "Shopping", "Music", "Game", "Video", "News"],
       imagesData: [
         {
@@ -138,9 +154,9 @@ export default {
   },
   created() {
     clearTimeout();
-    setTimeout(()=>{
-      this.showService = false
-    },1000)
+    setTimeout(() => {
+      this.showService = false;
+    }, 1000);
     //  getApprovalDetail({}).then((res) => {
     //     let  data = res.data;
     //   }).finally(() => {
@@ -148,7 +164,10 @@ export default {
   },
   methods: {
     showPopup() {
-      this.show = true;
+      // this.show = true;
+      this.$router.push({
+        name: "internet"
+      });
     }
   }
 };
@@ -195,8 +214,8 @@ export default {
     line-height: 0.42rem;
     word-break: normal;
     word-wrap: break-word;
-    .txt{
-      color: #00205B;
+    .txt {
+      color: #00205b;
       text-decoration: underline;
       font-weight: bold;
     }
@@ -213,16 +232,15 @@ export default {
     border-radius: 0.37rem;
   }
   .later {
-    margin: .3rem 0;
-    padding: 0 .3rem;
+    margin: 0.3rem 0;
+    padding: 0 0.3rem;
     font-size: 0.26rem;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: rgba(51, 51, 51, 1);
     background-color: #fff;
-    line-height: .3rem;
-    height: .5rem;
-    
+    line-height: 0.3rem;
+    height: 0.5rem;
   }
   .surplus {
     padding: 0 0.3rem;

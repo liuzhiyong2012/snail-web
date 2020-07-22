@@ -1,6 +1,7 @@
 <template>
   <div class="login">
     <ad-model v-if="isActive"></ad-model>
+    <!-- <div class="title">LOGIN</div> -->
     <div class="title">LOGIN</div>
     <div class="form">
       <div class="user-details">
@@ -9,13 +10,7 @@
             <use xlink:href="#icon-phone" />
           </svg>
         </div>
-        <input
-          @change="getUserPhone"
-          :value="userPhone"
-          class="form-input"
-          placeholder="You phone"
-          type="text"
-        />
+        <input v-model="userPhone" class="form-input" placeholder="You phone" type="text" />
       </div>
       <div class="user-details m40">
         <div class="i-icon">
@@ -23,15 +18,10 @@
             <use xlink:href="#icon-code" />
           </svg>
         </div>
-        <input
-          @change="getUserPassword"
-          :value="userPassword"
-          class="form-input"
-          placeholder="Password"
-          type="password"
-        />
+        <input v-model="userPassword" class="form-input" placeholder="Password" type="password" />
       </div>
     </div>
+
     <div class="min-box">
       <router-link to="/registery">
         <div class="registery">Registery</div>
@@ -78,7 +68,7 @@ import LoginServe from "../../service/login";
 })
 export default class Login extends Vue {
   private isActive: boolean = true;
-  private userPhone: string = '';
+  private userPhone: string = "";
   private userPassword: string = "";
   private get seatNumber(): string {
     return this.$store.state.login.voyageInfo.seatNumber;
@@ -96,18 +86,27 @@ export default class Login extends Vue {
     this.userPassword = e.target.value;
   }
   postUserLogin() {
-    if (this.userPhone != '' && this.userPassword != "") {
+    // console.log(this.$store.state.login.name)
+    if (this.userPhone != "" && this.userPassword != "") {
       var data = {
-        username: '86_' + this.userPhone, // 默认86
+        username: "86_" + this.userPhone, // 默认86
         password: this.userPassword
       };
       LoginServe.postUserLogin(data).then((res: any) => {
         console.log(res);
         if (res.code == 200) {
+          this.$store.dispatch("setUserInfo", {
+            name: res.data.userName,
+            token: res.data.access_token
+          });
           this.$router.push({
             name: "home"
           });
         }
+      })
+      .catch((error: any) =>{
+        console.log(error)
+        this.$toast('The user name or password is incorrect.')
       });
     }
   }

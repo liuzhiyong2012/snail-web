@@ -27,9 +27,9 @@ const routes: Array<RouteConfig> = [
       ...ShoppingRouter,
       ...NewsRouter,
       ...VideoRouter,
-	  ...LoginRouter,
-    ...GameRouter,
-    ...ChatRouter,
+      ...LoginRouter,
+      ...GameRouter,
+      ...ChatRouter,
       {
         path: "/home",
         name: "home",

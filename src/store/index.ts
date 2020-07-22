@@ -4,7 +4,7 @@ import Login from './login';
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+export default new Vuex.Store<any>({
   state: {
     name: '1234'
   },

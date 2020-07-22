@@ -1,29 +1,21 @@
 <template>
-  <div>
-    <h2 class="abus-block-title">
-      <van-cell title="Music" class="block-title-background">
-        <template #right-icon>
-          <van-icon name="ellipsis" style="line-height: inherit;" size="25" />
-        </template>
-      </van-cell>
-    </h2>
-    <div class="abus-scroller-box music-box">
-      <div v-for="(item,index) in musicData" class="music-list" :key="index">
-        <div class="music-l">
-          <img :src="item.img" :alt="item.name" />
-        </div>
-        <div class="f1">
-          <div class="name">{{item.name}}</div>
-          <div class="author">{{item.author}}</div>
-        </div>
-        <van-icon name="play-circle" color="rgb(229,232,228)" size="20" />
+  <div class="abus-scroller-box music-box">
+    <div v-for="(item,index) in musicData" class="music-list" :key="index">
+      <div class="music-l">
+        <img :src="item.img" :alt="item.name" />
       </div>
+      <div class="f1">
+        <div class="name">{{item.name}}</div>
+        <div class="author">{{item.author}}</div>
+      </div>
+      <van-icon name="play-circle" color="rgb(229,232,228)" size="20" />
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  components: {},
   data() {
     return {
       musicData: [
@@ -49,12 +41,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.block-title-background {
-  background-color: #fafafa00;
-}
-.van-cell {
-  font-size: 0.36rem;
-}
 .music-box {
   background-color: #fff;
   padding: 0 0.28rem;

@@ -1,24 +1,15 @@
 <template>
-  <div>
-    <h2 class="abus-block-title">
-      <van-cell title="News" class="block-title-background">
-        <template #right-icon>
-          <van-icon name="ellipsis" style="line-height: inherit;" size="25" />
-        </template>
-      </van-cell>
-    </h2>
-    <div class="abus-scroller-box news-box">
-      <div v-for="(item,index) in musicData" class="news-list" :key="index">
-        <div class="news-l">
-          <img :src="item.img" :alt="item.name" />
+  <div class="abus-scroller-box news-box">
+    <div v-for="(item,index) in musicData" class="news-list" :key="index">
+      <div class="news-l">
+        <img :src="item.img" :alt="item.name" />
+      </div>
+      <div class="f1">
+        <div class="name">
+          <div class="line-two">{{item.name}}</div>
         </div>
-        <div class="f1">
-          <div class="name">
-            <div class="line-two">{{item.name}}</div>
-          </div>
-          <div class="details">
-            <div class="line-one">{{item.details}}</div>
-          </div>
+        <div class="details">
+          <div class="line-one">{{item.details}}</div>
         </div>
       </div>
     </div>
@@ -50,12 +41,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.block-title-background {
-  background-color: #fafafa00;
-}
-.van-cell {
-  font-size: 0.36rem;
-}
 .news-box {
   background-color: #fff;
   padding: 0 0.28rem;
@@ -93,7 +78,7 @@ export default {
       line-height: 0.35rem;
       font-weight: 500;
       .line-two {
-        height: .7rem;
+        height: 0.7rem;
         text-overflow: -o-ellipsis-lastline;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -106,7 +91,7 @@ export default {
       flex: 1;
       font-size: 0.24rem;
       color: #999;
-      line-height: .4rem;
+      line-height: 0.4rem;
       .line-one {
         text-overflow: -o-ellipsis-lastline;
         overflow: hidden;

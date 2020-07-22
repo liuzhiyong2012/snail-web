@@ -27,13 +27,24 @@
       </div>
     </div>
     <div class="button-box">
-      <div class="button">Pay</div>
+      <div class="button" @click="goHome">Pay</div>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    goHome() {
+      this.$toast("Success");
+      setTimeout(() => {
+        this.$router.push({
+          name: "home"
+        });
+      }, 1000);
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -88,8 +99,7 @@ export default {};
     font-family: Helvetica;
     color: rgba(155, 154, 170, 1);
     line-height: 0.36rem;
-    .cell-l {
-    }
+
     .cell-r {
       flex: 1;
       text-align: right;

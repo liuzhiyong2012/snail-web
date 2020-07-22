@@ -38,7 +38,7 @@
               <div class="collapse-item-con">
                 <div class="collapse-item-main">
                   <div class="title">Phone</div>
-                  <div class="flex1 no-inp">123123123123</div>
+                  <div class="flex1 no-inp">{{phone}}</div>
                 </div>
                 <div class="collapse-item-main no-pad">
                   <div class="title">Verification Code</div>
@@ -59,7 +59,6 @@
                 <div class="collapse-item-main no-pad">
                   <div class="title">Security answer</div>
                   <input
-                   
                     v-model="answer"
                     class="flex1"
                     placeholder="Please enter your answer"
@@ -114,7 +113,7 @@ export default class ForgotPassword extends Vue {
   private isshowSecurityProblem: boolean = false;
   private fullWidth: number = 750;
   private aLeft: number = 0;
-  private phone: number = 13692169349; // 测试手机号
+  private phone: string = "";
   private question: string = "";
   private answer: string = "";
   private password: string = "";
@@ -125,7 +124,7 @@ export default class ForgotPassword extends Vue {
   created() {
     this.fullWidth = document.documentElement.clientWidth;
   }
-  
+
   postCheckPhone() {
     var data = {
       phone: this.phone
@@ -134,14 +133,19 @@ export default class ForgotPassword extends Vue {
     LoginService.postCheckPhone(data)
       .then((res: any) => {
         console.log(res);
-        this.userId = res.id;
-        this.question = res.question;
-        this.aLeft = -this.fullWidth;
-        this.isActiveTwo = true;
+        if (res.code == 200) {
+          this.userId = res.id;
+          this.question = res.question;
+          this.aLeft = -this.fullWidth;
+          this.isActiveTwo = true;
+        }else{
+          this.$toast(res.message)
+        }
       })
       .catch((reason: any) => {
         console.log("=== Error ===");
         console.log(reason);
+        this.$toast(reason.error.message)
       });
   }
   onClickTwo() {
@@ -151,9 +155,9 @@ export default class ForgotPassword extends Vue {
         answer: this.answer
       };
       LoginService.postCheckAnswer(data)
-        .then((res: any)=> {
+        .then((res: any) => {
           console.log(res);
-          this.password = res.password
+          this.password = res.password;
           this.aLeft = -(this.fullWidth * 2);
           this.isActiveThr = true;
         })
@@ -174,7 +178,7 @@ export default class ForgotPassword extends Vue {
         id: this.userId,
         password: this.password,
         newPassword: this.newPassword
-      }
+      };
       LoginService.postResetPassword(data).then((res: any) => {
         console.log(res);
         this.aLeft = 0;
@@ -184,10 +188,13 @@ export default class ForgotPassword extends Vue {
           path: "/login"
         });
       });
-    } else if (this.newPassword != "" && this.newPassword != this.confirmPassword) {
-      this.$toast('Password inconsistency')
-    } else{
-      this.$toast('Please set new password')
+    } else if (
+      this.newPassword != "" &&
+      this.newPassword != this.confirmPassword
+    ) {
+      this.$toast("Password inconsistency");
+    } else {
+      this.$toast("Please set new password");
     }
   }
   showSMS() {

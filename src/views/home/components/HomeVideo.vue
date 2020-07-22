@@ -1,24 +1,15 @@
 <template>
-  <div>
-    <h2 class="abus-block-title">
-      <van-cell title="Video" class="block-title-background">
-        <template #right-icon>
-          <van-icon name="ellipsis" style="line-height: inherit;" size="25" />
-        </template>
-      </van-cell>
-    </h2>
-    <div class="abus-scroller-box">
-      <scroller>
-        <div slot="list" v-for="(item, index) of dishData" :key="index">
-          <div class="s-box s-box-right" v-if="index+1 == dishData.length">
-            <img :src="item.img" :alt="item.name" />
-          </div>
-          <div class="s-box" v-else>
-            <img :src="item.img" :alt="item.name" />
-          </div>
+  <div class="abus-scroller-box">
+    <scroller>
+      <div slot="list" v-for="(item, index) of dishData" :key="index">
+        <div class="s-box s-box-right" v-if="index+1 == dishData.length">
+          <img :src="item.img" :alt="item.name" />
         </div>
-      </scroller>
-    </div>
+        <div class="s-box" v-else>
+          <img :src="item.img" :alt="item.name" />
+        </div>
+      </div>
+    </scroller>
   </div>
 </template>
 
@@ -69,13 +60,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.block-title-background {
-  background-color: #fafafa00;
-}
-.van-cell {
-  font-size: 0.36rem;
-}
-
 .s-box {
   float: left;
   // height: 1.6rem;

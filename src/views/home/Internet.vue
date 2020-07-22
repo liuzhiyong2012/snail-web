@@ -9,7 +9,7 @@
         <div class="con">
           <div class="con-l">{{item.details}}
             </div>
-          <div class="pay">Pay</div>
+          <div class="pay" @click="routerInternetCard">Pay</div>
         </div>
         <p class="text">Estimated use</p>
         <div class="bottom">
@@ -61,6 +61,12 @@ export default class InternetIndex extends Vue{
         time: '30 min'
       },
     ]
+  }
+
+  public routerInternetCard(){
+    this.$router.push({
+      name: 'internetCart'
+    })
   }
 }
 </script>

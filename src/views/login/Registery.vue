@@ -228,9 +228,10 @@ export default class Register extends Vue {
       this.isReaded
     ) {
       // (['nickname','gender','phone','idCard','password','birthday','question','answer']);
+
       var data = {
         nickname: this.nickname,
-        gander: this.radio,
+        gender: this.radio,
         phone: this.phone,
         idCard: this.idCard,
         password: this.password,
@@ -238,9 +239,11 @@ export default class Register extends Vue {
         question: this.question,
         answer: this.answer
       };
+      console.log(this.radio)
       LoginServe.postUserRegistery(data).then((res: any) => {
         console.log(res);
         if (res.code == 200) {
+          // 存储用户信息
           this.$router.push({
             path: "/login"
           });
