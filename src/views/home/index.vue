@@ -24,7 +24,7 @@
           <div class="cell">
             <div class="cell-l">12323123</div>
             <div class="cell-r">$12332</div>
-          </div>
+          </div> 
           <div class="cell">
             <div class="cell-l">12323123</div>
             <div class="cell-r">$12332</div>
@@ -64,39 +64,37 @@
       color="rgb(0,32,91)"
       title-active-color="rgb(0,32,91)"
     >
-      <van-tab v-for="(item,index) in navTar" :title="item.title" title-active-color="#3056EF" :key="index">
-        <div v-if="item.title == 'Flight'" class="flight">
-		  <home-components :titleConfig="navTar[0]" @stepTo="stepPage($event)">
-		    <home-flight></home-flight>
-		  </home-components>
+      <van-tab v-for="(val,index) in navTar" :title="val" title-active-color="#3056EF" :key="index">
+        <div v-if="val == 'Flight'" class="flight">
+          <home-flight></home-flight>
         </div>
-        <div v-else-if="item.title == 'Dish'">
-          <home-components :titleConfig="navTar[1]" @stepTo="stepPage($event)">
+        <div v-else-if="val == 'Dish'">
+          <home-components :title="navTar[1]">
             <home-dish />
           </home-components>
         </div>
-        <div v-else-if="item.title == 'Shopping'">
-          <home-components :titleConfig="navTar[2]" @stepTo="stepPage($event)">
+        <div v-else-if="val == 'Shopping'">
+          <home-components :title="navTar[2]">
             <home-shopping />
           </home-components>
         </div>
-        <div v-else-if="item.title == 'Music'">
-          <home-components :titleConfig="navTar[3]" @stepTo="stepPage($event)">
+        <div v-else-if="val == 'Music'">
+          <home-components :title="navTar[3]">
             <home-music />
           </home-components>
         </div>
-        <div v-else-if="item.title == 'Game'">
-          <home-components :titleConfig="navTar[4]" @stepTo="stepPage($event)">
+        <div v-else-if="val == 'Game'">
+          <home-components :title="navTar[4]">
             <home-game :imgData="imagesData" />
           </home-components>
         </div>
-        <div v-else-if="item.title == 'Video'">
-          <home-components :titleConfig="navTar[5]" @stepTo="stepPage($event)">
+        <div v-else-if="val == 'Video'">
+          <home-components :title="navTar[5]">
             <home-video />
           </home-components>
         </div>
-        <div v-else-if="item.title == 'News'">
-          <home-components :titleConfig="navTar[6]" @stepTo="stepPage($event)">
+        <div v-else-if="val == 'News'">
+          <home-components :title="navTar[6]">
             <home-news />
           </home-components>
         </div>
@@ -117,7 +115,6 @@ import HomeVideo from "@/views/home/components/HomeVideo";
 import HomeNews from "@/views/home/components/HomeNews";
 // import { getApprovalDetail } from "@/service/center";
 
-
 export default {
   name: "Home",
   components: {
@@ -135,35 +132,7 @@ export default {
       show: false,
       showService: true,
       Dish: "12312",
-      navTar: [
-		{
-		  title:'Flight',
-		  value:'flight'
-	    },  
-		{
-		  title:'Dish',
-		  value:'dish'
-		},
-		{
-		  title:'Shopping',
-		  value:'shopping'
-		},
-		{
-		  title:'Music',
-		  value:'music'
-		},
-		{
-		  title:'Game',
-		  value:'game'
-		},
-		{
-		  title:'Video',
-		  value:'video'
-		},
-		{
-		  title:'News',
-		  value:'news'
-		}],
+      navTar: ["Flight", "Dish", "Shopping", "Music", "Game", "Video", "News"],
       imagesData: [
         {
           img: require("./images/game.jpg"),
@@ -199,28 +168,9 @@ export default {
       this.$router.push({
         name: "internet"
       });
-    },
-	stepPage(page){
-		// debugger;
-		let routeMap = {
-			flight:'flightIndex',
-			dish : 'dishIndex',
-			shopping:'',
-			music:'',
-			game:'',
-			video:'',
-			news:''
-		}
-		
-		if(routeMap[page]){
-			this.$router.push({
-				name:routeMap[page]
-			});
-		}
-		
-	}
+    }
   }
-};
+}; 
 </script>
 
 <style scoped lang="scss">
@@ -230,7 +180,7 @@ export default {
 .van-tab--active {
   font-weight: 600;
 }
-.van-popup {
+.van-popup {  
   background-color: rgba(255, 255, 255, 0);
 }
 .popup-toast {
