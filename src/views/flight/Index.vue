@@ -49,8 +49,6 @@
 				</div>
 				<div class="bottom-ctn">
 					<div class="chart-ctn" ref="chartCtn"></div>
-					<!-- <div class="legend-ctn">
-				    </div> -->
 				</div>
 			</div>
 		</section>
@@ -108,23 +106,31 @@ export default class FlightIndex extends Vue {
 		this.listenScroll();
 		this.getFlightInfo();
 	}
+	
+	private destroyed() {
+		document.removeEventListener('touchstart', this.touchStartHandle);
+		document.removeEventListener('touchmove', this.touchMoveHandle);
+		document.removeEventListener('touchend', this.touchEndHandle);
+	}
+	
+	
 
 	public listenScroll(): void {
-		var startX, startY, endX, endY;
+		var startX:any, startY:any, endX:any, endY:any;
 
-		this.touchStartHandle = event => {
+		this.touchStartHandle = (event:any) => {
 			var touch = event.touches[0];
 			startY = touch.pageY;
 			startX = touch.pageX;
 		};
 
-		this.touchMoveHandle = event => {
+		this.touchMoveHandle = (event:any)  => {
 			var touch = event.touches[0];
 			endY = startY - touch.pageY;
 			endX = startX - touch.pageX;
 		};
 
-		this.touchEndHandle = event => {
+		this.touchEndHandle = (event:any)  => {
 			//100是给定触上下方向摸起始的坐标差
 			if (endY > 100) {
 				console.log('向上滑动');
@@ -202,7 +208,7 @@ export default class FlightIndex extends Vue {
 		let speedsData: Array<any> = [];
 		let altitudesData: Array<any> = [];
 
-		this.flightInfo.FlightAltitudes.forEach((item, index) => {
+		this.flightInfo.FlightAltitudes.forEach((item:any, index:number) => {
 			let time = DateUtils.formate(item.TimePoint, 'hh:mm');
 			timesData.push(time);
 			speedsData.push(this.flightInfo.FlightSpeeds[index].Speed);
@@ -264,9 +270,6 @@ export default class FlightIndex extends Vue {
 					},
 					axisTick: {
 						show: false
-					},
-					axisLabel: {
-						show: true
 					}
 				}
 			],

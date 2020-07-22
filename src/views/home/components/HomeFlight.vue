@@ -48,7 +48,10 @@
 					<div class="address">{{ baseInfo.ArrivalPlanTimestamp | dateFormate('hh:mm') }}</div>
 				</div>
 			</div>
-			<div class="map-box"><home-map></home-map></div>
+			<div class="map-box">
+				<abus-map zoom = '4'></abus-map>
+				<!-- <home-map></home-map> -->
+			</div>
 		</div>
 	</section>
 </template>
@@ -67,12 +70,14 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import HomeMap from './HomeMap.vue';
+import AbusMap from '../../../components/AbusMap.vue';
 import FlightService from '../../../service/flight';
 
 @Component({
 	name: 'HomeFlight',
 	components: {
-		HomeMap
+		HomeMap,
+		AbusMap
 	}
 })
 export default class HomeFlight extends Vue {
@@ -96,67 +101,16 @@ export default class HomeFlight extends Vue {
 
 	public getFlightInfo(): void {
 		FlightService.getFlightInfo().then((res: any) => {
-			this.flightResData = res;
-			this.baseInfo = res.Flight.BaseInfo;
-			this.airplane = res.Flight.Airplane;
-			this.flightAltitudes = res.FlightAltitudes;
-			this.weather = res.Weather;
+			if(res.code == 200){
+				this.flightResData = res.data;
+				this.baseInfo = this.flightResData.Flight.BaseInfo;
+				this.airplane = this.flightResData.Flight.Airplane;
+				this.flightAltitudes = this.flightResData.FlightAltitudes;
+				this.weather = this.flightResData.Weather;
+			}
+			
 		});
 
-		let a = {
-			Flight: {
-				Airplane: {
-					AirplaneModels: '空客 A330-243',
-					AirplaneImg: 'http:\/\/disk.service.osp.connectivity.aero\/airplane@3x.png',
-					CabinImg: 'http:\/\/disk.service.osp.connectivity.aero\/Airbus330-200-iphones.png',
-					Id: '4cfc4d33-2c1e-e911-bad5-f44d307124c0'
-				},
-				BaseInfo: {
-					Id: '4cfc4d33-2c1e-e911-bad5-f44d307124c0',
-					DepartureTimezone: 28800,
-					ArrivalTimezone: 28800,
-					FlightNumber: 'VA3928',
-					AirlinesCode: 'VA',
-					AirlinesName: 'Vision Airlines',
-					AirlineEnName: 'Vision Airlines',
-					AirlineIcon: 'http:\/\/disk.service.osp.connectivity.aero\/AirlineIcon-veryzhun.png',
-					DepartureCode: 'SZX',
-					DepAirport: '深圳宝安',
-					DepartureTerminal: 'T3',
-					Door: '4-6号门',
-					ArrivalCode: 'PEK',
-					ArrAirport: '北京首都',
-					ArrivalTerminal: 'T1',
-					DeparturePlanTimestamp: 1550625600,
-					ArrivalPlanTimestamp: 1550637300,
-					Departure: '深圳',
-					Arrival: '北京',
-					OntimeRate: '91.4%',
-					DepartPosition: {
-						Lat: '22.6033',
-						Lng: '113.829'
-					},
-					ArrivalPosition: {
-						Lat: '40.1321',
-						Lng: '116.5881'
-					},
-					Checkinend: '航班当日 08:30',
-					Tips: '准时起飞'
-				}
-			},
-
-			FlightAltitudes: [],
-			FlightPaths: [],
-			FlightSpeeds: [],
-			Weather: {
-				Status: 0,
-				Temper: '18℃',
-				Desc: '晴',
-				Img: 'http:\/\/disk.service.osp.connectivity.aero\/weather@3x.png'
-			},
-			DepartureTime: 1550625600,
-			ArrivalTime: 1550637300
-		};
 	}
 
 	public stepToFlight(): void {
@@ -372,13 +326,11 @@ export default class HomeFlight extends Vue {
 			
 				
 			
-				.map-box {
-					img {
-						width: 100%;
-						height: 1.9rem;
-						display: block;
-					}
-				}
+				
+			}
+			.map-box {
+				height:1.9rem;
+				
 			}
 	}
 }
