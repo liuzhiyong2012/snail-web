@@ -245,11 +245,13 @@ export default class Register extends Vue {
         if (res.code == 200) {
           // 存储用户信息
           this.$router.push({
-            path: "/login"
+            path: "selectSeat"
           });
         } else {
-          this.$toast(res);
+          this.$toast(res.error.message);
         }
+      }).catch((reason:any) => {
+        this.$toast('The current mobile number is registered');
       });
     } else if (!this.isReaded) {
       this.$toast("Have you read the 《Privacy policy》《Terms of service》");

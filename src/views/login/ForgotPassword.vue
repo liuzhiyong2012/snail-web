@@ -134,18 +134,18 @@ export default class ForgotPassword extends Vue {
       .then((res: any) => {
         console.log(res);
         if (res.code == 200) {
-          this.userId = res.id;
-          this.question = res.question;
+          this.userId = res.data.id;
+          this.question = res.data.question;
           this.aLeft = -this.fullWidth;
           this.isActiveTwo = true;
-        }else{
-          this.$toast(res.message)
+        } else {
+          this.$toast(res.message);
         }
       })
       .catch((reason: any) => {
         console.log("=== Error ===");
         console.log(reason);
-        this.$toast(reason.error.message)
+        this.$toast(reason.error.message);
       });
   }
   onClickTwo() {
@@ -157,9 +157,13 @@ export default class ForgotPassword extends Vue {
       LoginService.postCheckAnswer(data)
         .then((res: any) => {
           console.log(res);
-          this.password = res.password;
-          this.aLeft = -(this.fullWidth * 2);
-          this.isActiveThr = true;
+          if (res.code == 200) {
+            this.password = res.password;
+            this.aLeft = -(this.fullWidth * 2);
+            this.isActiveThr = true;
+          }else{
+            this.$toast(res.message)
+          }
         })
         .catch((reason: any) => {
           console.log("=== Error ===");
@@ -181,12 +185,16 @@ export default class ForgotPassword extends Vue {
       };
       LoginService.postResetPassword(data).then((res: any) => {
         console.log(res);
-        this.aLeft = 0;
-        this.isActiveTwo = false;
-        this.isActiveThr = false;
-        this.$router.push({
-          path: "/login"
-        });
+        if (res.code == 200) {
+          this.aLeft = 0;
+          this.isActiveTwo = false;
+          this.isActiveThr = false;
+          this.$router.push({
+            path: "/login"
+          });
+        }else{
+          this.$toast(res.message)
+        }
       });
     } else if (
       this.newPassword != "" &&
