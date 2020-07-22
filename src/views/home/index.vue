@@ -8,7 +8,7 @@
         <template #left>
           <van-icon name="chat" size="18" />
         </template>
-      </van-nav-bar>
+      </van-nav-bar> 
     </van-sticky>
     <van-popup v-model="show">
       <div class="popup-toast">

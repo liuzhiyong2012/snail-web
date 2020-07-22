@@ -1,6 +1,5 @@
 <template>
 	<section class="homeflight-main-ctn" @click="stepToFlight()">
-		<h2 class="abus-block-title"><van-cell value="Flight" class="block-title-background" /></h2>
 		<div class="abus-scroller-box home-flight-box">
 			<div class="home-flight-t">
 				<span classs="flight-model">{{ airplane.AirplaneModels }}</span>
