@@ -56,7 +56,9 @@ import {Stroke, Style} from 'ol/style'; */
 
 @Component({
 	name: 'AbusMap',
-	components: {}
+	components: {
+		
+	}
 })
 export default class AbusMap extends Vue {
 	@Prop()

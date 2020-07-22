@@ -1,5 +1,5 @@
 <template>
-	<section class="homeflight-main-ctn" @click="stepToFlight()">
+	<section class="homeflight-main-ctn">
 		<div class="abus-scroller-box home-flight-box">
 			<div class="home-flight-t">
 				<span classs="flight-model">{{ airplane.AirplaneModels }}</span>
@@ -112,11 +112,7 @@ export default class HomeFlight extends Vue {
 
 	}
 
-	public stepToFlight(): void {
-		this.$router.push({
-			name: 'flightIndex'
-		});
-	}
+	
 }
 </script>
 
