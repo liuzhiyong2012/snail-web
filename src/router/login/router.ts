@@ -4,6 +4,7 @@ import VueRouter, {
 import LoginIndex from '../../views/login/Index.vue';
 import ForgotPassword from '../../views/login/ForgotPassword.vue';
 import Registery from '../../views/login/Registery.vue';
+import SelectSeat from '../../views/login/SelectSeat.vue'
 
 const routes: Array<RouteConfig> = [
 	{
@@ -23,8 +24,12 @@ const routes: Array<RouteConfig> = [
 	{
 		path: '/registery',
 		name: 'registery',
-		component: Registery,
-		
+		component: Registery,		
+	},
+	{
+		path: '/select/seat',
+		name: 'selectSeat',
+		component: SelectSeat
 	}
 ]
 

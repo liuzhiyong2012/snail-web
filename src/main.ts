@@ -7,12 +7,12 @@ import filters from './utils/filters/index';
 import Vant from 'vant';
 import 'vant/lib/index.css';
 import VueI18n from 'vue-i18n'
-import {Lazyload} from 'vant';
+import { Lazyload } from 'vant';
 // import myCharts from './comm/js/myCharts.js';
 
 
-filters.forEach((filter:any,index)=>{
-	Vue.filter(filter.name, filter.handler)
+filters.forEach((filter: any, index) => {
+  Vue.filter(filter.name, filter.handler)
 });
 
 
@@ -24,16 +24,17 @@ Vue.use(Lazyload, {
 });
 Vue.use(VueI18n);
 
-let locale = localStorage.getItem('lang') || 'zh';
-let i18n = new VueI18n({ 
- locale: locale,
- messages: {   
-    'zh': require('./assets/i18n/zh.json'),   
-    'en': require('./assets/i18n/en.json') 
+let locale = localStorage.getItem('lang') || 'en';
+let i18n = new VueI18n({
+  locale: locale,
+  silentTranslationWarn: true,
+  messages: {
+    'zh': require('./assets/i18n/zh.json'),
+    'en': require('./assets/i18n/en.json')
   }
 });
 
-localStorage.setItem('lang',locale);
+localStorage.setItem('lang', locale);
 
 Vue.config.productionTip = false;
 Vue.prototype.$globalEvent = new Vue;
