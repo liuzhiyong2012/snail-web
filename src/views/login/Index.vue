@@ -108,7 +108,7 @@ import { localStore } from '../../utils/data-management';
 export default class Login extends Vue {
   private isActive: boolean = true;
   private isShowLang: boolean = false;
-  private lang: string = 'English';
+  private lang: string = '';
   private userPhone: string = "";
   private userPassword: string = "";
   private get seatNumber(): string {
@@ -119,6 +119,15 @@ export default class Login extends Vue {
     setTimeout(() => {
       this.isActive = false;
     }, 1000);
+    if(localStorage.getItem('lang') == 'en'){
+      this.lang = 'English'
+      this.$i18n.locale = 'en'
+    localStorage.setItem('lang', 'en');
+    }else{
+      this.lang = '简体中文'
+      this.$i18n.locale = 'zh'
+    localStorage.setItem('lang', 'zh');
+    }
   }
   getUserPhone(e: any) {
     this.userPhone = e.target.value;

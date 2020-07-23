@@ -2,7 +2,7 @@
   <div class="registery">
     <div class="con">
       <div class="main-item">
-        <div class="title line-h">Name</div>
+        <div class="title line-h">{{$t('Name')}}</div>
         <input
           v-model="nickname"
           class="main-item-con"
@@ -11,11 +11,11 @@
         />
       </div>
       <div class="main-item">
-        <div class="title line-h">Portrait</div>
+        <div class="title line-h">{{$t('Portrait')}}</div>
         <van-uploader v-model="fileList" multiple :max-count="1" />
       </div>
       <div class="main-item">
-        <div class="title line-h">Gender</div>
+        <div class="title line-h">{{$t('Gender')}}</div>
         <van-radio-group
           v-model="radio"
           direction="horizontal"
@@ -28,10 +28,7 @@
                 <use v-if="props.checked" xlink:href="#icon-selected" />
                 <use v-else xlink:href="#icon-unselected" />
               </svg>
-              <!-- <i
-                :class="[props.checked ? 'icon icon-selected icon-text': 'icon icon-unselected icon-text']"
-              ></i>-->
-              <span :class="[props.checked ? 'text-selected': 'text-unselected']">Female</span>
+              <span :class="[props.checked ? 'text-selected': 'text-unselected']">{{$t('Female')}}</span>
             </template>
           </van-radio>
           <van-radio name="1">
@@ -40,16 +37,13 @@
                 <use v-if="props.checked" xlink:href="#icon-selected" />
                 <use v-else xlink:href="#icon-unselected" />
               </svg>
-              <!-- <i
-                :class="[props.checked ? 'icon icon-selected icon-text': 'icon icon-unselected icon-text']"
-              ></i>-->
-              <span :class="[props.checked ? 'text-selected': 'text-unselected']">Male</span>
+              <span :class="[props.checked ? 'text-selected': 'text-unselected']">{{$t('Male')}}</span>
             </template>
           </van-radio>
         </van-radio-group>
       </div>
       <div class="main-item">
-        <div class="title line-h">Phone</div>
+        <div class="title line-h">{{$t('Phone')}}</div>
         <input
           v-model="phone"
           class="main-item-con"
@@ -58,11 +52,11 @@
         />
       </div>
       <div class="main-item">
-        <div class="title line-h">IDCard</div>
+        <div class="title line-h">{{$t('IDCard')}}</div>
         <input v-model="idCard" class="main-item-con" type="text" placeholder="Please enter IDCard" />
       </div>
       <div class="main-item">
-        <div class="title line-h">Password</div>
+        <div class="title line-h">{{$t('Password')}}</div>
         <input
           v-model="password"
           class="main-item-con"
@@ -71,7 +65,7 @@
         />
       </div>
       <div class="main-item">
-        <div class="title">Confirm password</div>
+        <div class="title">{{$t('Confirm-password')}}</div>
         <input
           v-model="confirmPassword"
           @blur="checkPassword"
@@ -81,7 +75,7 @@
         />
       </div>
       <div class="main-item">
-        <div class="title line-h">Date</div>
+        <div class="title line-h">{{$t('Date')}}</div>
         <input
           class="main-item-con"
           @click="showPopup"
@@ -103,7 +97,7 @@
         </van-popup>
       </div>
       <div class="main-item">
-        <div class="title">Security issues</div>
+        <div class="title">{{$t('Security-issues')}}</div>
         <input
           @click="showQuestion"
           class="main-item-con"
@@ -124,7 +118,7 @@
         </van-popup>
       </div>
       <div class="main-item">
-        <div class="title">Security answer</div>
+        <div class="title">{{$t('Security-answer')}}</div>
         <input
           v-model="answer"
           class="main-item-con"
@@ -145,7 +139,38 @@
     </div>
   </div>
 </template>
-
+<i18n>
+	{
+		"zh":{
+			"Name": "昵称",
+			"Portrait":"头像",
+			"Gender":"性别",
+			"Female":"女",
+			"Male":"男",
+      "Phone":"手机号",
+      "IDCard": "身份证号",
+			"Password":"密码",
+			"Confirm-password":"确认密码",
+			"Date":"出生日期",
+			"Security-issues":"密保问题",
+			"Security-answer":"密保答案"
+		},
+		"en":{
+			"Name": "Name",
+			"Portrait":"Portrait",
+			"Gender":"Gender",
+			"Female":"Female",
+			"Male":"Male",
+      "Phone":"Phone",
+      "IDCard": "IDCard",
+			"Password":"Password",
+			"Confirm-password":"Confirm password",
+			"Date":"Date",
+			"Security-issues":"Security issues",
+			"Security-answer":"Security answer"
+		}
+	}
+</i18n>
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import LoginServe from "../../service/login";
@@ -182,6 +207,16 @@ export default class Register extends Vue {
   private confirmPassword: string = "";
   private question: string = "";
   private answer: string = "";
+  mounted() {
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+      localStorage.setItem("lang", "en");
+    } else {
+      this.$i18n.locale = "zh";
+      localStorage.setItem("lang", "zh");
+    }
+  }
+
   showPopup() {
     if (this.isCheckPassword) {
       this.show = true;
@@ -239,20 +274,22 @@ export default class Register extends Vue {
         question: this.question,
         answer: this.answer
       };
-      console.log(this.radio)
-      LoginServe.postUserRegistery(data).then((res: any) => {
-        console.log(res);
-        if (res.code == 200) {
-          // 存储用户信息
-          this.$router.push({
-            path: "selectSeat"
-          });
-        } else {
-          this.$toast(res.error.message);
-        }
-      }).catch((reason:any) => {
-        this.$toast('The current mobile number is registered');
-      });
+      console.log(this.radio);
+      LoginServe.postUserRegistery(data)
+        .then((res: any) => {
+          console.log(res);
+          if (res.code == 200) {
+            // 存储用户信息
+            this.$router.push({
+              path: "selectSeat"
+            });
+          } else {
+            this.$toast(res.error.message);
+          }
+        })
+        .catch((reason: any) => {
+          this.$toast("The current mobile number is registered");
+        });
     } else if (!this.isReaded) {
       this.$toast("Have you read the 《Privacy policy》《Terms of service》");
     } else {
