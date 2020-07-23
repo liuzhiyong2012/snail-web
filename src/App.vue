@@ -25,6 +25,9 @@ svg.icon {
   background-color: $background-color-theme;
   font-family: Helvetica-Bold, Helvetica;
 }
+.abus-height{
+  min-height: 100vh;
+}
 .abus-icon {
   width: 1em;
   height: 1em;
@@ -51,5 +54,22 @@ svg.icon {
   background-color: #fff;
   border-radius: 0.1rem;
   box-shadow: 0 0 0.1rem #efefef;
+}
+.abus-button-box {
+  margin: 0.4rem 0.3rem 0.5rem;
+  .abus-button {
+    width: 100%;
+    height: 0.8rem;
+    background: rgba(0, 32, 91, 1);
+    border-radius: 0.4rem;
+    text-align: center;
+    line-height: 0.8rem;
+    color: #fff;
+    font-family: Helvetica-Bold, Helvetica;
+    font-weight: bold;
+  }
+}
+.discount {
+  text-decoration: line-through;
 }
 </style>

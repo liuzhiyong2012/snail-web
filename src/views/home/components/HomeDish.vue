@@ -1,21 +1,25 @@
 <template>
   <div>
     <div class="abus-scroller-box">
-        <scroller>
-          <div slot="list" v-for="(item, index) of dishData" :key="index">
-            <div class="s-box s-box-right" v-if="index+1 == dishData.length">
-              <img :src="item.img" :alt="item.name" />
-              <div class="name">{{item.name}}</div>
-              <div class="price">${{item.price}}</div>
+      <scroller>
+        <div slot="list" v-for="(item, index) of recomendList" :key="index">
+          <div class="s-box s-box-right" v-if="index+1 == recomendList.length">
+            <div class="img-box">
+              <img :src="item.SampleImgPath" :alt="item.Name" />
             </div>
-            <div class="s-box" v-else>
-              <img :src="item.img" :alt="item.name" />
-              <div class="name">{{item.name}}</div>
-              <div class="price">${{item.price}}</div>
-            </div>
+            <div class="name">{{item.Name}}</div>
+            <div class="price">${{item.Price}}</div>
           </div>
-        </scroller>
-      </div>
+          <div class="s-box" v-else>
+            <div class="img-box">
+              <img :src="item.SampleImgPath" :alt="item.Name" />
+            </div>
+            <div class="name">{{item.Name}}</div>
+            <div class="price">${{item.Price}}</div>
+          </div>
+        </div>
+      </scroller>
+    </div>
   </div>
 </template>
 
@@ -23,6 +27,7 @@
 import Vue from "vue";
 import Scroller from "@nutui/nutui/dist/packages/scroller/scroller.js"; // 加载构建后的JS
 import "@nutui/nutui/dist/packages/scroller/scroller.css";
+import DishService from "../../../service/dish";
 Scroller.install(Vue);
 export default {
   components: {
@@ -30,6 +35,7 @@ export default {
   },
   data() {
     return {
+      recomendList: [],
       dishData: [
         {
           img: require("../images/food.png"),
@@ -73,23 +79,59 @@ export default {
         }
       ]
     };
+  },
+  created() {
+    this.getDishesRecommendedList();
+  },
+  methods: {
+    getDishesRecommendedList() {
+      DishService.getDishesRecommendedList({}).then(res => {
+        // debugger;
+        // console.log(res);
+        this.recomendList = res.data.RecommendedDishes;
+
+        this.recomendList.forEach((item, index) => {
+          item.BannerImgPath =
+            "http://172.16.125.11:8010/fcf29d23-6af0-45d5-a2e6-90ccc95d0457";
+        });
+
+        /* :version/api/Dishes/List */
+        /* BannerImgPath: "172.16.125.11:8010/133b9f0b-dfa4-4cd9-8ebb-958c44bfbf26"
+		  Id: "e2dc9e2c-6733-e911-b13c-96af276fddb7"
+		  Name: "素食拼盘"
+		  Price: 32
+		  Remark: null
+		  SampleImgPath: "172.16.125.11:8010/eb8ea336-9434-4295-8215-3821c76baba8"
+		  Status: 0
+		  Stocking: 0 */
+        // http://172.16.125.11:8010/50.jpg
+      });
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-
 .s-box {
   float: left;
   // height: 1.6rem;
   margin: 0 0 0 0.28rem;
   border-radius: 0.08rem;
   width: 1.6rem;
-  img {
-    width: 100%;
-    border-radius: 0.1rem;
+  .img-box {
+    display: flex;
+    align-items: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    text-align: center;
     box-shadow: 0 0 0.08rem #efefef;
+    img {
+      width: 100%;
+      border-radius: 0.1rem;
+      
+    }
   }
+
   .name {
     line-height: 0.5rem;
     overflow: hidden;

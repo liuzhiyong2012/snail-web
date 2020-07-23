@@ -1,43 +1,60 @@
 <template>
   <div class="abus-scroller-box news-box">
-    <div v-for="(item,index) in musicData" class="news-list" :key="index">
+    <div v-for="(item,index) in newsList.slice(0,2)" class="news-list" :key="index">
       <div class="news-l">
-        <img :src="item.img" :alt="item.name" />
+        <img :src="item.BannerImg" :alt="item.Title" />
       </div>
       <div class="f1">
         <div class="name">
-          <div class="line-two">{{item.name}}</div>
+          <div class="line-two">{{item.Title}}</div>
         </div>
         <div class="details">
-          <div class="line-one">{{item.details}}</div>
+          <div class="line-one">{{item.ShortDescription}}</div>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  components: {},
-  data() {
-    return {
-      musicData: [
-        {
-          img: require("../images/news.jpg"),
-          name: "Let Me Down Slowly",
-          details: "Alec Benjamin / Alessia Cara"
-        },
-        {
-          img: require("../images/news.jpg"),
-          name:
-            "Let Me Down SlowlyLet Me Down SlowlyLet Me Down SlowlyLet Me Down Slowly",
-          details: "Alec Benjamin / Alessia CaraAlec Benjamin / Alessia Cara"
-        }
-      ]
-    };
-  },
-  created() {}
-};
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+import NewsService from "../../../service/news";
+
+@Component({
+  name: "HomeNews",
+  components: {}
+})
+export default class HomeNews extends Vue {
+  private musicData: Array<any> = [];
+  private newsList: Array<any> = [];
+
+  created() {
+    this.getNewsRecommended();
+    this.musicData = [
+      {
+        img: require("../images/news.jpg"),
+        name: "Let Me Down Slowly",
+        details: "Alec Benjamin / Alessia Cara"
+      },
+      {
+        img: require("../images/news.jpg"),
+        name:
+          "Let Me Down SlowlyLet Me Down SlowlyLet Me Down SlowlyLet Me Down Slowly",
+        details: "Alec Benjamin / Alessia CaraAlec Benjamin / Alessia Cara"
+      }
+    ];
+  }
+  private getNewsRecommended() {
+    NewsService.getNewsRecommended().then((res: any) => {
+      // console.log(res);
+      if (res.code == 200) {
+        this.newsList = res.data.RecommendedNews;
+      } else {
+        this.$toast(res.message);
+      }
+    });
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -62,6 +79,7 @@ export default {
     overflow: hidden;
     img {
       width: 100%;
+      height: 100%;
     }
   }
   .f1 {
