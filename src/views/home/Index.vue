@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <van-sticky>
+   <!-- <van-sticky>
       <van-nav-bar title="Airbus" @click-right="showPopup">
         <template #right>
           <van-icon name="scan" size="18" />
@@ -9,7 +9,11 @@
           <van-icon name="chat" size="18" />
         </template>
       </van-nav-bar> 
-    </van-sticky>
+    </van-sticky> -->
+	<div class="home-title">
+		<home-title @stepTo="stepToPage($event)"></home-title>
+	</div>
+	
     <van-popup v-model="show">
       <div class="popup-toast">
         <div class="title">Connet To The Internet</div>
@@ -108,8 +112,10 @@
 
 <script>
 // @ is an alias to /src
+import HomeTitle from "./components/HomeTitle";
 import HomeComponents from "./components/HomeComponents";
 import HomeFlight from "./components/HomeFlight";
+
 import HomeDish from "@/views/home/components/HomeDish";
 import HomeShopping from "@/views/home/components/HomeShopping";
 import HomeMusic from "@/views/home/components/HomeMusic";
@@ -121,6 +127,7 @@ import HomeNews from "@/views/home/components/HomeNews";
 export default {
   name: "Home",
   components: {
+	HomeTitle,
     HomeFlight,
     HomeDish,
     HomeShopping,
@@ -202,7 +209,9 @@ export default {
 			music:'',
 			game:'',
 			video:'',
-			news:''
+			news:'',
+			user:'userIndex',
+			message:'messageIndex',
 		};
 		
 		if(routeMap[pageType]){
