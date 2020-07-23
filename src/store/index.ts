@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import Login from './login';
+import Dish from './dish';
 
 Vue.use(Vuex)
 
@@ -14,7 +15,8 @@ export default new Vuex.Store<any>({
   actions: {
   },
   modules: {
-	login:Login
+	login:Login,
+	dish:Dish
   }
 })
 

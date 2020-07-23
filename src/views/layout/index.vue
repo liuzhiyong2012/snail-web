@@ -22,6 +22,7 @@ export default class HelloWorld extends Vue {
 <style lang="scss">
 	@import '../../assets/style/index.scss';
 	
+	
 	.abus-layout-ctn{
 		
 	}

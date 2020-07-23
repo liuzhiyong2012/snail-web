@@ -8,15 +8,6 @@
 		  </van-swipe-item>
 		</van-swipe>
 		
-		<!-- /* BannerImgPath: "172.16.125.11:8010/133b9f0b-dfa4-4cd9-8ebb-958c44bfbf26"
-		 Id: "e2dc9e2c-6733-e911-b13c-96af276fddb7"
-		 Name: "素食拼盘"
-		 Price: 32
-		 Remark: null
-		 SampleImgPath: "172.16.125.11:8010/eb8ea336-9434-4295-8215-3821c76baba8"
-		 Status: 0
-		 Stocking: 0 */ -->
-		
 		<section class="dishes-list">
 			<div v-for="(item,index) in dishesList" class="dishes-item" :key="index">
 				<div class="img-ctn" :style="{backgroundImage:`url(${item.BannerImgPath})`}">
@@ -34,7 +25,7 @@
 							<span>QTY</span>
 							<span>32</span>
 						</div>
-						<div class="order-btn">
+						<div class="order-btn" @click="stepToDetail(item)">
 							order
 						</div>
 					</div>
@@ -46,14 +37,13 @@
 </template>
 
 <script lang="ts">
-// import VoyageInfo from './components/VoyageInfo.vue'; 
 import { Component, Prop, Vue } from 'vue-property-decorator';  
 import DishService from "../../service/dish";
 
 @Component({
   name: 'DishIndex',
   components:{    
-	  // VoyageInfo  
+	  
   }  
 })
 export default class DishIndex extends Vue {  
@@ -69,41 +59,43 @@ export default class DishIndex extends Vue {
   
   private getDishesRecommendedList() {   
 	  DishService.getDishesRecommendedList({}).then((res:any)=>{
-		  // debugger;
-		  this.recomendList = res.RecommendedDishes;
 		  
-		  this.recomendList.forEach((item,index)=>{
-			  item.BannerImgPath = 'http://172.16.125.11:8010/50.jpg';
-		  });
 		  
-		  /* :version/api/Dishes/List */
-		 /* BannerImgPath: "172.16.125.11:8010/133b9f0b-dfa4-4cd9-8ebb-958c44bfbf26"
-		  Id: "e2dc9e2c-6733-e911-b13c-96af276fddb7"
-		  Name: "素食拼盘"
-		  Price: 32
-		  Remark: null
-		  SampleImgPath: "172.16.125.11:8010/eb8ea336-9434-4295-8215-3821c76baba8"
-		  Status: 0
-		  Stocking: 0 */
-		  // http://172.16.125.11:8010/50.jpg
+		  if(res.code == 200){
+		  		this.recomendList = res.data.RecommendedDishes;
+		  		this.recomendList.forEach((item,index)=>{
+		  			item.BannerImgPath = 'http://172.16.125.11:8010/50.jpg';
+		  		});
+		  }
 		  
 	  });
   }
   
   private getDishesList() {
 	  DishService.getDishesList({}).then((res:any)=>{
-		  // debugger;
-	  		  this.dishesList = res.Dishes;
-	  		  
-	  		  this.dishesList.forEach((item,index)=>{
-	  			  item.BannerImgPath = 'http://172.16.125.11:8010/50.jpg';
-	  		  });
-	  		  
-	  		 
-	  		  
+		  
+		  if(res.code == 200){
+			  this.dishesList = res.data.Dishes;
+			  this.dishesList.forEach((item,index)=>{
+			  	  			  item.BannerImgPath = 'http://172.16.125.11:8010/50.jpg';
+			  });
+		  }
 	  });
 	  
   }
+  
+  private stepToDetail(item:any){
+	  this.$router.push({
+		  // path:'/dish/detail',
+		  name:'dishDetail',
+		  params:{
+			  dishInfo:item
+		  }
+	  });
+	  
+  }
+  
+  
 }
 
 </script>

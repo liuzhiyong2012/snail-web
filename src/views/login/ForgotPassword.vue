@@ -132,7 +132,6 @@ export default class ForgotPassword extends Vue {
     //JSON.stringify(data)
     LoginService.postCheckPhone(data)
       .then((res: any) => {
-        console.log(res);
         if (res.code == 200) {
           this.userId = res.data.id;
           this.question = res.data.question;
