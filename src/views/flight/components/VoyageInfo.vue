@@ -1,48 +1,11 @@
 <template>
 	<section class="voyage-info-main-ctn">
 		<div class="top-ctn">
-			<div class="flight-number">Visia line Area</div>
-			<div class="baseinfo-ctn">
-				<span class="seat-ctn">
-					<span>Seat No:</span>
-					<span>C30</span>
-					<span>G</span>
-				</span>
-
-				<span class="temperature-ctn">26'C</span>
-
-				<span class="remaining-ctn">
-					<span>Remaining:</span>
-					<span>2hours 10min</span>
-				</span>
-			</div>
-
-			<div class="point-ctn">
-				<div class="point-item start-point">
-					<div class="address">ShenZhen T3</div>
-					<time class="time">09:18</time>
-				</div>
-
-				<div class="airplane"><img src="../images/index/plane.png" alt="" /></div>
-
-				<div class="point-item end-point">
-					<div class="address">ShenZhen T3</div>
-					<time class="time">09:18</time>
-				</div>
-			</div>
+			 <abus-flight></abus-flight>
 		</div>
 
 		<div class="bottom-ctn">
-			<van-swipe class="swipe-ctn" :autoplay="3000" indicator-color="#cccccc">
-			  <van-swipe-item class="swipe-item">
-				   <div  class="chart-ctn" ref="chartCtn"></div>
-			  </van-swipe-item>
-			  <van-swipe-item class="swipe-item">
-				   <div  id="map" class="map-ctn" ref="mapCtn">
-				  
-				   </div>
-			  </van-swipe-item>
-			</van-swipe>
+			<div  class="chart-ctn" ref="chartCtn"></div>
 			
 		</div>
 	</section>
@@ -54,7 +17,7 @@
 			
 		},
 		"en":{
-			
+			  
 		}
 	}
 </i18n>
@@ -62,65 +25,28 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import echarts from 'echarts';
-
-import "ol/ol.css";
-import { Map, View } from "ol";
-import TileLayer from "ol/layer/Tile";
-import OSM from "ol/source/OSM";
+import AbusFlight from  '../../../components/AbusFlight.vue';
 
 
-/* this.chart = echarts.init(document.getElementById(id));
-                        this.chart.clear();
 
-                        const optionData = {
-                            xAxis: {
-                                type: 'category',
-                                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-                            },
-                            yAxis: {
-                                type: 'value'
-                            },
-                            series: [{
-                                data: [820, 932, 901, 934, 1290, 1330, 1320],
-                                type: 'line',
-                                smooth: true
-                            }]
-                        };
-
-                        this.chart.setOption(optionData); */
-
-@Component
+@Component({
+	name:'VoyageInfo',
+	components:{
+		AbusFlight
+	}
+})
 export default class VoyageInfo extends Vue {
-	// @Prop() private msg!: string;
-	
 	private chart:any;
 	private map:any;
 	
-	mounted() {
-	   this.renderCharts();
-	   this.renderMap();
+	private mounted() {
+	   // this.renderCharts();
+	   // this.renderMap();
 	}
 	
-	private renderMap(){
-		 var mapcontainer = this.$refs.mapCtn;
-		    this.map = new Map({
-		      target: "map",
-		      layers: [
-		        new TileLayer({
-		          source: new OSM()
-		        })
-		      ],
-		      view: new View({
-		        projection: "EPSG:4326",    //使用这个坐标系
-		        center: [114.064839,22.548857],  //深圳
-		        zoom: 12
-		      })
-		    });
-	}
-	
-	private renderCharts() {
+	public renderCharts() {
 		  this.chart = echarts.init((this as any).$refs.chartCtn);
-		                          this.chart.clear();
+		   this.chart.clear();
 		  
 		  const optionData = {
 			  xAxis: {
@@ -160,7 +86,6 @@ export default class VoyageInfo extends Vue {
 	background: #ffffff;
 
 	.top-ctn {
-		padding:0 0.54rem;
 		margin-bottom: 0.20rem;
 		.flight-number {
 			font-size: 0.32rem;
