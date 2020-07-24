@@ -28,7 +28,7 @@
           <div class="cell">
             <div class="cell-l">12323123</div>
             <div class="cell-r">$12332</div>
-          </div> 
+          </div>
           <div class="cell">
             <div class="cell-l">12323123</div>
             <div class="cell-r">$12332</div>
@@ -68,35 +68,39 @@
       color="rgb(0,32,91)"
       title-active-color="rgb(0,32,91)"
     >
-      <van-tab v-for="(item,index) in navTar" :title="item.title" title-active-color="#3056EF" :key="index">
+      <van-tab
+        v-for="(item,index) in navTar"
+        :title="item.title"
+        title-active-color="#3056EF"
+        :key="index"
+      >
         <div v-if="item.title == 'Flight'" class="flight">
-          
-		  <home-components :titleConfig ="navTar[0]" @stepTo="stepToPage($event)">
-		    <home-flight></home-flight>
-		  </home-components>
+          <home-components :titleConfig="navTar[0]" @stepTo="stepToPage($event)">
+            <home-flight></home-flight>
+          </home-components>
         </div>
         <div v-else-if="item.title == 'Dish'">
-          <home-components :titleConfig ="navTar[1]" @stepTo="stepToPage($event)">
+          <home-components :titleConfig="navTar[1]" @stepTo="stepToPage($event)">
             <home-dish />
           </home-components>
         </div>
         <div v-else-if="item.title == 'Shopping'">
-          <home-components :titleConfig ="navTar[2]" @stepTo="stepToPage($event)">
+          <home-components :titleConfig="navTar[2]" @stepTo="stepToPage($event)">
             <home-shopping />
           </home-components>
         </div>
         <div v-else-if="item.title == 'Music'">
-          <home-components :titleConfig ="navTar[3]" @stepTo="stepToPage($event)">
+          <home-components :titleConfig="navTar[3]" @stepTo="stepToPage($event)">
             <home-music />
           </home-components>
         </div>
         <div v-else-if="item.title == 'Game'">
-          <home-components :titleConfig ="navTar[4]" @stepTo="stepToPage($event)">
+          <home-components :titleConfig="navTar[4]" @stepTo="stepToPage($event)">
             <home-game :imgData="imagesData" />
           </home-components>
         </div>
         <div v-else-if="item.title == 'Video'">
-          <home-components :titleConfig ="navTar[5]" @stepTo="stepToPage($event)">
+          <home-components :titleConfig="navTar[5]" @stepTo="stepToPage($event)">
             <home-video />
           </home-components>
         </div>
@@ -135,59 +139,60 @@ export default {
     HomeGame,
     HomeVideo,
     HomeNews,
-    HomeComponents
+    HomeComponents,
   },
   data() {
     return {
       show: false,
       showService: true,
       Dish: "12312",
-      navTar: [{
-		 title:'Flight',
-		 value:'flight'
-	  },
-	  {
-	  		 title:'Dish',
-	  		 value:'dish'
-	  },
-	  {
-	  		 title:'Shopping',
-	  		 value:'shopping'
-	  },
-	  {
-	  		 title:'Music',
-	  		 value:'music'
-	  },
-	  {
-	  		 title:'Game',
-	  		 value:'game'
-	  },
-	  {
-	  		 title:'Video',
-	  		 value:'video'
-	  },
-	  {
-	  		 title:'News',
-	  		 value:'news'
-	  }
-	  ],
+      navTar: [
+        {
+          title: "Flight",
+          value: "flight",
+        },
+        {
+          title: "Dish",
+          value: "dish",
+        },
+        {
+          title: "Shopping",
+          value: "shopping",
+        },
+        {
+          title: "Music",
+          value: "music",
+        },
+        {
+          title: "Game",
+          value: "game",
+        },
+        {
+          title: "Video",
+          value: "video",
+        },
+        {
+          title: "News",
+          value: "news",
+        },
+      ],
       imagesData: [
         {
           img: require("./images/game.jpg"),
           name: "name0",
-          details: "details"
+          details: "details",
         },
         {
           img: require("./images/game.jpg"),
           name: "name",
-          details: "details"
+          details: "details",
         },
         {
           img: require("./images/game.jpg"),
           name: "name",
-          details: "details"
-        }
-      ]
+          details: "details",
+        },
+      ],
     };
   },
   created() {
@@ -224,11 +229,11 @@ export default {
     showPopup() {
       // this.show = true;
       this.$router.push({
-        name: "internet"
+        name: "internet",
       });
-    }
-  }
-}; 
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
@@ -238,7 +243,7 @@ export default {
 .van-tab--active {
   font-weight: 600;
 }
-.van-popup {  
+.van-popup {
   background-color: rgba(255, 255, 255, 0);
 }
 .popup-toast {

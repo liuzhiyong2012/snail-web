@@ -1,7 +1,7 @@
 import VueRouter, {
     RouteConfig
 } from 'vue-router';
-import Shopping from '../../views/shopping/index.vue';
+import Shopping from '../../views/shopping/Index.vue';
 import ShoppingDetails from '../../views/shopping/ShoppingDetails.vue';
 import ShoppingCart from '../../views/shopping/ShoppingCart.vue';
 
