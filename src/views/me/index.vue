@@ -1,5 +1,6 @@
 <template>
   <div class="me">
+	<abus-title title="个人中心" backRootName="home"></abus-title>
     <div class="user-info">
       <div class="user">
         <div class="user-img">
@@ -83,6 +84,7 @@
         </div>
       </router-link>
     </div>
+	
     <div class="cell-group mt2">
       <div class="cell-item">
         <div class="title">Privacy policy</div>
@@ -101,11 +103,27 @@
         </div>
       </div>
     </div>
+	
   </div>
 </template>
 
-<script>
-export default {};
+<script lang="ts">
+import AbusTitle from '../../components/AbusTitle.vue';
+import {Vue,Prop,Component}  from 'vue-property-decorator';
+
+@Component({
+	name:'meIndex',
+	components:{
+		AbusTitle
+	}
+})
+export default class meIndex extends Vue{
+
+	
+	
+	
+	
+};
 </script>
 
 <style lang="scss" scoped>

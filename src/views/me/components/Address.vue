@@ -1,4 +1,5 @@
 <template>
+
   <div class="abus-height">
     <div class="enter-box">
       <van-field
@@ -9,6 +10,7 @@
         placeholder="Please enter the address"
         show-word-limit
       />
+
     </div>
     <div class="abus-button-box">
       <div class="abus-button">Sure</div>

@@ -31,7 +31,6 @@ export default {
     setUserInfo(context: any, state: any){
       context.commit('setName', state.name)
       context.commit('setToken', state.token)
-      
     }
   }
 }

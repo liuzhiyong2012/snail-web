@@ -15,8 +15,8 @@ time, mark, audio, video,input {
     padding: 0;
     border: 0;
     // font-size: 100%;
-	font-size: 14px;
-	line-height: 20px;
+	font-size: 0.14rem;
+	line-height: 0.20rem;
     font: inherit;
     vertical-align: baseline;
 }
@@ -27,6 +27,7 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
     line-height: 1;
+	background: #f8f6f9;
 }
 ol, ul {
     list-style: none;
