@@ -36,7 +36,7 @@
 		@Prop({default:'qqq'})
 		private title?:string;
 		
-		@Prop({default:'qqq'})
+		@Prop({default:''})
 		private backRootName?:string;
 			
 		@Prop({default:()=>{
