@@ -247,7 +247,6 @@ export default class ForgotPassword extends Vue {
         top: 0.6rem;
         width: 3rem;
         font-size: 0.24rem;
-        font-family: Helvetica;
         color: rgba(51, 51, 51, 1);
         line-height: 0.24rem;
       }
@@ -295,7 +294,6 @@ export default class ForgotPassword extends Vue {
           padding: 0.3rem;
           height: 1.6rem;
           background-color: #fff;
-          font-family: Helvetica;
           color: rgba(51, 51, 51, 1);
           line-height: 1rem;
           .title {

@@ -257,7 +257,6 @@ export default {
     background-color: #00205b;
     text-align: center;
     font-size: 0.36rem;
-    font-family: Helvetica-Bold, Helvetica;
     font-weight: bold;
     color: rgba(255, 255, 255, 1);
     line-height: 1.2rem;
@@ -272,7 +271,6 @@ export default {
     padding: 0.3rem;
     background-color: #fff;
     font-size: 0.28rem;
-    font-family: Helvetica;
     color: rgba(51, 51, 51, 1);
     line-height: 0.42rem;
     word-break: normal;
@@ -287,7 +285,6 @@ export default {
     margin: 0 0.3rem;
     background-color: #00205b;
     font-size: 0.34rem;
-    font-family: Helvetica-Bold, Helvetica;
     font-weight: bold;
     color: rgba(255, 255, 255, 1);
     line-height: 0.74rem;
@@ -311,13 +308,11 @@ export default {
     background: #f2f4f7;
     line-height: 0.7rem;
     font-size: 0.28rem;
-    font-family: Helvetica-Bold, Helvetica;
     font-weight: bold;
     color: rgba(0, 32, 91, 1);
     .now {
       margin: 0 0.2rem 0 0;
       font-size: 0.28rem;
-      font-family: Helvetica;
       color: rgba(51, 51, 51, 1);
       font-weight: 400;
     }
@@ -332,14 +327,12 @@ export default {
     margin: 0 0 0.3rem 0;
     display: flex;
     font-size: 0.3rem;
-    font-family: Helvetica;
     color: #2e2e2e;
     line-height: 0.36rem;
     .cell-r {
       flex: 1;
       text-align: right;
       font-size: 0.32rem;
-      font-family: Helvetica-Bold, Helvetica;
       font-weight: bold;
       color: rgba(0, 32, 91, 1);
     }
@@ -367,7 +360,6 @@ export default {
     }
     .t-bold {
       font-size: 0.35rem;
-      font-family: Helvetica-Bold, Helvetica;
       font-weight: bold;
       color: rgba(46, 46, 46, 1);
       line-height: 0.42rem;

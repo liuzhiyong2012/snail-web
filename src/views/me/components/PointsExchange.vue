@@ -100,7 +100,6 @@ export default class ShoppingIndex extends Vue {
       }
       .name {
         padding: 0.14rem 0.2rem;
-        font-family: Helvetica;
         color: #000;
         text-overflow: -o-ellipsis-lastline;
         overflow: hidden;

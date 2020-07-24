@@ -64,7 +64,6 @@ export default {
 
   .title {
     font-size: 0.45rem;
-    font-family: Helvetica-Bold, Helvetica;
     font-weight: bold;
     color: rgba(46, 46, 46, 1);
     line-height: 0.6rem;
@@ -82,14 +81,12 @@ export default {
     line-height: 0.58rem;
     .qty {
       font-size: 0.28rem;
-      font-family: Helvetica;
       color: rgba(96, 116, 153, 1);
     }
     .f1 {
       flex: 1;
       text-align: right;
       font-size: 0.5rem;
-      font-family: Helvetica-Bold, Helvetica;
       font-weight: bold;
       color: rgba(46, 46, 46, 1);
       line-height: 0.58rem;
@@ -113,7 +110,6 @@ export default {
       .f1 {
         flex: 1;
         font-size: 0.28rem;
-        font-family: Helvetica;
         color: rgba(51, 51, 51, 1);
         line-height: 0.58rem;
       }
@@ -135,14 +131,12 @@ export default {
   .top {
     padding: 0 0 0.2rem 0;
     font-size: 0.28rem;
-    font-family: Helvetica-Bold, Helvetica;
     font-weight: bold;
     color: rgba(51, 51, 51, 1);
     line-height: 0.26rem;
   }
   .details {
     font-size: 0.24rem;
-    font-family: Helvetica;
     color: rgba(51, 51, 51, 1);
     line-height: 0.36rem;
   }
@@ -157,7 +151,6 @@ export default {
     text-align: center;
     line-height: 0.8rem;
     color: #fff;
-    font-family: Helvetica-Bold, Helvetica;
     font-weight: bold;
   }
 }

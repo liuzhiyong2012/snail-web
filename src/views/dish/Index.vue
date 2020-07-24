@@ -193,7 +193,6 @@ export default class DishIndex extends Vue {
 							 .name-ctn{
 								 height: 0.70rem;
 								 font-size:0.28rem;
-								 font-family:Helvetica;
 								 color:rgba(0,0,0,1);
 								 line-height:0.34rem;
 								 margin-bottom: 0.14rem;
