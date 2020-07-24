@@ -8,11 +8,11 @@
       sticky
     >
       <van-tab v-for="(item,index) in tabData" :title="item" :key="index">
-        <div v-if="item == 'Dish'" class>
+        <div v-if="item == 'Dish'" >
             <my-dish-order></my-dish-order>
         </div>
-        <div v-else-if="item == 'Shopping'" class><my-shopping-order></my-shopping-order></div>
-        <div v-else-if="item == 'Internet'" class><my-internet-order></my-internet-order></div>
+        <div v-else-if="item == 'Shopping'" ><my-shopping-order></my-shopping-order></div>
+        <div v-else-if="item == 'Internet'" ><my-internet-order></my-internet-order></div>
       </van-tab>
     </van-tabs>
   </div>
@@ -26,7 +26,7 @@ export default {
   components: {
     MyDishOrder,
     MyShoppingOrder,
-    MyInternetOrder,
+    MyInternetOrder
   },
   data() {
     return {
