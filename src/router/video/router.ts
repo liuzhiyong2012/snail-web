@@ -1,7 +1,7 @@
 import VueRouter, {
     RouteConfig
 } from 'vue-router';
-import Video from '../../views/video/index.vue';
+import Video from '../../views/video/Index.vue';
 import VideoPlay from '../../views/video/Play.vue';
 
 

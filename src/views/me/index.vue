@@ -17,60 +17,72 @@
           <div class="phone">1357023232</div>
         </div>
       </div>
-      <div class="exchange">
-        exchange
-        <div class="icon-box">
-          <span class="i-icon"></span>
-          123123
+      <router-link to="/me/pointsexchange">
+        <div class="exchange">
+          exchange
+          <div class="icon-box">
+            <span class="i-icon"></span>
+            123123
+          </div>
         </div>
-      </div>
+      </router-link>
     </div>
     <div class="cell-group mt2">
-      <div class="cell-item">
-        <div class="title">My order</div>
-        <div class="f1">
-          <svg class="icon icon-right" aria-hidden="true">
-            <use xlink:href="#icon-youjiantou_1" />
-          </svg>
+      <router-link to="/me/myorder">
+        <div class="cell-item">
+          <div class="title">My order</div>
+          <div class="f1">
+            <svg class="icon icon-right" aria-hidden="true">
+              <use xlink:href="#icon-youjiantou_1" />
+            </svg>
+          </div>
         </div>
-      </div>
-      <div class="cell-item">
-        <div class="title">Shopping address</div>
-        <div class="f1">
-          <div class="icon-right-2">668 Huangshan qweqwe</div>
-          <svg class="icon icon-right" aria-hidden="true">
-            <use xlink:href="#icon-youjiantou_1" />
-          </svg>
+      </router-link>
+      <router-link to="/me/address">
+        <div class="cell-item">
+          <div class="title">Shopping address</div>
+          <div class="f1">
+            <div class="icon-right-2">668 Huangshan qweqwe</div>
+            <svg class="icon icon-right" aria-hidden="true">
+              <use xlink:href="#icon-youjiantou_1" />
+            </svg>
+          </div>
         </div>
-      </div>
-      <div class="cell-item">
-        <div class="title">Payment method</div>
-        <div class="f1">
-          <svg class="icon icon-right-1" aria-hidden="true">
-            <use xlink:href="#icon-wechatpay" />
-          </svg>
-          <svg class="icon icon-right" aria-hidden="true">
-            <use xlink:href="#icon-youjiantou_1" />
-          </svg>
+      </router-link>
+      <router-link to="/me/payment">
+        <div class="cell-item">
+          <div class="title">Payment method</div>
+          <div class="f1">
+            <svg class="icon icon-right-1" aria-hidden="true">
+              <use xlink:href="#icon-wechatpay" />
+            </svg>
+            <svg class="icon icon-right" aria-hidden="true">
+              <use xlink:href="#icon-youjiantou_1" />
+            </svg>
+          </div>
         </div>
-      </div>
-      <div class="cell-item">
-        <div class="title">Other account number</div>
-        <div class="f1">
-          <svg class="icon icon-right" aria-hidden="true">
-            <use xlink:href="#icon-youjiantou_1" />
-          </svg>
+      </router-link>
+      <router-link to="/me/thirdaccount">
+        <div class="cell-item">
+          <div class="title">Other account number</div>
+          <div class="f1">
+            <svg class="icon icon-right" aria-hidden="true">
+              <use xlink:href="#icon-youjiantou_1" />
+            </svg>
+          </div>
         </div>
-      </div>
-      <div class="cell-item">
-        <div class="title">language</div>
-        <div class="f1">
-          <div class="icon-right-2">English</div>
-          <svg class="icon icon-right" aria-hidden="true">
-            <use xlink:href="#icon-youjiantou_1" />
-          </svg>
+      </router-link>
+      <router-link to="/me/lang">
+        <div class="cell-item">
+          <div class="title">language</div>
+          <div class="f1">
+            <div class="icon-right-2">English</div>
+            <svg class="icon icon-right" aria-hidden="true">
+              <use xlink:href="#icon-youjiantou_1" />
+            </svg>
+          </div>
         </div>
-      </div>
+      </router-link>
     </div>
 	
     <div class="cell-group mt2">
@@ -142,7 +154,7 @@ export default class meIndex extends Vue{
       }
       .phone {
         width: 100%;
-        font-size: .26rem;
+        font-size: 0.26rem;
         color: #999;
       }
     }
