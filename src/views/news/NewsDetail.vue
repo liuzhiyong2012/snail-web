@@ -36,27 +36,27 @@ export default {
       loveTrue: require("./images/love_true.png"),
       loveFalse: require("./images/love_false.png"),
       newsDetail: {
-        id: "3249853",
-        time: "2020.03.04",
-        isCollect: false,
-        img: require("./images/news.jpg"),
-        name:
-            "The 2020 Olympic Games will be postponed Other space data indica Other space data indica The 2020 Olympic Games will be postponed Other space data indica Other space data indica",
-        details: `A private healthcare clinic in London has defended its decision to charge £375 ($434) for a coronavirus test.<br />
+        // id: "3249853",
+        // time: "2020.03.04",
+        // isCollect: false,
+        // img: require("./images/news.jpg"),
+        // name:
+        //   "The 2020 Olympic Games will be postponed Other space data indica Other space data indica The 2020 Olympic Games will be postponed Other space data indica Other space data indica",
+        // details: `A private healthcare clinic in London has defended its decision to charge £375 ($434) for a coronavirus test.<br />
 
-                The Private Harley Street Clinic said the price reflected "the costs of these logistic and clinical services that we provide" and added that it was offering free tests for NHS staff.
+        //         The Private Harley Street Clinic said the price reflected "the costs of these logistic and clinical services that we provide" and added that it was offering free tests for NHS staff.
 
-                It followed newspaper reports that the clinic had sold several thousand at full price. <br />
+        //         It followed newspaper reports that the clinic had sold several thousand at full price. <br />
 
-                According to its website, the test is no longer available. <br />
+        //         According to its website, the test is no longer available. <br />
 
-                In a statement released on Monday, the clinic said it was "pausing" the service now that the UK 
-                government has committed to carrying out more tests nationwide, with a commitment to carrying out 25,000 tests a day within four weeks. <br>
+        //         In a statement released on Monday, the clinic said it was "pausing" the service now that the UK 
+        //         government has committed to carrying out more tests nationwide, with a commitment to carrying out 25,000 tests a day within four weeks. <br>
 
-                Chief executive Dr Mark Ali did not respond to the BBC's request for comment. <br>
+        //         Chief executive Dr Mark Ali did not respond to the BBC's request for comment. <br>
 
-                It is believed the test offered was made by a firm called Randox Health, which was selling them online for £120 each, although according to its website it is currently out of stock.
-                Randox Health was also contacted by the BBC.`,
+        //         It is believed the test offered was made by a firm called Randox Health, which was selling them online for £120 each, although according to its website it is currently out of stock.
+        //         Randox Health was also contacted by the BBC.`,
       },
       bannerData: [
         {
@@ -73,12 +73,18 @@ export default {
     };
   },
   computed: {
-    Newsid() {
-      return this.$route.query.Newsid;
+    NewsItem() {
+      return JSON.parse(this.$route.query.newsItem);
     },
   },
   created() {
     // this.getNewDetails();
+    this.newsDetail = this.NewsItem;
+    this.bannerData = this.NewsItem;
+    this.bannerData.forEach(item=>{
+      item.img = item.BannerImg
+    });
+
   },
   methods: {
     goBack() {
@@ -89,7 +95,7 @@ export default {
     },
     // async getNewDetails() {
     //   let res = await this.httpPost("News/GetNewsDetail", {
-    //     Newsid: this.Newsid
+    //     NewsItem: this.NewsItem
     //   });
     //   if (res) {
     //     console.log(res);

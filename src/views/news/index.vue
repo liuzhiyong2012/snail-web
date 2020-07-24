@@ -12,23 +12,6 @@
       <banner :bannerData="bannerData" />
     </div>
 
-    <!-- <h2 class="abus-block-title">
-      <van-cell center title="Filter" icon="filter-o">
-        <span>Sort by:</span>
-        <template #right-icon>
-          <div class="news-filter">
-            <van-dropdown-menu>
-              <van-dropdown-item
-                v-model="filterValue"
-                :options="filterOption"
-                @change="filterFun"
-              />
-            </van-dropdown-menu>
-          </div>
-        </template>
-      </van-cell>
-    </h2> -->
-
     <van-tabs
       v-model="active"
       @click="changeTab()"
@@ -61,6 +44,7 @@
 <script>
 import Banner from "@/components/banner";
 import NewsListItem from "@/views/news/components/NewsListItem";
+import NewsService from "../../service/news";
 export default {
   components: {
     Banner,
@@ -68,31 +52,7 @@ export default {
   },
   data() {
     return {
-      bannerData: [
-        {
-          img: require("./images/news_banner.png"),
-          name: "goodsName",
-          details: "goodsDetails",
-        },
-        {
-          img: require("./images/news_banner.png"),
-          name: "goodsName",
-          details: "goodsDetails",
-        },
-        {
-          img: require("./images/news_banner.png"),
-          name: "goodsName",
-          details: "goodsDetails",
-        },
-      ],
-
-      // filterValue: 0,
-      // filterOption: [
-      //   { text: "recommend", value: 0 },
-      //   { text: "default", value: 1 },
-      //   { text: "hot-most", value: 2 },
-      // ],
-
+      bannerData: [],
       active: 0,
       navTar: ["所有", "收藏", "实事要闻", "娱乐新闻", "体育新闻"],
 
@@ -107,48 +67,14 @@ export default {
           details:
             "The duo have had a t Other space data indica 工会 Other space data indica",
         },
-        {
-          id: "32453654",
-          isCollect: true,
-          type: 2,
-          img: require("./images/goods.jpg"),
-          name: "Taylor Swift and Kanye West's phone call leaks",
-          details: "Thousands of passengers",
-        },
-        {
-          id: "32654453",
-          isCollect: false,
-          type: 2,
-          img: require("./images/news_banner.png"),
-          name: "Earth's deepest ice canyon vulnerable to melting",
-          details: "Other space data indica",
-        },
-        {
-          id: "32456543",
-          isCollect: false,
-          type: 3,
-          img: require("./images/news.jpg"),
-          name: "How did Australia's Ruby Princess cruise happen?",
-          details: "Other space data indica GREWHG ",
-        },
-        {
-          id: "3243253",
-          isCollect: true,
-          type: 4,
-          img: require("./images/news.jpg"),
-          name:
-            "Tom Hanks and Rita Wilson ‘feel better’ after coron gfdgf grdg ",
-          details: "Other space data indica 规范和投入让他",
-        },
       ],
-      newsListBackup:[], //新闻列表备份
+      newsListBackup: [], //新闻列表备份
     };
   },
   computed: {},
   watch: {},
   created() {
-    window.scrollTo(0, 0);
-    this.newsListBackup = this.newsList;
+    this.getNewsList();
   },
   mounted() {},
   destroyed() {},
@@ -156,45 +82,46 @@ export default {
     goBack() {
       this.$router.go(-1);
     },
-    // filterFun(val) {
-    //   console.log("11", val);
-    //   console.log("22", this.filterValue);
-    // },
-    changeTab(){
+
+    getNewsList() {
+      NewsService.getVideoList({}).then((res) => {
+        if (res.code == "200") {
+          this.newsList = res.data.News;
+          this.newsListBackup = res.data.News;
+          this.bannerData = res.data.News;
+          this.bannerData.forEach((item) => {
+            item.img = item.BannerImg;
+          });
+        }
+      });
+    },
+
+    changeTab() {
       console.log(this.active);
       this.newsListBackup = [];
-      if(this.active == 0){
-        this.newsListBackup = this.newsList
-      }else if (this.active == 1){
-        this.newsList.forEach(item=>{
-          if(item.isCollect == true){
-            this.newsListBackup.push(item)
+      if (this.active == 0) {
+        this.newsListBackup = this.newsList;
+      } else if (this.active == 1) {
+        this.newsList.forEach((item) => {
+          if (item.isCollect == true) {
+            this.newsListBackup.push(item);
           }
         });
-      }else{
-        this.newsList.forEach(item=>{
-          if(this.active == item.type){
-            this.newsListBackup.push(item)
+      } else {
+        this.newsList.forEach((item) => {
+          if (this.active == item.type) {
+            this.newsListBackup.push(item);
           }
-        })
+        });
       }
     },
-    // goToDetail(id) {
-    //   //进入新闻详情
-    //   this.$router.push({
-    //     name: "newsDetail",
-    //     query: {
-    //       newsId: id,
-    //     },
-    //   });
-    // },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .abus-scroller-box {
-  margin: 0.3rem auto 0.1rem;
+  margin: 0.2rem auto;
   padding: 0;
   width: 93%;
   overflow: hidden;

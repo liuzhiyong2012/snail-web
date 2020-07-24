@@ -1,23 +1,23 @@
 <template>
   <li class="news-list-wrap">
     <div class="news-list-item">
-      <div class="item-img" @click="goToDetail(recommedNewsItem.id)">
-        <img v-lazy="recommedNewsItem.img" />
+      <div class="item-img" @click="goToDetail(recommedNewsItem)">
+        <img v-lazy="recommedNewsItem.ThumbsImg[0]" />
       </div>
 
       <div class="item-info">
-        <div class="name" @click="goToDetail(recommedNewsItem.id)">
-          <div class="line-two">{{ recommedNewsItem.name }}</div>
+        <div class="name" @click="goToDetail(recommedNewsItem)">
+          <div class="line-two">{{ recommedNewsItem.Title }}</div>
         </div>
         <div class="author">
           <div class="line-one">
-            <span class="author-left-info">{{ recommedNewsItem.details }}</span>
+            <span class="author-left-info">{{ recommedNewsItem.ShortDescription }}</span>
 
-            <div @click="changeHot(recommedNewsItem.id)">
-              <span class="author-right-heart" v-if="recommedNewsItem.isCollect">
+            <div @click="changeHot(recommedNewsItem.Id)">
+              <span class="author-right-heart" v-show="recommedNewsItem.isCollect ==true">
                 <img :src="loveTrue" alt=""/>
               </span>
-              <span class="author-right-heart" v-else>
+              <span class="author-right-heart" v-show="recommedNewsItem.isCollect ==false">
                 <img :src="loveFalse" alt=""/>
               </span>
             </div>
@@ -44,12 +44,12 @@ export default {
     },
   },
   methods: {
-    goToDetail(id) {
+    goToDetail(item) {
       //进入新闻详情
       this.$router.push({
         name: "newsDetail",
         query: {
-          newsId: id,
+          newsItem: JSON.stringify(item)
         },
       });
     },
