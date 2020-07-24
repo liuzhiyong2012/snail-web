@@ -16,31 +16,31 @@ const routes: Array < RouteConfig > = [
 		children: []
     },
 	{
-		path: '/address',
+		path: '/me/address',
 		name: 'address',
 		component: Address,
 		children: []
     },
 	{
-		path: '/payment',
+		path: '/me/payment',
 		name: 'payment ',
 		component: Payment,
 		children: []
     },
 	{
-		path: '/my/order',
+		path: '/me/myorder',
 		name: 'myOrder ',
 		component: MyOrder,
 		children: []
     },
 	{
-		path: '/lang',
+		path: '/me/lang',
 		name: 'lang',
 		component: Lang,
 		children: []
     },
     {
-        path: '/third/account',
+        path: '/me/thirdaccount',
         name: 'thirdAccount',
         component: ThirdAccount
     }
