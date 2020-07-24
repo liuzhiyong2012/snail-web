@@ -8,13 +8,13 @@ import Address from '@/views/me/components/Address.vue'
 const routes: Array < RouteConfig > = [
 	{
 		path: '/me',
-		name: 'Me',
+		name: 'meIndex',
 		component: Me,
 		children: []
     },
 	{
 		path: '/address',
-		name: 'Address',
+		name: 'address',
 		component: Address,
 		children: []
     },

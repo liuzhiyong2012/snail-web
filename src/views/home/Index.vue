@@ -210,7 +210,7 @@ export default {
 			game:'',
 			video:'',
 			news:'',
-			user:'userIndex',
+			me:'meIndex',
 			message:'messageIndex',
 		};
 		

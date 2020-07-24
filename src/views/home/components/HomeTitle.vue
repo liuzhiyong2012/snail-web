@@ -18,7 +18,7 @@
 		</div>
 	
 		<div class="title-right-ctn">
-			<i class="icon icon-user"  @click="stepTo('user')"></i>
+			<i class="icon icon-user"  @click="stepTo('me')"></i>
 			<i class="icon icon-message"  @click="stepTo('message')"></i>
 		</div>
 		
