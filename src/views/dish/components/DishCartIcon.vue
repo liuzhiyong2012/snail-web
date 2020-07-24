@@ -1,14 +1,8 @@
 <template>
-	<section class="distitle-main-ctn">
-		<div class="back-ctn" @click="back()">
-			<i class="icon icon-back"></i>
-		</div>
-		<div class="title"> Place Order</div>
-		<div class="card-ctn" @click="toCart()">
-			<span v-show="cartLen > 0" class="cart-number">{{cartLen}}</span>
-			<i class="icon icon-cart"></i>
-		</div>
-	</section>
+	<div class="cardicon-ctn" @click="toCart()">
+		<span v-show="cartLen > 0" class="cart-number">{{cartLen}}</span>
+		<i class="icon icon-cart"></i>
+	</div>
 </template>
 
 <i18n>
@@ -26,12 +20,13 @@
 	import {Vue,Component,Prop} from 'vue-property-decorator';
 	
 	@Component({
-		name:'DishTitle',
+		name:'DishCartIcon',
 		components:{
 			
 		}
 	})
-	export default class DishTitle extends Vue{
+	export default class DishCartIcon extends Vue{
+		
 		private get cartLen():number{
 			return this.$store.state.dish.cartList.length;
 		}
@@ -48,30 +43,11 @@
 </script>
 
 <style lang="scss" scoped>
-	.distitle-main-ctn{  
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding:0.30rem 0.30rem;
-		height: 0.40rem;
-		background: #ffffff;
-		
-		.back-ctn{
-			.icon{
-				font-size: 0.32rem;
-				color:#000000;
-			}
-		}
-		
-		.title{
-			font-size:0.38rem;
-			font-weight:bold;
-			color:rgba(51,51,51,1);
-			line-height:0.46rem;
-		}
-		
-		.card-ctn{
+	
+		.cardicon-ctn{
 			position: relative;
+			width: 0.32rem;
+			height:0.32rem;
 			.cart-number{
 				position: absolute;
 				right: 0;
@@ -93,5 +69,4 @@
 			}
 		}
 		
-	}
 </style>

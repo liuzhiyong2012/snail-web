@@ -4,6 +4,7 @@ import VueRouter, {
 import Me from '@/views/me/index.vue';
 import ThirdAccount from '@/views/me/components/ThirdAccount.vue'
 import Address from '@/views/me/components/Address.vue'
+import Payment from '@/views/me/components/Payment.vue';
 
 const routes: Array < RouteConfig > = [
 	{
@@ -22,7 +23,12 @@ const routes: Array < RouteConfig > = [
         path: '/third/account',
         name: 'thirdAccount',
         component: ThirdAccount
-    }
+    },
+	{
+	    path: '/me/payment',
+	    name: 'mePayment',
+	    component: Payment
+	}
 ]
 
 

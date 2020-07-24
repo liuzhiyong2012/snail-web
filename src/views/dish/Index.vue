@@ -1,5 +1,6 @@
 <template>
 	<section class="dish-main-ctn">
+		<abus-title title="Dish"></abus-title>
 		<van-swipe :autoplay="3000">
 		  <van-swipe-item class="dish-recomend-item" v-for="(item, index) in recomendList" :key="index">
 			  <div class="dish-recomend-img" :style="{backgroundImage:`url(${item.BannerImgPath})`}">
@@ -11,19 +12,18 @@
 		<section class="dishes-list">
 			<div v-for="(item,index) in dishesList" class="dishes-item" :key="index">
 				<div class="img-ctn" :style="{backgroundImage:`url(${item.BannerImgPath})`}">
-					<!-- <span></span> -->
 				</div>
 				<div class="dish-info">
-					<div class="price-ctn" :class="{'is-discount':item !== 0 }">
+					<div class="price-ctn" :class="{'is-discount':false }">
 						<span>${{item.Price}}</span>
-						<span>32</span>
+						<!-- <span>32</span> -->
 					</div>
 					
 					<div class="name-ctn">{{item.Name}}</div>
 					<div class="bottom-ctn">
 						<div class="qty-ctn">
 							<span>QTY</span>
-							<span>32</span>
+							<span>{{item.Stocking}}</span>
 						</div>
 						<div class="order-btn" @click="stepToDetail(item)">
 							order
@@ -38,12 +38,13 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';  
+import AbusTitle from '../../components/AbusTitle.vue';
 import DishService from "../../service/dish";
 
 @Component({
   name: 'DishIndex',
   components:{    
-	  
+	  AbusTitle
   }  
 })
 export default class DishIndex extends Vue {  
@@ -63,9 +64,9 @@ export default class DishIndex extends Vue {
 		  
 		  if(res.code == 200){
 		  		this.recomendList = res.data.RecommendedDishes;
-		  		this.recomendList.forEach((item,index)=>{
+		  		/* this.recomendList.forEach((item,index)=>{
 		  			item.BannerImgPath = 'http://172.16.125.11:8010/50.jpg';
-		  		});
+		  		}); */
 		  }
 		  
 	  });
@@ -76,17 +77,15 @@ export default class DishIndex extends Vue {
 		  
 		  if(res.code == 200){
 			  this.dishesList = res.data.Dishes;
-			  this.dishesList.forEach((item,index)=>{
+			 /* this.dishesList.forEach((item,index)=>{
 			  	  			  item.BannerImgPath = 'http://172.16.125.11:8010/50.jpg';
-			  });
+			  }); */
 		  }
 	  });
-	  
   }
   
   private stepToDetail(item:any){
 	  this.$router.push({
-		  // path:'/dish/detail',
 		  name:'dishDetail',
 		  params:{
 			  dishInfo:item

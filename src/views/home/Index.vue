@@ -205,7 +205,7 @@ export default {
 		let routeMap = {
 			flight:'flightIndex',
 			dish:'dishIndex',
-			shopping:'',
+			shopping:'shopping',
 			music:'',
 			game:'',
 			video:'',
