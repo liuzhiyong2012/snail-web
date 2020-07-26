@@ -20,22 +20,21 @@ const service: AxiosInstance = axios.create({
 // Request interceptors
 service.interceptors.request.use(
   (config: AxiosRequestConfig) => {
-    // const key_token = localStore.get('key_token')
-    const zctToken = localStore.get('zctToken')
-    // config.headers['key-token'] = key_token
+    const token = localStore.get('token')
+    if(token){
+      config.headers.Authorization = token
+    }    
     const timestamp = new Date().getTime() + ''
     const nonce = StringUtils.randomStr(32)
     const ZCT_SECRET = '21fa6sd1f95w1133edsafas6'
     const encrptString = `${timestamp}.${ZCT_SECRET}.${nonce}`
-    // console.log(encrptString);
     const sign = md5(encrptString)
-    // console.log(md5("1584948595244.21fa6sd1f95w1133edsafas6.vJdhenTJOYZ3BPWqMpcFb6tpzhhmeDLj"))
     config.headers = {
       ...config.headers, //@temp
       sign,
       timestamp,
       nonce,
-      zctToken: zctToken
+      token: token
     }
     return config
   },

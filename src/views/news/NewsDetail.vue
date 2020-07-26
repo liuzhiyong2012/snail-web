@@ -6,28 +6,39 @@
           <van-icon name="arrow-left" size="18" @click="goBack" />
         </template>
         <template #right>
-          <span class="news-right-heart" v-if="newsDetail.isCollect">
-            <img :src="loveTrue" alt="" @click="changeCollect" />
+          <span class="news-right-heart" v-show="newsDetail.isLike != null">
+            <img
+              :src="loveTrue"
+              alt=""
+              @click="changeCollect(newsDetail.Id, newsDetail.isLike)"
+            />
           </span>
-          <span class="news-right-heart" v-else>
-            <img :src="loveFalse" alt="" @click="changeCollect" />
+          <span class="news-right-heart" v-show="newsDetail.isLike == null">
+            <img
+              :src="loveFalse"
+              alt=""
+              @click="changeCollect(newsDetail.Id, newsDetail.isLike)"
+            />
           </span>
         </template>
       </van-nav-bar>
     </van-sticky>
 
-    <div class="">
+    <div class="" v-if="bannerData.length != 0">
       <banner :bannerData="bannerData" />
     </div>
-    <div class="news-title">{{ newsDetail.name }}</div>
-    <div class="news-time">{{ newsDetail.time }}</div>
-    <div class="news-info" v-html="newsDetail.details"></div>
+    <div class="news-title">{{ newsDetail.Title }}</div>
+    <div class="news-time">{{ newsDetail.CreatedAt }}</div>
+    <div class="news-info" v-html="newsDetail.FullDescription"></div>
   </section>
 </template>
 <script>
+import { localStore } from "@/utils/data-management";
+import { mapState } from "vuex";
 import Banner from "@/components/banner";
+import DateUtils from '../../utils/date-utils';
 export default {
-  name: "newsDetail",
+  name: "",
   components: {
     Banner,
   },
@@ -36,72 +47,55 @@ export default {
       loveTrue: require("./images/love_true.png"),
       loveFalse: require("./images/love_false.png"),
       newsDetail: {
-        // id: "3249853",
-        // time: "2020.03.04",
-        // isCollect: false,
-        // img: require("./images/news.jpg"),
-        // name:
-        //   "The 2020 Olympic Games will be postponed Other space data indica Other space data indica The 2020 Olympic Games will be postponed Other space data indica Other space data indica",
-        // details: `A private healthcare clinic in London has defended its decision to charge £375 ($434) for a coronavirus test.<br />
-
-        //         The Private Harley Street Clinic said the price reflected "the costs of these logistic and clinical services that we provide" and added that it was offering free tests for NHS staff.
-
-        //         It followed newspaper reports that the clinic had sold several thousand at full price. <br />
-
-        //         According to its website, the test is no longer available. <br />
-
-        //         In a statement released on Monday, the clinic said it was "pausing" the service now that the UK 
-        //         government has committed to carrying out more tests nationwide, with a commitment to carrying out 25,000 tests a day within four weeks. <br>
-
-        //         Chief executive Dr Mark Ali did not respond to the BBC's request for comment. <br>
-
-        //         It is believed the test offered was made by a firm called Randox Health, which was selling them online for £120 each, although according to its website it is currently out of stock.
-        //         Randox Health was also contacted by the BBC.`,
+        // BannerImg:
+        //   "http://172.16.125.11:8010/0c48a0b7-b4b6-46d6-af34-8afb69c159d4",
+        // Category: "2",
+        // CreatedAt: 1554782586,
+        // CreatedBy: {
+        //   UserName: "yiwen",
+        //   NickName: null,
+        //   PhoneNumber: null,
+        //   Email: "yiwen.mai@airbus.com",
+        //   Id: "843123f8-2a24-4fa4-a624-59f370407214",
+        // },
+        // FullDescription: `
+        // `,
+        // Id: "f6638a60-7c5a-e911-962f-fb9f18fa3bb4",
+        // ShortDescription:
+        //   "Airbus Connected Experience goes from concept phase to reality",
+        // ThumbsImg: [
+        //   "http://172.16.125.11:8010/0c48a0b7-b4b6-46d6-af34-8afb69c159d4",
+        // ],
+        // Title: "Airbus Connected Experience goes from concept phase to reality",
+        // img: "http://172.16.125.11:8010/0c48a0b7-b4b6-46d6-af34-8afb69c159d4",
+        // isLike: null,
       },
-      bannerData: [
-        {
-          img: require("./images/news_banner.png"),
-          name: "goodsName",
-          details: "goodsDetails",
-        },
-        {
-          img: require("./images/news_banner.png"),
-          name: "goodsName",
-          details: "goodsDetails",
-        },
-      ],
+      bannerData: [],
     };
   },
   computed: {
-    NewsItem() {
-      return JSON.parse(this.$route.query.newsItem);
-    },
+    ...mapState(["news"]),
   },
   created() {
-    // this.getNewDetails();
-    this.newsDetail = this.NewsItem;
-    this.bannerData = this.NewsItem;
-    this.bannerData.forEach(item=>{
-      item.img = item.BannerImg
-    });
-
+    const _this = this;
+    _this.bannerData = [];
+    _this.newsDetail = {};
+    _this.newsDetail = localStore.get("newsDetails");
+    _this.bannerData.push(_this.newsDetail);
+    _this.newsDetail.CreatedAt = DateUtils.formate(_this.newsDetail.CreatedAt);
   },
+  mounted() {},
   methods: {
     goBack() {
       this.$router.go(-1);
     },
-    changeCollect(val) {
-      this.newsDetail.isCollect = !this.newsDetail.isCollect;
+    changeCollect(Id, isLike) {
+      if (isLike == null) {
+        this.newsDetail.isLike = true;
+      } else {
+        this.newsDetail.isLike = null;
+      }
     },
-    // async getNewDetails() {
-    //   let res = await this.httpPost("News/GetNewsDetail", {
-    //     NewsItem: this.NewsItem
-    //   });
-    //   if (res) {
-    //     console.log(res);
-    //     this.newsDetails = res.Data;
-    //   }
-    // }
   },
 };
 </script>

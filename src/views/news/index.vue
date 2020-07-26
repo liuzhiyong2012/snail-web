@@ -14,7 +14,7 @@
 
     <van-tabs
       v-model="active"
-      @click="changeTab()"
+      @click="changeTab"
       sticky
       line-width="20"
       line-height="4"
@@ -23,11 +23,11 @@
     >
       <van-tab
         v-for="(val, index) in navTar"
-        :title="val"
+        :title="val.category"
         title-active-color="#3056EF"
         :key="index"
       >
-        <div v-if="val == navTar[index]" class="">
+        <div v-if="val.category == navTar[index].category" class="">
           <ul class="news-list">
             <news-list-item
               v-for="(item, index) in newsListBackup"
@@ -41,82 +41,145 @@
   </div>
 </template>
 
-<script>
-import Banner from "@/components/banner";
-import NewsListItem from "@/views/news/components/NewsListItem";
+<script lang="ts">
+import Banner from "../../components/banner.vue";
+import NewsListItem from "./components/NewsListItem.vue";
 import NewsService from "../../service/news";
-export default {
+import { localStore } from "../../utils/data-management";
+import Tile from "ol/Tile";
+import { Component, Prop, Vue } from "vue-property-decorator";
+@Component({
+  name: "NewsList",
   components: {
     Banner,
     NewsListItem,
   },
-  data() {
-    return {
-      bannerData: [],
-      active: 0,
-      navTar: ["所有", "收藏", "实事要闻", "娱乐新闻", "体育新闻"],
-
-      newsList: [
-        {
-          id: "3249853",
-          type: 2,
-          isCollect: true,
-          img: require("./images/news.jpg"),
-          name:
-            "The 2020 Olympic Games will be postponed Other space data indica Other space data indica",
-          details:
-            "The duo have had a t Other space data indica 工会 Other space data indica",
-        },
-      ],
-      newsListBackup: [], //新闻列表备份
-    };
-  },
-  computed: {},
-  watch: {},
-  created() {
-    this.getNewsList();
-  },
-  mounted() {},
-  destroyed() {},
-  methods: {
-    goBack() {
-      this.$router.go(-1);
+})
+export default class NewsList extends Vue {
+  private bannerData: any = [];
+  private active: any = 0;
+  private navTar: any = [
+    {
+      Id: "-1",
+      category: "所有",
+      CreatedAt: false,
     },
-
-    getNewsList() {
-      NewsService.getVideoList({}).then((res) => {
-        if (res.code == "200") {
-          this.newsList = res.data.News;
-          this.newsListBackup = res.data.News;
-          this.bannerData = res.data.News;
-          this.bannerData.forEach((item) => {
-            item.img = item.BannerImg;
-          });
-        }
-      });
+    {
+      Id: "0",
+      category: "收藏",
+      CreatedAt: false,
     },
+  ];
+  private newsList: any = [];
+  private newsListBackup: any = [];
 
-    changeTab() {
-      console.log(this.active);
-      this.newsListBackup = [];
-      if (this.active == 0) {
-        this.newsListBackup = this.newsList;
-      } else if (this.active == 1) {
-        this.newsList.forEach((item) => {
-          if (item.isCollect == true) {
-            this.newsListBackup.push(item);
-          }
-        });
-      } else {
-        this.newsList.forEach((item) => {
-          if (this.active == item.type) {
-            this.newsListBackup.push(item);
-          }
+  private created() {
+    this.getCategory(); //获取分类
+    this.getNewsList(); //获取新闻列表
+
+    this.postNewsMyLike(); //收藏列表
+    // this.postNewsUnLike() //取消收藏
+    // this.postNewsLike() // 进行收藏
+    // this.postNewsIsLike() //是否已收藏
+  }
+  private mounted() {}
+  private destroyed() {}
+
+  public goBack(): void {
+    this.$router.go(-1);
+  }
+
+  // 获取新闻列表
+  public getNewsList(): void {
+    NewsService.getNewsList({}).then((res) => {
+      if (res.code == 200) {
+        this.newsList = res.data.News;
+        this.newsListBackup = res.data.News;
+        this.bannerData = res.data.News;
+        this.bannerData.forEach((item) => {
+          item.img = item.BannerImg;
         });
       }
-    },
-  },
-};
+    });
+  }
+
+  // 获取新闻的分类
+  public getCategory(): void {
+    NewsService.getNewsCategory({}).then((res) => {
+      if (res.code == 200) {
+        this.navTar = [...this.navTar, ...res.data];
+      }
+    });
+  }
+
+  // 切换分类
+  public changeTab(name: number, title: string): void {
+    this.newsListBackup = [];
+    if (title == "所有") {
+      this.newsListBackup = this.newsList;
+    } else if (title == "收藏") {
+      this.newsList.forEach((item) => {
+        if (item.isLike != null) {
+          this.newsListBackup.push(item);
+        }
+      });
+    } else {
+      let i = "";
+      this.navTar.forEach((item) => {
+        if (item.category == title) {
+          i = item.Id;
+        }
+      });
+      this.newsList.forEach((item) => {
+        if (i == item.Category) {
+          this.newsListBackup.push(item);
+        }
+      });
+    }
+  }
+
+  // 我收藏的新闻
+  public postNewsMyLike(): void {
+    NewsService.postNewsMyLike({}).then((res) => {
+      if (res.code == 200) {
+        console.log("2222222", res);
+      }
+    });
+  }
+
+  // 取消收藏
+  public postNewsUnLike(): void {
+    NewsService.postNewsUnLike({
+      Id: "48f918ed-ee33-e911-b13c-96af276fddb7",
+    }).then((res) => {
+      if (res.code == 200) {
+        console.log("3333333", res);
+      }
+    });
+  }
+
+  // 进行收藏
+  public postNewsLike(): void {
+    NewsService.postNewsLike({
+      Id: "48f918ed-ee33-e911-b13c-96af276fddb7",
+    }).then((res) => {
+      if (res.code == 200) {
+        console.log("4444444", res);
+      }
+    });
+  }
+
+  // 是否已收藏
+  public postNewsIsLike(): void {
+    NewsService.postNewsIsLike({
+      Id: "48f918ed-ee33-e911-b13c-96af276fddb7",
+    }).then((res) => {
+      if (res.code == 200) {
+        console.log("555555", res);
+      }
+    });
+  }
+}
 </script>
 
 <style lang="scss" scoped>

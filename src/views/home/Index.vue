@@ -214,7 +214,7 @@ export default {
 			music:'',
 			game:'',
 			video:'',
-			news:'',
+			news:'news',
 			me:'meIndex',
 			message:'messageIndex',
 		};

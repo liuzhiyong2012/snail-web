@@ -11,14 +11,22 @@
         </div>
         <div class="author">
           <div class="line-one">
-            <span class="author-left-info">{{ recommedNewsItem.ShortDescription }}</span>
+            <span class="author-left-info">{{
+              recommedNewsItem.ShortDescription
+            }}</span>
 
-            <div @click="changeHot(recommedNewsItem.Id)">
-              <span class="author-right-heart" v-show="recommedNewsItem.isCollect ==true">
-                <img :src="loveTrue" alt=""/>
+            <div @click="changeHot(recommedNewsItem.Id, recommedNewsItem.isLike)">
+              <span
+                class="author-right-heart"
+                v-show="recommedNewsItem.isLike != null"
+              >
+                <img :src="loveTrue" alt="" />
               </span>
-              <span class="author-right-heart" v-show="recommedNewsItem.isCollect ==false">
-                <img :src="loveFalse" alt=""/>
+              <span
+                class="author-right-heart"
+                v-show="recommedNewsItem.isLike == null"
+              >
+                <img :src="loveFalse" alt="" />
               </span>
             </div>
           </div>
@@ -27,39 +35,68 @@
     </div>
   </li>
 </template>
-<script>
-export default {
-  props: ["newsItem"],
-  data() {
-    return {
-      recommedNewsItem: this.newsItem,
-      loveTrue: require("../images/love_true.png"),
-      loveFalse: require("../images/love_false.png"),
-    };
-  },
-  created() {},
-  watch: {
-    newsItem(val) {
-      this.recommedNewsItem = val;
-    },
-  },
-  methods: {
-    goToDetail(item) {
-      //进入新闻详情
-      this.$router.push({
-        name: "newsDetail",
-        query: {
-          newsItem: JSON.stringify(item)
-        },
-      });
-    },
+<script lang="ts">
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { localStore } from "../../../utils/data-management";
+@Component({
+  name: "NewsListItem",
+  components: {},
+})
+export default class NewsListItem extends Vue {
+  @Prop() private newsItem!: object;
+  @Watch('newsItem', {})
 
-    changeHot(val) {
-      this.recommedNewsItem.isCollect = !this.recommedNewsItem.isCollect;
-    },
+  //   watch: {
+  //     newsItem(val) {
+  //       this.recommedNewsItem = val;
+  //     },
+  //   },
 
-  },
-};
+  private recommedNewsItem = this.newsItem;
+  private loveTrue = require("../images/love_true.png");
+  private loveFalse = require("../images/love_false.png");
+
+  private created() {}
+  private mounted() {}
+
+  public goToDetail(item): void {
+    // 先将详情存入store
+    if (localStore.get("newsDetails")) {
+      localStore.remove("newsDetails");
+    }
+    this.$store.dispatch("setNewsDetails", item);
+
+    //进入新闻详情
+    this.$router.push({
+      name: "newsDetail",
+    });
+  }
+
+  public changeHot(Id: string, isLike: any): void {
+    if(isLike == null){
+      this.recommedNewsItem.isLike = true;
+    }else{
+      this.recommedNewsItem.isLike = null;
+    }
+    
+  }
+}
+
+// export default {
+//   props: ["newsItem"],
+//   data() {
+//     return {
+//       recommedNewsItem: this.newsItem,
+//       loveTrue: require("../images/love_true.png"),
+//       loveFalse: require("../images/love_false.png"),
+//     };
+//   },
+//   watch: {
+//     newsItem(val) {
+//       this.recommedNewsItem = val;
+//     },
+//   },
+// };
 </script>
 <style lang="scss" scoped>
 .news-list-wrap {
