@@ -150,7 +150,6 @@ export default {
   padding: 0.25rem;
   line-height: 0.46rem;
   background: #fff;
-  font-family: Helvetica-Bold, Helvetica;
   font-weight: bold;
   font-size: 0.32rem;
   color: #2e2e2e;
@@ -160,7 +159,6 @@ export default {
   height: 0.2rem;
   background: #fff;
   line-height: 0.2rem;
-  font-family: Helvetica;
   font-size: 0.24rem;
   color: #ddc8c8;
 }
@@ -168,7 +166,6 @@ export default {
   padding: 0.25rem;
   background: #fff;
   line-height: 0.36rem;
-  font-family: Helvetica;
   text-align: justify;
   font-size: 0.3rem;
   color: #333333;

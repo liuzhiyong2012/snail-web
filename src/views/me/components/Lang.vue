@@ -1,5 +1,6 @@
 <template>
   <div class="abus-height">
+      <abus-title title="Language" backRootName="meIndex"></abus-title>
     <div class="lang-box">
       <van-radio-group v-model="radio" checked-color="#00205B">
         <van-radio name="0" class="lang-cell">
@@ -26,7 +27,11 @@
 </template>
 
 <script>
+import AbusTitle from "../../../components/AbusTitle.vue";
 export default {
+    components:{
+        AbusTitle
+    },
   data() {
     return {
       radio: "0",

@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-   <!-- <van-sticky>
+    <!-- <van-sticky>
       <van-nav-bar title="Airbus" @click-right="showPopup">
         <template #right>
           <van-icon name="scan" size="18" />
@@ -9,11 +9,12 @@
           <van-icon name="chat" size="18" />
         </template>
       </van-nav-bar> 
-    </van-sticky> -->
-	<div class="home-title">
-		<home-title @stepTo="stepToPage($event)"></home-title>
-	</div>
-	
+    </van-sticky>-->
+    <van-sticky :offset-top="0">
+    <div class="home-title" >
+      <home-title @stepTo="stepToPage($event)"></home-title>
+    </div>
+    </van-sticky>
     <van-popup v-model="show">
       <div class="popup-toast">
         <div class="title">Connet To The Internet</div>
@@ -62,7 +63,7 @@
     <van-tabs
       scrollspy
       sticky
-      offset-top="46"
+      offset-top="50"
       line-width="20"
       line-height="4"
       color="rgb(0,32,91)"
@@ -131,7 +132,7 @@ import HomeNews from "@/views/home/components/HomeNews";
 export default {
   name: "Home",
   components: {
-	HomeTitle,
+    HomeTitle,
     HomeFlight,
     HomeDish,
     HomeShopping,
@@ -206,26 +207,29 @@ export default {
     //   })
   },
   methods: {
-	stepToPage(pageType){
-		let routeMap = {
-			flight:'flightIndex',
-			dish:'dishIndex',
-			shopping:'',
-			music:'',
-			game:'',
-			video:'',
-			news:'news',
-			me:'meIndex',
-			message:'messageIndex',
-		};
-		
-		if(routeMap[pageType]){
-			this.$router.push({
-			   name: routeMap[pageType]
-			});
-		}
-		
-	},
+
+    stepToPage(pageType) {
+      let routeMap = {
+        flight: "flightIndex",
+        dish: "dishIndex",
+        shopping: "shopping",
+        music: "musicIndex",
+        game: "game",
+        video: "video",
+        news: "news",
+        me: "meIndex",
+        message: "messageIndex",
+        internet: "internet",
+        internetCart: "internetCart"
+      };
+
+      if (routeMap[pageType]) {
+        this.$router.push({
+          name: routeMap[pageType],
+        });
+      }
+    },
+
     showPopup() {
       // this.show = true;
       this.$router.push({
@@ -257,7 +261,6 @@ export default {
     background-color: #00205b;
     text-align: center;
     font-size: 0.36rem;
-    font-family: Helvetica-Bold, Helvetica;
     font-weight: bold;
     color: rgba(255, 255, 255, 1);
     line-height: 1.2rem;
@@ -272,7 +275,6 @@ export default {
     padding: 0.3rem;
     background-color: #fff;
     font-size: 0.28rem;
-    font-family: Helvetica;
     color: rgba(51, 51, 51, 1);
     line-height: 0.42rem;
     word-break: normal;
@@ -287,7 +289,6 @@ export default {
     margin: 0 0.3rem;
     background-color: #00205b;
     font-size: 0.34rem;
-    font-family: Helvetica-Bold, Helvetica;
     font-weight: bold;
     color: rgba(255, 255, 255, 1);
     line-height: 0.74rem;
@@ -311,13 +312,11 @@ export default {
     background: #f2f4f7;
     line-height: 0.7rem;
     font-size: 0.28rem;
-    font-family: Helvetica-Bold, Helvetica;
     font-weight: bold;
     color: rgba(0, 32, 91, 1);
     .now {
       margin: 0 0.2rem 0 0;
       font-size: 0.28rem;
-      font-family: Helvetica;
       color: rgba(51, 51, 51, 1);
       font-weight: 400;
     }
@@ -332,14 +331,12 @@ export default {
     margin: 0 0 0.3rem 0;
     display: flex;
     font-size: 0.3rem;
-    font-family: Helvetica;
     color: #2e2e2e;
     line-height: 0.36rem;
     .cell-r {
       flex: 1;
       text-align: right;
       font-size: 0.32rem;
-      font-family: Helvetica-Bold, Helvetica;
       font-weight: bold;
       color: rgba(0, 32, 91, 1);
     }
@@ -367,7 +364,6 @@ export default {
     }
     .t-bold {
       font-size: 0.35rem;
-      font-family: Helvetica-Bold, Helvetica;
       font-weight: bold;
       color: rgba(46, 46, 46, 1);
       line-height: 0.42rem;

@@ -1,5 +1,9 @@
 <template>
+<div class="abus-height">
+  <abus-title title="Points exchange" backRootName="meIndex"></abus-title>
   <div class="goods-box">
+      
+
     <div class="goods-item" v-for="(item,index) in shoppingList" :key="index">
       <div class="goods">
         <div class="goods-img">
@@ -17,15 +21,19 @@
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script lang="ts">
+import AbusTitle from "../../../components/AbusTitle.vue";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import ShoppingService from "../../../service/shopping";
 // import Banner from "@/components/banner";
 @Component({
   name: "Shopping",
-  components: {},
+  components: {
+    AbusTitle
+  },
 })
 export default class ShoppingIndex extends Vue {
   private recomendList: Array<any> = [];

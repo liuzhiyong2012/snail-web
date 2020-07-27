@@ -1,56 +1,61 @@
 <template>
 	<section class="flight-main-ctn" :class="{ collapsed: isCollapsed }">
-		<abus-map class="map-ctn" :style="calcStyle('map')"></abus-map>
-
-		<section class="camera-ctn" :style="calcStyle('camera')">
-			<div class="camera-switch-ctn">
-				<div class="camera-switch-item">
-					<svg v-if="activeCamera == 'frontCamera'" class="icon" aria-hidden="true"><use xlink:href="#icon-front-camera"></use></svg>
-					<svg v-if="activeCamera != 'frontCamera'" class="icon" aria-hidden="true" @click="toggleCameraTo('frontCamera', false)">
-						<use xlink:href="#icon-front-camera-disable"></use>
-					</svg>
-				</div>
-
-				<div class="camera-switch-item">
-					<svg v-if="activeCamera == 'centralCamera'" class="icon" aria-hidden="true"><use xlink:href="#icon-central-camera"></use></svg>
-					<svg v-if="activeCamera != 'centralCamera'" class="icon" aria-hidden="true" @click="toggleCameraTo('centralCamera', false)">
-						<use xlink:href="#icon-central-camera-disable"></use>
-					</svg>
-				</div>
-
-				<div class="camera-switch-item">
-					<svg v-if="activeCamera == 'backCamera'" class="icon" aria-hidden="true"><use xlink:href="#icon-back-camera"></use></svg>
-					<svg v-if="activeCamera != 'backCamera'" class="icon" aria-hidden="true" @click="toggleCameraTo('backCamera', false)">
-						<use xlink:href="#icon-back-camera-disable"></use>
-					</svg>
-				</div>
-			</div>
-			<div class="camera-video-ctn">
-				<video muted  autoplay loop class="camera-video" v-if="cameraUrl[activeCamera]"  :src="cameraUrl[activeCamera]"  alt="" controls="controls" x5-playsinline="" playsinline="" webkit-playsinline=""></video>
-			</div>
-		</section>
 		
-		<section class="content-ctn">
-			<div class="switch-ctn">
-				<div class="switch-item" @click="switchPageTo('map')">
-					<svg v-if="active == 'map'" class="icon" aria-hidden="true"><use xlink:href="#icon-map"></use></svg>
-					<svg v-if="active != 'map'" class="icon" aria-hidden="true"><use xlink:href="#icon-map-disable"></use></svg>
+		<abus-title title="Flight"></abus-title>
+		
+		<section class="flight-content-ctn">
+			<abus-map class="map-ctn" :style="calcStyle('map')"></abus-map>
+			
+			<section class="camera-ctn" :style="calcStyle('camera')">
+				<div class="camera-switch-ctn">
+					<div class="camera-switch-item">
+						<svg v-if="activeCamera == 'frontCamera'" class="icon" aria-hidden="true"><use xlink:href="#icon-front-camera"></use></svg>
+						<svg v-if="activeCamera != 'frontCamera'" class="icon" aria-hidden="true" @click="toggleCameraTo('frontCamera', false)">
+							<use xlink:href="#icon-front-camera-disable"></use>
+						</svg>
+					</div>
+			
+					<div class="camera-switch-item">
+						<svg v-if="activeCamera == 'centralCamera'" class="icon" aria-hidden="true"><use xlink:href="#icon-central-camera"></use></svg>
+						<svg v-if="activeCamera != 'centralCamera'" class="icon" aria-hidden="true" @click="toggleCameraTo('centralCamera', false)">
+							<use xlink:href="#icon-central-camera-disable"></use>
+						</svg>
+					</div>
+			
+					<div class="camera-switch-item">
+						<svg v-if="activeCamera == 'backCamera'" class="icon" aria-hidden="true"><use xlink:href="#icon-back-camera"></use></svg>
+						<svg v-if="activeCamera != 'backCamera'" class="icon" aria-hidden="true" @click="toggleCameraTo('backCamera', false)">
+							<use xlink:href="#icon-back-camera-disable"></use>
+						</svg>
+					</div>
 				</div>
-
-				<div class="switch-item" @click="switchPageTo('camera')">
-					<svg v-if="active == 'camera'" class="icon" aria-hidden="true"><use xlink:href="#icon-camera"></use></svg>
-					<svg v-if="active != 'camera'" class="icon" aria-hidden="true"><use xlink:href="#icon-camera-disable"></use></svg>
+				<div class="camera-video-ctn">
+					<video muted  autoplay loop class="camera-video" v-if="cameraUrl[activeCamera]"  :src="cameraUrl[activeCamera]"  alt="" controls="controls" x5-playsinline="" playsinline="" webkit-playsinline=""></video>
 				</div>
-			</div>
-
-			<div class="voyage-ctn">
-				<div class="top-ctn">
-					<abus-flight></abus-flight>
+			</section>
+			
+			<section class="content-ctn">
+				<div class="switch-ctn">
+					<div class="switch-item" @click="switchPageTo('map')">
+						<svg v-if="active == 'map'" class="icon" aria-hidden="true"><use xlink:href="#icon-map"></use></svg>
+						<svg v-if="active != 'map'" class="icon" aria-hidden="true"><use xlink:href="#icon-map-disable"></use></svg>
+					</div>
+			
+					<div class="switch-item" @click="switchPageTo('camera')">
+						<svg v-if="active == 'camera'" class="icon" aria-hidden="true"><use xlink:href="#icon-camera"></use></svg>
+						<svg v-if="active != 'camera'" class="icon" aria-hidden="true"><use xlink:href="#icon-camera-disable"></use></svg>
+					</div>
 				</div>
-				<div class="bottom-ctn">
-					<div class="chart-ctn" ref="chartCtn"></div>
+			
+				<div class="voyage-ctn">
+					<div class="top-ctn">
+						<abus-flight></abus-flight>
+					</div>
+					<div class="bottom-ctn">
+						<div class="chart-ctn" ref="chartCtn"></div>
+					</div>
 				</div>
-			</div>
+			</section>
 		</section>
 	</section>
 </template>
@@ -58,6 +63,7 @@
 <script lang="ts">
 import VoyageInfo from './components/VoyageInfo.vue';
 import AbusMap from '../../components/AbusMap.vue';
+import AbusTitle from '../../components/AbusTitle.vue';
 import AbusFlight from '../../components/AbusFlight.vue';
 
 import { Component, Prop, Vue } from 'vue-property-decorator';
@@ -71,6 +77,7 @@ import DateUtils from '../../utils/date-utils';
 	components: {
 		AbusMap,
 		AbusFlight,
+		AbusTitle,
 		VoyageInfo
 	}
 })
@@ -332,128 +339,133 @@ export default class FlightIndex extends Vue {
 				}
 			}
 		}
-
-		/* 780 
-		340 */
-		// bottom-ctn
 	}
-
-	.map-ctn {
+    
+	.flight-content-ctn{
 		position: absolute;
-		width: 100%;
-		height: 100%;
-	}
-
-	.camera-ctn {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		background: black;
-		z-index: 10;
-		.camera-switch-ctn {
+		top:1.00rem;
+		width:100%;
+		bottom:0;
+		
+		.map-ctn {
 			position: absolute;
-			width: 0.5rem;
-			top: 0.44rem;
-			right: 0.3rem;
-			font-size: 0;
-			line-height: 0;
-			z-index: 100;
-			text-align: center;
-
-			.camera-switch-item {
-				margin-bottom: 0.2rem;
-				height: 0.5rem;
-
-				> .icon {
-					display: block;
-					width: 100%;
-					height: 100%;
+			width: 100%;
+			height: 100%;
+		}
+		
+		.camera-ctn {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			background: black;
+			z-index: 10;
+			.camera-switch-ctn {
+				position: absolute;
+				width: 0.5rem;
+				top: 0.44rem;
+				right: 0.3rem;
+				font-size: 0;
+				line-height: 0;
+				z-index: 100;
+				text-align: center;
+		
+				.camera-switch-item {
+					margin-bottom: 0.2rem;
+					height: 0.5rem;
+		
+					> .icon {
+						display: block;
+						width: 100%;
+						height: 100%;
+					}
 				}
+			}
+			
+			.camera-video-ctn{
+				z-index: 10;
+				width: 100%;
+				height: 100%;
+				
+				> video {
+				  :focus {
+				    overflow: hidden;
+				    border: none !important;
+				    box-shadow: none !important;
+				    outline: none;
+				  }
+				  :active {
+				    overflow: hidden;
+				    border: none !important;
+				    box-shadow: none !important;
+				    outline: none;
+				  }
+				  // object-fit: fill;
+				  outline: none;
+				  border: none;
+				  display: block;
+				  width: 100%;
+				  object-fit: cover;
+				  object-position: center center;
+				}
+				
+				// .camera-video{
+				// 	width: 100%;
+				// 	height: 100%;
+				// }
 			}
 		}
 		
-		.camera-video-ctn{
-			z-index: 10;
+		.content-ctn {
+			position: absolute;
+			padding: 0 0.3rem 0.5rem 0.3rem;
 			width: 100%;
-			height: 100%;
-			
-			> video {
-			  :focus {
-			    overflow: hidden;
-			    border: none !important;
-			    box-shadow: none !important;
-			    outline: none;
-			  }
-			  :active {
-			    overflow: hidden;
-			    border: none !important;
-			    box-shadow: none !important;
-			    outline: none;
-			  }
-			  // object-fit: fill;
-			  outline: none;
-			  border: none;
-			  display: block;
-			  width: 100%;
-			  object-fit: cover;
-			  object-position: center center;
-			}
-			
-			// .camera-video{
-			// 	width: 100%;
-			// 	height: 100%;
-			// }
-		}
-	}
-
-	.content-ctn {
-		position: absolute;
-		padding: 0 0.3rem 0.5rem 0.3rem;
-		width: 100%;
-		height: 7.8rem;
-		bottom: 0;
-		z-index: 200;
-		box-sizing: border-box;
-
-		.switch-ctn {
-			width: 1.72rem;
-			margin-left: auto;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			margin-bottom: 0.28rem;
-			.switch-item {
-				width: 0.76rem;
-				height: 0.5rem;
-				background: rgba(255, 255, 255, 1);
-				border-radius: 0.26rem;
-				text-align: center;
+			height: 7.8rem;
+			bottom: 0;
+			z-index: 200;
+			box-sizing: border-box;
+		
+			.switch-ctn {
+				width: 1.72rem;
+				margin-left: auto;
 				display: flex;
-				justify-content: center;
+				justify-content: space-between;
 				align-items: center;
-
-				svg.icon {
-					width: 0.42rem;
-					height: 0.42rem;
+				margin-bottom: 0.28rem;
+				.switch-item {
+					width: 0.76rem;
+					height: 0.5rem;
+					background: rgba(255, 255, 255, 1);
+					border-radius: 0.26rem;
+					text-align: center;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+		
+					svg.icon {
+						width: 0.42rem;
+						height: 0.42rem;
+					}
 				}
 			}
-		}
-
-		//实不相瞒
-		.voyage-ctn {
-			.top-ctn {
-				width: 100%;
-				height: 3.4rem;
-				margin-bottom: 0.3rem;
-			}
-			.bottom-ctn {
-				.chart-ctn {
-					height: 3.1rem;
-					background: rgba(255, 255, 255, 1);
-					border-radius: 0.12rem;
+		
+			//实不相瞒
+			.voyage-ctn {
+				.top-ctn {
+					width: 100%;
+					height: 3.4rem;
+					margin-bottom: 0.3rem;
+				}
+				.bottom-ctn {
+					.chart-ctn {
+						height: 3.1rem;
+						background: rgba(255, 255, 255, 1);
+						border-radius: 0.12rem;
+					}
 				}
 			}
 		}
 	}
+	
+	
 }
 </style>

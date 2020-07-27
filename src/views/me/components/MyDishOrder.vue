@@ -1,5 +1,5 @@
 <template>
-  <div class="abus-height">
+<div class="abus-height">
     <div class="cell-group">
       <div class="header">
         <div class="top">
@@ -50,12 +50,14 @@
         <div class="time">213213123</div>
         <div class="money">1232131231</div>
       </div>
-    </div>
+     </div>
   </div>
 </template>
 
 <script>
-export default {};
+    export default {
+        
+    }
 </script>
 
 <style lang="scss" scoped>
@@ -111,7 +113,7 @@ export default {};
           width: 0.06rem;
           height: 0.06rem;
           border-radius: 50%;
-
+  
           &.dark {
             background: rgba(0, 0, 0, 1);
           }

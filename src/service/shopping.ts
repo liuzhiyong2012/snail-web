@@ -15,14 +15,21 @@ export default class ShoppingService {
 			data: data
 		});
 	}
-	
+	// 商品列表
 	static getShoppingList(data: Object) {
 		return request({
 			url: '/v1/api/shopping/List',
 			method: 'GET',
+			params: data
+		});
+	}
+	// 商品种类
+	static getShoppingCategory(data?: Object) {
+		return request({
+			url: '/v1/api/shopping/Category',
+			method: 'GET',
 			data: data
 		});
 	}
-
 	
 }  

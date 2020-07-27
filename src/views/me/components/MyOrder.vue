@@ -1,5 +1,6 @@
 <template>
   <div class="abus-height">
+      <abus-title title="My order" backRootName="meIndex"></abus-title>
     <van-tabs
       line-width="20"
       line-height="4"
@@ -8,11 +9,11 @@
       sticky
     >
       <van-tab v-for="(item,index) in tabData" :title="item" :key="index">
-        <div v-if="item == 'Dish'" >
+        <div v-if="item == 'Dish'" class>
             <my-dish-order></my-dish-order>
         </div>
-        <div v-else-if="item == 'Shopping'" ><my-shopping-order></my-shopping-order></div>
-        <div v-else-if="item == 'Internet'" ><my-internet-order></my-internet-order></div>
+        <div v-else-if="item == 'Shopping'" class><my-shopping-order></my-shopping-order></div>
+        <div v-else-if="item == 'Internet'" class><my-internet-order></my-internet-order></div>
       </van-tab>
     </van-tabs>
   </div>
@@ -22,11 +23,13 @@
 import MyDishOrder from "./MyDishOrder";
 import MyShoppingOrder from "./MyShoppingOrder";
 import MyInternetOrder from "./MyInternetOrder";
+import AbusTitle from "../../../components/AbusTitle.vue";
 export default {
   components: {
     MyDishOrder,
     MyShoppingOrder,
-    MyInternetOrder
+    MyInternetOrder,
+    AbusTitle
   },
   data() {
     return {

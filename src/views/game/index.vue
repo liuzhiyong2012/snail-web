@@ -164,7 +164,6 @@ export default {
     align-items: center;
     flex-direction: column;
     font-size: 0.24rem;
-    font-family: Helvetica;
     color: #2e2e2e;
     .scoller-name {
       margin-top: 0.17rem;
@@ -222,13 +221,11 @@ export default {
         }
       }
       .game-name {
-        font-family: Helvetica-Bold, Helvetica;
         font-weight: bold;
         font-size: 0.26rem;
         color: #2e2e2e;
       }
       .game-tips {
-        font-family: Helvetica;
         font-size: 0.22rem;
         color: #333333;
       }
