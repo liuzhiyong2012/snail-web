@@ -1,6 +1,6 @@
 <template>
   <div class="me">
-	<abus-title title="个人中心" backRootName="home"></abus-title>
+    <abus-title title="个人中心" backRootName="home"></abus-title>
     <div class="user-info">
       <div class="user">
         <div class="user-img">
@@ -13,7 +13,7 @@
           />
         </div>
         <div class="f1">
-          <div class="name">123123</div>
+          <div class="name" >123123</div>
           <div class="phone">1357023232</div>
         </div>
       </div>
@@ -28,18 +28,15 @@
       </router-link>
     </div>
     <div class="cell-group mt2">
-      <router-link to="/me/myorder">
-        <div class="cell-item">
-          <div class="title">My order</div>
-          <div class="f1">
-            <svg class="icon icon-right" aria-hidden="true">
-              <use xlink:href="#icon-youjiantou_1" />
-            </svg>
-          </div>
+      <div class="cell-item" @click="stepToPage('myorder')">
+        <div class="title">My order</div>
+        <div class="f1">
+          <svg class="icon icon-right" aria-hidden="true">
+            <use xlink:href="#icon-youjiantou_1" />
+          </svg>
         </div>
-      </router-link>
-      <router-link to="/me/address">
-        <div class="cell-item">
+      </div>
+        <div class="cell-item" @click="stepToPage('address')" >
           <div class="title">Shopping address</div>
           <div class="f1">
             <div class="icon-right-2">668 Huangshan qweqwe</div>
@@ -48,9 +45,7 @@
             </svg>
           </div>
         </div>
-      </router-link>
-      <router-link to="/me/payment">
-        <div class="cell-item">
+        <div class="cell-item" @click="stepToPage('payment')">
           <div class="title">Payment method</div>
           <div class="f1">
             <svg class="icon icon-right-1" aria-hidden="true">
@@ -61,9 +56,7 @@
             </svg>
           </div>
         </div>
-      </router-link>
-      <router-link to="/me/thirdaccount">
-        <div class="cell-item">
+        <div class="cell-item" @click="stepToPage('thirdaccount')">
           <div class="title">Other account number</div>
           <div class="f1">
             <svg class="icon icon-right" aria-hidden="true">
@@ -71,9 +64,7 @@
             </svg>
           </div>
         </div>
-      </router-link>
-      <router-link to="/me/lang">
-        <div class="cell-item">
+        <div class="cell-item" @click="stepToPage('lang')">
           <div class="title">language</div>
           <div class="f1">
             <div class="icon-right-2">English</div>
@@ -82,9 +73,8 @@
             </svg>
           </div>
         </div>
-      </router-link>
     </div>
-	
+
     <div class="cell-group mt2">
       <div class="cell-item">
         <div class="title">Privacy policy</div>
@@ -103,27 +93,36 @@
         </div>
       </div>
     </div>
-	
   </div>
 </template>
 
 <script lang="ts">
-import AbusTitle from '../../components/AbusTitle.vue';
-import {Vue,Prop,Component}  from 'vue-property-decorator';
+import AbusTitle from "../../components/AbusTitle.vue";
+import { Vue, Prop, Component } from "vue-property-decorator";
 
 @Component({
-	name:'meIndex',
-	components:{
-		AbusTitle
-	}
+  name: "meIndex",
+  components: {
+    AbusTitle,
+  },
 })
-export default class meIndex extends Vue{
-
-	
-	
-	
-	
-};
+export default class meIndex extends Vue {
+  stepToPage(pageType: any) {
+    let routeMap: any = {
+      exchange: "pointsExchange",
+      address: "address",
+      payment: "payment",
+      myorder: "myOrder",
+      lang: "lang",
+      thirdaccount: "thirdAccount",
+    };
+    if (routeMap[pageType]) {
+      this.$router.push({
+        name: routeMap[pageType],
+      });
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

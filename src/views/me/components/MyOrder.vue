@@ -1,5 +1,6 @@
 <template>
   <div class="abus-height">
+    <abus-title title="My order" backRootName="meIndex"></abus-title>
     <van-tabs
       line-width="20"
       line-height="4"
@@ -19,6 +20,7 @@
 </template>
 
 <script>
+import AbusTitle from "../../../components/AbusTitle.vue";
 import MyDishOrder from "./MyDishOrder";
 import MyShoppingOrder from "./MyShoppingOrder";
 import MyInternetOrder from "./MyInternetOrder";
@@ -26,7 +28,8 @@ export default {
   components: {
     MyDishOrder,
     MyShoppingOrder,
-    MyInternetOrder
+    MyInternetOrder,
+    AbusTitle
   },
   data() {
     return {

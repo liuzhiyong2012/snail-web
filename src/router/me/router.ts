@@ -1,7 +1,7 @@
 import VueRouter, {
 	RouteConfig
 } from 'vue-router';
-import Me from '@/views/me/Index.vue';
+import MeIndex from '@/views/me/Index.vue';
 import ThirdAccount from '@/views/me/components/ThirdAccount.vue'
 import Address from '@/views/me/components/Address.vue'
 import Lang from '@/views/me/components/Lang.vue'
@@ -11,9 +11,9 @@ import PointsExchange from '@/views/me/components/PointsExchange.vue'
 
 const routes: Array < RouteConfig > = [
 	{
-		path: '/me',
-		name: 'me',
-		component: Me,
+		path: '/meIndex',
+		name: 'meIndex',
+		component: MeIndex,
 		children: []
     },
 	{
@@ -30,13 +30,13 @@ const routes: Array < RouteConfig > = [
     },
 	{
 		path: '/me/payment',
-		name: 'payment ',
+		name: 'payment',
 		component: Payment,
 		children: []
     },
 	{
 		path: '/me/myorder',
-		name: 'myOrder ',
+		name: 'myOrder',
 		component: MyOrder,
 		children: []
     },

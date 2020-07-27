@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-   <!-- <van-sticky>
+    <!-- <van-sticky>
       <van-nav-bar title="Airbus" @click-right="showPopup">
         <template #right>
           <van-icon name="scan" size="18" />
@@ -9,11 +9,12 @@
           <van-icon name="chat" size="18" />
         </template>
       </van-nav-bar> 
-    </van-sticky> -->
-	<div class="home-title">
-		<home-title @stepTo="stepToPage($event)"></home-title>
-	</div>
-	
+    </van-sticky>-->
+    <van-sticky :offset-top="0">
+    <div class="home-title" >
+      <home-title @stepTo="stepToPage($event)"></home-title>
+    </div>
+    </van-sticky>
     <van-popup v-model="show">
       <div class="popup-toast">
         <div class="title">Connet To The Internet</div>
@@ -62,7 +63,7 @@
     <van-tabs
       scrollspy
       sticky
-      offset-top="46"
+      offset-top="50"
       line-width="20"
       line-height="4"
       color="rgb(0,32,91)"
@@ -131,7 +132,7 @@ import HomeNews from "@/views/home/components/HomeNews";
 export default {
   name: "Home",
   components: {
-	HomeTitle,
+    HomeTitle,
     HomeFlight,
     HomeDish,
     HomeShopping,
@@ -206,26 +207,25 @@ export default {
     //   })
   },
   methods: {
-	stepToPage(pageType){
-		let routeMap = {
-			flight:'flightIndex',
-			dish:'dishIndex',
-			shopping:'',
-			music:'',
-			game:'',
-			video:'',
-			news:'',
-			me:'meIndex',
-			message:'messageIndex',
-		};
-		
-		if(routeMap[pageType]){
-			this.$router.push({
-			   name: routeMap[pageType]
-			});
-		}
-		
-	},
+    stepToPage(pageType) {
+      let routeMap = {
+        flight: "flightIndex",
+        dish: "dishIndex",
+        shopping: "shopping",
+        music: "",
+        game: "game",
+        video: "video",
+        news: "news",
+        me: "meIndex",
+        message: "messageIndex",
+      };
+
+      if (routeMap[pageType]) {
+        this.$router.push({
+          name: routeMap[pageType],
+        });
+      }
+    },
     showPopup() {
       // this.show = true;
       this.$router.push({
