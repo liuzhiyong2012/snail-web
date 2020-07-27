@@ -28,7 +28,7 @@
         animated
         sticky
       >
-        <van-tab v-for="(item,index) in options1" :title="item.text" :key="index">
+        <van-tab v-for="(item,index) in options1" @click="getGoodsList(item.Id)" :title="item.category" :key="index">
           <div class="filter">
             <div>
               Sort by：Newest
@@ -44,7 +44,7 @@
             </div>
           </div>
           <div class="goods-box">
-            <div class="goods-item" v-for="(item,index) in shoppingList" :key="index">
+            <div class="goods-item" v-for="(item,i) in options1[index].data" :key="i">
               <div class="goods">
                 <div class="goods-img">
                   <img :src="item.SampleImgPath" :alt="item.Name" />
@@ -98,7 +98,16 @@ export default class ShoppingIndex extends Vue {
   getShoppingCategory(){
     ShoppingService.getShoppingCategory().then((res: any) =>{
       console.log(res)
+// CreatedAt: 1550707757
+// Id: "1"
+// category: "珠宝首饰"
+      if(res.code == 200){
+        this.options1 = res.data
+      }
     })
+  }
+  getGoodsList(id: any){
+
   }
   private getShoppingRecommendedList() {
     ShoppingService.getShoppingRecommendedList({}).then((res: any) => {
@@ -108,7 +117,8 @@ export default class ShoppingIndex extends Vue {
   }
 
   private getShoppingList() {
-    ShoppingService.getShoppingList({}).then((res: any) => {
+    var data = {category: 2}
+    ShoppingService.getShoppingList(data).then((res: any) => {
       console.log(res);
       this.shoppingList = res.data.Dishes;
     });
