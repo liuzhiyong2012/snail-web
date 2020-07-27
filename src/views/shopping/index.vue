@@ -19,6 +19,7 @@
       </div>
     </div>
     <div class="shopping-box">
+      
       <van-tabs
         id="box"
         class="f1"
