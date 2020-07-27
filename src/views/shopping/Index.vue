@@ -50,7 +50,7 @@
               </svg>
             </div>
           </div>
-          <!-- <div class="goods-box" v-if="options1[index].data.lenth > 0" >
+          <div class="goods-box" >
             <div class="goods-item" v-for="(item,i) in options1[index].data" :key="i">
               <div class="goods">
                 <div class="goods-img">
@@ -64,7 +64,7 @@
                 </div>
               </div>
             </div>
-          </div> -->
+          </div>
         </van-tab>
         <van-tab disabled></van-tab>
       </van-tabs>

@@ -1,5 +1,6 @@
 <template>
   <div class="internet">
+    <abus-title title="Internet" backRootName="home"></abus-title>
     <div class="padding">
       <div class="card" v-for="(item, index) in cardList" :key="index">
         <div class="header">
@@ -9,21 +10,21 @@
         <div class="con">
           <div class="con-l">{{item.details}}
             </div>
-          <div class="pay" @click="routerInternetCard">Pay</div>
+          <div class="pay" @click="routerInternetCard(item)">Pay</div>
         </div>
         <p class="text">Estimated use</p>
         <div class="bottom">
           <div class="f1">
             <img class="icon" src="./images/icon_01.png" alt="icon_01" />
-            <span class="time-t">{{item.time}}</span>
+            <span class="time-t">{{item.text_time}}</span>
           </div>
           <div class="f1">
             <img class="icon" src="./images/icon_02.png" alt="icon_02" />
-            <span class="time-t">{{item.time}}</span>
+            <span class="time-t">{{item.music_time}}</span>
           </div>
           <div class="f1 f2">
             <img class="icon" src="./images/icon_03.png" alt="icon_03" />
-            <span class="time-t">{{item.time}}</span>
+            <span class="time-t">{{item.video_time}}</span>
           </div>
         </div>
       </div>
@@ -33,41 +34,60 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator'
+import NetflowService from '../../service/netflow';
+import AbusTitle from "../../components/AbusTitle.vue";
 @Component({
   name: 'Internet',
-  components:{}
+  components:{
+    AbusTitle
+  }
 })
 export default class InternetIndex extends Vue{
   private cardList: Array<any> = [];
 
   private created() {
-    this.cardList = [
-      {
-        Name: 'All-Day Pass',
-        Price: '213',
-        details: 'In-air internet access,all day long,on airbus Airlines.',
-        time: 'All-Day'
-      },
-      {
-        Name: '50MB',
-        Price: '10',
-        details: 'In-air internet access,all day long,on airbus Airlines.',
-        time: '30 min'
-      },
-      {
-        Name: '10MB',
-        Price: '5',
-        details: 'In-air internet access,all day long,on airbus Airlines.',
-        time: '30 min'
-      },
-    ]
+    this.postNetFlowList()
+    // this.cardList = [
+    //   {
+    //     Name: 'All-Day Pass',
+    //     Price: '213',
+    //     details: 'In-air internet access,all day long,on airbus Airlines.',
+    //     time: 'All-Day'
+    //   },
+    //   {
+    //     Name: '50MB',
+    //     Price: '10',
+    //     details: 'In-air internet access,all day long,on airbus Airlines.',
+    //     time: '30 min'
+    //   },
+    //   {
+    //     Name: '10MB',
+    //     Price: '5',
+    //     details: 'In-air internet access,all day long,on airbus Airlines.',
+    //     time: '30 min'
+    //   },
+    // ]
   }
 
-  public routerInternetCard(){
+  public routerInternetCard(data:any){
+    this.$store.dispatch("commitInternetCartData",{
+      data: data
+    })
     this.$router.push({
-      name: 'internetCart'
+      name: 'internetCart',
+      params:{
+        key: data
+      }
     })
   }
+  postNetFlowList(){
+      NetflowService.postNetFlowList().then((res: any) => {
+        console.log(res)
+        if(res.code == 200){
+          this.cardList = res.data
+        }
+      })
+    }
 }
 </script>
 
