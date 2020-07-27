@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div> 
     <div class="banner">
       <van-swipe :autoplay="3000">
         <van-swipe-item
