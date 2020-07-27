@@ -21,7 +21,9 @@ const service: AxiosInstance = axios.create({
 service.interceptors.request.use(
   (config: AxiosRequestConfig) => {
     // const key_token = localStore.get('key_token')
-    const zctToken = localStore.get('zctToken')
+    // const zctToken = localStore.get('token');
+	// debugger;
+	const zctToken = window.localStorage.getItem('token')||localStore.get('token');
     // config.headers['key-token'] = key_token
     const timestamp = new Date().getTime() + ''
     const nonce = StringUtils.randomStr(32)
@@ -30,12 +32,16 @@ service.interceptors.request.use(
     // console.log(encrptString);
     const sign = md5(encrptString)
     // console.log(md5("1584948595244.21fa6sd1f95w1133edsafas6.vJdhenTJOYZ3BPWqMpcFb6tpzhhmeDLj"))
+	
+	// 登录后 access_token 放到头部，字段Authorization
+	
     config.headers = {
       ...config.headers, //@temp
       sign,
       timestamp,
       nonce,
-      zctToken: zctToken
+	  Authorization:zctToken
+      // zctToken: zctToken
     }
     return config
   },

@@ -85,11 +85,13 @@ export default class DishIndex extends Vue {
   }
   
   private stepToDetail(item:any){
+	  // debugger;
 	  this.$router.push({
 		  name:'dishDetail',
-		  params:{
-			  dishInfo:item
-		  }
+		  // path:'/dish/detail',
+		   query: {
+		              id:item.Id
+		            }
 	  });
 	  
   }

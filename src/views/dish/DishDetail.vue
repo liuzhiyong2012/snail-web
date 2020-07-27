@@ -64,21 +64,31 @@ export default class DishDetail extends Vue {
 	private dishesList: Array<any> = [];
 
 	private dishInfo: any = {};
+	private id: any = {};
 	
 	private get seatNumber():string{
 		return this.$store.state.login.voyageInfo.seatNumber;
 	}
 
 	private mounted() {
-		this.dishInfo = this.$route.params.dishInfo;
+		// debugger;
+		this.id = this.$route.query.id;
+		/* this.dishInfo = */
+		this.getDishesDetail();
 	}
 	
-	
-
-	public backToIndex(): void {
-		this.$router.push({
-			name: 'dishIndex'
+	public getDishesDetail(): void {
+		// debugger;
+		DishService.getDishesDetail({
+			id:this.id
+		}).then((res)=>{
+			if(res.code == '200'){
+				 this.dishInfo = res.data;
+			}else{
+				
+			}
 		});
+		
 	}
 
 	public toCart(): void {
