@@ -136,6 +136,7 @@ export default {
     align-items: center;
     flex-direction: column;
     font-size: 0.24rem;
+    font-family: Helvetica;
     color: #2e2e2e;
     .scoller-name {
       margin-top: 0.17rem;
