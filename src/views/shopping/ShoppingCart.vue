@@ -93,7 +93,6 @@ export default {};
   .van-card-title {
     max-height: none;
     font-size: 0.36rem;
-    font-family: Helvetica;
     color: rgba(51, 51, 51, 1);
     line-height: 0.43rem;
     text-overflow: -o-ellipsis-lastline;
@@ -109,14 +108,12 @@ export default {};
   left: 2.4rem;
   bottom: 0.3rem;
   font-size: 0.42rem;
-  font-family: Helvetica-Bold, Helvetica;
   font-weight: bold;
   color: rgba(46, 46, 46, 1);
   line-height: 0.42rem;
   .before {
     text-decoration: line-through;
     font-size: 0.24rem;
-    font-family: Helvetica;
     color: rgba(51, 51, 51, 1);
     line-height: 0.29rem;
   }
@@ -138,7 +135,6 @@ export default {};
     margin: 0 0 0.3rem 0;
     display: flex;
     font-size: 0.3rem;
-    font-family: Helvetica;
     color: rgba(155, 154, 170, 1);
     line-height: 0.36rem;
     .cell-l {
@@ -149,7 +145,6 @@ export default {};
     }
     .t-bold {
       font-size: 0.35rem;
-      font-family: Helvetica-Bold, Helvetica;
       font-weight: bold;
       color: rgba(46, 46, 46, 1);
       line-height: 0.42rem;
@@ -178,7 +173,6 @@ export default {};
   .f1 {
     flex: 1;
     font-size: 0.28rem;
-    font-family: Helvetica;
     color: rgba(51, 51, 51, 1);
     line-height: 0.58rem;
   }
@@ -193,7 +187,6 @@ export default {};
 }
 .total-amount {
   font-size: 0.35rem;
-  font-family: Helvetica-Bold, Helvetica;
   font-weight: bold;
   color: rgba(46, 46, 46, 1);
   line-height: 0.2rems;
@@ -214,7 +207,6 @@ export default {};
     text-align: center;
     line-height: 0.8rem;
     color: #fff;
-    font-family: Helvetica-Bold, Helvetica;
     font-weight: bold;
   }
 }

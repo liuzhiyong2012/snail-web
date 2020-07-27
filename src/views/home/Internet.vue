@@ -108,7 +108,6 @@ export default class InternetIndex extends Vue{
         .con-l {
           flex: 1;
           font-size: 0.22rem;
-          font-family: Helvetica;
           color: rgba(51, 51, 51, 1);
           line-height: 0.26rem;
           text-overflow: -o-ellipsis-lastline;
@@ -132,7 +131,6 @@ export default class InternetIndex extends Vue{
       .text {
         margin: 0.3rem 0 0 0;
         font-size: 0.22rem;
-        font-family: Helvetica;
         color: rgba(51, 51, 51, 1);
         line-height: 0.26rem;
       }

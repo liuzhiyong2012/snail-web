@@ -68,7 +68,6 @@
 				background: #001f5e;
 				border-radius: 0.04rem;
 				font-size:0.26rem;
-				font-family:Helvetica-BoldOblique,Helvetica;
 				font-weight:normal;
 				color:rgba(255,255,255,1);
 				line-height:0.40rem;

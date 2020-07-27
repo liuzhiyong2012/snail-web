@@ -1,5 +1,6 @@
 <template>
   <div class="abus-height">
+    <abus-title title="Third Account Number" backRootName="meIndex"></abus-title>
     <div class="cell-group mt2">
       <van-radio-group
         v-model="radio"
@@ -57,7 +58,11 @@
 </template>
 
 <script>
+import AbusTitle from "../../../components/AbusTitle.vue";
 export default {
+  components:{
+    AbusTitle
+  },
   data() {
     return {
       radio: "0"

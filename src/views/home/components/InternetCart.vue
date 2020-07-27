@@ -75,14 +75,12 @@ export default {
       .name {
         flex: 1;
         font-size: 0.36rem;
-        font-family: Helvetica;
         color: rgba(51, 51, 51, 1);
         line-height: 0.55rem;
       }
       .price {
         flex: 1;
         font-size: 0.42rem;
-        font-family: Helvetica;
         color: rgba(51, 51, 51, 1);
         font-weight: bold;
         line-height: 0.55rem;
@@ -96,7 +94,6 @@ export default {
     margin: 0 0 0.3rem 0;
     display: flex;
     font-size: 0.3rem;
-    font-family: Helvetica;
     color: rgba(155, 154, 170, 1);
     line-height: 0.36rem;
 
@@ -106,7 +103,6 @@ export default {
     }
     .t-bold {
       font-size: 0.35rem;
-      font-family: Helvetica-Bold, Helvetica;
       font-weight: bold;
       color: rgba(46, 46, 46, 1);
       line-height: 0.42rem;
@@ -135,7 +131,6 @@ export default {
   .f1 {
     flex: 1;
     font-size: 0.28rem;
-    font-family: Helvetica;
     color: rgba(51, 51, 51, 1);
     line-height: 0.58rem;
   }
@@ -158,7 +153,6 @@ export default {
     text-align: center;
     line-height: 0.8rem;
     color: #fff;
-    font-family: Helvetica-Bold, Helvetica;
     font-weight: bold;
     font-size: 0.32rem;
   }

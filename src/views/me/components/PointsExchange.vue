@@ -1,18 +1,21 @@
 <template>
-  <div class="goods-box">
-    <div class="goods-item" v-for="(item,index) in shoppingList" :key="index">
-      <div class="goods">
-        <div class="goods-img">
-          <img :src="item.SampleImgPath" :alt="item.Name" />
-        </div>
-        <div class="price">${{item.Price}}</div>
-        <div class="name">{{item.Name}}</div>
-        <div class="qty">
-          QTY {{item.Stocking}}
-          <span class="buy">
-            Point
-            <i class="point">3000</i>
-          </span>
+  <div class="abus-height">
+    <abus-title title="Points exchange" backRootName="meIndex"></abus-title>
+    <div class="goods-box">
+      <div class="goods-item" v-for="(item,index) in shoppingList" :key="index">
+        <div class="goods">
+          <div class="goods-img">
+            <img :src="item.SampleImgPath" :alt="item.Name" />
+          </div>
+          <div class="price">${{item.Price}}</div>
+          <div class="name">{{item.Name}}</div>
+          <div class="qty">
+            QTY {{item.Stocking}}
+            <span class="buy">
+              Point
+              <i class="point">3000</i>
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -22,10 +25,13 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import ShoppingService from "../../../service/shopping";
+import AbusTitle from "../../../components/AbusTitle.vue";
 // import Banner from "@/components/banner";
 @Component({
   name: "Shopping",
-  components: {},
+  components: {
+    AbusTitle,
+  },
 })
 export default class ShoppingIndex extends Vue {
   private recomendList: Array<any> = [];
@@ -93,14 +99,13 @@ export default class ShoppingIndex extends Vue {
       }
 
       .price {
-        padding:  0.1rem 0.2rem 0;
+        padding: 0.1rem 0.2rem 0;
         font-size: 0.36rem;
         color: #001f5b;
         font-weight: bold;
       }
       .name {
         padding: 0.14rem 0.2rem;
-        font-family: Helvetica;
         color: #000;
         text-overflow: -o-ellipsis-lastline;
         overflow: hidden;
