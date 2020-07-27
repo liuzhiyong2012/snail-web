@@ -9,19 +9,20 @@
         >
           <div
             class="shopping-recomend-img"
-            :style="{backgroundImage:`url(${item.SampleImgPath})`}"
+            :style="{backgroundImage:`url(${item.BannerImgPath})`}"
           ></div>
         </van-swipe-item>
       </van-swipe>
       <!-- <banner :bannerData="bannerData" /> -->
-      <div :class="[isActive? 'menu active': 'menu']">
+      <!-- <div :class="[isActive? 'menu active': 'menu']">
         <van-icon name="wap-nav" size="24" />
-      </div>
+      </div>-->
     </div>
     <div class="shopping-box">
       <van-tabs
         id="box"
         class="f1"
+        v-model="active"
         color="rgba(0,0,0,0)"
         title-active-color="#2E2E2E"
         title-inactive-color="#B5B6B8"
@@ -29,26 +30,10 @@
         sticky
       >
         <van-tab v-for="(item,index) in options1" :title="item.text" :key="index">
-          <div class="filter">
-            <div>
-              Sort by：Newest
-              <svg class="icon i-icon" aria-hidden="true">
-                <use xlink:href="#icon-select_1" />
-              </svg>
-            </div>
-            <div>
-              Filter
-              <svg class="icon i-icon" aria-hidden="true">
-                <use xlink:href="#icon-select_1" />
-              </svg>
-            </div>
-          </div>
           <div class="goods-box">
             <div class="goods-item" v-for="(item,index) in shoppingList" :key="index">
               <div class="goods">
-                <div class="goods-img">
-                  <img :src="item.SampleImgPath" :alt="item.Name" />
-                </div>
+                <img :src="item.GoodsImgPath" :alt="item.Name" />
                 <div class="price">${{item.Price}}</div>
                 <div class="name">{{item.Name}}</div>
                 <div class="qty">
@@ -59,7 +44,7 @@
             </div>
           </div>
         </van-tab>
-        <van-tab disabled></van-tab>
+        <!-- <van-tab disabled></van-tab> -->
       </van-tabs>
       <div class="nav-menu"></div>
     </div>
@@ -73,54 +58,41 @@ import ShoppingService from "../../service/shopping";
 // import Banner from "@/components/banner";
 @Component({
   name: "Shopping",
-  components: {},
+  components: {}
 })
 export default class ShoppingIndex extends Vue {
   private recomendList: Array<any> = [];
   private shoppingList: Array<any> = [];
   private options1: Array<any> = [];
-  private isActive: boolean = false;
 
   private created() {
     this.getShoppingRecommendedList();
     this.getShoppingList();
-    this.getShoppingCategory()
     this.options1 = [
       { text: "Jewellery", value: 1 },
       { text: "Jewellery", value: 1 },
-      { text: "Jewellery", value: 1 },
+      { text: "Jewellery", value: 1 }
     ];
   }
-  mounted() {
-    window.addEventListener("scroll", this.handleScroll, true);
-    var object = document.getElementById("box");
-  }
-  getShoppingCategory(){
-    ShoppingService.getShoppingCategory().then((res: any) =>{
-      console.log(res)
-    })
-  }
+
   private getShoppingRecommendedList() {
     ShoppingService.getShoppingRecommendedList({}).then((res: any) => {
-      this.recomendList = res.data.RecommendedShopping;
-      console.log(res);
+      this.recomendList = res.RecommendedShopping;
+
+      this.recomendList.forEach((item, index) => {
+        item.BannerImgPath = "http://172.16.125.11:8010/50.jpg";
+      });
     });
   }
 
   private getShoppingList() {
     ShoppingService.getShoppingList({}).then((res: any) => {
-      console.log(res);
-      this.shoppingList = res.data.Dishes;
+      this.shoppingList = res.Dishes;
+
+      this.shoppingList.forEach((item, index) => {
+        item.GoodsImgPath = "http://172.16.125.11:8010/50.jpg";
+      });
     });
-  }
-  handleScroll() {
-    var object: any = document.getElementById("box");
-    var rectObject = object.getBoundingClientRect().top;
-    if (rectObject <= 0) {
-      this.isActive = true;
-    } else {
-      this.isActive = false;
-    }
   }
 }
 </script>
@@ -180,18 +152,8 @@ export default class ShoppingIndex extends Vue {
 .van-tabs__wrap--scrollable .van-tabs__nav {
   padding-right: 1rem;
 }
-.filter {
-  padding: 0.3rem;
-  display: flex;
-  justify-content: space-between;
-  color: #333;
-  .i-icon {
-    width: 0.2rem;
-    height: 0.2rem;
-    padding: 0 0 0.05rem;
-  }
-}
 .goods-box {
+  margin: 0.3rem 0 0 0;
   display: flex;
   flex-wrap: wrap;
   .goods-item {
@@ -203,15 +165,8 @@ export default class ShoppingIndex extends Vue {
       background: #fff;
       border-radius: 0.08rem;
       box-shadow: 0 0 0.1rem #efefef;
-      .goods-img {
-        display: flex;
-        height: 3.5rem;
-        align-items: center;
-        background-color: #fafafa;
-        overflow: hidden;
-        img {
-          width: 100%;
-        }
+      img {
+        width: 100%;
       }
       .price {
         padding: 0 0.2rem;
@@ -221,6 +176,7 @@ export default class ShoppingIndex extends Vue {
       }
       .name {
         padding: 0.14rem 0.2rem;
+        font-family: Helvetica;
         color: #000;
         text-overflow: -o-ellipsis-lastline;
         overflow: hidden;
