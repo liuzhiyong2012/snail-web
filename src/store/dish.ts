@@ -34,7 +34,7 @@ export default {
 	delCartItem(state: any, index: number) {
 	  state.cartList.splice(index,1,0);
 	},
-	clearCart(state:any){
+	clearDishCart(state:any){
 		state.cartList = [];
 	}
   },

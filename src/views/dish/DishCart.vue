@@ -2,7 +2,7 @@
 	<section class="dishcart-main-ctn">
 		<div class="dishcart-title">
 			<abus-title backRouteName="dishIndex">
-				<dish-cart-icon></dish-cart-icon>
+				<!-- <dish-cart-icon></dish-cart-icon> -->
 			</abus-title>
 		</div>
 
@@ -62,7 +62,7 @@
 		</div>
 		
 		<div class="pay-outer-btn">
-			<div class="pay-btn">
+			<div class="pay-btn" @click="placeOrder()">
 				Pay
 			</div>
 		</div>
@@ -94,7 +94,7 @@ export default class DishCart extends Vue {
 		return this.$store.state.login.voyageInfo.seatNumber;
 	}
 	
-	private get cartList():number{
+	private get cartList():Array<any>{
 		return this.$store.state.dish.cartList;
 	}
 	
@@ -102,7 +102,7 @@ export default class DishCart extends Vue {
 	   let cartList = this.$store.state.dish.cartList;
 	   let amount = 0;
 	   
-	   cartList.forEach((item,index)=>{
+	   cartList.forEach((item:any,index:number)=>{ 
 		   amount = amount + item.Price * item.orderNumber;
 	   });
 	   
@@ -114,6 +114,55 @@ export default class DishCart extends Vue {
 			name:'mePayment'
 		});
 	}
+	
+	public placeOrder(){
+		/* {
+		"Seat":"c20",
+		 "Remark":"买",
+		 "address":"地址",
+		 "Items":[
+		  {
+		   "Quantity":1,
+		   "Id":"e2dc9e2c-6733-e911-b13c-96af276fddb7"
+		   
+		  }
+		 ]
+		} */
+		/* this.$router.push({
+			name:'mePayment'
+		}); */
+		let orderItems:Array<any> = [];
+		
+		this.cartList.forEach((item:any,index:number)=>{
+			orderItems.push({
+				Quantity:item.orderNumber,
+				Id:item.Id
+			});
+		});
+		
+		DishService.placeDishesOrder({
+			Seat:'c20'||this.seatNumber,
+			Remark:'太辣了',
+			Items:orderItems
+		}).then((res:any)=>{
+			if(res.code == 200){
+				this.$toast('下单成功!');
+				window.setTimeout(()=>{
+					this.$store.commit('clearDishCart'); //clearDishCart();
+					this.$router.push({
+						name:'home'
+					});
+				},1000);
+			}
+			
+		}).catch((e:any)=>{
+			
+		});
+		
+		
+	}
+	
+	
 	
 }
 </script>

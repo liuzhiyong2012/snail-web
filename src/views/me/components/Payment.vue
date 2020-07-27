@@ -1,6 +1,6 @@
 <template>
   <div class="abus-height">
-    <abus-title title="Payment" backRootName="meIndex"></abus-title>
+    <abus-title title="Payment"></abus-title>
 
     <div class="lang-box">
       <van-radio-group v-model="radio" checked-color="#00205B">

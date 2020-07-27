@@ -213,7 +213,7 @@ export default {
         flight: "flightIndex",
         dish: "dishIndex",
         shopping: "shopping",
-        music: "",
+        music: "musicIndex",
         game: "game",
         video: "video",
         news: "news",
