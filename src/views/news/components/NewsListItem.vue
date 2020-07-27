@@ -15,16 +15,16 @@
               recommedNewsItem.ShortDescription
             }}</span>
 
-            <div @click="changeHot(recommedNewsItem.Id, recommedNewsItem.isLike)">
+            <div @click="changeHot(recommedNewsItem.Id)">
               <span
                 class="author-right-heart"
-                v-show="recommedNewsItem.isLike != null"
+                v-show="recommedNewsItem.isCollect == true"
               >
                 <img :src="loveTrue" alt="" />
               </span>
               <span
                 class="author-right-heart"
-                v-show="recommedNewsItem.isLike == null"
+                v-show="recommedNewsItem.isCollect == false"
               >
                 <img :src="loveFalse" alt="" />
               </span>
@@ -38,6 +38,7 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { localStore } from "../../../utils/data-management";
+import NewsService from "../../../service/news";
 @Component({
   name: "NewsListItem",
   components: {},
@@ -53,8 +54,10 @@ export default class NewsListItem extends Vue {
   //   },
 
   private recommedNewsItem = this.newsItem;
-  private loveTrue = require("../images/love_true.png");
-  private loveFalse = require("../images/love_false.png");
+  // private loveTrue = require("../images/love_true.png");
+  // private loveFalse = require("../images/love_false.png");
+  private loveTrue = ("../images/love_true.png");
+  private loveFalse = ("../images/love_false.png");
 
   private created() {}
   private mounted() {}
@@ -72,13 +75,47 @@ export default class NewsListItem extends Vue {
     });
   }
 
-  public changeHot(Id: string, isLike: any): void {
-    if(isLike == null){
-      this.recommedNewsItem.isLike = true;
-    }else{
-      this.recommedNewsItem.isLike = null;
-    }
-    
+  // 取消收藏
+  public postNewsUnLike(val: string): void {
+    NewsService.postNewsUnLike({
+      id: val,
+    }).then((res) => {
+      if (res.code == 200) {
+        console.log("取消收藏", res);
+        this.recommedNewsItem.isCollect = false
+      }
+    });
+  }
+
+  // 进行收藏
+  public postNewsLike(val: string): void {
+    NewsService.postNewsLike({
+      id: val,
+    }).then((res) => {
+      if (res.code == 200) {
+        console.log("进行收藏", res);
+        this.recommedNewsItem.isCollect = true
+      }
+    });
+  }
+
+  // 是否已收藏
+  public postNewsIsLike(val: string): void {
+    NewsService.postNewsIsLike({
+      id: val,
+    }).then((res) => {
+      if (res.code == 200) {
+        if(res.data == true){
+          this.postNewsUnLike(val)
+        }else if(res.data==false){
+          this.postNewsLike(val)
+        }
+      }
+    });
+  }
+
+  public changeHot(Id: string): void {
+    this.postNewsIsLike(Id);
   }
 }
 
@@ -97,6 +134,7 @@ export default class NewsListItem extends Vue {
 //     },
 //   },
 // };
+
 </script>
 <style lang="scss" scoped>
 .news-list-wrap {

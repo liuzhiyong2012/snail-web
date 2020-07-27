@@ -6,18 +6,18 @@
           <van-icon name="arrow-left" size="18" @click="goBack" />
         </template>
         <template #right>
-          <span class="news-right-heart" v-show="newsDetail.isLike != null">
+          <span class="news-right-heart" v-show="newsDetail.isCollect == true">
             <img
               :src="loveTrue"
               alt=""
-              @click="changeCollect(newsDetail.Id, newsDetail.isLike)"
+              @click="changeCollect(newsDetail.Id)"
             />
           </span>
-          <span class="news-right-heart" v-show="newsDetail.isLike == null">
+          <span class="news-right-heart" v-show="newsDetail.isCollect == false">
             <img
               :src="loveFalse"
               alt=""
-              @click="changeCollect(newsDetail.Id, newsDetail.isLike)"
+              @click="changeCollect(newsDetail.Id)"
             />
           </span>
         </template>
@@ -36,7 +36,8 @@
 import { localStore } from "@/utils/data-management";
 import { mapState } from "vuex";
 import Banner from "@/components/banner";
-import DateUtils from '../../utils/date-utils';
+import DateUtils from "../../utils/date-utils";
+import NewsService from "../../service/news";
 export default {
   name: "",
   components: {
@@ -61,12 +62,11 @@ export default {
         // FullDescription: `
         // `,
         // Id: "f6638a60-7c5a-e911-962f-fb9f18fa3bb4",
-        // ShortDescription:
-        //   "Airbus Connected Experience goes from concept phase to reality",
+        // ShortDescription: "Airbus Connected Experience",
         // ThumbsImg: [
         //   "http://172.16.125.11:8010/0c48a0b7-b4b6-46d6-af34-8afb69c159d4",
         // ],
-        // Title: "Airbus Connected Experience goes from concept phase to reality",
+        // Title: "Airbus Connected Experience",
         // img: "http://172.16.125.11:8010/0c48a0b7-b4b6-46d6-af34-8afb69c159d4",
         // isLike: null,
       },
@@ -89,12 +89,47 @@ export default {
     goBack() {
       this.$router.go(-1);
     },
-    changeCollect(Id, isLike) {
-      if (isLike == null) {
-        this.newsDetail.isLike = true;
-      } else {
-        this.newsDetail.isLike = null;
-      }
+
+    changeCollect(Id) {
+      this.postNewsIsLike(Id)
+    },
+
+    // 是否已收藏 
+    postNewsIsLike(val) {
+      const _this = this;
+      NewsService.postNewsIsLike({
+        id: val,
+      }).then((res) => {
+        if (res.code == 200) {
+          if(res.data == true){
+            _this.postNewsUnLike(val);
+          }else if(res.data == false){
+            _this.postNewsLike(val);
+          }
+        }
+      });
+    },
+    // 进行收藏
+    postNewsLike(val) {
+      NewsService.postNewsLike({
+        id: val,
+      }).then((res) => {
+        if (res.code == 200) {
+          console.log("进行收藏", res);
+          this.newsDetail.isCollect = true
+        }
+      });
+    },
+    // 取消收藏
+    postNewsUnLike(val) {
+      NewsService.postNewsUnLike({
+        id: val,
+      }).then((res) => {
+        if (res.code == 200) {
+          console.log("取消收藏", res);
+          this.newsDetail.isCollect = false
+        }
+      });
     },
   },
 };

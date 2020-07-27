@@ -76,11 +76,7 @@ export default class NewsList extends Vue {
   private created() {
     this.getCategory(); //获取分类
     this.getNewsList(); //获取新闻列表
-
     this.postNewsMyLike(); //收藏列表
-    // this.postNewsUnLike() //取消收藏
-    // this.postNewsLike() // 进行收藏
-    // this.postNewsIsLike() //是否已收藏
   }
   private mounted() {}
   private destroyed() {}
@@ -93,8 +89,17 @@ export default class NewsList extends Vue {
   public getNewsList(): void {
     NewsService.getNewsList({}).then((res) => {
       if (res.code == 200) {
+        res.data.News.forEach((item) => {
+          if (item.isLike) {
+            item.isCollect = true;
+          } else {
+            item.isCollect = false;
+          }
+        });
         this.newsList = res.data.News;
         this.newsListBackup = res.data.News;
+        // this.newsListBackup = [];
+        // this.newsListBackup = this.newsList;
         this.bannerData = res.data.News;
         this.bannerData.forEach((item) => {
           item.img = item.BannerImg;
@@ -119,7 +124,8 @@ export default class NewsList extends Vue {
       this.newsListBackup = this.newsList;
     } else if (title == "收藏") {
       this.newsList.forEach((item) => {
-        if (item.isLike != null) {
+        // if (item.isLike != null) {
+        if (item.isCollect == true) {
           this.newsListBackup.push(item);
         }
       });
@@ -141,42 +147,7 @@ export default class NewsList extends Vue {
   // 我收藏的新闻
   public postNewsMyLike(): void {
     NewsService.postNewsMyLike({}).then((res) => {
-      if (res.code == 200) {
-        console.log("2222222", res);
-      }
-    });
-  }
-
-  // 取消收藏
-  public postNewsUnLike(): void {
-    NewsService.postNewsUnLike({
-      Id: "48f918ed-ee33-e911-b13c-96af276fddb7",
-    }).then((res) => {
-      if (res.code == 200) {
-        console.log("3333333", res);
-      }
-    });
-  }
-
-  // 进行收藏
-  public postNewsLike(): void {
-    NewsService.postNewsLike({
-      Id: "48f918ed-ee33-e911-b13c-96af276fddb7",
-    }).then((res) => {
-      if (res.code == 200) {
-        console.log("4444444", res);
-      }
-    });
-  }
-
-  // 是否已收藏
-  public postNewsIsLike(): void {
-    NewsService.postNewsIsLike({
-      Id: "48f918ed-ee33-e911-b13c-96af276fddb7",
-    }).then((res) => {
-      if (res.code == 200) {
-        console.log("555555", res);
-      }
+      if (res.code == 200) {}
     });
   }
 }
