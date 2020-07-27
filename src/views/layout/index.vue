@@ -1,9 +1,9 @@
 <template>
   <section class="abus-layout-ctn">
 	  <section class="abus-layout-main-ctn">
-		  <keep-alive>
+		  <!-- <keep-alive> -->
 		    <router-view class="abus-layout-view-ctn"/>
-		  </keep-alive>
+		  <!-- </keep-alive> -->
 	  </section>
   </section>
 </template>

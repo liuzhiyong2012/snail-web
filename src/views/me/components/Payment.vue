@@ -1,8 +1,9 @@
 <template>
   <div class="abus-height">
+	 <abus-title title="Payment"></abus-title>
     <div class="lang-box">
       <van-radio-group v-model="radio" checked-color="#00205B">
-        <van-radio name="0" class="lang-cell">
+        <van-radio name="1" class="lang-cell">
           <template #icon="props">
             <svg class="icon icon-text" aria-hidden="true">
               <use v-if="props.checked" xlink:href="#icon-selected" />
@@ -15,18 +16,6 @@
             <span :class="[props.checked ? 'text-selected': 'text-unselected']">Wechat Pay</span>
           </template>
         </van-radio>
-        <van-radio name="1" class="lang-cell">
-          <template #icon="props">
-            <svg class="icon icon-text" aria-hidden="true">
-              <use v-if="props.checked" xlink:href="#icon-selected" />
-              <use v-else xlink:href="#icon-unselected" />
-            </svg>
-            <svg class="icon i-icon" aria-hidden="true">
-              <use xlink:href="#icon-wechatpaycopy_1" />
-            </svg>
-            <span :class="[props.checked ? 'text-selected': 'text-unselected']">Alipay</span>
-          </template>
-        </van-radio>
         <van-radio name="2" class="lang-cell">
           <template #icon="props">
             <svg class="icon icon-text" aria-hidden="true">
@@ -34,9 +23,9 @@
               <use v-else xlink:href="#icon-unselected" />
             </svg>
             <svg class="icon i-icon" aria-hidden="true">
-              <use xlink:href="#icon-wechatpaycopy2_1" />
+              <use xlink:href="#icon-ali-pay" />
             </svg>
-            <span :class="[props.checked ? 'text-selected': 'text-unselected']">International Credit Card</span>
+            <span :class="[props.checked ? 'text-selected': 'text-unselected']">Alipay</span>
           </template>
         </van-radio>
         <van-radio name="3" class="lang-cell">
@@ -46,7 +35,19 @@
               <use v-else xlink:href="#icon-unselected" />
             </svg>
             <svg class="icon i-icon" aria-hidden="true">
-              <use xlink:href="#icon-wechatpaycopy3_1" />
+              <use xlink:href="#icon-credit-card" />
+            </svg>
+            <span :class="[props.checked ? 'text-selected': 'text-unselected']">International Credit Card</span>
+          </template>
+        </van-radio>
+        <van-radio name="4" class="lang-cell">
+          <template #icon="props">
+            <svg class="icon icon-text" aria-hidden="true">
+              <use v-if="props.checked" xlink:href="#icon-selected" />
+              <use v-else xlink:href="#icon-unselected" />
+            </svg>
+            <svg class="icon i-icon" aria-hidden="true">
+              <use xlink:href="#icon-cash" />
             </svg>
             <span :class="[props.checked ? 'text-selected': 'text-unselected']">Cash</span>
           </template>
@@ -56,18 +57,36 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      radio: "0",
-    };
-  },
+<script lang="ts">
+import {Vue,Prop,Component,Watch} from "vue-property-decorator"; 
+import AbusTitle from '../../../components/AbusTitle';
+
+
+@Component({
+	name:'PayMent',
+	components:{
+		AbusTitle
+	}
+})
+export default class PayMent extends Vue{
+	private radio:any = "1";
+	
+	@Watch('radio',{immediate:true})
+	changePayType(){
+		this.$store.commit('changePayType',this.radio);
+	}
+	
+	
+	private mounted():void{
+		this.radio = this.$store.state.me.payType;
+	}
+	
 };
 </script>
 
 <style lang="scss" scoped>
 .lang-box {
+  margin-top:0.20rem;
   padding: 0 0.3rem;
   background-color: #fff;
   .lang-cell {
