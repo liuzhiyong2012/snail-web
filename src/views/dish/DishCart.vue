@@ -4,7 +4,7 @@
 			<abus-title backRouteName="dishIndex">
 				<dish-cart-icon></dish-cart-icon>
 			</abus-title>
-		</div>
+		</div>   
 
 		<div class="cart-ctn">
 			<van-swipe-cell class="cart-item-ctn" v-for="(item,index) in cartList"  :key="index">
