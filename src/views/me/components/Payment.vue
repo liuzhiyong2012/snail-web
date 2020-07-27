@@ -59,8 +59,7 @@
 
 <script lang="ts">
 import {Vue,Prop,Component,Watch} from "vue-property-decorator"; 
-import AbusTitle from '../../../components/AbusTitle';
-
+import AbusTitle from '../../../components/AbusTitle.vue';
 
 @Component({
 	name:'PayMent',

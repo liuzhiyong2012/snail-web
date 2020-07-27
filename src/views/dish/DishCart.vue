@@ -102,7 +102,7 @@ export default class DishCart extends Vue {
 	   let cartList = this.$store.state.dish.cartList;
 	   let amount = 0;
 	   
-	   cartList.forEach((item,index)=>{
+	   cartList.forEach((item:any,index:number)=>{
 		   amount = amount + item.Price * item.orderNumber;
 	   });
 	   
