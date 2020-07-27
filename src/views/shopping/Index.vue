@@ -1,5 +1,5 @@
 <template>
-  <div> 
+  <div>
     <div class="banner">
       <van-swipe :autoplay="3000">
         <van-swipe-item
@@ -7,7 +7,7 @@
           v-for="(item, index) in recomendList"
           :key="index"
         >
-          <div  
+          <div
             class="shopping-recomend-img"
             :style="{backgroundImage:`url(${item.SampleImgPath})`}"
           ></div>
@@ -17,9 +17,8 @@
       <div :class="[isActive? 'menu active': 'menu']">
         <van-icon name="wap-nav" size="24" />
       </div>
-    </div> 
+    </div>
     <div class="shopping-box">
-      
       <van-tabs
         id="box"
         class="f1"
@@ -28,8 +27,15 @@
         title-inactive-color="#B5B6B8"
         animated
         sticky
+        
+        @click="getGoodsList"
       >
-        <van-tab v-for="(item,index) in options1" @click="getGoodsList(item.Id)" :title="item.category" :key="index">
+        <van-tab
+          v-for="(item,index) in options1"
+          :title="item.category"
+          :name="item.Id"
+          :key="index"
+        >
           <div class="filter">
             <div>
               Sort by：Newest
@@ -44,7 +50,7 @@
               </svg>
             </div>
           </div>
-          <div class="goods-box">
+          <!-- <div class="goods-box" v-if="options1[index].data.lenth > 0" >
             <div class="goods-item" v-for="(item,i) in options1[index].data" :key="i">
               <div class="goods">
                 <div class="goods-img">
@@ -58,7 +64,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </van-tab>
         <van-tab disabled></van-tab>
       </van-tabs>
@@ -84,31 +90,34 @@ export default class ShoppingIndex extends Vue {
 
   private created() {
     this.getShoppingRecommendedList();
+    this.getShoppingCategory();
     this.getShoppingList();
-    this.getShoppingCategory()
-    this.options1 = [
-      { text: "Jewellery", value: 1 },
-      { text: "Jewellery", value: 1 },
-      { text: "Jewellery", value: 1 },
-    ];
+    
   }
   mounted() {
     window.addEventListener("scroll", this.handleScroll, true);
     var object = document.getElementById("box");
   }
-  getShoppingCategory(){
-    ShoppingService.getShoppingCategory().then((res: any) =>{
-      console.log(res)
-// CreatedAt: 1550707757
-// Id: "1"
-// category: "珠宝首饰"
-      if(res.code == 200){
-        this.options1 = res.data
+  getShoppingCategory() {
+    ShoppingService.getShoppingCategory().then((res: any) => {
+      console.log(res);
+      // CreatedAt: 1550707757
+      // Id: "1"
+      // category: "珠宝首饰"
+      if (res.code == 200) {
+        this.options1 = res.data;
       }
-    })
+    });
   }
-  getGoodsList(id: any){
-
+  // 点击获取
+  getGoodsList(name: any,title:any) {
+    console.log(name)
+    var data = { category: name };
+    ShoppingService.getShoppingList(data).then((res: any) => {
+      console.log(res);
+       Vue.set(this.options1[name-1],'data',res.data.Dishes)
+       console.log(this.options1)
+    });
   }
   private getShoppingRecommendedList() {
     ShoppingService.getShoppingRecommendedList({}).then((res: any) => {
@@ -116,12 +125,13 @@ export default class ShoppingIndex extends Vue {
       console.log(res);
     });
   }
-
+// 首次获取
   private getShoppingList() {
-    var data = {category: 2}
+    var data = { category: "1" };
     ShoppingService.getShoppingList(data).then((res: any) => {
+      console.log(data);
       console.log(res);
-      this.shoppingList = res.data.Dishes;
+      Vue.set(this.options1[0],'data',res.data.Dishes)
     });
   }
   handleScroll() {

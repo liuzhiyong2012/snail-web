@@ -32,10 +32,16 @@
   </div>
 </template>
 
-<script>
-export default {
-  methods: {
-    goHome() {
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import HomeMap from './HomeMap.vue';
+import AbusMap from '../../../components/AbusMap.vue';
+import NetflowService from '../../../service/netflow';
+export default class InternetCart extends Vue {
+  created() {
+    this.postNetFlowList()
+  }
+  goHome() {
       this.$toast("Success");
       setTimeout(() => {
         this.$router.push({
@@ -43,7 +49,11 @@ export default {
         });
       }, 1000);
     }
-  }
+    postNetFlowList(){
+      NetflowService.postNetFlowList().then((res: any) => {
+        console.log(res)
+      })
+    }
 };
 </script>
 
