@@ -123,7 +123,6 @@ export default {
       line-height: 0.34rem;
       font-size: 0.28rem;
       font-weight: bold;
-      font-family: Helvetica-Bold, Helvetica;
       color: #fff;
       text-shadow: 0px 2px 4px rgba(15, 35, 61, 0.14);
     }

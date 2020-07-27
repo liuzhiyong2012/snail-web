@@ -1,6 +1,7 @@
 <template>
   <div class="abus-height">
-	 <abus-title title="Payment"></abus-title>
+    <abus-title title="Payment" backRootName="meIndex"></abus-title>
+
     <div class="lang-box">
       <van-radio-group v-model="radio" checked-color="#00205B">
         <van-radio name="1" class="lang-cell">
@@ -57,6 +58,7 @@
   </div>
 </template>
 
+
 <script lang="ts">
 import {Vue,Prop,Component,Watch} from "vue-property-decorator"; 
 import AbusTitle from '../../../components/AbusTitle.vue';
@@ -80,7 +82,7 @@ export default class PayMent extends Vue{
 		this.radio = this.$store.state.me.payType;
 	}
 	
-};
+}
 </script>
 
 <style lang="scss" scoped>

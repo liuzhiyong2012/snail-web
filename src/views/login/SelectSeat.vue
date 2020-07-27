@@ -107,7 +107,6 @@ export default {
     text-align: center;
     line-height: 0.8rem;
     color: #fff;
-    font-family: Helvetica-Bold, Helvetica;
     font-weight: bold;
   }
 }

@@ -1,6 +1,7 @@
 <template>
 
   <div class="abus-height">
+    <abus-title title="Shopping address" backRootName="meIndex"></abus-title>
     <div class="enter-box">
       <van-field
         v-model="message"
@@ -19,12 +20,17 @@
 </template>
 
 <script>
+import AbusTitle from "../../../components/AbusTitle.vue";
 export default {
+  components:{
+    AbusTitle
+  },
   data() {
     return {
       message: "",
     };
   },
+
 };
 </script>
 

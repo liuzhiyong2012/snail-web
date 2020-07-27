@@ -167,7 +167,6 @@ export default class DishCart extends Vue {
 					padding-left: 0.30rem;
 					.dish-name{
 						font-size:0.36rem;
-						font-family:Helvetica;
 						color:rgba(51,51,51,1);
 						line-height:0.42rem;
 					}
@@ -178,7 +177,6 @@ export default class DishCart extends Vue {
 						
 						.price-ctn{
 							font-size:0.42rem;
-							font-family:Helvetica-Bold,Helvetica;
 							font-weight:bold;
 							color:rgba(46,46,46,1);
 							line-height:0.42rem;
@@ -226,7 +224,6 @@ export default class DishCart extends Vue {
 			
 			.pay-label{
 				font-size:0.32rem;
-				font-family:Helvetica;
 				color:rgba(51,51,51,1);
 				line-height:0.32rem;
 			}
@@ -255,7 +252,6 @@ export default class DishCart extends Vue {
 			padding-top:0.40rem;
 			padding-bottom:0.40rem;
 			font-size:0.36rem;
-			font-family:Helvetica-Bold,Helvetica;
 			font-weight:bold;
 			color:rgba(46,46,46,1);
 			line-height:0.42rem;
@@ -289,7 +285,6 @@ export default class DishCart extends Vue {
 			border-radius:0.50rem;
 			
 			font-size:0.34rem;
-			font-family:Helvetica-Bold,Helvetica;
 			font-weight:bold;
 			color:rgba(255,255,255,1);
 		}
