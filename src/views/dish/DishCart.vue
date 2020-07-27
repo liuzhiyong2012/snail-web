@@ -94,7 +94,7 @@ export default class DishCart extends Vue {
 		return this.$store.state.login.voyageInfo.seatNumber;
 	}
 	
-	private get cartList():number{
+	private get cartList():Array<any>{
 		return this.$store.state.dish.cartList;
 	}
 	
@@ -102,7 +102,7 @@ export default class DishCart extends Vue {
 	   let cartList = this.$store.state.dish.cartList;
 	   let amount = 0;
 	   
-	   cartList.forEach((item,index)=>{
+	   cartList.forEach((item:any,index:number)=>{ 
 		   amount = amount + item.Price * item.orderNumber;
 	   });
 	   
@@ -131,9 +131,9 @@ export default class DishCart extends Vue {
 		/* this.$router.push({
 			name:'mePayment'
 		}); */
-		let orderItems = [];
+		let orderItems:Array<any> = [];
 		
-		this.cartList.forEach((item,index)=>{
+		this.cartList.forEach((item:any,index:number)=>{
 			orderItems.push({
 				Quantity:item.orderNumber,
 				Id:item.Id

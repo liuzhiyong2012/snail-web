@@ -81,7 +81,7 @@ export default class DishDetail extends Vue {
 		// debugger;
 		DishService.getDishesDetail({
 			id:this.id
-		}).then((res)=>{
+		}).then((res:any)=>{
 			if(res.code == '200'){
 				 this.dishInfo = res.data;
 			}else{

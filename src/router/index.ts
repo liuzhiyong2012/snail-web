@@ -13,6 +13,7 @@ import LoginRouter from "./login/router";
 import NewsRouter from "./news/router";
 import GameRouter from "./game/router";
 import ChatRouter from "./chat/router";
+import MusicRouter from "./music/router";
 import Me from "./me/router";
 
 Vue.use(VueRouter);
@@ -31,6 +32,7 @@ const routes: Array<RouteConfig> = [
       ...LoginRouter,
       ...GameRouter,
       ...ChatRouter,
+	  ...MusicRouter,
       ...Me,
       {
         path: "/home",
