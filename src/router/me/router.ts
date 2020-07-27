@@ -1,7 +1,7 @@
 import VueRouter, {
 	RouteConfig
 } from 'vue-router';
-import Me from '@/views/me/index.vue';
+import Me from '@/views/me/Index.vue';
 import ThirdAccount from '@/views/me/components/ThirdAccount.vue'
 import Address from '@/views/me/components/Address.vue'
 import Payment from '@/views/me/components/Payment.vue';
