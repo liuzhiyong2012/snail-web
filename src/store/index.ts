@@ -2,7 +2,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import Login from './login';
 import Dish from './dish';
-import Me from './me';
 
 Vue.use(Vuex)
 
@@ -17,8 +16,7 @@ export default new Vuex.Store<any>({
   },
   modules: {
 	login:Login,
-	dish:Dish,
-	me:Me
+	dish:Dish
   }
 })
 

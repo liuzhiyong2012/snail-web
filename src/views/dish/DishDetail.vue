@@ -1,23 +1,19 @@
 <template>
 	<section class="dishdetail-main-ctn">
-		<div class="dish-title">
-			<abus-title backRouteName="dishIndex">
-				 <dish-cart-icon></dish-cart-icon>
-			</abus-title>
-		</div>
+		<div class="dish-title"><dish-title @back="backToIndex()" @toCart="toCart()"></dish-title></div>
 		<div class="order-ctn">
 			<div class="dish-img" :style="{backgroundImage:`url(${dishInfo.BannerImgPath})`}">
 			</div>
 			<div class="order-info">
 				<h6 class="dish-name">{{dishInfo.Name}}</h6>
 				<p class="dish-desc">
-					{{dishInfo.Remark||'暂无介绍'}}
+					{{dishInfo.Remark||'--'}}
 				</p>
 
 				<div class="order-item-ctn">
 					<div class="qty-ctn">
 						<span>QTY</span>
-						<span>{{dishInfo.Stocking||'--'}}</span>
+						<span>{{dishInfo.QTY||'--'}}</span>
 					</div>
 
 					<div class="order-number-ctn">
@@ -47,15 +43,13 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import AbusTitle from '../../components/AbusTitle.vue';
-import DishCartIcon from './components/DishCartIcon.vue';
+import DishTitle from './components/DishTitle.vue';
 import DishService from '../../service/dish';
 
 @Component({
 	name: 'DishDetail',
 	components: {
-		AbusTitle,
-		DishCartIcon
+		DishTitle
 	}
 })
 export default class DishDetail extends Vue {
@@ -70,32 +64,44 @@ export default class DishDetail extends Vue {
 	}
 
 	private mounted() {
-		this.dishInfo = this.$route.params.dishInfo;
+		// let a = this.$route.params;
+		this.dishInfo = {
+				Name: '素食拼盘',
+				SampleImgPath: 'http://172.16.125.11:8010/eb8ea336-9434-4295-8215-3821c76baba8',
+				BannerImgPath: 'http://172.16.125.11:8010/50.jpg',
+				Price: 32,
+				orderNumberL:3,
+				Remark: null,
+				Status: 0,
+				Stocking: 0,
+				Id: 'e2dc9e2c-6733-e911-b13c-96af276fddb7'
+			};
+		
 	}
 	
 	
 
 	public backToIndex(): void {
+		// this.$router.go(-1);
 		this.$router.push({
 			name: 'dishIndex'
 		});
 	}
 
 	public toCart(): void {
-		
+		// this.$router.go(-1);
+		// toCart
 	}
 	
 	public addToCart():void{
 		this.$store.commit('addCartItem',this.dishInfo);
-		this.$toast('成功加入购物车!');
-	}
-	
-	public buyNow():void{
-		// this.$toast('购买成功!');
-		this.$store.commit('addCartItem',this.dishInfo);
 		this.$router.push({
 			name:'dishCart'
 		});
+	}
+	
+	public buyNow():void{
+		this.$toast('购买成功!');
 	}
 	
 }

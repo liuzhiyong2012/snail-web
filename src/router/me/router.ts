@@ -10,7 +10,6 @@ import MyOrder from '@/views/me/components/MyOrder.vue'
 import PointsExchange from '@/views/me/components/PointsExchange.vue'
 
 const routes: Array < RouteConfig > = [
-
 	{
 		path: '/meIndex',
 		name: 'meIndex',
@@ -51,12 +50,7 @@ const routes: Array < RouteConfig > = [
         path: '/me/thirdaccount',
         name: 'thirdAccount',
         component: ThirdAccount
-    },
-	{
-	    path: '/me/payment',
-	    name: 'mePayment',
-	    component: Payment
-	}
+    }
 ]
 
 

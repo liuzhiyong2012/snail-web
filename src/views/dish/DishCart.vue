@@ -1,10 +1,6 @@
 <template>
 	<section class="dishcart-main-ctn">
-		<div class="dishcart-title">
-			<abus-title backRouteName="dishIndex">
-				<dish-cart-icon></dish-cart-icon>
-			</abus-title>
-		</div>
+		<div class="dishcart-title"><dish-title @back="backToIndex()" @toCart="toCart()"></dish-title></div>
 
 		<div class="cart-ctn">
 			<van-swipe-cell class="cart-item-ctn" v-for="(item,index) in cartList"  :key="index">
@@ -20,7 +16,7 @@
 					<div class="order-info">
 						<p class="dish-name">{{item.Name}}</p>
 						<div class="info-bottom-ctn">
-							<span class="price-ctn">${{item.Price}}</span>
+							<span class="price-ctn">${{Price}}</span>
 							<van-field class="field-ctn" name="stepper" label="">
 								<template #input>
 									<van-stepper v-model="item.orderNumber" />
@@ -44,12 +40,9 @@
 					Payment Method
 				</div>
 				
-				<div class="pay-way" @click="selectPayType()">
-					<svg class="icon i-icon" aria-hidden="true">
-					    <use v-if="payType == '1'" xlink:href="#icon-wechat-pay" />
-						<use v-if="payType == '2'" xlink:href="#icon-ali-pay" />
-						<use v-if="payType == '3'" xlink:href="#icon-credit-card" />
-						<use v-if="payType == '4'" xlink:href="#icon-cash" />
+				<div class="pay-way">
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#icon-wechat-pay"/>
 					</svg>
 					
 					<i class="icon icon-back"></i>
@@ -57,7 +50,7 @@
 			</div>
 			<div class="total-money">
 				<span>Total amount</span>
-				<span>${{orderAmount}}</span>
+				<span>$64</span>
 			</div>
 		</div>
 		
@@ -73,23 +66,29 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import AbusTitle from '../../components/AbusTitle.vue';
-import DishCartIcon from './components/DishCartIcon.vue';
+import DishTitle from './components/DishTitle.vue';
 import DishService from '../../service/dish';
 
+
+/* {
+		Name: '素食拼盘',
+		SampleImgPath: 'http://172.16.125.11:8010/eb8ea336-9434-4295-8215-3821c76baba8',
+		BannerImgPath: 'http://172.16.125.11:8010/50.jpg',
+		Price: 32,
+		orderNumberL:3,
+		Remark: null,
+		Status: 0,
+		Stocking: 0,
+		Id: 'e2dc9e2c-6733-e911-b13c-96af276fddb7'
+	}; */
 			
 @Component({
 	name: 'DishCart',
 	components: {
-		AbusTitle,
-		DishCartIcon
+		DishTitle
 	}
 })
 export default class DishCart extends Vue {
-	private get payType():number{
-		return this.$store.state.me.payType;
-	}
-	
 	private get seatNumber():number{
 		return this.$store.state.login.voyageInfo.seatNumber;
 	}
@@ -98,22 +97,12 @@ export default class DishCart extends Vue {
 		return this.$store.state.dish.cartList;
 	}
 	
-	private get orderAmount():number{
-	   let cartList = this.$store.state.dish.cartList;
-	   let amount = 0;
-	   
-	   cartList.forEach((item:any,index:number)=>{
-		   amount = amount + item.Price * item.orderNumber;
-	   });
-	   
-	   return amount;
-	}
 	
-	private selectPayType(){
-		this.$router.push({
-			name:'mePayment'
-		});
-	}
+	/* private get seatNumber():number{
+		return this.$store.state.login.voyageInfo.seatNumber;
+	} */
+	
+	
 	
 }
 </script>
@@ -154,9 +143,6 @@ export default class DishCart extends Vue {
 					height: 1.80rem;
 					background:grey;
 					border-radius:6px;
-					background-size:cover;
-					background-repeat: no-repeat;
-					background-position:center;
 				}
 				
 				.order-info{
@@ -261,7 +247,6 @@ export default class DishCart extends Vue {
 					font-size:36px;
 					font-weight:bold;
 					color:rgba(51,51,51,1);
-					margin-right: 0.40rem;
 				}
 				&:nth-child(2){
 					font-weight:bold;
