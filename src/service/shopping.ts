@@ -23,14 +23,6 @@ export default class ShoppingService {
 			data: data
 		});
 	}
-	// 商品种类
-	static getShoppingCategory(data?: Object) {
-		return request({
-			url: '/v1/api/shopping/Category',
-			method: 'GET',
-			data: data
-		});
-	}
 
 	
 }  
