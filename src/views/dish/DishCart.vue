@@ -1,6 +1,12 @@
 <template>
 	<section class="dishcart-main-ctn">
-		<div class="dishcart-title"><dish-title @back="backToIndex()" @toCart="toCart()"></dish-title></div>
+
+		<div class="dishcart-title">
+			<abus-title backRouteName="dishIndex">
+				<dish-cart-icon></dish-cart-icon>
+			</abus-title>
+		</div>   
+
 
 		<div class="cart-ctn">
 			<van-swipe-cell class="cart-item-ctn" v-for="(item,index) in cartList"  :key="index">
