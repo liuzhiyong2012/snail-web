@@ -6,7 +6,7 @@
         <!-- <div class="left">
           <img src="./images/tab1.png" alt="" />
         </div> -->
-
+   
         <div class="center">
           <van-tabs
             v-model="active"

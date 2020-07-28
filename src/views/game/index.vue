@@ -7,7 +7,7 @@
         </template>
       </van-nav-bar>
     </van-sticky>
-
+  
     <div class="scroller-box">
       <div
         class="scroller-item"
