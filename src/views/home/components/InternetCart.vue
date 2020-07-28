@@ -37,6 +37,11 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import HomeMap from './HomeMap.vue';
 import AbusMap from '../../../components/AbusMap.vue';
 import NetflowService from '../../../service/netflow';
+
+@Component({
+  name: 'InternetCart',
+  components:{}
+})
 export default class InternetCart extends Vue {
   created() {
     this.postNetFlowList()

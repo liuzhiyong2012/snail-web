@@ -8,21 +8,26 @@
 		 Title: "睿明音乐 永恒的魅力" */ -->
 		
 		<section class="content-ctn">
-			<van-swipe :autoplay="3000">
-				<van-swipe-item class="dish-recomend-item" v-for="(item, index) in recomendList" :key="index">
-					<div class="dish-recomend-img" :style="{ backgroundImage: `url(${item.ImgPath})` }"></div>
-				</van-swipe-item>
-			</van-swipe>
+			
+			<div class="class-centent-ctn">
+				<van-swipe :autoplay="3000">
+					<van-swipe-item class="music-recomend-item" v-for="(item, index) in recomendList" :key="index">
+						<div class="music-recomend-img" :style="{ backgroundImage: `url(${item.ImgPath})` }"></div>
+					</van-swipe-item>
+				</van-swipe>
+			</div>
+			
+			<div class="content-ctn">
+				
+			</div>
 		</section>
-		
 	</section>
 </template>
 
 <script lang="ts">
 	import {Vue,Prop,Component} from 'vue-property-decorator';
 	import AbusTitle from '../../components/AbusTitle.vue';
-	
-	import MusicService from '../../service/music.ts';
+	import MusicService from '../../service/music';
 	
 	@Component({
 		name:'MusicIndex',
@@ -40,16 +45,30 @@
 		 private getMusicBanners(){
 			 MusicService.getMusicBanners({}).then((res:any)=>{
 				 if(res.code == '200'){
-					 this.recomendList = res.data.Banner;
+					 this.recomendList = res.data.Banners;  
+					 // debugger;
 				 }
 			 });
 		 }
 	}
 </script>
 
+
 <style lang="scss" scoped>
 	.music-main-ctn{
 		.content-ctn{
+			.music-recomend-item {
+				position: relative;
+				width: 100%;
+				height: 2.5rem;
+				.music-recomend-img {
+					width: 100%;
+					height: 100%;
+					background-position: center center;
+					background-repeat: no-repeat;
+					background-size: cover;
+				}
+			}
 			
 		}
 	}
