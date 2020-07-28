@@ -10,8 +10,8 @@
 
     <div class="abus-scroller-box">
       <banner :bannerData="bannerData" />
-    </div>
-
+    </div>      
+ 
     <van-tabs
       v-model="active"
       @click="changeTab"
