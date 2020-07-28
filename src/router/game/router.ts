@@ -1,7 +1,7 @@
 import VueRouter, {
 	RouteConfig
 } from 'vue-router';
-import Game from '@/views/game/index.vue';
+import Game from '@/views/game/Index.vue';
 // import GameDetail from '@/views/game/GameDetail.vue';
 
 const routes: Array < RouteConfig > = [

@@ -1,24 +1,32 @@
 <template>
   <li class="news-list-wrap">
     <div class="news-list-item">
-      <div class="item-img" @click="goToDetail(recommedNewsItem.id)">
-        <img v-lazy="recommedNewsItem.img" />
+      <div class="item-img" @click="goToDetail(recommedNewsItem)">
+        <img v-lazy="recommedNewsItem.ThumbsImg[0]" />
       </div>
 
       <div class="item-info">
-        <div class="name" @click="goToDetail(recommedNewsItem.id)">
-          <div class="line-two">{{ recommedNewsItem.name }}</div>
+        <div class="name" @click="goToDetail(recommedNewsItem)">
+          <div class="line-two">{{ recommedNewsItem.Title }}</div>
         </div>
         <div class="author">
           <div class="line-one">
-            <span class="author-left-info">{{ recommedNewsItem.details }}</span>
+            <span class="author-left-info">{{
+              recommedNewsItem.ShortDescription
+            }}</span>
 
-            <div @click="changeHot(recommedNewsItem.id)">
-              <span class="author-right-heart" v-if="recommedNewsItem.isCollect">
-                <img :src="loveTrue" alt=""/>
+            <div @click="changeHot(recommedNewsItem.Id)">
+              <span
+                class="author-right-heart"
+                v-show="recommedNewsItem.isCollect == true"
+              >
+                <img :src="loveTrue" alt="" />
               </span>
-              <span class="author-right-heart" v-else>
-                <img :src="loveFalse" alt=""/>
+              <span
+                class="author-right-heart"
+                v-show="recommedNewsItem.isCollect == false"
+              >
+                <img :src="loveFalse" alt="" />
               </span>
             </div>
           </div>
@@ -27,39 +35,106 @@
     </div>
   </li>
 </template>
-<script>
-export default {
-  props: ["newsItem"],
-  data() {
-    return {
-      recommedNewsItem: this.newsItem,
-      loveTrue: require("../images/love_true.png"),
-      loveFalse: require("../images/love_false.png"),
-    };
-  },
-  created() {},
-  watch: {
-    newsItem(val) {
-      this.recommedNewsItem = val;
-    },
-  },
-  methods: {
-    goToDetail(id) {
-      //进入新闻详情
-      this.$router.push({
-        name: "newsDetail",
-        query: {
-          newsId: id,
-        },
-      });
-    },
+<script lang="ts">
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { localStore } from "../../../utils/data-management";
+import NewsService from "../../../service/news";
+@Component({
+  name: "NewsListItem",
+  components: {},
+})
+export default class NewsListItem extends Vue {
+  @Prop() private newsItem!: object;
+  @Watch('newsItem', {})
 
-    changeHot(val) {
-      this.recommedNewsItem.isCollect = !this.recommedNewsItem.isCollect;
-    },
+  //   watch: {
+  //     newsItem(val) {
+  //       this.recommedNewsItem = val;
+  //     },
+  //   },
 
-  },
-};
+  private recommedNewsItem = this.newsItem;
+  // private loveTrue = require("../images/love_true.png");
+  // private loveFalse = require("../images/love_false.png");
+  private loveTrue = ("../images/love_true.png");
+  private loveFalse = ("../images/love_false.png");
+
+  private created() {}
+  private mounted() {}
+
+  public goToDetail(item): void {
+    // 先将详情存入store
+    if (localStore.get("newsDetails")) {
+      localStore.remove("newsDetails");
+    }
+    this.$store.dispatch("setNewsDetails", item);
+
+    //进入新闻详情
+    this.$router.push({
+      name: "newsDetail",
+    });
+  }
+
+  // 取消收藏
+  public postNewsUnLike(val: string): void {
+    NewsService.postNewsUnLike({
+      id: val,
+    }).then((res) => {
+      if (res.code == 200) {
+        console.log("取消收藏", res);
+        this.recommedNewsItem.isCollect = false
+      }
+    });
+  }
+
+  // 进行收藏
+  public postNewsLike(val: string): void {
+    NewsService.postNewsLike({
+      id: val,
+    }).then((res) => {
+      if (res.code == 200) {
+        console.log("进行收藏", res);
+        this.recommedNewsItem.isCollect = true
+      }
+    });
+  }
+
+  // 是否已收藏
+  public postNewsIsLike(val: string): void {
+    NewsService.postNewsIsLike({
+      id: val,
+    }).then((res) => {
+      if (res.code == 200) {
+        if(res.data == true){
+          this.postNewsUnLike(val)
+        }else if(res.data==false){
+          this.postNewsLike(val)
+        }
+      }
+    });
+  }
+
+  public changeHot(Id: string): void {
+    this.postNewsIsLike(Id);
+  }
+}
+
+// export default {
+//   props: ["newsItem"],
+//   data() {
+//     return {
+//       recommedNewsItem: this.newsItem,
+//       loveTrue: require("../images/love_true.png"),
+//       loveFalse: require("../images/love_false.png"),
+//     };
+//   },
+//   watch: {
+//     newsItem(val) {
+//       this.recommedNewsItem = val;
+//     },
+//   },
+// };
+
 </script>
 <style lang="scss" scoped>
 .news-list-wrap {

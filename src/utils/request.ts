@@ -29,7 +29,6 @@ service.interceptors.request.use(
     const nonce = StringUtils.randomStr(32)
     const ZCT_SECRET = '21fa6sd1f95w1133edsafas6'
     const encrptString = `${timestamp}.${ZCT_SECRET}.${nonce}`
-    // console.log(encrptString);
     const sign = md5(encrptString)
     // console.log(md5("1584948595244.21fa6sd1f95w1133edsafas6.vJdhenTJOYZ3BPWqMpcFb6tpzhhmeDLj"))
 	

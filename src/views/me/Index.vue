@@ -1,6 +1,6 @@
 <template>
   <div class="me"> 
-    <abus-title title="个人中心" backRootName="home"></abus-title>
+    <abus-title title="Me" backRootName="home"></abus-title>
     <div class="user-info">
       <div class="user">
         <div class="user-img">

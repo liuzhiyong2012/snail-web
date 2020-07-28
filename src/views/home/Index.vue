@@ -219,6 +219,8 @@ export default {
         news: "news",
         me: "meIndex",
         message: "messageIndex",
+        internet: "internet",
+        internetCart: "internetCart"
       };
 
       if (routeMap[pageType]) {

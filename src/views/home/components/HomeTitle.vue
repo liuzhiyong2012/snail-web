@@ -6,7 +6,7 @@
 			<svg aira-hidden="true" class="icon">
 				<use xlink:href="#icon-scan"></use>
 			</svg>
-			<span class="flow-ctn">
+			<span class="flow-ctn" @click="stepTo('internet')">
 				0GB
 			</span>
 			<!-- <i class="icon"></i> -->
