@@ -35,6 +35,7 @@ service.interceptors.request.use(
       sign,
       timestamp,
       nonce,
+      AirBus: '4CFC4D33-2C1E-E911-BAD5-F44D307124C0',
       zctToken: zctToken
     }
     return config

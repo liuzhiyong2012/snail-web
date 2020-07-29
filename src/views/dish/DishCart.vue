@@ -1,7 +1,7 @@
 <template>
 	<section class="dishcart-main-ctn">
 		<div class="dishcart-title">
-			<abus-title backRouteName="dishIndex">
+			<abus-title backRootName="dishIndex">
 				<dish-cart-icon></dish-cart-icon>
 			</abus-title>
 		</div>
@@ -102,7 +102,7 @@ export default class DishCart extends Vue {
 	   let cartList = this.$store.state.dish.cartList;
 	   let amount = 0;
 	   
-	   cartList.forEach((item,index)=>{
+	   cartList.forEach((item:any,index:any)=>{
 		   amount = amount + item.Price * item.orderNumber;
 	   });
 	   
@@ -111,7 +111,7 @@ export default class DishCart extends Vue {
 	
 	private selectPayType(){
 		this.$router.push({
-			name:'mePayment'
+			name:'payment'
 		});
 	}
 	

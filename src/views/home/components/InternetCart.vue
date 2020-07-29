@@ -1,36 +1,44 @@
 <template>
   <div class="internet-cart">
-<abus-title title="Internet Cart" backRootName="internet"></abus-title>
+    <abus-title title="Internet Cart" backRootName="internet"></abus-title>
     <div class="cart">
-      <div class="name-bg" v-if="this.$store.state.home.internetData.DisplayOrder == 1">ALL DAY</div>
-      <div class="name-bg text-two" v-if="this.$store.state.home.internetData.DisplayOrder == 2">1 G</div>
-      <div class="name-bg text-two" v-if="this.$store.state.home.internetData.DisplayOrder == 3">50 M</div>
+      <div class="name-bg" v-if="getInternetData.DisplayOrder == 1">ALL DAY</div>
+      <div class="name-bg text-two" v-else-if="getInternetData.DisplayOrder == 2">1 G</div>
+      <div class="name-bg text-two" v-else-if="getInternetData.DisplayOrder == 3">50 M</div>
+      <div v-else class="name-bg text-two">--</div>
       <div class="f1">
-        <div class="name">{{this.$store.state.home.internetData.Name}}</div>
-        <div class="price">${{this.$store.state.home.internetData.Price}}</div>
+        <div class="name">{{getInternetData.Name || "暂无"}}</div>
+        <div class="price">
+          <div>${{getInternetData.Price || '--'}}</div>
+          <van-field class="field-ctn" name="stepper" label>
+            <template #input>
+              <van-stepper v-model="stepper" />
+            </template>
+          </van-field>
+        </div>
       </div>
-      <div class="stepper-box">
+      <!-- <div class="stepper-box">
         <i class="minus">-</i>
         <span class="f2">1</span>
         <i class="plus">+</i>
-      </div>
+      </div>-->
     </div>
     <div class="cell-group-two">
       <div class="cell-item" @click="stepToPage('payment')">
-          <div class="title">Payment method</div>
-          <div class="f1">
-            <svg class="icon icon-right-1" aria-hidden="true">
-              <use v-if="payType == '1'" xlink:href="#icon-wechat-pay" />
-						<use v-if="payType == '2'" xlink:href="#icon-ali-pay" />
-						<use v-if="payType == '3'" xlink:href="#icon-credit-card" />
-						<use v-if="payType == '4'" xlink:href="#icon-cash" />
-            </svg>
-            
-            <svg class="icon icon-right" aria-hidden="true">
-              <use xlink:href="#icon-youjiantou_1" />
-            </svg>
-          </div>
+        <div class="title">Payment method</div>
+        <div class="f1">
+          <svg class="icon icon-right-1" aria-hidden="true">
+            <use v-if="payType == '1'" xlink:href="#icon-wechat-pay" />
+            <use v-if="payType == '2'" xlink:href="#icon-ali-pay" />
+            <use v-if="payType == '3'" xlink:href="#icon-credit-card" />
+            <use v-if="payType == '4'" xlink:href="#icon-cash" />
+          </svg>
+
+          <svg class="icon icon-right" aria-hidden="true">
+            <use xlink:href="#icon-youjiantou_1" />
+          </svg>
         </div>
+      </div>
     </div>
     <div class="cell-group">
       <!-- <div class="cell">
@@ -40,11 +48,11 @@
       <div class="cell">
         <div class="cell-l">12323123</div>
         <div class="cell-r">$12332</div>
-      </div> -->
-      
+      </div>-->
+
       <div class="cell">
         <!-- <div class="cell-l t-bold">12323123</div> -->
-        <div class="cell-r t-bold">Total amount ${{internetData.Price}}</div>
+        <div class="cell-r t-bold">Total amount ${{internetCartTotal}}</div>
       </div>
     </div>
     <div class="button-box">
@@ -54,29 +62,48 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 // import HomeMap from './HomeMap.vue';
 // import AbusMap from '../../../components/AbusMap.vue';
-import NetflowService from '../../../service/netflow';
+import NetflowService from "../../../service/netflow";
 import AbusTitle from "../../../components/AbusTitle.vue";
 @Component({
-  name: 'InternetCart',
-  components:{
-    AbusTitle
-  }
+  name: "InternetCart",
+  components: {
+    AbusTitle,
+  },
 })
 export default class InternetCart extends Vue {
-  private internetData: any = ''
-  created() {
+  private internetData: any = "";
+  private stepper: number = 1;
+  private created() {
     // this.postNetFlowList()
     // this.internetData = this.$route.params.key
     // console.log(this.$route.params.key)
-    
   }
-  private get payType():number{
-		return this.$store.state.me.payType;
+  private mounted() {
+		this.stepper = this.$store.state.home.internetCartNum;
 	}
-  stepToPage(pageType: any) {
+  @Watch("stepper", { immediate: true })
+  changeInternetStepper() {
+    console.log('123')
+    this.$store.commit("changeInternetStepper", this.stepper);
+  }
+
+  // private get internetCartNum(): number {
+  //   return this.$store.state.home.getInternetData.internetCartNum;
+  // }
+  private get internetCartTotal(): number {
+    return this.$store.state.home.total;
+  }
+  private get getInternetData() {
+    return this.$store.state.home.internetData;
+  }
+  private get payType(): number {
+    return this.$store.state.me.payType;
+  }
+
+  public stepToPage(pageType: any) {
     let routeMap: any = {
       exchange: "pointsExchange",
       address: "address",
@@ -91,20 +118,20 @@ export default class InternetCart extends Vue {
       });
     }
   }
-  goHome() {
-      this.$toast("Success");
-      setTimeout(() => {
-        this.$router.push({
-          name: "home"
-        });
-      }, 1000);
-    }
-    postNetFlowList(){
-      NetflowService.postNetFlowList().then((res: any) => {
-        console.log(res)
-      })
-    }
-};
+  public goHome() {
+    this.$toast("Success");
+    setTimeout(() => {
+      this.$router.push({
+        name: "home",
+      });
+    }, 1000);
+  }
+  public postNetFlowList() {
+    NetflowService.postNetFlowList().then((res: any) => {
+      console.log(res);
+    });
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -125,9 +152,9 @@ export default class InternetCart extends Vue {
       color: #fff;
       text-align: center;
       line-height: 0.4rem;
-      &.text-two{
-        font-size: .4rem;
-        line-height: .8rem;
+      &.text-two {
+        font-size: 0.4rem;
+        line-height: 0.8rem;
       }
     }
     .f1 {
@@ -136,7 +163,7 @@ export default class InternetCart extends Vue {
       flex-direction: column;
       align-content: center;
       justify-content: center;
-      
+
       .name {
         flex: 1;
         font-size: 0.36rem;
@@ -145,13 +172,19 @@ export default class InternetCart extends Vue {
       }
       .price {
         flex: 1;
+        display: flex;
         font-size: 0.42rem;
         color: rgba(51, 51, 51, 1);
         font-weight: bold;
         line-height: 0.55rem;
+        justify-content: space-between;
+        .van-cell {
+          padding: 0;
+          width: auto;
+        }
       }
     }
-    .f2{
+    .f2 {
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -181,10 +214,9 @@ export default class InternetCart extends Vue {
       line-height: 0.42rem;
     }
   }
-  
 }
-.cell-group-two{
-  margin: .3rem 0 0 0;
+.cell-group-two {
+  margin: 0.3rem 0 0 0;
   background: #fff;
   .cell-item {
     display: flex;

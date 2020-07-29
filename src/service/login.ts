@@ -47,4 +47,12 @@ export default class LoginService {
             data: data
         })
     }
+    // Route::get(':version/api/Crm/SeatInfo', 'api/:version.app.Crm/SeatInfo');//当前航班座位列表
+    static getCrmSeatInfo(data?: object) {
+        return request({
+            url: '/v1/api/Crm/SeatInfo',
+            method: 'GET',
+            params: data
+        })
+    }
 }  

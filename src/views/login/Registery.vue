@@ -207,7 +207,7 @@ export default class Register extends Vue {
   private confirmPassword: string = "";
   private question: string = "";
   private answer: string = "";
-  mounted() {
+  private mounted() {
     if (localStorage.getItem("lang") == "en") {
       this.$i18n.locale = "en";
       localStorage.setItem("lang", "en");
@@ -217,22 +217,22 @@ export default class Register extends Vue {
     }
   }
 
-  showPopup() {
+  public showPopup() {
     if (this.isCheckPassword) {
       this.show = true;
     }
   }
-  showQuestion() {
+  public showQuestion() {
     this.showIssues = true;
   }
-  onConfirm(value: any) {
+  public onConfirm(value: any) {
     this.question = value;
     this.showIssues = false;
   }
-  onClickRead() {
+  public onClickRead() {
     this.isReaded = !this.isReaded;
   }
-  getConfirmData(val: any) {
+  public getConfirmData(val: any) {
     this.show = false;
     this.currentDate = val;
     this.datetime =
@@ -247,7 +247,7 @@ export default class Register extends Vue {
       val.getSeconds();
     return val;
   }
-  checkPassword() {
+  public checkPassword() {
     if (this.password != this.confirmPassword) {
       this.isCheckPassword = false;
       this.$toast("Password inconsistency");
@@ -255,7 +255,7 @@ export default class Register extends Vue {
       this.isCheckPassword = true;
     }
   }
-  onClickRegistery() {
+  public onClickRegistery() {
     if (
       this.phone != "" &&
       this.idCard != "" &&

@@ -33,31 +33,42 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      seat: "",
-      showIssues: false,
-      columns: ["12A", "12B", "13A", "13B"]
-    };
-  },
-  methods: {
-    showSeat() {
-      this.showIssues = true;
-    },
-    onConfirm(value) {
-      this.seat = value;
-      this.showIssues = false;
-    },
-    onClickRegistery() {
-      // 接口
-      this.$router.push({
-        path: "login"
-      });
-    }
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+import LoginServer from "../../service/login";
+
+@Component({
+  name: "SelectSeat",
+  components: {},
+})
+export default class SelectSeat extends Vue {
+  private seat: string = "";
+  private showIssues: boolean = false;
+  private columns: Array<any> = ["12A", "12B", "13A", "13B"];
+
+  private created() {
+    this.getCrmSeatInfo()
   }
-};
+
+  public showSeat() {
+    this.showIssues = true;
+  }
+  public onConfirm(value: any) {
+    this.seat = value;
+    this.showIssues = false;
+  }
+  public getCrmSeatInfo(){
+    LoginServer.getCrmSeatInfo().then((res:any)=>{
+      console.log(res)
+    })
+  }
+  public onClickRegistery() {
+    // 接口
+    this.$router.push({
+      name: "login",
+    });
+  }
+}
 </script>
 
 <style lang="scss" scoped>

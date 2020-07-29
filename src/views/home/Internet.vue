@@ -47,26 +47,6 @@ export default class InternetIndex extends Vue{
 
   private created() {
     this.postNetFlowList()
-    // this.cardList = [
-    //   {
-    //     Name: 'All-Day Pass',
-    //     Price: '213',
-    //     details: 'In-air internet access,all day long,on airbus Airlines.',
-    //     time: 'All-Day'
-    //   },
-    //   {
-    //     Name: '50MB',
-    //     Price: '10',
-    //     details: 'In-air internet access,all day long,on airbus Airlines.',
-    //     time: '30 min'
-    //   },
-    //   {
-    //     Name: '10MB',
-    //     Price: '5',
-    //     details: 'In-air internet access,all day long,on airbus Airlines.',
-    //     time: '30 min'
-    //   },
-    // ]
   }
 
   public routerInternetCard(data:any){
@@ -80,7 +60,7 @@ export default class InternetIndex extends Vue{
       }
     })
   }
-  postNetFlowList(){
+  public postNetFlowList(){
       NetflowService.postNetFlowList().then((res: any) => {
         console.log(res)
         if(res.code == 200){
