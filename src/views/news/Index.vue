@@ -10,8 +10,8 @@
 
     <div class="abus-scroller-box">
       <banner :bannerData="bannerData" />
-    </div>      
- 
+    </div>
+
     <van-tabs
       v-model="active"
       @click="changeTab"
@@ -76,7 +76,7 @@ export default class NewsList extends Vue {
   private created() {
     this.getCategory(); //获取分类
     this.getNewsList(); //获取新闻列表
-    this.postNewsMyLike(); //收藏列表
+    // this.postNewsMyLike(); //收藏列表
   }
   private mounted() {}
   private destroyed() {}
@@ -86,7 +86,7 @@ export default class NewsList extends Vue {
   }
 
   // 获取新闻列表
-  public getNewsList(): void {
+  public getNewsList() {
     NewsService.getNewsList({}).then((res) => {
       if (res.code == 200) {
         res.data.News.forEach((item) => {
@@ -98,8 +98,6 @@ export default class NewsList extends Vue {
         });
         this.newsList = res.data.News;
         this.newsListBackup = res.data.News;
-        // this.newsListBackup = [];
-        // this.newsListBackup = this.newsList;
         this.bannerData = res.data.News;
         this.bannerData.forEach((item) => {
           item.img = item.BannerImg;
@@ -109,7 +107,7 @@ export default class NewsList extends Vue {
   }
 
   // 获取新闻的分类
-  public getCategory(): void {
+  public getCategory() {
     NewsService.getNewsCategory({}).then((res) => {
       if (res.code == 200) {
         this.navTar = [...this.navTar, ...res.data];
@@ -118,13 +116,12 @@ export default class NewsList extends Vue {
   }
 
   // 切换分类
-  public changeTab(name: number, title: string): void {
+  public changeTab(name: number, title: string) {
     this.newsListBackup = [];
     if (title == "所有") {
       this.newsListBackup = this.newsList;
     } else if (title == "收藏") {
       this.newsList.forEach((item) => {
-        // if (item.isLike != null) {
         if (item.isCollect == true) {
           this.newsListBackup.push(item);
         }
@@ -145,9 +142,10 @@ export default class NewsList extends Vue {
   }
 
   // 我收藏的新闻
-  public postNewsMyLike(): void {
+  public postNewsMyLike() {
     NewsService.postNewsMyLike({}).then((res) => {
-      if (res.code == 200) {}
+      if (res.code == 200) {
+      }
     });
   }
 }

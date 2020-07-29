@@ -20,11 +20,8 @@ const service: AxiosInstance = axios.create({
 // Request interceptors
 service.interceptors.request.use(
   (config: AxiosRequestConfig) => {
-    // const key_token = localStore.get('key_token')
-    // const zctToken = localStore.get('token');
-	// debugger;
-	const zctToken = window.localStorage.getItem('token')||localStore.get('token');
-    // config.headers['key-token'] = key_token
+	  // const zctToken = window.localStorage.getItem('token')||localStore.get('token');
+	  const zctToken = localStore.get('token');
     const timestamp = new Date().getTime() + ''
     const nonce = StringUtils.randomStr(32)
     const ZCT_SECRET = '21fa6sd1f95w1133edsafas6'
@@ -39,8 +36,7 @@ service.interceptors.request.use(
       sign,
       timestamp,
       nonce,
-	  Authorization:zctToken
-      // zctToken: zctToken
+	    Authorization: zctToken
     }
     return config
   },

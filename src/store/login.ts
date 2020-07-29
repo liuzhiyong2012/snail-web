@@ -15,19 +15,16 @@ export default {
     setName(state: any, name: any) {
       state.name = name
       state.userInfo.nickname = name
-      // window.localStorage.setItem('nickname',name)
       localStore.set('nickname',name)
     },
     setToken(state:any, token: string){
       state.token = token
       state.userInfo.token = token
-      // window.localStorage.setItem('token',token)
       localStore.set('token',token)
     },
     setPhone(state:any,phone: string){
       state.token = phone
       state.userInfo.token = phone
-      // window.localStorage.setItem('phone',phone)
       localStore.set('phone',phone)
     }
   },

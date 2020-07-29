@@ -6,20 +6,20 @@
           <van-icon name="arrow-left" size="18" @click="goBack" />
         </template>
         <template #right>
-          <span class="news-right-heart" v-show="newsDetail.isCollect == true">
-            <img
-              :src="loveTrue"
-              alt=""
-              @click="changeCollect(newsDetail.Id)"
-            />
-          </span>
-          <span class="news-right-heart" v-show="newsDetail.isCollect == false">
-            <img
-              :src="loveFalse"
-              alt=""
-              @click="changeCollect(newsDetail.Id)"
-            />
-          </span>
+          <div @click="changeCollect(newsDetail.Id)">
+            <span
+              class="news-right-heart"
+              v-show="newsDetail.isCollect == true"
+            >
+              <img :src="loveTrue" alt="" />
+            </span>
+            <span
+              class="news-right-heart"
+              v-show="newsDetail.isCollect == false"
+            >
+              <img :src="loveFalse" alt="" />
+            </span>
+          </div>
         </template>
       </van-nav-bar>
     </van-sticky>
@@ -32,107 +32,84 @@
     <div class="news-info" v-html="newsDetail.FullDescription"></div>
   </section>
 </template>
-<script>
-import { localStore } from "@/utils/data-management";
-import { mapState } from "vuex";
-import Banner from "@/components/banner";
+<script lang="ts">
+import { Component, Prop, Vue, Watch, Emit } from "vue-property-decorator";
+import { localStore } from "../../utils/data-management";
+import Banner from "../../components/banner.vue";
 import DateUtils from "../../utils/date-utils";
 import NewsService from "../../service/news";
-export default {
-  name: "",
+declare function require(string): string;
+
+@Component({
+  name: "NewsDetailPage",
   components: {
     Banner,
   },
-  data() {
-    return {
-      loveTrue: require("./images/love_true.png"),
-      loveFalse: require("./images/love_false.png"),
-      newsDetail: {
-        // BannerImg:
-        //   "http://172.16.125.11:8010/0c48a0b7-b4b6-46d6-af34-8afb69c159d4",
-        // Category: "2",
-        // CreatedAt: 1554782586,
-        // CreatedBy: {
-        //   UserName: "yiwen",
-        //   NickName: null,
-        //   PhoneNumber: null,
-        //   Email: "yiwen.mai@airbus.com",
-        //   Id: "843123f8-2a24-4fa4-a624-59f370407214",
-        // },
-        // FullDescription: `
-        // `,
-        // Id: "f6638a60-7c5a-e911-962f-fb9f18fa3bb4",
-        // ShortDescription: "Airbus Connected Experience",
-        // ThumbsImg: [
-        //   "http://172.16.125.11:8010/0c48a0b7-b4b6-46d6-af34-8afb69c159d4",
-        // ],
-        // Title: "Airbus Connected Experience",
-        // img: "http://172.16.125.11:8010/0c48a0b7-b4b6-46d6-af34-8afb69c159d4",
-        // isLike: null,
-      },
-      bannerData: [],
-    };
-  },
-  computed: {
-    ...mapState(["news"]),
-  },
-  created() {
+})
+export default class NewsDetailPage extends Vue {
+  private loveTrue = require("./images/love_true.png");
+  private loveFalse = require("./images/love_false.png");
+  private newsDetail: any = {};
+  private bannerData: any = [];
+
+  private created() {
     const _this = this;
-    _this.bannerData = [];
     _this.newsDetail = {};
+    _this.bannerData = [];
     _this.newsDetail = localStore.get("newsDetails");
     _this.bannerData.push(_this.newsDetail);
     _this.newsDetail.CreatedAt = DateUtils.formate(_this.newsDetail.CreatedAt);
-  },
-  mounted() {},
-  methods: {
-    goBack() {
-      this.$router.go(-1);
-    },
+  }
+  private mounted() {}
 
-    changeCollect(Id) {
-      this.postNewsIsLike(Id)
-    },
+  public goBack(): void {
+    this.$router.go(-1);
+  }
 
-    // 是否已收藏 
-    postNewsIsLike(val) {
-      const _this = this;
-      NewsService.postNewsIsLike({
-        id: val,
-      }).then((res) => {
-        if (res.code == 200) {
-          if(res.data == true){
-            _this.postNewsUnLike(val);
-          }else if(res.data == false){
-            _this.postNewsLike(val);
-          }
+  public changeCollect(Id: string): void {
+    this.postNewsIsLike(Id);
+  }
+
+  // 是否已收藏
+  public postNewsIsLike(val: string) {
+    const _this = this;
+    NewsService.postNewsIsLike({
+      id: val,
+    }).then((res) => {
+      if (res.code == 200) {
+        if (res.data == true) {
+          _this.postNewsUnLike(val);
+        } else if (res.data == false) {
+          _this.postNewsLike(val);
         }
-      });
-    },
-    // 进行收藏
-    postNewsLike(val) {
-      NewsService.postNewsLike({
-        id: val,
-      }).then((res) => {
-        if (res.code == 200) {
-          console.log("进行收藏", res);
-          this.newsDetail.isCollect = true
-        }
-      });
-    },
-    // 取消收藏
-    postNewsUnLike(val) {
-      NewsService.postNewsUnLike({
-        id: val,
-      }).then((res) => {
-        if (res.code == 200) {
-          console.log("取消收藏", res);
-          this.newsDetail.isCollect = false
-        }
-      });
-    },
-  },
-};
+      }
+    });
+  }
+
+  // 进行收藏
+  public postNewsLike(val: string) {
+    NewsService.postNewsLike({
+      id: val,
+    }).then((res) => {
+      if (res.code == 200) {
+        console.log("进行收藏", res);
+        this.newsDetail.isCollect = true;
+      }
+    });
+  }
+
+  // 取消收藏
+  public postNewsUnLike(val: string) {
+    NewsService.postNewsUnLike({
+      id: val,
+    }).then((res) => {
+      if (res.code == 200) {
+        console.log("取消收藏", res);
+        this.newsDetail.isCollect = false;
+      }
+    });
+  }
+}
 </script>
 <style lang="scss" scoped>
 .news-right-heart {

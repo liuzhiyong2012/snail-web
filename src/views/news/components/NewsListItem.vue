@@ -36,28 +36,27 @@
   </li>
 </template>
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch, Emit } from "vue-property-decorator";
 import { localStore } from "../../../utils/data-management";
 import NewsService from "../../../service/news";
+declare function require(string): string;
+
 @Component({
   name: "NewsListItem",
   components: {},
 })
 export default class NewsListItem extends Vue {
   @Prop() private newsItem!: object;
-  @Watch('newsItem', {})
 
-  //   watch: {
-  //     newsItem(val) {
-  //       this.recommedNewsItem = val;
-  //     },
-  //   },
+  @Watch("newsItem", { deep: true, immediate: true })
+  newsItemWatch(newVal: object, oldVal: object) {
+    this.newsItem = newVal;
+    this.recommedNewsItem = newVal;
+  }
 
-  private recommedNewsItem = this.newsItem;
-  // private loveTrue = require("../images/love_true.png");
-  // private loveFalse = require("../images/love_false.png");
-  private loveTrue = ("../images/love_true.png");
-  private loveFalse = ("../images/love_false.png");
+  private recommedNewsItem: any = this.newsItem;
+  private loveTrue = require("../images/love_true.png");
+  private loveFalse = require("../images/love_false.png");
 
   private created() {}
   private mounted() {}
@@ -68,73 +67,55 @@ export default class NewsListItem extends Vue {
       localStore.remove("newsDetails");
     }
     this.$store.dispatch("setNewsDetails", item);
-
     //进入新闻详情
     this.$router.push({
       name: "newsDetail",
     });
   }
 
-  // 取消收藏
-  public postNewsUnLike(val: string): void {
-    NewsService.postNewsUnLike({
-      id: val,
-    }).then((res) => {
-      if (res.code == 200) {
-        console.log("取消收藏", res);
-        this.recommedNewsItem.isCollect = false
-      }
-    });
-  }
-
-  // 进行收藏
-  public postNewsLike(val: string): void {
-    NewsService.postNewsLike({
-      id: val,
-    }).then((res) => {
-      if (res.code == 200) {
-        console.log("进行收藏", res);
-        this.recommedNewsItem.isCollect = true
-      }
-    });
+  public changeHot(Id: string): void {
+    this.postNewsIsLike(Id);
   }
 
   // 是否已收藏
-  public postNewsIsLike(val: string): void {
+  public postNewsIsLike(val: string) {
     NewsService.postNewsIsLike({
       id: val,
     }).then((res) => {
       if (res.code == 200) {
-        if(res.data == true){
-          this.postNewsUnLike(val)
-        }else if(res.data==false){
-          this.postNewsLike(val)
+        if (res.data == true) {
+          this.postNewsUnLike(val);
+        } else if (res.data == false) {
+          this.postNewsLike(val);
         }
       }
     });
   }
 
-  public changeHot(Id: string): void {
-    this.postNewsIsLike(Id);
+  // 进行收藏
+  public postNewsLike(val: string) {
+    NewsService.postNewsLike({
+      id: val,
+    }).then((res) => {
+      if (res.code == 200) {
+        console.log("进行收藏", res);
+        this.recommedNewsItem.isCollect = true;
+      }
+    });
+  }
+
+  // 取消收藏
+  public postNewsUnLike(val: string) {
+    NewsService.postNewsUnLike({
+      id: val,
+    }).then((res) => {
+      if (res.code == 200) {
+        console.log("取消收藏", res);
+        this.recommedNewsItem.isCollect = false;
+      }
+    });
   }
 }
-
-// export default {
-//   props: ["newsItem"],
-//   data() {
-//     return {
-//       recommedNewsItem: this.newsItem,
-//       loveTrue: require("../images/love_true.png"),
-//       loveFalse: require("../images/love_false.png"),
-//     };
-//   },
-//   watch: {
-//     newsItem(val) {
-//       this.recommedNewsItem = val;
-//     },
-//   },
-// };
-
 </script>
 <style lang="scss" scoped>
 .news-list-wrap {
