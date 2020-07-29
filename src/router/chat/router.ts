@@ -1,7 +1,7 @@
 import VueRouter, {
 	RouteConfig
 } from 'vue-router';
-import Chat from '@/views/chat/Index.vue';
+import Chat from '@/views/chat/index.vue';
 // import SystemNotice from '@/views/chat/SystemNotice.vue';
 // import SystemDetail from '@/views/chat/SystemDetail.vue';
 

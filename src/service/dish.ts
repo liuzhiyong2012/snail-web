@@ -24,24 +24,6 @@ export default class DishService {
 		});
 	}
 	
-	static getDishesDetail(data: Object) {
-		return request({
-			url: '/v1/api/Dishes/Detail',
-			method: 'POST',
-			data: data
-		});
-	}
-	
-	static placeDishesOrder(data: Object) {
-		return request({
-			url: '/v1/api/Dishes/PlaceOrder',
-			method: 'POST',
-			data: data
-		});
-	}
-	
-	
-	
 	/* static getDishesRecommendedList(data: Object) {
 		return request({
 			url: '/v1/api/Video/Like/',
