@@ -121,11 +121,11 @@ export default class ForgotPassword extends Vue {
   private confirmPassword: string = "";
   private userId: string = "";
 
-  created() {
+  private created() {
     this.fullWidth = document.documentElement.clientWidth;
   }
 
-  postCheckPhone() {
+  public postCheckPhone() {
     var data = {
       phone: this.phone
     };
@@ -147,7 +147,7 @@ export default class ForgotPassword extends Vue {
         this.$toast(reason.error.message);
       });
   }
-  onClickTwo() {
+  public onClickTwo() {
     if (this.isshowSecurityProblem) {
       var data = {
         id: this.userId,
@@ -175,7 +175,7 @@ export default class ForgotPassword extends Vue {
       this.$toast("Please select an item from the list");
     }
   }
-  onClickConfirm() {
+  public onClickConfirm() {
     if (this.newPassword != "" && this.newPassword == this.confirmPassword) {
       var data = {
         id: this.userId,
@@ -204,11 +204,11 @@ export default class ForgotPassword extends Vue {
       this.$toast("Please set new password");
     }
   }
-  showSMS() {
+  public showSMS() {
     this.isShowSMS = true;
     this.isshowSecurityProblem = false;
   }
-  showSecurityProblem() {
+  public showSecurityProblem() {
     this.isShowSMS = false;
     this.isshowSecurityProblem = true;
   }

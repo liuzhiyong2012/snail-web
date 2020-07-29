@@ -1,69 +1,48 @@
 <template>
   <div class="shopping-cart">
+    <abus-title  title="Shopping Cart" backRootName="shopping">
+      <!-- <cart-icon></cart-icon> -->
+    </abus-title>
     <van-notice-bar
+    @click="stepToPage('address')"
       color="#2E2E2E"
       background="#E5E8EE"
       left-icon="location"
       mode="link"
-    >116 Meihua Hutong, Qianjiang City, Hubei Province</van-notice-bar>
-    <van-swipe-cell>
-      <van-card
-        title="Three Band Ouroboros Ring In Gold"
-        class="goods-card"
-        thumb="https://img.yzcdn.cn/vant/cat.jpeg"
-      />
+    >{{this.address || '暂无地址'}}</van-notice-bar>
+    <van-swipe-cell v-for="(item,index) in cartList" :key="index">
+      <van-card :title="item.Name" :thumb="item.BannerImgPath" class="goods-card" />
       <template #right>
         <van-button square text="删除" type="danger" class="delete-button" />
       </template>
-      <div class="price">$1232</div>
-      <div class="stepper-box">
-        <i class="minus">-</i>
-        <span class="f1">111111</span>
-        <i class="plus">+</i>
-      </div>
+      <div class="price">${{item.Price}}</div>
+      <van-field class="field-ctn" name="stepper" label>
+        <template #input>
+          <van-stepper v-model="item.orderNumber" />
+        </template>
+      </van-field>
     </van-swipe-cell>
-    <van-swipe-cell>
-      <van-card
-        title="Three Band Ouroboros Ring In Gold"
-        class="goods-card"
-        thumb="https://img.yzcdn.cn/vant/cat.jpeg"
-      />
-      <template #right>
-        <van-button square text="删除" type="danger" class="delete-button" />
-      </template>
-      <div class="price">
-        $1232
-        <span class="before">$2323</span>
+
+    <div class="cell-group-two">
+      <div class="cell-item" @click="stepToPage('payment')">
+        <div class="title">Payment method</div>
+        <div class="f1">
+          <svg class="icon icon-right-1" aria-hidden="true">
+            <use v-if="payType == '1'" xlink:href="#icon-wechat-pay" />
+            <use v-if="payType == '2'" xlink:href="#icon-ali-pay" />
+            <use v-if="payType == '3'" xlink:href="#icon-credit-card" />
+            <use v-if="payType == '4'" xlink:href="#icon-cash" />
+          </svg>
+
+          <svg class="icon icon-right" aria-hidden="true">
+            <use xlink:href="#icon-youjiantou_1" />
+          </svg>
+        </div>
       </div>
-      <div class="stepper-box">
-        <i class="minus">-</i>
-        <span class="f1">111111</span>
-        <i class="plus">+</i>
-      </div>
-    </van-swipe-cell>
-    <!-- <van-cell-group>
-      <van-cell title="Subtotal" value="$ 3300" />
-      <van-cell value-class="discount" title="Discount" value="$ 10" />
-      <van-cell
-        title-class="total-amount"
-        value-class="total-amount"
-        border="false"
-        title="Total amount"
-        value="$ 3300"
-      />
-    </van-cell-group>-->
+    </div>
     <div class="cell-group">
       <div class="cell">
-        <div class="cell-l">12323123</div>
-        <div class="cell-r">$12332</div>
-      </div>
-      <div class="cell">
-        <div class="cell-l">12323123</div>
-        <div class="cell-r">$12332</div>
-      </div>
-      <div class="cell">
-        <div class="cell-l t-bold">12323123</div>
-        <div class="cell-r t-bold">$12332</div>
+        <div class="cell-r t-bold">Total amount ${{orderAmount}}</div>
       </div>
     </div>
     <div class="button-box">
@@ -72,19 +51,122 @@
   </div>
 </template>
 
-<script>
-export default {};
+<script lang="ts">
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import AbusTitle from "../../components/AbusTitle.vue";
+import MeServer from "../../service/me"
+import ShoppingServer from "../../service/shopping"
+@Component({
+  name: "ShoppingCart",
+  components: {
+    AbusTitle,
+  },
+})
+export default class ShoppingCart extends Vue {
+  private address: string = ''
+  private created() {
+    this.postAddress()
+  }
+  private get payType(): number {
+    return this.$store.state.me.payType;
+  }
+  private get cartList(): number {
+    return this.$store.state.shopping.cartList;
+  }
+  private get orderAmount():number{
+	   let cartList = this.$store.state.shopping.cartList;
+	   let amount = 0;
+	   
+	   cartList.forEach((item:any,index:any)=>{
+		   amount = amount + item.Price * item.orderNumber;
+	   });
+	   
+	   return amount;
+  }
+  public postAddress(){
+    // let header = {
+    //   Authorization: window.localStorage.getItem('token')
+    // }
+    MeServer.postAddress().then((res: any) => {
+      if(res.code == 200) {
+        this.address = res.data.Address
+      }
+    })
+  }
+  // 下单$requset = $this->selectParam(['Seat','Remark','Items','type'=>1,'address']);
+  public postShoppingPlaceOrder(){
+    let data ={
+      Seat: 'B36',
+      Remark: '',
+      Items: '',
+      type: 1,
+      address: this.address
+    }
+    ShoppingServer.postShoppingPlaceOrder().then((res: any) => {
+      console.log(res)
+    })
+  }
+  private stepToPage(name:string) {
+    this.$router.push({
+      name: name,
+    });
+  }
+}
 </script>
 
 <style lang="scss" scoped>
-.shopping-cart{
+.shopping-cart {
   min-height: 100vh;
+}
+.field-ctn{
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+.cell-group-two {
+  margin: 0.3rem 0 0 0;
+  background: #fff;
+  .cell-item {
+    display: flex;
+    padding: 0 0.3rem;
+    line-height: 1rem;
+    .title {
+      font-size: 0.32rem;
+      color: rgba(51, 51, 51, 1);
+    }
+    .f1 {
+      position: relative;
+      flex: 1;
+      .icon-right {
+        position: absolute;
+        right: -0.3rem;
+        padding: 0.3rem;
+      }
+      .icon-right-1 {
+        position: absolute;
+        right: 0.1rem;
+        padding: 0.3rem;
+      }
+      .icon-right-2 {
+        position: absolute;
+        right: 0.3rem;
+        color: #999;
+        max-width: 2.2rem;
+        text-overflow: -o-ellipsis-lastline;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+      }
+    }
+  }
 }
 .goods-card {
   margin: 0 0 1px 0;
   padding: 0.3rem;
   background-color: #fff;
-
+  font-size: .36rem;
   .van-card-thumb {
     margin-right: 0.3rem;
     width: 1.8rem;
@@ -192,7 +274,8 @@ export default {};
   line-height: 0.2rems;
 }
 .van-cell {
-  background-color: #ebedf056;
+  width: auto;
+  // background-color: #ebedf056;
   ::after {
     border: none;
   }

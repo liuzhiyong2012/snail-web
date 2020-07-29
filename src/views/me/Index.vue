@@ -9,12 +9,12 @@
             fit="cover"
             width="1.26rem"
             height="1.26rem"
-            src="https://img.yzcdn.cn/vant/cat.jpeg"
+            :src="userInfo.AvatarPath || 'https://img.yzcdn.cn/vant/cat.jpeg'"
           />  
         </div>
         <div class="f1">
-          <div class="name" >123123</div>
-          <div class="phone">1357023232</div>
+          <div class="name" >{{userInfo.NickName|| '--'}}</div>
+          <div class="phone">{{userInfo.PhoneNumber|| '--'}}</div>
         </div>
       </div>
       
@@ -23,7 +23,7 @@
           exchange
           <div class="icon-box">
             <span class="i-icon"></span>
-            123123
+            {{userInfo.points|| '--'}}
           </div>
         </div>
       </router-link>
@@ -40,7 +40,7 @@
         <div class="cell-item" @click="stepToPage('address')" >
           <div class="title">Shopping address</div>
           <div class="f1">
-            <div class="icon-right-2">668 Huangshan qweqwe</div>
+            <div class="icon-right-2">{{address}}</div>
             <svg class="icon icon-right" aria-hidden="true">
               <use xlink:href="#icon-youjiantou_1" />
             </svg>
@@ -50,7 +50,10 @@
           <div class="title">Payment method</div>
           <div class="f1">
             <svg class="icon icon-right-1" aria-hidden="true">
-              <use xlink:href="#icon-wechatpay" />
+              <use v-if="payType == '1'" xlink:href="#icon-wechat-pay" />
+						<use v-if="payType == '2'" xlink:href="#icon-ali-pay" />
+						<use v-if="payType == '3'" xlink:href="#icon-credit-card" />
+						<use v-if="payType == '4'" xlink:href="#icon-cash" />
             </svg>
             <svg class="icon icon-right" aria-hidden="true">
               <use xlink:href="#icon-youjiantou_1" />
@@ -100,6 +103,7 @@
 <script lang="ts">
 import AbusTitle from "../../components/AbusTitle.vue";
 import { Vue, Prop, Component } from "vue-property-decorator";
+import MeServer from '../../service/me'
 
 @Component({
   name: "meIndex",
@@ -108,7 +112,49 @@ import { Vue, Prop, Component } from "vue-property-decorator";
   },
 })
 export default class meIndex extends Vue {
-  stepToPage(pageType: any) {
+  private userInfo: Object = {}
+  private address: string = ''
+  private created() {
+    this.getUserInfo()
+    this.postAddress()
+  }
+  private get payType():number{
+		return this.$store.state.me.payType;
+  }
+  public getUserInfo(){
+// AvatarPath: ""
+// DisplayName: "mizao"
+// Email: null
+// Flow:
+// flow: null
+// used: null
+// __proto__: Object
+// Id: "3a03a40ac79b4f0d6eef58fcd99271d7"
+// IsWeChatBinded: false
+// NickName: "mizao"
+// PhoneNumber: "13570492375"
+// Seat: null
+// UserName: "86_13570492375"
+// WeChatId: null
+    MeServer.getUserInfo().then((res:any)=>{
+      console.log(res)
+      if(res.code == 200){
+        this.userInfo = res.data
+        
+      }
+    })
+  }
+  public postAddress(){
+    MeServer.postAddress().then((res: any) => {
+      if(res.code == 200) {
+        this.address = res.data.Address
+        this.$store.dispatch('setAddressData',{
+          data: res.data.Address
+        })
+      }
+    })
+  }
+  public stepToPage(pageType: any) {
     let routeMap: any = {
       exchange: "pointsExchange",
       address: "address",

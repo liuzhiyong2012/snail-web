@@ -80,7 +80,7 @@ export default class PayMent extends Vue{
 	}
 	
 	
-	private mounted():void{
+	private mounted(){
 		this.radio = this.$store.state.me.payType;
 	}
 	

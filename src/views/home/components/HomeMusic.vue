@@ -26,7 +26,7 @@ import MusicService from '../../../service/music'
 export default class HomeMusic extends Vue{
   private musicData: Array<any> = [];
   private musicList: Array<any> = [];
-  created() {
+  private created() {
     this.getMusicPlaylistHot()
     this.musicData=[
         {
@@ -46,7 +46,7 @@ export default class HomeMusic extends Vue{
         }
       ]
   }
-  getMusicPlaylistHot(){
+  public getMusicPlaylistHot(){
     MusicService.getMusicFM().then((res:any) => {
       console.log(res)
       console.log(res.data.Songs)

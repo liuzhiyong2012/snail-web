@@ -1,8 +1,8 @@
 <template>
 	<section class="dishcart-main-ctn">
 		<div class="dishcart-title">
-			<abus-title backRouteName="dishIndex">
-				<!-- <dish-cart-icon></dish-cart-icon> -->
+			<abus-title backRootName="dishIndex">
+				<dish-cart-icon></dish-cart-icon>
 			</abus-title>
 		</div>
 
@@ -111,7 +111,7 @@ export default class DishCart extends Vue {
 	
 	private selectPayType(){
 		this.$router.push({
-			name:'mePayment'
+			name:'payment'
 		});
 	}
 	

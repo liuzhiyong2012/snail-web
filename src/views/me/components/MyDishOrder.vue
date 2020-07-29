@@ -1,5 +1,5 @@
 <template>
-<div class="abus-height">
+  <div class="abus-height">
     <div class="cell-group">
       <div class="header">
         <div class="top">
@@ -50,14 +50,27 @@
         <div class="time">213213123</div>
         <div class="money">1232131231</div>
       </div>
-     </div>
+    </div>
   </div>
 </template>
 
-<script>
-    export default {
-        
-    }
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+import MeServer from "../../../service/me";
+@Component({
+  name: "MyDishOrder",
+  components: {},
+})
+export default class MyDishOrder extends Vue {
+  private created() {
+    this.getDishOrder()
+  }
+  public getDishOrder(){
+    MeServer.getDishOrder().then((res: any) => {
+      console.log(res)
+    })
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -113,7 +126,7 @@
           width: 0.06rem;
           height: 0.06rem;
           border-radius: 50%;
-  
+
           &.dark {
             background: rgba(0, 0, 0, 1);
           }
@@ -161,15 +174,15 @@
           color: rgba(51, 51, 51, 1);
         }
         .money {
-          height: .32rem;
+          height: 0.32rem;
           width: 100%;
           font-weight: bold;
           color: rgba(46, 46, 46, 1);
-          i{
-            margin: 0 0 0 .3rem;
+          i {
+            margin: 0 0 0 0.3rem;
             color: #999;
             font-weight: 400;
-            font-size: .28rem;
+            font-size: 0.28rem;
           }
         }
       }
