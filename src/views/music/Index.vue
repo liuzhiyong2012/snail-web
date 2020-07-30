@@ -50,11 +50,10 @@
 					  Pop Album
 				  </div>
 				  <div class="album-list-ctn">
-					  <div class="album-item" v-for="(item,index) in albumList" :key="index">
+					  <div class="album-item" v-for="(item,index) in albumList" :key="index" @click="stepToPage(item)">
 						  <div class="album-image" :style="{backgroundImage:`url(${item.CoverImgUrl})`}">
 							  
 						  </div>
-						  <!-- 历史海流这一部分的查询还是有点问题 -->
 						  <p class="album-label">
 							  {{item.Name}}
 						  </p>
@@ -69,9 +68,8 @@
 <script lang="ts">
 	import {Vue,Prop,Component} from 'vue-property-decorator';
 	import AbusTitle from '../../components/AbusTitle.vue';
-	import MusicService from '../../service/music';
+	import MusicService from '../../service/music.ts';
 	import MusicPlayer from './components/MusicPlayer.vue';
-	
 	
 	@Component({
 		name:'MusicIndex',
@@ -103,7 +101,7 @@
 				 favourites:'musicFavourites',
 				 airFm:'musicAirFm',
 				 topranks:'musicTopRanks'
-			 }
+			 };
 			 
 			 if(map[pageType]){
 				 this.$router.push({
@@ -112,7 +110,7 @@
 			 }
 		 }
 		 
-		 private  getAlbumList(){
+		 private getAlbumList(){
 			 MusicService.getMusicPlaylistHot({}).then((res:any)=>{
 				 // debugger;
 				 if(res.code == '200'){
@@ -121,6 +119,19 @@
 				
 			 });
 			 
+		 }
+		 
+		 
+		 private stepToPage(item:any):void{
+			 this.$router.push({
+				 name:'musicPlaylistDetail',
+				 query:{
+					 id:item.Id
+				 }
+			 });
+/* 			 MusicService.getPlaylistDetail(item).then((res)=>{
+				
+			 }); */
 		 }
 		 
 		

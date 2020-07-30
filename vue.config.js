@@ -1,4 +1,4 @@
-const path = require('path')
+const path = require('path');
 console.log(process.env.VUE_APP_PROXY);
 module.exports = {
     configureWebpack: {
@@ -24,10 +24,11 @@ module.exports = {
         },
         before(app) {
             app.post('/goform/**', (req, res) => {
-                res.redirect(req.originalUrl)
-            })
+                res.redirect(req.originalUrl);
+            });
         }
     },
+	lintOnSave: false,
     pluginOptions: {
         'style-resources-loader': {
             preProcessor: 'scss',
@@ -48,11 +49,11 @@ module.exports = {
     // }
 	chainWebpack: config => {
 	    config.module
-	      .rule("i18n")
+	      .rule('i18n')
 	      .resourceQuery(/blockType=i18n/)
 	      .type('javascript/auto')
-	      .use("i18n")
-	        .loader("@kazupon/vue-i18n-loader")
+	      .use('i18n')
+	        .loader('@kazupon/vue-i18n-loader')
 	        .end();
 	  }
-}
+};

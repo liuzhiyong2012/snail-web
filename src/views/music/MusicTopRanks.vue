@@ -25,12 +25,11 @@
 						</div>
 					</div>
 				</div>
-				
 			</section>
 		</section>
 	</section>
 </template>
-
+ 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import AbusTitle from '../../components/AbusTitle.vue';

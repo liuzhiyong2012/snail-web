@@ -87,17 +87,17 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapActions } from "vuex";
-import { songUrl } from "../../js/song";
-import { shuffle } from "../../js/util";
-import { getVkey, getLyric } from "../../api/song";
-import { ERR_OK } from "../../api/config";
-import progressBar from "./components/progress-bar";
+import { mapGetters, mapMutations, mapActions } from 'vuex';
+import { songUrl } from '../../js/song';
+import { shuffle } from '../../js/util';
+import { getVkey, getLyric } from '../../api/song';
+import { ERR_OK } from '../../api/config';
+import progressBar from './components/progress-bar';
 // import playList from "../playList/playList";
-import { playMode } from "../../js/config";
-import { Base64 } from "js-base64";
-import Lyric from "lyric-parser";
-import Scroll from "../../base/scroll/scroll";
+import { playMode } from '../../js/config';
+import { Base64 } from 'js-base64';
+import Lyric from 'lyric-parser';
+import Scroll from '../../base/scroll/scroll';
 
 export default {
   components: {
@@ -107,39 +107,39 @@ export default {
   },
   computed: {
     ...mapGetters([
-      "fullScreen",
-      "playlist",
-      "currentSong",
-      "vkey",
-      "playing",
-      "currentIndex",
-      "mode",
-      "sequenceList",
-      "favoriteList" // 收藏
+      'fullScreen',
+      'playlist',
+      'currentSong',
+      'vkey',
+      'playing',
+      'currentIndex',
+      'mode',
+      'sequenceList',
+      'favoriteList' // 收藏
     ]),
     percent() {
       return this.currentTime / this.currentSong.duration;
     },
     playImg() {
-      let class1 = this.playing ? "playSrart" : "playStorp";
-      let class2 = this.currentShow === "lyric" ? "playImg" : "";
+      let class1 = this.playing ? 'playSrart' : 'playStorp';
+      let class2 = this.currentShow === 'lyric' ? 'playImg' : '';
       return `${class1} ${class2}`;
     },
     playImgTxt() {
-      let class2 = this.currentShow === "lyric" ? "playImg" : "";
+      let class2 = this.currentShow === 'lyric' ? 'playImg' : '';
       return `${class2}`;
     }
   },
   data() {
     return {
-      songUrlData: "",
-      vkeyData: "",
+      songUrlData: '',
+      vkeyData: '',
       songReadey: false, // 能否跳转下一曲
-      currentTime: "",
+      currentTime: '',
       currentLyric: null, // 封装后的歌词对象
-      currentShow: "cd", // 轮播图底部导航
+      currentShow: 'cd', // 轮播图底部导航
       currentLineNum: 0, // 当前下显示歌词行数
-      playingLyric: "" // 当前cd页显示歌词
+      playingLyric: '' // 当前cd页显示歌词
     };
   },
   created() {
@@ -203,7 +203,7 @@ export default {
           index = 0;
         }
         this.setCurrentIndex(index);
-        this.setPlayingState("true"); // 点击下一曲后自动播放
+        this.setPlayingState('true'); // 点击下一曲后自动播放
       }
       this.songReadey = false;
     },
@@ -219,7 +219,7 @@ export default {
           index = this.playlist.length - 1;
         }
         this.setCurrentIndex(index);
-        this.setPlayingState("false");
+        this.setPlayingState('false');
       }
       this.songReadey = false;
     },
@@ -229,7 +229,7 @@ export default {
       this.savePlayHistory(this.currentSong); // 播放歌曲存入本地播放记录
     },
     audioError() {
-      console.log("当前歌曲加载失败，请尝试其他歌曲");
+      console.log('当前歌曲加载失败，请尝试其他歌曲');
       this.songReadey = true; // 歌曲加载失败是不会阻塞其他歌曲播放
     },
     /* 音频播放时间更新 */
@@ -300,7 +300,7 @@ export default {
           let vkey = res.data.items[0].vkey;
           that.setVkey(vkey); // 请求到的key添加到vuex
         } else {
-          console.log("player组件 vkey请求错误");
+          console.log('player组件 vkey请求错误');
         }
       });
       /* 获取歌词 */
@@ -314,12 +314,13 @@ export default {
             this.currentLyric.play();
           }
         } else {
-          console.log("player组件 Lyric请求错误");
+          console.log('player组件 Lyric请求错误');
           this.currentLyric = null;
-          this.playingLyric = "";
+          this.playingLyric = '';
           this.currentLineNum = 0;
         }
       });
+	  
     },
     handleLyric({ lineNum, txt }) {
       this.currentLineNum = lineNum;
@@ -363,17 +364,17 @@ export default {
       /* 判断滑动方向 */
       if (deltaX > 0) {
         // 向右滑动//在歌词界面进行
-        if (this.currentShow === "lyric") {
-          this.touch.toChange = Math.abs(deltaX) > 40 ? "NO" : "OK";
+        if (this.currentShow === 'lyric') {
+          this.touch.toChange = Math.abs(deltaX) > 40 ? 'NO' : 'OK';
         } else {
-          return "";
+          return '';
         }
       } else {
         // 向左滑动//在CD界面进行
-        if (this.currentShow === "cd") {
-          this.touch.toChange = Math.abs(deltaX) > 40 ? "OK" : "NO"; // 如果滑动距离大判定为滑动事件
+        if (this.currentShow === 'cd') {
+          this.touch.toChange = Math.abs(deltaX) > 40 ? 'OK' : 'NO'; // 如果滑动距离大判定为滑动事件
         } else {
-          return "";
+          return '';
         }
       }
     },
@@ -381,23 +382,23 @@ export default {
       if (!this.touch.moved) {
         return;
       }
-      if (this.touch.toChange === "OK") {
-        this.$refs.lyricList.$el.style.transform = `translate3d(0px,0,0)`;
-        this.currentShow = "lyric";
+      if (this.touch.toChange === 'OK') {
+        this.$refs.lyricList.$el.style.transform = 'translate3d(0px,0,0)';
+        this.currentShow = 'lyric';
       } else {
-        this.$refs.lyricList.$el.style.transform = `translate3d(375px,0,0)`;
-        this.currentShow = "cd";
+        this.$refs.lyricList.$el.style.transform = 'translate3d(375px,0,0)';
+        this.currentShow = 'cd';
       }
     },
-    ...mapMutations({
-      setFullScreen: "SET_FULL_SCREEN", // 设置播放页显示
-      setPlayingState: "SET_PLAYING_STATE", // 设置播放状态
-      setCurrentIndex: "SET_CURRENT_INDEX", // 设置索引，引起当前播放歌曲变化
-      setVkey: "SET_VKEY",
-      setPlayMode: "SET_PLAY_MODE",
-      setPlayList: "SET_PLAYLIST"
+    ...mapMutations({ 
+      setFullScreen: 'SET_FULL_SCREEN', // 设置播放页显示
+      setPlayingState: 'SET_PLAYING_STATE', // 设置播放状态
+      setCurrentIndex: 'SET_CURRENT_INDEX', // 设置索引，引起当前播放歌曲变化
+      setVkey: 'SET_VKEY',
+      setPlayMode: 'SET_PLAY_MODE',
+      setPlayList: 'SET_PLAYLIST'
     }),
-    ...mapActions(["savePlayHistory", "saveFavoriteList", "deleteFavoriteList"])
+    ...mapActions(['savePlayHistory', 'saveFavoriteList', 'deleteFavoriteList'])
   },
   watch: {
     vkey: function(val, oldVal) {
@@ -421,7 +422,11 @@ export default {
         this.currentLyric.stop();
       }
       this.$nextTick(() => {
-        this._getVkey(this.currentSong.mid);
+		  this.songUrlData = this.currentSong.url;//||songUrl(val, this.currentSong.mid);
+		  console.log(this.songUrlData);
+		  this.songPlay();
+		  
+        // this._getVkey(this.currentSong.mid);
       });
     },
     // 检测播放状态

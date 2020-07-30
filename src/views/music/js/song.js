@@ -1,13 +1,13 @@
 import {
   getLyric
-} from '../api/song'
+} from '../api/song';
 import {
   ERR_OK
-} from '../api/config'
+} from '../api/config';
 import {
   Base64
-} from 'js-base64'
-
+} from 'js-base64';
+ 
 export default class Song {
   constructor({
     id,
@@ -19,14 +19,14 @@ export default class Song {
     image,
     url
   }) {
-    this.id = id
-    this.mid = mid
-    this.singer = singer //歌手
-    this.name = name //歌名
-    this.album = album // 专辑
-    this.duration = duration
-    this.image = image
-    this.url = url
+    this.id = id;
+    this.mid = mid;
+    this.singer = singer; //歌手
+    this.name = name; //歌名
+    this.album = album; // 专辑
+    this.duration = duration;
+    this.image = image;
+    this.url = url;
   }
 }
 
@@ -41,29 +41,29 @@ export function createSong(musicData) { // 是对歌手详情页数据的封装�
     image: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${musicData.albummid}.jpg?max_age=2592000`
     // url: `http://ws.stream.qqmusic.qq.com/${musicData.songid}.m4a?fromtag=46`
     // url: `http://dl.stream.qqmusic.qq.com/C400${musicData.songmid}.m4a?vkey=&guid=1472133172&uin=0&fromtag=66`
-  })
+  });
 }
 
 function filterSinger(singer) {
-  let ret = []
+  let ret = [];
   if (!singer) {
-    return ''
+    return '';
   }
   singer.forEach((s) => {
-    ret.push(s.name)
-  })
-  return ret.join('/')
+    ret.push(s.name);
+  });
+  return ret.join('/');
 }
 
 export function songUrl(vkey, mid) {
-  var url = `http://dl.stream.qqmusic.qq.com/http://dl.stream.qqmusic.qq.com/C400${mid}.m4a?vkey=${vkey}&guid=1472133172&uin=0&fromtag=66`
+  var url = `http://dl.stream.qqmusic.qq.com/http://dl.stream.qqmusic.qq.com/C400${mid}.m4a?vkey=${vkey}&guid=1472133172&uin=0&fromtag=66`;
   // `http://dl.stream.qqmusic.qq.com/http://dl.stream.qqmusic.qq.com/C400004IsqcS2BilGv.m4a?guid=5802445895&vkey=&uin=0&fromtag=38
-  return url
+  return url;
 }
 
 export function recomSongList(res) {
-  res = res.replace(/jsonCallback/, "");
-  res = res.replace(/\(/g, " ");
-  res = res.replace(/\)/g, " ");
-  return JSON.parse(res)
+  res = res.replace(/jsonCallback/, '');
+  res = res.replace(/\(/g, ' ');
+  res = res.replace(/\)/g, ' ');
+  return JSON.parse(res);
 }

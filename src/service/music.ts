@@ -53,6 +53,7 @@ export default class MusicService {
 		});
 	}
 	
+	//获取我收藏的歌单
 	static getMyAlbumList(data?: Object) {
 		return request({
 			url: '/v1/api/Music/Song/Subscribe/Playlist', 
@@ -62,6 +63,54 @@ export default class MusicService {
 	}
 	
 	
+	//根据歌单获取歌单详情
+	static getPlaylistDetail(data?: Object) {
+		return request({
+			url: '/v1/api/Music/Playlist/' + data.id, 
+			method: 'GET',
+			data: data
+		});
+	}
+	
+	static getPlaylistDetail(data?: Object) {
+		return request({
+			url: '/v1/api/Music/Playlist/' + data.id, 
+			method: 'GET',
+			data: data
+		});
+	}
+	
+	//收藏歌单
+	static subscribePlaylist(data?: Object) {
+		return request({
+			url: '/v1/api/Music/PlaylistSubscribe/' + data.id, 
+			method: 'GET',
+			data: data
+		});
+	}
+	
+	//取消收藏歌单
+	static unSubscribePlaylist(data?: Object) {
+		return request({
+			url: '/v1/api/Music/PlaylistUnSubscribe/' + data.id, 
+			method: 'GET',
+			data: data
+		});
+	}
+	
+	//我收藏的歌单
+	static getMyPlaylist(data?: Object) {
+		return request({
+			url: '/v1/api/Music/PlaylistSubscribe/List', 
+			method: 'GET',
+			data: data
+		});
+	}
+	
+	
+/* 	Route::get(':version/api/Music/PlaylistSubscribe/:id', 'apiersion.app.Music/PlaylistSubscribe');//收藏歌单
+	Route::get(':version/api/Music/PlaylistUnSubscribe/:id', 'apiersion.app.Music/PlaylistUnSubscribe');//取消收藏专辑
+	Route::post(':version/api/Music/PlaylistSubscribe/List', 'apiersion.app.Music/PlaylistSubscribeList');//我收藏的专辑列表 */
 	
 /* 	//音乐管理
 	Route::get(':version/api/Music/Banners', 'api/:version.app.Music/Banners');//音乐轮播图
@@ -72,7 +121,7 @@ export default class MusicService {
 	Route::get(':version/api/Music/Song/Subscribe/List', 'api/:version.app.Music/index');//我收藏的歌曲列表
 	Route::get(':version/api/Music/Song/Subscribe/Playlist', 'api/:version.app.Music/play_list');//我收藏的歌曲列表(歌单对象)
 	Route::get(':version/api/Music/FM', 'api/:version.app.Music/fm');//空中FM
-	Route::get(':version/api/Music/Top', 'api/:version.app.Music/top');//榜单 */
-
+	Route::get(':version/api/Music/Top', 'api/:version.app.Music/top');//榜单
+*/
 	
 }  
