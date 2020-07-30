@@ -1,7 +1,7 @@
 <template>
   <section class="news-detail">
     <van-sticky>
-      <van-nav-bar title="News">
+      <!-- <van-nav-bar title="News">
         <template #left>
           <van-icon name="arrow-left" size="18" @click="goBack" />
         </template>
@@ -21,7 +21,17 @@
             </span>
           </div>
         </template>
-      </van-nav-bar>
+      </van-nav-bar> -->
+      <abus-title title="News">
+        <div slot @click="changeCollect(newsDetail.Id)">
+          <span class="news-right-heart" v-show="newsDetail.isCollect == true">
+            <img :src="loveTrue" alt="" />
+          </span>
+          <span class="news-right-heart" v-show="newsDetail.isCollect == false">
+            <img :src="loveFalse" alt="" />
+          </span>
+        </div>
+      </abus-title>
     </van-sticky>
 
     <div class="" v-if="bannerData.length != 0">
@@ -38,12 +48,15 @@ import { localStore } from "../../utils/data-management";
 import Banner from "../../components/banner.vue";
 import DateUtils from "../../utils/date-utils";
 import NewsService from "../../service/news";
+import AbusTitle from "@/components/AbusTitle.vue";
+
 declare function require(string): string;
 
 @Component({
   name: "NewsDetailPage",
   components: {
     Banner,
+    AbusTitle,
   },
 })
 export default class NewsDetailPage extends Vue {
@@ -113,13 +126,13 @@ export default class NewsDetailPage extends Vue {
 </script>
 <style lang="scss" scoped>
 .news-right-heart {
-  display: inline-block;
+  // display: inline-block;
   img {
-    position: absolute;
-    right: 0;
-    top: 0.1rem;
+    // position: absolute;
+    // right: 0;
+    // top: 0.1rem;
+    // padding: 0.2rem;
     width: 0.3rem;
-    padding: 0.2rem;
   }
 }
 

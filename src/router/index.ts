@@ -12,7 +12,7 @@ import VideoRouter from "./video/router";
 import LoginRouter from "./login/router";
 import NewsRouter from "./news/router";
 import GameRouter from "./game/router";
-import ChatRouter from "./chat/router";
+import MessageRouter from "./message/router";
 import MusicRouter from "./music/router";
 import Me from "./me/router";
 
@@ -31,8 +31,8 @@ const routes: Array<RouteConfig> = [
       ...VideoRouter,
       ...LoginRouter,
       ...GameRouter,
-      ...ChatRouter,
-	  ...MusicRouter,
+      ...MessageRouter,
+	    ...MusicRouter,
       ...Me,
       {
         path: "/home",

@@ -1,11 +1,14 @@
 <template>
   <div class="news">
     <van-sticky>
-      <van-nav-bar title="News">
+      <!-- <van-nav-bar title="News">
         <template #left>
           <van-icon name="arrow-left" size="18" @click="goBack" />
         </template>
-      </van-nav-bar>
+      </van-nav-bar> -->
+      <abus-title title="News">
+        <div slot style="width:0.3rem"></div>
+      </abus-title>
     </van-sticky>
 
     <div class="abus-scroller-box">
@@ -42,17 +45,19 @@
 </template>
 
 <script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
 import Banner from "../../components/banner.vue";
 import NewsListItem from "./components/NewsListItem.vue";
 import NewsService from "../../service/news";
 import { localStore } from "../../utils/data-management";
+import AbusTitle from "@/components/AbusTitle.vue";
 import Tile from "ol/Tile";
-import { Component, Prop, Vue } from "vue-property-decorator";
 @Component({
   name: "NewsList",
   components: {
     Banner,
     NewsListItem,
+    AbusTitle,
   },
 })
 export default class NewsList extends Vue {

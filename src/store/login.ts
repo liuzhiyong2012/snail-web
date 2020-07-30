@@ -26,12 +26,18 @@ export default {
       state.token = phone
       state.userInfo.token = phone
       localStore.set('phone',phone)
+    },
+    setUserInfoObj(state:any, userInfo: any){
+      state.userInfo = userInfo
+      localStore.set('userInfo', userInfo)
     }
   },
   actions: {
     setUserInfo(context: any, state: any){
       context.commit('setName', state.name)
       context.commit('setToken', state.token)
+      context.commit('setUserInfoObj', state)
+
     }
   }
 }
