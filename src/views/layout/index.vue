@@ -5,16 +5,30 @@
 		    <router-view class="abus-layout-view-ctn"/>
 		  <!-- </keep-alive> -->
 	  </section>
+	  <music-player></music-player>
   </section>
 </template>
 
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import AudioUtils from '../../utils/audio-utils';
+import MusicPlayer from '../music/components/player/player.vue';
 
-@Component
-export default class HelloWorld extends Vue {
+@Component({
+	name:'LayoutIndex',
+	components:{
+		MusicPlayer
+	}
+})
+export default class LayoutIndex extends Vue {
   @Prop() private msg!: string;
+  
+  private created():void{
+  // let audioHost = new AudioUtils(this);
+		// this.$store.commit('setAudioHost',audioHost);
+  }
+  
 }
 </script>
 

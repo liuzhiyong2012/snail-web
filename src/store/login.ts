@@ -19,6 +19,7 @@ export default {
       localStore.set('nickname',name)
     },
     setToken(state:any, token: string){
+		// debugger;
       state.token = token
       state.userInfo.token = token
       // window.localStorage.setItem('token',token)

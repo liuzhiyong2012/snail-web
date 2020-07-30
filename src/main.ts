@@ -14,8 +14,7 @@ import { Lazyload } from 'vant';
 filters.forEach((filter: any, index) => {
   Vue.filter(filter.name, filter.handler)
 });
-
-
+   
 // Vue.use(myCharts);
 Vue.use(Vant);
 Vue.use(Lazyload);
@@ -38,6 +37,7 @@ localStorage.setItem('lang', locale);
 
 Vue.config.productionTip = false;
 Vue.prototype.$globalEvent = new Vue;
+// Vue.prototype.$globalEvent = new Vue;
 
 // function getHostUrl(){
 //    return window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '');

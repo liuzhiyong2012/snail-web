@@ -4,7 +4,7 @@ import Home from "../views/home/Index.vue";
 import Internet from "../views/home/Internet.vue";
 import InternetCart from "../views/home/components/InternetCart.vue";
 import About from "../views/About.vue";
-import Layout from "../views/layout/index.vue";
+import LayoutIndex from "../views/layout/index.vue";
 import FlightRouter from "./flight/router";
 import DishRouter from "./dish/router";
 import ShoppingRouter from "./shopping/router";
@@ -22,7 +22,7 @@ const routes: Array<RouteConfig> = [
   {
     path: "/",
     name: "layout",
-    component: Layout,
+    component: LayoutIndex,
     children: [
       ...FlightRouter,
       ...DishRouter,

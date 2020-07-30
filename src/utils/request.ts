@@ -23,7 +23,10 @@ service.interceptors.request.use(
     // const key_token = localStore.get('key_token')
     // const zctToken = localStore.get('token');
 	// debugger;
-	const zctToken = window.localStorage.getItem('token')||localStore.get('token');
+	let zctToken = window.localStorage.getItem('token')||localStore.get('token');
+	//@fixme:
+	zctToken = zctToken.replace(/\"/g,'');
+	
     // config.headers['key-token'] = key_token
     const timestamp = new Date().getTime() + ''
     const nonce = StringUtils.randomStr(32)

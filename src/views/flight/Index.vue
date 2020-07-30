@@ -5,7 +5,6 @@
 		
 		<section class="flight-content-ctn">
 			<abus-map class="map-ctn" :style="calcStyle('map')"></abus-map>
-			
 			<section class="camera-ctn" :style="calcStyle('camera')">
 				<div class="camera-switch-ctn">
 					<div class="camera-switch-item">
@@ -73,7 +72,7 @@ import FlightService from '../../service/flight';
 import DateUtils from '../../utils/date-utils';
 
 @Component({
-	name: 'FlightIndex',
+	name: 'FlightIndex',       
 	components: {
 		AbusMap,
 		AbusFlight,
@@ -131,13 +130,13 @@ export default class FlightIndex extends Vue {
 			startX = touch.pageX;
 		};
 
-		this.touchMoveHandle = (event:any)  => {
+		this.touchMoveHandle = (event:any) => {
 			var touch = event.touches[0];
 			endY = startY - touch.pageY;
 			endX = startX - touch.pageX;
 		};
 
-		this.touchEndHandle = (event:any)  => {
+		this.touchEndHandle = (event:any) => {
 			//100是给定触上下方向摸起始的坐标差
 			if (endY > 100) {
 				console.log('向上滑动');
