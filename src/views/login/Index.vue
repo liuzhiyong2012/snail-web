@@ -162,7 +162,8 @@ export default class Login extends Vue {
             this.$store.dispatch("setUserInfo", {
               name: res.data.userName,
               token: res.data.access_token,
-              uid: res.data.id              
+              uid: res.data.id,
+              airbusId: res.data.airbusId              
             });
             this.$router.push({
               name: "home"

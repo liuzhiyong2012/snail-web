@@ -19,11 +19,16 @@
             >message</span
           >
           <span>
-            <i class="icon icon-able3_1"></i>
-            <!-- <i
+            <i
+              class="icon icon-able3_1"
+              v-show="showDelete == false"
+              @click="deleteMsgShow"
+            ></i>
+            <i
               class="icon icon-able3_1"
               style="color: rgba(46, 46, 46, 0.3);"
-            ></i> -->
+              v-show="showDelete == true"
+            ></i>
           </span>
         </div>
       </message-title>
@@ -40,11 +45,11 @@
             <section class="talk-item">
               <div class="talk-item-box">
                 <div class="item-img" v-if="item.type != 1">
-                  <img :src="item.profilePhoto" alt="" />
+                  <img src="./images/vadarImg.png" alt="" />
                 </div>
                 <div class="item-content">
                   <p class="item-content-name" v-if="item.type != 1">
-                    {{ item.name }}
+                    Air Hostess
                   </p>
                   <span class="item-content-word">{{ item.content }}</span>
                 </div>
@@ -90,7 +95,7 @@
               item.read == 0 ? 'message-content' : 'message-content-readed'
             "
           >
-            {{ item.content }}
+            {{ item.Title }}
           </p>
         </div>
       </div>
@@ -102,137 +107,121 @@
 import MessageTitle from "./components/MessageTitle";
 import MessageService from "../../service/message";
 import { localStore } from "../../utils/data-management";
-
 export default {
   components: { MessageTitle },
   data() {
     return {
       showChat: true,
       showMessage: false,
+      showDelete: true, // 系统消息是否显示清除按钮: true是不清除 false是要清除
+      uInfo: {}, //用户信息
+
       chatList: [
-        {
-          name: "Air Hostess",
-          profilePhoto: require("./images/vadarImg.png"),
-          content: "Hello，what can I help U ?",
-          airbus_id: null,
-          created_time: "2020-07-30 08:03:38",
-          from_user_id: "3a03a40ac79b4f0d6eef58fcd99271d7",
-          id: "455d21023f2035c188dea4585906542d",
-          read: 0,
-          to_user_id: null,
-          type: 2,
-        },
-
-        {
-          name: "张三",
-          profilePhoto: require("./images/vadarImg.png"),
-          content: "I want a blanket",
-          airbus_id: null,
-          created_time: "2020-07-30 08:03:38",
-          from_user_id: "3a03a40ac79b4f0d6eef58fcd99271d7",
-          id: "455d21023f2035c188dea4585906542d",
-          read: 0,
-          to_user_id: null,
-          type: 1,
-        },
-
-        {
-          name: "Air Hostess",
-          profilePhoto: require("./images/vadarImg.png"),
-          content: "Ok，We'll send it soon",
-          airbus_id: null,
-          created_time: "2020-07-30 08:03:38",
-          from_user_id: "3a03a40ac79b4f0d6eef58fcd99271d7",
-          id: "455d21023f2035c188dea4585906542d",
-          read: 0,
-          to_user_id: null,
-          type: 2,
-        },
+        // {
+        //   id: "455d21023f2035c188dea4585906542d", //消息id
+        //   from_user_id: "3a03a40ac79b4f0d6eef58fcd99271d7", //发送人id
+        //   to_user_id: null, //接收人id
+        //   content: "Hello，what can I help U ?", //发送的消息
+        //   created_time: "2020-07-30 08:03:38", // 发送时间
+        //   airbus_id: null, //航班id
+        //   read: 0, // 已读  0未读 1已读
+        //   type: 2, // 1 发送给空乘   2 发送给用户
+        // },
       ],
       wordContent: "", //用户输入的内容
 
       systemMsgList: [
+        // {
+        //   airbus_id: null,
+        //   content: "You meal is already",
+        //   created_time: "2020-07-30 08:03:38",
+        //   from_user_id: "3a03a40ac79b4f0d6eef58fcd99271d7",
+        //   id: "455d21023f2035c188dea4585906542d",
+        //   read: 1,
+        //   to_user_id: null,
+        //   type: 1,
+        // },
+
         {
-          airbus_id: null,
-          content: "You meal is already",
-          created_time: "2020-07-30 08:03:38",
-          from_user_id: "3a03a40ac79b4f0d6eef58fcd99271d7",
-          id: "455d21023f2035c188dea4585906542d",
-          read: 0,
-          to_user_id: null,
-          type: 1,
+          CreatedAt: "2020-07-31 09:17:21",
+          Id: "3",
+          Mark: "你的流量套餐订单已完成",
+          Title: "Your netFlow order has been completed",
         },
-        {
-          airbus_id: null,
-          content: "You meal is done",
-          created_time: "2020-07-30 08:03:38",
-          from_user_id: "3a03a40ac79b4f0d6eef58fcd99271d7",
-          id: "455d21023f2035c188dea4585906542d",
-          read: 0,
-          to_user_id: null,
-          type: 1,
-        },
-        {
-          airbus_id: null,
-          content: "You meal is already",
-          created_time: "2020-07-30 08:03:38",
-          from_user_id: "3a03a40ac79b4f0d6eef58fcd99271d7",
-          id: "455d21023f2035c188dea4585906542d",
-          read: 1,
-          to_user_id: null,
-          type: 1,
-        },
-        {
-          airbus_id: null,
-          content: "I want a blanket",
-          created_time: "2020-07-30 08:03:38",
-          from_user_id: "3a03a40ac79b4f0d6eef58fcd99271d7",
-          id: "455d21023f2035c188dea4585906542d",
-          read: 1,
-          to_user_id: null,
-          type: 1,
-        },
-        {
-          airbus_id: null,
-          content: "Ok，We'll send it soon",
-          created_time: "2020-07-30 08:03:38",
-          from_user_id: "3a03a40ac79b4f0d6eef58fcd99271d7",
-          id: "455d21023f2035c188dea4585906542d",
-          read: 1,
-          to_user_id: null,
-          type: 1,
-        },
-        {
-          airbus_id: null,
-          content:
-            "Hello，what can I help U ?Hello，what can I help U ?Hello，what can I help U ?Hello，what can I help U ?",
-          created_time: "2020-07-30 08:03:38",
-          from_user_id: "3a03a40ac79b4f0d6eef58fcd99271d7",
-          id: "455d21023f2035c188dea4585906542d",
-          read: 1,
-          to_user_id: null,
-          type: 1,
-        },
+
       ], //系统消息
     };
   },
   computed: {},
   watch: {},
   created() {
-    console.log(localStore.get("userInfo"));
+    this.uInfo = localStore.get("userInfo");
+    this.initWebSocket();
+
+    // let msg =
+    //   "{&quot;type&quot;:&quot;system&quot;,&quot;content&quot;:&quot;Your netFlow order has been completed&quot;,&quot;mark&quot;:&quot;\u4f60\u7684\u6d41\u91cf\u5957\u9910\u8ba2\u5355\u5df2\u5b8c\u6210&quot;}";
+    // let changedMsg = msg.replace(/&quot;/g, `"`);
+    // let aa = JSON.parse(changedMsg);
+    // console.log("收到消息：" + changedMsg);
+    // console.log("收到消息33：", JSON.parse(changedMsg));
+    // console.log("cccc", aa.mark);
   },
   mounted() {
-    this.getUserMsg();
-    // this.sendToaAirGirl();
-    // this.sendToUser();
-    this.getSystemNoticeList();
+    this.getUserMsg(0);
+    // this.changeMessageStatus(); //将聊天消息全部改成已读，并获取全部已读聊天记录，加入到 vuex 和 localstorage
+    // this.changeNoticeStatus(); //将系统通知全部改成已读，并获取全部已读聊天记录，加入到 vuex 和 localstorage
+
+    this.showDelete = this.systemMsgList.every((item) => {
+      return item.read == 1;
+    });
   },
   destroyed() {},
   methods: {
+    // 初始化websocket
+    initWebSocket() {
+      const _this = this;
+      // 连接服务端，workerman.net:2120换成实际部署web-msg-sender服务的域名或者ip
+      let socket = io("http://172.16.8.69:2120");
+      // uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
+      let uid = _this.uInfo.uid;
+
+      // socket连接后以uid登录
+      socket.on("connect", function() {
+        socket.emit("login", uid);
+      });
+      // 后端推送来消息时
+      socket.on("new_msg", function(msg) {
+        let midMsg = msg.replace(/&quot;/g, `"`);
+        let endMsg = JSON.parse(midMsg);
+        if (endMsg.type == "system") {
+          // 系统通知
+
+        } else if (endMsg.type == "message") {
+          // 聊天
+
+        }
+
+        // _tihs.chatList.push({
+        //   id: "", //消息id
+        //   from_user_id: "", //发送人id
+        //   to_user_id: "", //接收人id
+        //   content: msg, //发送的消息
+        //   created_time: "", // 发送时间
+        //   airbus_id: "", //航班id
+        //   read: 0, // 已读  0未读 1已读
+        //   type: 2, // 1 发送给空乘   2 发送给用户
+        // });
+
+      });
+      // 后端推送来在线数据时
+      socket.on("update_online_count", function(online_stat) {
+        console.log("后端推送来在线数据时", online_stat);
+      });
+    },
+
     goBack() {
       this.$router.go(-1);
     },
-
     // 切换聊天与系统消息
     gotoChatMessage(type) {
       if (type == "chat") {
@@ -241,61 +230,92 @@ export default {
       } else if (type == "message") {
         this.showChat = false;
         this.showMessage = true;
+
+        this.showDelete = this.systemMsgList.every((item) => {
+          return item.read == 1;
+        });
       }
+    },
+
+    // 清理消息为已读
+    deleteMsgShow() {
+      this.systemMsgList.forEach((item) => {
+        item.read = 1;
+      });
+      this.showDelete = this.systemMsgList.every((item) => {
+        return item.read == 1;
+      });
     },
 
     // 发送消息给空乘
     sendMsgToManager() {
+      const _this = this;
       if (!this.wordContent) return this.$toast("请输入内容");
-      this.chatList.push({
-        name: "张三",
-        profilePhoto: require("./images/vadarImg.png"),
+      // let req = {
+      //   id: "", //消息id
+      //   from_user_id: this.uInfo.uid, //发送人id
+      //   to_user_id: "", //接收人id
+      //   content: this.wordContent, //发送的消息
+      //   created_time: "", // 发送时间
+      //   airbus_id: this.uInfo.airbusId, //航班id
+      //   read: 0, // 已读  0未读 1已读
+      //   type: 1, // 1 发送给空乘  2发送给用户
+      // };
+      let reqUser = {
         content: this.wordContent,
-        airbus_id: null,
-        created_time: "2020-07-30 08:03:38",
-        from_user_id: "3a03a40ac79b4f0d6eef58fcd99271d7",
-        id: "455d21023f2035c188dea4585906542d",
-        read: 0,
-        to_user_id: null,
-        type: 1,
+      };
+      MessageService.sendToManager(reqUser).then((res) => {
+        if (res.code == 200) {
+          // _this.chatList.push(req);
+          _this.changeMessageStatus();
+          _this.wordContent = "";
+        }
       });
       this.wordContent = "";
     },
 
-    // 获取用户当前航班的消息
-    getUserMsg() {
-      MessageService.getUserMessage({}).then((res) => {
+    // 改变聊天消息的状态 从 未读变成已读 0=》1
+    changeMessageStatus() {
+      const _this = this;
+      MessageService.changeReadMessage({}).then((res) => {
+        if (res.code == 200) {
+          console.log("聊天消息变成已读", res);
+          _this.getUserMsg(1);
+        }
+      });
+    },
+
+    // 获取用户当前航班的聊天消息 read 0未读  1已读
+    getUserMsg(status) {
+      const _this = this;
+      MessageService.getUserMessage({ read: status }).then((res) => {
         if (res.code == 200) {
           console.log("聊天记录", res);
+          _this.chatList = res.data;
         }
       });
     },
 
-    // 发送给空姐
-    sendToaAirGirl() {
-      let req = {};
-      MessageService.sendToManager(req).then((res) => {
+    // 改变系统通知的状态 从 未读变成已读 0=》1
+    changeNoticeStatus() {
+      const _this = this;
+      MessageService.changeReadNotice({}).then((res) => {
         if (res.code == 200) {
-          console.log("用户发", res);
+          console.log("系统消息变成已读", res);
+          _this.getSystemNoticeList(1);
         }
       });
     },
-
-    // 空姐发送给客户
-    sendToUser() {
-      let req = {};
-      MessageService.sendToUser(req).then((res) => {
-        if (res.code == 200) {
-          console.log("空姐发", res);
-        }
-      });
-    },
-
-    // 获取系统通知
-    getSystemNoticeList() {
-      MessageService.getSystemNoticeList({}).then((res) => {
+    // 获取系统通知 read 0未读  1已读
+    getSystemNoticeList(status) {
+      const _this = this;
+      MessageService.getSystemNoticeList({ read: status }).then((res) => {
         if (res.code == 200) {
           console.log("系统消息", res);
+          _this.systemMsgList = res.data.notice;
+          _this.systemMsgList.forEach(item=>{
+            item.read = 1
+          })
         }
       });
     },

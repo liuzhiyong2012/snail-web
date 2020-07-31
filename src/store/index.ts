@@ -5,6 +5,7 @@ import Dish from './dish';
 import Home from './home';
 import Me from './me';
 import News from './news';
+import Message from './message'
 
 Vue.use(Vuex)
 
@@ -22,7 +23,8 @@ export default new Vuex.Store<any>({
 	dish:Dish,
   me:Me,
   home: Home,
-  news:News
+  news:News,
+  message:Message
   }
 })
 

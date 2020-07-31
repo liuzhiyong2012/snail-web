@@ -20,7 +20,7 @@ export default class MessageService {
       data: data,
     });
   }
-  // 用户当前航班的消息
+  // 用户当前航班的消息 传参 read 0未读  1已读 
   static getUserMessage(data?: Object) {
     return request({
       url: "/v1/api/Message/getUserMessage",
@@ -29,7 +29,17 @@ export default class MessageService {
     });
   }
 
-  // 系统通知
+  // 消息已读 将消息从未读改为已读
+  static changeReadMessage(data?: Object) {
+    return request({
+      url: "/v1/api/Message/ReadMessage",
+      method: "POST",
+      data: data,
+    });
+  }
+
+
+  // 系统通知 传参 read 0未读  1已读
   static getSystemNoticeList(data?: Object) {
     return request({
       url: "/v1/api/notice/List",
@@ -37,4 +47,15 @@ export default class MessageService {
       data: data,
     });
   }
+
+   // 通知已读 将通知从未读改为已读
+   static changeReadNotice(data?: Object) {
+    return request({
+      url: "/v1/api/notice/ReadNotice",
+      method: "POST",
+      data: data,
+    });
+  }
+
+
 }
