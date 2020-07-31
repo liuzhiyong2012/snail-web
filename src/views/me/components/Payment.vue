@@ -73,7 +73,7 @@ export default class PayMent extends Vue{
 	private radio:any = "1";
 	
 	@Watch('radio',{immediate:true})
-	changePayType(){
+	private changePayType(){
 		this.$store.commit('changePayType',this.radio);
 	}
 	

@@ -1,7 +1,9 @@
 export default {
   state: {
     payType:"1",
-    address:''
+    address:'',
+    points: 0,
+    userData: {}
   },
   mutations: {
     changePayType(state: any, payType: number) {
@@ -9,8 +11,11 @@ export default {
     },
     addressData(state: any, data: string){
       state.address = data
-      console.log(state.address)
-    }
+    },
+    setUserData(state: any, data: string){
+      state.userData = data
+      state.points = state.userData.points
+    },
   },
   actions: {
     setAddressData(context: any, state: any){

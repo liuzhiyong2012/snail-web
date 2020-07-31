@@ -274,7 +274,7 @@ export default class Register extends Vue {
         question: this.question,
         answer: this.answer
       };
-      console.log(this.radio);
+      // console.log(this.radio);
       LoginServe.postUserRegistery(data)
         .then((res: any) => {
           console.log(res);
@@ -284,12 +284,12 @@ export default class Register extends Vue {
               path: "selectSeat"
             });
           } else {
-            this.$toast(res.error.message);
+            this.$toast(res.message);
           }
         })
-        .catch((reason: any) => {
-          this.$toast("The current mobile number is registered");
-        });
+        // .catch((reason: any) => {
+        //   this.$toast("The current mobile number is registered");
+        // });
     } else if (!this.isReaded) {
       this.$toast("Have you read the 《Privacy policy》《Terms of service》");
     } else {

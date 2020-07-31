@@ -21,7 +21,7 @@
     </div>
     <div class="shopping-box">
       <van-tabs
-        id="box"
+        id="ibox"
         class="f1"
         color="rgba(0,0,0,0)"
         title-active-color="#2E2E2E"
@@ -100,9 +100,12 @@ export default class ShoppingIndex extends Vue {
     
   }
   private mounted() {
-    window.addEventListener("scroll", this.handleScroll, true);
-    var object = document.getElementById("box");
+    window.addEventListener("scroll", this.handleScroll);
+    var object = document.getElementById("ibox");
   }
+  private beforeDestroy() {
+      document.removeEventListener('scroll', this.handleScroll)
+    }
   private getShoppingCategory() {
     ShoppingService.getShoppingCategory().then((res: any) => {
       // console.log(res);
@@ -151,7 +154,7 @@ export default class ShoppingIndex extends Vue {
   }
 
   private handleScroll() {
-    var object: any = document.getElementById("box");
+    var object: any = document.getElementById("ibox");
     var rectObject = object.getBoundingClientRect().top;
     if (rectObject <= 0) {
       this.isActive = true;

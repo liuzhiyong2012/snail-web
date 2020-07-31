@@ -21,7 +21,7 @@ const service: AxiosInstance = axios.create({
 service.interceptors.request.use(
   (config: AxiosRequestConfig) => {
     // const key_token = localStore.get('key_token')
-    const zctToken = localStore.get('zctToken')
+    const authorToken = window.localStorage.getItem('token')
     // config.headers['key-token'] = key_token
     const timestamp = new Date().getTime() + ''
     const nonce = StringUtils.randomStr(32)
@@ -35,8 +35,9 @@ service.interceptors.request.use(
       sign,
       timestamp,
       nonce,
+      Authorization: authorToken,
       AirBus: '4CFC4D33-2C1E-E911-BAD5-F44D307124C0',
-      zctToken: zctToken
+      // zctToken: zctToken
     }
     return config
   },

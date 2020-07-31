@@ -59,9 +59,6 @@ export default class MeService {
 		return request({
 			url: '/v1/api/Shopping/MyOrders',
 			method: 'GET',
-			headers:{
-				Authorization: MeService.header
-			},
 			params: data
 		})
 	}

@@ -1,16 +1,14 @@
 <template>
   <div class="shopping-cart">
-    <abus-title  title="Shopping Cart" backRootName="shopping">
-      <!-- <cart-icon></cart-icon> -->
-    </abus-title>
+    <abus-title title="Cart" backRootName="pointsExchange"></abus-title>
     <van-notice-bar
-    @click="stepToPage('address')"
+      @click="stepToPage('address')"
       color="#2E2E2E"
       background="#E5E8EE"
       left-icon="location"
       mode="link"
     >{{this.address || '暂无地址'}}</van-notice-bar>
-    <van-swipe-cell v-for="(item,index) in cartList" :key="index">
+    <van-swipe-cell v-for="(item,index) in pointsCartList" :key="index">
       <van-card :title="item.Name" :thumb="item.BannerImgPath" class="goods-card" />
       <template #right>
         <van-button square text="删除" type="danger" class="delete-button" />
@@ -18,31 +16,19 @@
       <div class="price">${{item.Price}}</div>
       <van-field class="field-ctn" name="stepper" label>
         <template #input>
-          <van-stepper v-model="item.orderNumber" @change="chengeStepper"/>
+          <van-stepper v-model="item.orderNumber" @change="chengeStepper" />
         </template>
       </van-field>
     </van-swipe-cell>
-
-    <div class="cell-group-two">
-      <div class="cell-item" @click="stepToPage('payment')">
-        <div class="title">Payment method</div>
-        <div class="f1">
-          <svg class="icon icon-right-1" aria-hidden="true">
-            <use v-if="payType == '1'" xlink:href="#icon-wechat-pay" />
-            <use v-if="payType == '2'" xlink:href="#icon-ali-pay" />
-            <use v-if="payType == '3'" xlink:href="#icon-credit-card" />
-            <use v-if="payType == '4'" xlink:href="#icon-cash" />
-          </svg>
-
-          <svg class="icon icon-right" aria-hidden="true">
-            <use xlink:href="#icon-youjiantou_1" />
-          </svg>
-        </div>
-      </div>
-    </div>
     <div class="cell-group">
       <div class="cell">
-        <div class="cell-r t-bold">Total amount ${{orderAmount}}</div>
+        <div class="cell-l">Required points</div>
+        <div class="cell-r">{{orderAmount}}</div>
+      </div>
+
+      <div class="cell">
+        <div class="cell-l t-bold">My points</div>
+        <div class="cell-r t-bold">{{userPoints}}</div>
       </div>
     </div>
     <div class="button-box">
@@ -53,9 +39,9 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import AbusTitle from "../../components/AbusTitle.vue";
-import MeServer from "../../service/me"
-import ShoppingServer from "../../service/shopping"
+import AbusTitle from "../../../components/AbusTitle.vue";
+import MeServer from "../../../service/me";
+import ShoppingServer from "../../../service/shopping";
 @Component({
   name: "ShoppingCart",
   components: {
@@ -63,78 +49,77 @@ import ShoppingServer from "../../service/shopping"
   },
 })
 export default class ShoppingCart extends Vue {
-  private address: string = ''
+  private address: string = "";
   private orderAmount: number = 0;
-
   private created() {
-    this.postAddress()
+    this.postAddress();
   }
   private mounted() {
-    this.chengeStepper()
+      this.chengeStepper()
   }
-  private get payType(): number {
-    return this.$store.state.me.payType;
+  private get pointsCartList(): number {
+    return this.$store.state.shopping.pointsCartList;
   }
-  private get cartList(): number {
-    return this.$store.state.shopping.cartList;
+  private get userPoints(): number {
+    return this.$store.state.me.points;
   }
-  // private get orderAmount():number{
-	//    let cartList = this.$store.state.shopping.cartList;
-	//    let amount = 0;
-	   
-	//    cartList.forEach((item:any,index:any)=>{
-	// 	   amount = amount + item.Price * item.orderNumber;
-	//    });
-	   
-	//    return amount;
-  // }
+    // private get orderAmount(): any{
+    //     console.log('点击了')
+    //   let pointsCartList = this.$store.state.shopping.pointsCartList;
+    //   let amount = 0;
+
+    //   pointsCartList.forEach((item: any, index: any) => {
+    //     amount = amount + item.Price * item.orderNumber;
+    //   });
+    //   return amount;
+    // }
   public chengeStepper() {
-    let cartList = this.$store.state.shopping.cartList;
+    let pointsCartList = this.$store.state.shopping.pointsCartList;
     let amount = 0;
 
-    cartList.forEach((item: any, index: any) => {
+    pointsCartList.forEach((item: any, index: any) => {
       amount = amount + item.Price * item.orderNumber;
     });
     return (this.orderAmount = amount);
   }
-  public postAddress(){
-    // let header = {
-    //   Authorization: window.localStorage.getItem('token')
-    // }
+  public postAddress() {
     MeServer.postAddress().then((res: any) => {
-      if(res.code == 200) {
-        this.address = res.data.Address
+      if (res.code == 200) {
+        this.address = res.data.Address;
       }
-    })
+    });
   }
   // 下单$requset = $this->selectParam(['Seat','Remark','Items','type'=>1,'address']);
-  public postShoppingPlaceOrder(){
+  public postShoppingPlaceOrder() {
     let CartItems: Array<any> = [];
-    let cartList = this.$store.state.shopping.cartList;
-    cartList.forEach((item: any, index: any) => {
+    let pointsCartList = this.$store.state.shopping.pointsCartList;
+    pointsCartList.forEach((item: any, index: any) => {
       var items: Object = {
-        Id: cartList[index].Id,
-        Quantity: cartList[index].orderNumber
+        Id: pointsCartList[index].Id,
+        Quantity: pointsCartList[index].orderNumber
       };
       CartItems.push(items);
     });
-    let data ={
-      Seat: 'B36',
-      Remark: '',
+    console.log(CartItems)
+    let data = {
+      Seat: "B36",
+      Remark: "",
       Items: CartItems,
-      type: 1,
-      Address: this.address
-    }
+      type: 2,
+      Address: this.address,
+    };
     ShoppingServer.postShoppingPlaceOrder(data).then((res: any) => {
-      console.log(res)
+      console.log(res);
       if(res.code == 200 ){
-        this.$store.commit('clearShoppingCart')
+         this.$store.commit('clearPointsCart')
           this.$toast('SUCCESS!')
-          this.stepToPage('shopping')
+          this.$router.push({
+              name: 'pointsExchange'
+          })
       }
-    })
+    });
   }
-  private stepToPage(name:string) {
+  private stepToPage(name: string) {
     this.$router.push({
       name: name,
     });
@@ -146,7 +131,7 @@ export default class ShoppingCart extends Vue {
 .shopping-cart {
   min-height: 100vh;
 }
-.field-ctn{
+.field-ctn {
   position: absolute;
   right: 0;
   bottom: 0;
@@ -194,7 +179,7 @@ export default class ShoppingCart extends Vue {
   margin: 0 0 1px 0;
   padding: 0.3rem;
   background-color: #fff;
-  font-size: .36rem;
+  font-size: 0.36rem;
   .van-card-thumb {
     margin-right: 0.3rem;
     width: 1.8rem;

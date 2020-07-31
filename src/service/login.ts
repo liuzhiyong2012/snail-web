@@ -47,10 +47,29 @@ export default class LoginService {
             data: data
         })
     }
-    // Route::get(':version/api/Crm/SeatInfo', 'api/:version.app.Crm/SeatInfo');//当前航班座位列表
+    //当前航班座位列表
+    // Route::get(':version/api/Crm/SeatInfo', 'api/:version.app.Crm/SeatInfo');
+// Route::get(':version/api/Crm/OtherSeatList', 'api/:version.app.Crm/OtherSeatList');//剩余座位。
+// Route::get(':version/api/Crm/SelectSeat/:id', 'api/:version.app.Crm/SelectSeat');//选择座位。
     static getCrmSeatInfo(data?: object) {
         return request({
             url: '/v1/api/Crm/SeatInfo',
+            method: 'GET',
+            params: data
+        })
+    }
+    //剩余座位。
+    static getCrmOtherSeatList(data?: object) {
+        return request({
+            url: '/v1/api/Crm/OtherSeatList',
+            method: 'GET',
+            params: data
+        })
+    }
+    //选择座位
+    static getCrmSelectSeat(id:string,data?: object) {
+        return request({
+            url: '/v1/api/Crm/SelectSeat/'+id,
             method: 'GET',
             params: data
         })

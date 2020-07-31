@@ -10,11 +10,11 @@
         <div class="name">{{getInternetData.Name || "暂无"}}</div>
         <div class="price">
           <div>${{getInternetData.Price || '--'}}</div>
-          <van-field class="field-ctn" name="stepper" label>
+          <!-- <van-field class="field-ctn" name="stepper" label>
             <template #input>
               <van-stepper v-model="stepper" />
             </template>
-          </van-field>
+          </van-field> -->
         </div>
       </div>
       <!-- <div class="stepper-box">
@@ -85,7 +85,7 @@ export default class InternetCart extends Vue {
 		this.stepper = this.$store.state.home.internetCartNum;
 	}
   @Watch("stepper", { immediate: true })
-  changeInternetStepper() {
+  private changeInternetStepper() {
     console.log('123')
     this.$store.commit("changeInternetStepper", this.stepper);
   }
@@ -119,12 +119,24 @@ export default class InternetCart extends Vue {
     }
   }
   public goHome() {
-    this.$toast("Success");
+    // ['Seat','Remark','id']
+    let data ={
+      Seat: '36B',
+      Remark: '',
+      id: this.getInternetData.Id
+    }
+    NetflowService.postNetFlowPlaceOrder(data).then((res: any)=> {
+      console.log(res)
+      if(res.code == 200){
+        this.$toast("Success");
     setTimeout(() => {
       this.$router.push({
         name: "home",
       });
     }, 1000);
+      }
+    })
+    
   }
   public postNetFlowList() {
     NetflowService.postNetFlowList().then((res: any) => {

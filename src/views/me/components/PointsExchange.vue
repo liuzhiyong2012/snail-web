@@ -2,20 +2,18 @@
 <div class="abus-height">
   <abus-title title="Points exchange" backRootName="meIndex"></abus-title>
   <div class="goods-box">
-      
-
     <div class="goods-item" v-for="(item,index) in shoppingList" :key="index">
-      <div class="goods">
+      <div class="goods"  @click="stepToDetail(item)">
         <div class="goods-img">
           <img :src="item.SampleImgPath" :alt="item.Name" />
         </div>
-        <div class="price">${{item.Price}}</div>
+        <!-- <div class="price">${{item.Price}}</div> -->
         <div class="name">{{item.Name}}</div>
         <div class="qty">
           QTY {{item.Stocking}}
           <span class="buy">
             Point
-            <i class="point">3000</i>
+            <i class="point">{{item.Price}}</i>
           </span>
         </div>
       </div>
@@ -49,7 +47,16 @@ export default class ShoppingIndex extends Vue {
       { text: "Jewellery", value: 1 },
     ];
   }
-
+// 点击跳转详情页
+  private stepToDetail(item:any){
+	  this.$router.push({
+		  name:'pointsDetails',
+		  params:{
+			  pointsInfo:item
+		  }
+	  });
+	  
+  }
   // BannerImgPath: "http://172.16.125.11:8081/133b9f0b-dfa4-4cd9-8ebb-958c44bfbf26"
   // Id: "e2dc9e2c-6733-e911-b13c-96af276fddb7"
   // Name: "素食拼盘"
@@ -61,7 +68,10 @@ export default class ShoppingIndex extends Vue {
   // category: "食物"
 
   private getShoppingList() {
-    ShoppingService.getShoppingList({}).then((res: any) => {
+    let data = {
+      type: 2  // 1或者''是默认普通商品，2是积分商品
+    }
+    ShoppingService.getShoppingList(data).then((res: any) => {
       console.log(res);
       this.shoppingList = res.data.Dishes;
 

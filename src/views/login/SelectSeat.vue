@@ -17,7 +17,7 @@
         <van-popup v-model="showIssues" position="bottom" :style="{ height: '30%' }">
           <van-picker
             show-toolbar
-            :columns="columns"
+            :columns="columnsName"
             @cancel="showIssues = false"
             @confirm="onConfirm"
             :default-index="1"
@@ -28,7 +28,7 @@
       </div>
     </div>
     <div class="button-box">
-      <div class="button" @click="onClickRegistery">Registery</div>
+      <div class="button" @click="getCrmSelectSeat">Registery</div>
     </div>
   </div>
 </template>
@@ -43,11 +43,14 @@ import LoginServer from "../../service/login";
 })
 export default class SelectSeat extends Vue {
   private seat: string = "";
+  private seatId: string = "";
   private showIssues: boolean = false;
-  private columns: Array<any> = ["12A", "12B", "13A", "13B"];
+  private columns: Array<any> = [];
+  private columnsName: Array<string> = [];
 
   private created() {
-    this.getCrmSeatInfo()
+    // this.getCrmSeatInfo()
+    this.getCrmOtherSeatList();
   }
 
   public showSeat() {
@@ -57,16 +60,43 @@ export default class SelectSeat extends Vue {
     this.seat = value;
     this.showIssues = false;
   }
-  public getCrmSeatInfo(){
-    LoginServer.getCrmSeatInfo().then((res:any)=>{
-      console.log(res)
-    })
+  public getCrmSeatInfo() {
+    LoginServer.getCrmSeatInfo().then((res: any) => {
+      console.log(res);
+    });
+  }
+  public getCrmOtherSeatList() {
+    LoginServer.getCrmOtherSeatList().then((res: any) => {
+      console.log(res);
+      if (res.code == 200) {
+        this.columns = res.data;
+        this.columns.forEach((item: any, index: any) => {
+          this.columnsName.push(item.Name);
+        });
+      }
+    });
+  }
+  public getCrmSelectSeat() {
+    this.columns.forEach((item: any, index: any) => {
+      if (item.Name == this.seat) {
+        this.seatId = item.id;
+        return;
+      }
+    });
+    if (this.seatId != "") {
+      LoginServer.getCrmSelectSeat(this.seatId).then((res: any) => {
+        console.log(res);
+        if (res.code == 200) {
+          this.$toast(res.data)
+          this.$router.push({
+            name: "login",
+          });
+        }
+      });
+    }
   }
   public onClickRegistery() {
     // 接口
-    this.$router.push({
-      name: "login",
-    });
   }
 }
 </script>
