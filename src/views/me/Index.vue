@@ -136,11 +136,12 @@ export default class meIndex extends Vue {
 // Seat: null
 // UserName: "86_13570492375"
 // WeChatId: null
+// points: "2000"
     MeServer.getUserInfo().then((res:any)=>{
       console.log(res)
       if(res.code == 200){
         this.userInfo = res.data
-        
+        this.$store.commit('setUserData',res.data)
       }
     })
   }

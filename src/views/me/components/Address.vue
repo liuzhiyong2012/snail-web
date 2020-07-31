@@ -46,7 +46,8 @@ export default class ShoppingAddress extends Vue {
   }
   
   public postUpdateAddress(){
-    let data = {
+    if(this.address != ''){
+      let data = {
       address: this.address
     }
     MeServer.postUpdateAddress(data).then((res: any) => {
@@ -57,6 +58,9 @@ export default class ShoppingAddress extends Vue {
         },200)
       }
     })
+    }else{
+      this.$toast('收货地址不能为空')
+    }
   }
   public postAddress(){
     MeServer.postAddress().then((res: any) => {

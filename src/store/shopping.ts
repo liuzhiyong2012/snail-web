@@ -15,7 +15,9 @@ export default {
                     Id: 'e2dc9e2c-6733-e911-b13c-96af276fddb7'
             } */
         ],
-        shoppingDetail: {}
+        shoppingDetail: {},
+        pointsCartList:[],
+        pointsDetail:{}
     },
     /* getters:{
          testGetters(state){
@@ -23,6 +25,7 @@ export default {
          }
      }, */
     mutations: {
+        // 商品
         addShoppingCartItem(state: any, item: any) {
             let retIndex = ArrayUtils.searchIndexByKey(state.cartList, 'Id', item.Id)
 
@@ -40,6 +43,25 @@ export default {
         },
         clearShoppingCart(state: any) {
             state.cartList = [];
+        },
+        // 积分
+        addPointsCartItem(state: any, item: any) {
+            let retIndex = ArrayUtils.searchIndexByKey(state.pointsCartList, 'Id', item.Id)
+
+            if (retIndex == -1) {
+                state.pointsCartList.push(item);
+            } else {
+                state.pointsCartList[retIndex].orderNumber = state.pointsCartList[retIndex].orderNumber + item.orderNumber;
+            }
+        },
+        setPointsDetail(state: any, data: any) {
+            state.shoppingDetail = data
+        },
+        delPointsCartItem(state: any, index: number) {
+            state.pointsCartList.splice(index, 1, 0);
+        },
+        clearPointsCart(state: any) {
+            state.pointsCartList = [];
         }
     },
     actions: {

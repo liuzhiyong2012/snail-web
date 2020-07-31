@@ -1,7 +1,7 @@
 import VueRouter, {
 	RouteConfig
 } from 'vue-router';
-import News from '@/views/news/index.vue';
+import News from '@/views/news/Index.vue';
 import NewsDetail from '@/views/news/NewsDetail.vue';
 
 const routes: Array < RouteConfig > = [

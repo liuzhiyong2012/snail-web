@@ -1,13 +1,17 @@
 <template>
   <div class="abus-height">
-    <div class="cell-group">
+    <div class="cell-group" v-for="(item,index) in orderList" :key="index">
       <div class="header">
         <div class="top">
-          <div class="title">Airspace Explorer AIB8888</div>
-          <div class="status">processing</div>
+          <div class="title">Airspace Explorer {{item.FlightNumber}}</div>
+          <div class="status" v-if="item.Status == 0">待定</div>
+          <div class="status" v-else-if="item.Status == 1 ">制作中</div>
+          <div class="status" v-else-if="item.Status == 2">派送</div>
+          <div class="status" v-else-if="item.Status == 3">完成</div>
+          <div class="status" v-else-if="item.Status == 4">取消</div>
         </div>
         <div class="con">
-          <div class="text">Wuhan T3</div>
+          <div class="text">{{item.Departure}}</div>
           <div class="flight">
             <i class="dot light"></i>
             <i class="dot grey"></i>
@@ -17,38 +21,27 @@
             <i class="dot grey"></i>
             <i class="dot light"></i>
           </div>
-          <div class="text">Beijing T1</div>
+          <div class="text">{{item.Arrival}}</div>
         </div>
       </div>
       <div class="main">
-        <div class="item">
+        <div class="item" v-for="(aItem,aIndex) in item.Items" :key="aIndex">
           <div class="img">
-            <img src="https://img.yzcdn.cn/vant/cat.jpeg" alt />
+            <img :src="aItem.Dish.BannerImgPath" alt />
           </div>
           <div class="f1">
-            <div class="title">Fresh Raw Egg over Rice</div>
-            <div class="money">
-              $32
-              <i>X12312</i>
+            <div class="title">{{aItem.Dish.Name}}</div>
+            <div class="money" >
+              ${{aItem.Price}}
+              <i>X{{aItem.Quantity}}</i>
             </div>
-          </div>
-        </div>
-        <div class="item">
-          <div class="img">
-            <img src="https://img.yzcdn.cn/vant/cat.jpeg" alt />
-          </div>
-          <div class="f1">
-            <div class="title">Fresh Raw Egg over Rice</div>
-            <div class="money">
-              $32
-              <i>X12312</i>
-            </div>
+            
           </div>
         </div>
       </div>
       <div class="footer">
-        <div class="time">213213123</div>
-        <div class="money">1232131231</div>
+        <div class="time">{{getTime(item.CreatedAt)}}</div>
+        <div class="money" >Total amount ${{item.FinalPrice}}</div>
       </div>
     </div>
   </div>
@@ -57,18 +50,26 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import MeServer from "../../../service/me";
+import DateUtils from '../../../utils/date-utils';
 @Component({
   name: "MyDishOrder",
   components: {},
 })
 export default class MyDishOrder extends Vue {
+  private orderList: Array<any>=[]
   private created() {
     this.getDishOrder()
   }
   public getDishOrder(){
     MeServer.getDishOrder().then((res: any) => {
       console.log(res)
+      if(res.code == 200) {
+        this.orderList = res.data.Orders
+      }
     })
+  }
+  public getTime(time:number){
+    return DateUtils.formate(time)
   }
 }
 </script>
