@@ -91,7 +91,7 @@ export default {
     position: absolute;
     right: 0.3rem;
     bottom: 0.3rem;
-    z-index: 999;
+    z-index: 98;
     opacity: .8;
   }
   img {
