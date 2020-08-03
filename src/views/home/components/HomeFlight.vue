@@ -94,7 +94,7 @@ export default class HomeFlight extends Vue {
 		return this.$store.state.login.voyageInfo.seatClass;
 	}
 
-	created() {
+	private created() {
 		this.getFlightInfo();
 	}
 

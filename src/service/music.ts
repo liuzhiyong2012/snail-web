@@ -7,7 +7,6 @@ export default class MusicService {
 	constructor() {
 		
 	}
-	
     // 音乐轮播图
 	static getMusicBanners(data: Object) {   
 		return request({
@@ -16,7 +15,6 @@ export default class MusicService {
 			data: data
 		});
 	}
-	
     // 热门歌单
 	static getMusicPlaylistHot(data?: Object) {   
 		return request({
@@ -25,7 +23,6 @@ export default class MusicService {
 			data: data
 		});
 	}
-	
 	// FM
 	static getMusicFM(data?: Object){
 		return request({
@@ -34,7 +31,6 @@ export default class MusicService {
 			data: data
 		})
 	}
-	
     // 榜单
 	static getMusicTop(data?: Object) {   
 		return request({

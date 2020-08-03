@@ -11,9 +11,9 @@
       </van-nav-bar> 
     </van-sticky>-->
     <van-sticky :offset-top="0">
-    <div class="home-title" >
-      <home-title @stepTo="stepToPage($event)"></home-title>
-    </div>
+      <div class="home-title">
+        <home-title @stepTo="stepToPage($event)"></home-title>
+      </div>
     </van-sticky>
     <van-popup v-model="show">
       <div class="popup-toast">
@@ -115,21 +115,20 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 // @ is an alias to /src
-import HomeTitle from "./components/HomeTitle";
-import HomeComponents from "./components/HomeComponents";
-import HomeFlight from "./components/HomeFlight";
-
-import HomeDish from "@/views/home/components/HomeDish";
-import HomeShopping from "@/views/home/components/HomeShopping";
-import HomeMusic from "@/views/home/components/HomeMusic";
-import HomeGame from "@/views/home/components/HomeGame";
-import HomeVideo from "@/views/home/components/HomeVideo";
-import HomeNews from "@/views/home/components/HomeNews";
+import { Component, Prop, Vue } from "vue-property-decorator";
+import HomeTitle from "./components/HomeTitle.vue";
+import HomeComponents from "./components/HomeComponents.vue";
+import HomeFlight from "./components/HomeFlight.vue";
+import HomeDish from "./components/HomeDish.vue";
+import HomeShopping from "./components/HomeShopping.vue";
+import HomeMusic from "./components/HomeMusic.vue";
+import HomeGame from "./components/HomeGame.vue";
+import HomeVideo from "./components/HomeVideo.vue";
+import HomeNews from "./components/HomeNews.vue";
 // import { getApprovalDetail } from "@/service/center";
-
-export default {
+@Component({
   name: "Home",
   components: {
     HomeTitle,
@@ -142,102 +141,86 @@ export default {
     HomeNews,
     HomeComponents,
   },
-  data() {
-    return {
-      show: false,
-      showService: true,
-      Dish: "12312",
-      navTar: [
-        {
-          title: "Flight",
-          value: "flight",
-        },
-        {
-          title: "Dish",
-          value: "dish",
-        },
-        {
-          title: "Shopping",
-          value: "shopping",
-        },
-        {
-          title: "Music",
-          value: "music",
-        },
-        {
-          title: "Game",
-          value: "game",
-        },
-        {
-          title: "Video",
-          value: "video",
-        },
-        {
-          title: "News",
-          value: "news",
-        },
-      ],
-      imagesData: [
-        {
-          img: require("./images/game.jpg"),
-          name: "name0",
-          details: "details",
-        },
-        {
-          img: require("./images/game.jpg"),
-          name: "name",
-          details: "details",
-        },
-        {
-          img: require("./images/game.jpg"),
-          name: "name",
-          details: "details",
-        },
-      ],
-    };
-  },
-  created() {
+})
+export default class Home extends Vue {
+  private show: boolean = false;
+  private showService: boolean = true;
+  private navTar: Array<any> = [];
+  private imagesData: Array<any> = [];
+
+  private created() {
     clearTimeout();
     setTimeout(() => {
       this.showService = false;
     }, 1000);
-    //  getApprovalDetail({}).then((res) => {
-    //     let  data = res.data;
-    //   }).finally(() => {
-    //   })
-  },
-  methods: {
+    this.navTar = [
+      {
+        title: "Flight",
+        value: "flight",
+      },
+      {
+        title: "Dish",
+        value: "dish",
+      },
+      {
+        title: "Shopping",
+        value: "shopping",
+      },
+      {
+        title: "Music",
+        value: "music",
+      },
+      {
+        title: "Game",
+        value: "game",
+      },
+      {
+        title: "Video",
+        value: "video",
+      },
+      {
+        title: "News",
+        value: "news",
+      },
+    ];
+    this.imagesData = [
+      {
+        img: require("./images/game.jpg"),
+        name: "name0",
+        details: "details",
+      },
+      {
+        img: require("./images/game.jpg"),
+        name: "name",
+        details: "details",
+      },
+      {
+        img: require("./images/game.jpg"),
+        name: "name",
+        details: "details",
+      },
+    ];
+  }
 
-    stepToPage(pageType) {
-      let routeMap = {
-        flight: "flightIndex",
-        dish: "dishIndex",
-        shopping: "shopping",
-        music: "musicIndex",
-        game: "game",
-        video: "video",
-        news: "news",
-        me: "meIndex",
-        message: "messageIndex",
-        internet: "internet",
-        internetCart: "internetCart"
-      };
-
-      if (routeMap[pageType]) {
-        this.$router.push({
-          name: routeMap[pageType],
-        });
-      }
-    },
-
-    showPopup() {
-      // this.show = true;
-      this.$router.push({
-        name: "internet",
-      });
-    },
-  },
-};
+  public stepToPage(pageType: any) {
+    let routeMap: any = {
+      flight: "flightIndex",
+      dish: "dishIndex",
+      shopping: "shopping",
+      music: "",
+      game: "game",
+      video: "video",
+      news: "news",
+      me: "meIndex",
+      message: "messageIndex",
+      internet: "internet",
+      internetCart: "internetCart",
+    };
+    this.$router.push({
+      name: routeMap[pageType],
+    });
+  }
+}
 </script>
 
 <style scoped lang="scss">

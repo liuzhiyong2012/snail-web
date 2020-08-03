@@ -111,10 +111,8 @@ export default class Login extends Vue {
   private lang: string = '';
   private userPhone: string = "";
   private userPassword: string = "";
-  private get seatNumber(): string {
-    return this.$store.state.login.voyageInfo.seatNumber;
-  }
-  created() {
+  
+  private created() {
     clearTimeout();
     setTimeout(() => {
       this.isActive = false;
@@ -129,26 +127,29 @@ export default class Login extends Vue {
     localStorage.setItem('lang', 'zh');
     }
   }
-  getUserPhone(e: any) {
+  private get seatNumber(): string {
+    return this.$store.state.login.voyageInfo.seatNumber;
+  }
+  public getUserPhone(e: any) {
     this.userPhone = e.target.value;
   }
-  getUserPassword(e: any) {
+  public getUserPassword(e: any) {
     this.userPassword = e.target.value;
   }
-  showLang() {
+  public showLang() {
     this.isShowLang = !this.isShowLang;
   }
-  changeEn(){
+  public changeEn(){
     this.lang = 'English'
     this.$i18n.locale = 'en'
     localStorage.setItem('lang', 'en');
   }
-  changeZh(){
+  public changeZh(){
     this.lang = '简体中文'
     this.$i18n.locale = 'zh'
     localStorage.setItem('lang', 'zh');
   }
-  postUserLogin() {
+  public postUserLogin() {
     // console.log(this.$store.state.login.name)
     if (this.userPhone != "" && this.userPassword != "") {
       var data = {

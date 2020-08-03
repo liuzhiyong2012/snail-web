@@ -1,13 +1,13 @@
 <template>
-<div class="abus-height">
-    <div class="cell-group">
+  <div class="abus-height">
+    <div class="cell-group"  v-for="(item,index) in orderList" :key="index">
       <div class="header">
         <div class="top">
-          <div class="title">Airspace Explorer AIB8888</div>
-          <div class="status">processing</div>
+          <div class="title">Airspace Explorer {{item.FlightNumber}}</div>
+          <!-- <div class="status">processing</div> -->
         </div>
         <div class="con">
-          <div class="text">Wuhan T3</div>
+          <div class="text">{{item.Departure}}</div>
           <div class="flight">
             <i class="dot light"></i>
             <i class="dot grey"></i>
@@ -17,47 +17,54 @@
             <i class="dot grey"></i>
             <i class="dot light"></i>
           </div>
-          <div class="text">Beijing T1</div>
+          <div class="text">{{item.Arrival}}</div>
         </div>
       </div>
       <div class="main">
-        <div class="item">
+        <div class="item" >
           <div class="img">
             <img src="https://img.yzcdn.cn/vant/cat.jpeg" alt />
           </div>
           <div class="f1">
-            <div class="title">Fresh Raw Egg over Rice</div>
+            <div class="title">{{item.netFlowName}}</div>
             <div class="money">
-              $32
-              <i>X12312</i>
+              ${{item.FinalPrice}}
+              <!-- <i>X12312</i> -->
             </div>
           </div>
         </div>
-        <div class="item">
-          <div class="img">
-            <img src="https://img.yzcdn.cn/vant/cat.jpeg" alt />
-          </div>
-          <div class="f1">
-            <div class="title">Fresh Raw Egg over Rice</div>
-            <div class="money">
-              $32
-              <i>X12312</i>
-            </div>
-          </div>
-        </div>
+        
       </div>
       <div class="footer">
-        <div class="time">213213123</div>
-        <div class="money">1232131231</div>
+        <div class="time">{{item.CreatedAt}}</div>
+        <div class="money">Total amount ${{item.FinalPrice}}</div>
       </div>
-     </div>
+    </div>
   </div>
 </template>
 
-<script>
-    export default {
-        
-    }
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+import MeService from "../../../service/me";
+import DateUtils from "../../../utils/date-utils";
+@Component({
+  name: "MyInternetOrder",
+  components: {},
+})
+export default class MyInternetOrder extends Vue {
+  private orderList: Array<any>=[]
+  private created() {
+    this.postNetFlowOrder();
+  }
+  public postNetFlowOrder() {
+    MeService.postNetFlowOrder().then((res: any) => {
+      console.log(res);
+      if(res.code == 200) {
+        this.orderList = res.data.Orders
+      }
+    });
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -113,7 +120,7 @@
           width: 0.06rem;
           height: 0.06rem;
           border-radius: 50%;
-  
+
           &.dark {
             background: rgba(0, 0, 0, 1);
           }
@@ -161,15 +168,15 @@
           color: rgba(51, 51, 51, 1);
         }
         .money {
-          height: .32rem;
+          height: 0.32rem;
           width: 100%;
           font-weight: bold;
           color: rgba(46, 46, 46, 1);
-          i{
-            margin: 0 0 0 .3rem;
+          i {
+            margin: 0 0 0 0.3rem;
             color: #999;
             font-weight: 400;
-            font-size: .28rem;
+            font-size: 0.28rem;
           }
         }
       }

@@ -1,18 +1,18 @@
 <template>
   <div>
-    <abus-title title="Shopping Detail" backRouteName="shopping">
+    <abus-title title="Detail" backRouteName="pointsExchange">
       <cart-icon></cart-icon>
     </abus-title>
     <div calss="shopping-details">
       <!-- <banner :bannerData="bannerData" /> -->
-      <div class="dish-img" :style="{backgroundImage:`url(${shoppingInfo.BannerImgPath})`}"></div>
+      <div class="dish-img" :style="{backgroundImage:`url(${pointsInfo.BannerImgPath})`}"></div>
     </div>
     <div class="m-box">
-      <div class="title">{{shoppingInfo.Name || '--'}}</div>
+      <div class="title">{{pointsInfo.Name || '--'}}</div>
       <div class="info-box">
-        <div class="qty">QTY {{shoppingInfo.Stocking || '--'}}</div>
+        <div class="qty">QTY {{pointsInfo.Stocking || '--'}}</div>
         <div class="f1">
-          <div>${{shoppingInfo.Price || 0}}</div>
+          <div>{{pointsInfo.Price || 0}}</div>
           <van-field class="field-ctn" name="stepper" label>
             <template #input>
               <van-stepper v-model="stepper" />
@@ -29,7 +29,7 @@
 
     <div class="details-box">
       <div class="top">Product Details</div>
-      <div class="details">{{shoppingInfo.Remark||'暂无介绍'}}</div>
+      <div class="details">{{pointsInfo.Remark||'暂无介绍'}}</div>
     </div>
 
     <div class="footer-ctn">
@@ -43,23 +43,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import AbusTitle from "../../components/AbusTitle.vue";
-import CartIcon from "./components/ShoppingCartIcon.vue";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import AbusTitle from "../../../components/AbusTitle.vue";
+import CartIcon from "./PointsCartIcon.vue";
 
 @Component({
-  name: "ShoppingDetail",
+  name: "PointsDetail",
   components: {
     AbusTitle,
-    CartIcon,
+    CartIcon
   },
 })
-export default class ShoppingDetail extends Vue {
+export default class PointsDetail extends Vue {
   private stepper: number = 1;
   private recomendList: Array<any> = [];
   private shoppingList: Array<any> = [];
 
-  private shoppingInfo: any = {};
+  private pointsInfo: any = {};
 
   private get seatNumber(): string {
     return this.$store.state.login.voyageInfo.seatNumber;
@@ -70,28 +70,34 @@ export default class ShoppingDetail extends Vue {
   }
   private mounted() {
     // this.$store.commit("setShoppingDetail", this.$route.params.shoppingInfo);
-    this.shoppingInfo = this.$route.params.shoppingInfo;
+    this.pointsInfo = this.$route.params.pointsInfo;
   }
-  private get shoppingDetail() {
-    return this.$store.state.shopping.shoppingDetail;
+  @Watch("stepper", { immediate: true })
+  private watchStepper() {
+    this.pointsInfo.orderNumber = this.stepper
+  }
+  
+  private get pointsDetail() {
+    return this.$store.state.shopping.pointsDetail;
   }
 
   public backToIndex(): void {
+      
     this.$router.push({
       name: "dishIndex",
     });
   }
 
   public addToCart(): void {
-    this.$store.commit("addShoppingCartItem", this.shoppingInfo);
+    this.$store.commit("addPointsCartItem", this.pointsInfo);
     this.$toast("成功加入购物车!");
   }
 
   public buyNow(): void {
     // this.$toast('购买成功!');
-    this.$store.commit("addShoppingCartItem", this.shoppingInfo);
+    this.$store.commit("addPointsCartItem", this.pointsInfo);
     this.$router.push({
-      name: "shoppingCart",
+      name: "pointsCart",
     });
   }
 }

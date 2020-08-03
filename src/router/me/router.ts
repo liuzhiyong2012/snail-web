@@ -8,6 +8,8 @@ import Payment from '@/views/me/components/Payment.vue'
 import Lang from '@/views/me/components/Lang.vue'
 import MyOrder from '@/views/me/components/MyOrder.vue'
 import PointsExchange from '@/views/me/components/PointsExchange.vue'
+import PointsDetails from '@/views/me/components/PointsDetails.vue'
+import PointsCart from '@/views/me/components/PointsCart.vue'
 
 const routes: Array<RouteConfig> = [
 	{
@@ -48,6 +50,18 @@ const routes: Array<RouteConfig> = [
 		path: '/me/pointsexchange',
 		name: 'pointsExchange',
 		component: PointsExchange,
+		children: []
+	},
+	{
+		path: '/me/pointsdetails',
+		name: 'pointsDetails',
+		component: PointsDetails,
+		children: []
+	},
+	{
+		path: '/me/pointscart',
+		name: 'pointsCart',
+		component: PointsCart,
 		children: []
 	},
 ]

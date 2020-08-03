@@ -35,7 +35,7 @@ export default class HomeNews extends Vue {
   private musicData: Array<any> = [];
   private newsList: Array<any> = [];
 
-  created() {
+  private created() {
     this.getNewsRecommended();
     this.musicData = [
       {
