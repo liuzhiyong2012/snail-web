@@ -1,4 +1,4 @@
-import {localStore} from '@/utils/data-management'
+import {localStore} from '../utils/data-management'
 export default {
   state: {
     voyageInfo: {
