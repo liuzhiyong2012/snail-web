@@ -27,7 +27,6 @@ export default new Vuex.Store<any>({
   home: Home,
   news:News,
   message:Message
-  home: Home
   }
 })
 
