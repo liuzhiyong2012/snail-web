@@ -16,7 +16,7 @@ export default class VideoService {
 		});
 	}
     // 推荐视频
-	static getVideoList(data: Object) {   
+	static getVideoList(data?: Object) {   
 		return request({
 			url: '/v1/api/Video/List',
 			method: 'GET',

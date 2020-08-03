@@ -281,7 +281,7 @@ export default class Register extends Vue {
           if (res.code == 200) {
             // 存储用户信息
             this.$router.push({
-              path: "selectSeat"
+              name: "selectSeat"
             });
           } else {
             this.$toast(res.message);
