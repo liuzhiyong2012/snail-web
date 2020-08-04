@@ -1,43 +1,25 @@
 <template>
   <section class="news-detail">
     <van-sticky>
-      <!-- <van-nav-bar title="News">
-        <template #left>
-          <van-icon name="arrow-left" size="18" @click="goBack" />
-        </template>
-        <template #right>
-          <div @click="changeCollect(newsDetail.Id)">
-            <span
-              class="news-right-heart"
-              v-show="newsDetail.isCollect == true"
-            >
-              <img :src="loveTrue" alt="" />
-            </span>
-            <span
-              class="news-right-heart"
-              v-show="newsDetail.isCollect == false"
-            >
-              <img :src="loveFalse" alt="" />
-            </span>
-          </div>
-        </template>
-      </van-nav-bar> -->
       <abus-title title="News">
-        <div slot @click="changeCollect(newsDetail.Id)">
-          <span class="news-right-heart" v-show="newsDetail.isCollect == true">
-            <img :src="loveTrue" alt="" />
-          </span>
-          <span class="news-right-heart" v-show="newsDetail.isCollect == false">
-            <img :src="loveFalse" alt="" />
-          </span>
-        </div>
+        <div slot style="width:0.3rem"></div>
       </abus-title>
     </van-sticky>
 
     <div class="" v-if="bannerData.length != 0">
       <banner :bannerData="bannerData" />
     </div>
-    <div class="news-title">{{ newsDetail.Title }}</div>
+    <div class="news-title-heart">
+      <div class="news-title">{{ newsDetail.Title }}</div>
+      <div @click="changeCollect(newsDetail.Id)" class="news-right-heart-box">
+        <span class="news-right-heart" v-show="newsDetail.isCollect == true">
+          <img :src="loveTrue" alt="" />
+        </span>
+        <span class="news-right-heart" v-show="newsDetail.isCollect == false">
+          <img :src="loveFalse" alt="" />
+        </span>
+      </div>
+    </div>
     <div class="news-time">{{ newsDetail.CreatedAt }}</div>
     <div class="news-info" v-html="newsDetail.FullDescription"></div>
   </section>
@@ -50,7 +32,7 @@ import DateUtils from "../../utils/date-utils";
 import NewsService from "../../service/news";
 import AbusTitle from "@/components/AbusTitle.vue";
 
-declare function require(string): string;
+declare function require(type: string): string;
 
 @Component({
   name: "NewsDetailPage",
@@ -73,7 +55,9 @@ export default class NewsDetailPage extends Vue {
     _this.bannerData.push(_this.newsDetail);
     _this.newsDetail.CreatedAt = DateUtils.formate(_this.newsDetail.CreatedAt);
   }
-  private mounted() {}
+  private mounted() {
+    window.scrollTo(0,0);
+  }
 
   public goBack(): void {
     this.$router.go(-1);
@@ -135,6 +119,17 @@ export default class NewsDetailPage extends Vue {
     width: 0.3rem;
   }
 }
+
+.news-title-heart{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  .news-right-heart-box{
+    margin-right: 0.3rem;
+  }
+}
+
 
 .news-title {
   padding: 0.25rem;

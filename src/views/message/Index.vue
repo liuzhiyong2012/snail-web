@@ -35,7 +35,7 @@
     </van-sticky>
 
     <section v-show="showChat" class="chat-wrap">
-      <div class="chat-inner">
+      <div class="chat-inner" id="chat-inner">
         <div class="talkshow">
           <div
             v-for="(item, index) in chatList"
@@ -120,6 +120,8 @@ export default class messageIndex extends Vue {
   private showMessage: boolean = false;
   private showDelete: boolean = true; // 系统消息是否显示清除按钮: true是不清除 false是要清除
   private uInfo: any = {};
+  private socket: any = null;
+
   private chatList: Array<any> = [
     // {
     //   id: "455d21023f2035c188dea4585906542d", //消息id
@@ -138,9 +140,9 @@ export default class messageIndex extends Vue {
     // {
     //   CreatedAt: "2020-07-31 09:17:21",
     //   Id: "3",
-    //   Mark: "你的流量套餐订单已完成",
+    //   Mark: "",
     //   Read: 1,
-    //   Title: "Your netFlow order has been completed",
+    //   Title: "",
     // },
   ]; //系统消息
 
@@ -153,12 +155,26 @@ export default class messageIndex extends Vue {
     this.getSysNoticeList(); //获取系统通知列表
   }
 
+  private updated() {
+    // 聊天定位到底部
+    let ele = document.getElementById("chat-inner");
+    ele.scrollTop = ele.scrollHeight;
+  }
+
+  private destroyed() {
+    // if(this.socket){
+    //   this.socket.close();
+    //   this.socket = null;
+    // }
+    this.changeNoticeStatus();
+  }
+
   public goBack() {
     this.$router.go(-1);
   }
 
   // 切换聊天与系统消息
-  public gotoChatMessage(type) {
+  public gotoChatMessage(type: string) {
     if (type == "message") {
       this.showChat = true;
       this.showMessage = false;
@@ -175,35 +191,35 @@ export default class messageIndex extends Vue {
   // 清理系统通知为已读
   public deleteMsgShow() {
     this.systemMsgList.forEach((item) => {
-      item.read = 1;
+      item.Read = 1;
     });
     this.showDelete = this.systemMsgList.every((item) => {
-      return item.read == 1;
+      return item.Read == 1;
     });
+    this.$store.dispatch("saveNoticeList", this.systemMsgList);
+    this.changeNoticeStatus();
   }
 
   // 初始化websocket
   public initWebSocket() {
     const _this = this;
     // 连接服务端，workerman.net:2120换成实际部署web-msg-sender服务的域名或者ip
-    let socket = io("http://172.16.8.69:2120");
+    _this.socket = io("http://172.16.8.69:2120");
     // uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
     let uid = _this.uInfo.uid;
 
     // socket连接后以uid登录
-    socket.on("connect", function() {
-      socket.emit("login", uid);
+    _this.socket.on("connect", function() {
+      _this.socket.emit("login", uid);
     });
     // 后端推送来消息时
-    socket.on("new_msg", function(msg) {
+    _this.socket.on("new_msg", function(msg) {
       let midMsg = msg.replace(/&quot;/g, `"`);
       let endMsg = JSON.parse(midMsg);
-
       // {type: "message", content: "Your netFlow order has been completed", mark: "你的流量套餐订单已完成"}
-
       if (endMsg.type == "system") {
         // 系统通知
-        _this.systemMsgList.push({
+        _this.systemMsgList.unshift({
           CreatedAt: "",
           Id: "",
           Mark: endMsg.mark,
@@ -227,7 +243,7 @@ export default class messageIndex extends Vue {
       }
     });
     // 后端推送来在线数据时
-    socket.on("update_online_count", function(online_stat) {
+    _this.socket.on("update_online_count", function(online_stat) {
       console.log("后端推送来在线数据时", online_stat);
     });
   }
@@ -279,19 +295,22 @@ export default class messageIndex extends Vue {
   // 获取系统消息 1已读 0未读
   public getSysNoticeList() {
     const _this = this;
+    _this.systemMsgList = [];
+    let readList = [];
+    let unreadList = [];
+    let storeList = [];
     MessageService.getSystemNoticeList({ read: 1 }).then((res) => {
       if (res.code == 200) {
-        res.data.notice = res.data.notice.reverse();
-        _this.systemMsgList = [...res.data.notice];
-
+        readList = res.data.notice;
         MessageService.getSystemNoticeList({ read: 0 }).then((res) => {
           if (res.code == 200) {
-            res.data.notice = res.data.notice.reverse();
-            _this.systemMsgList = [..._this.systemMsgList, ...res.data.notice];
-            // _this.systemMsgList.forEach((item) => {
-            //   item.read = 1;
-            // });
-
+            unreadList = res.data.notice;
+            if (localStore.get("noticeList")) {
+              storeList = localStore.get("noticeList");
+              _this.systemMsgList = [...unreadList, ...storeList];
+            } else {
+              _this.systemMsgList = [...unreadList, ...readList];
+            }
             _this.showDelete = _this.systemMsgList.every((item) => {
               return item.Read == 1;
             });
@@ -302,8 +321,16 @@ export default class messageIndex extends Vue {
     });
   }
 
+  public changeNoticeStatus(){
+    MessageService.changeReadNotice().then(res=>{
+      if(res.code==200){
+
+      }
+    })
+  }
+
   // 点击某条系统通知
-  public changeReadStatus(item) {
+  public changeReadStatus(item: any) {
     console.log("某条系统通知", item);
   }
 }
@@ -476,12 +503,12 @@ export default class messageIndex extends Vue {
       background: rgba(255, 255, 255, 1);
       height: 1rem;
       padding-left: 0.3rem;
-      border-bottom: 1px solid rgba(46, 46, 46, 0.1);
+      border-bottom: 1px solid rgba(247, 247, 247, 0.9);
       .message-icon {
         margin-right: 0.3rem;
       }
       .message-content {
-        font-size: 0.32rem;
+        font-size: 0.3rem;
         font-family: Helvetica;
         color: rgba(38, 64, 115, 1);
         line-height: 0.4rem;
@@ -495,7 +522,7 @@ export default class messageIndex extends Vue {
         -webkit-box-orient: vertical;
       }
       .message-content-readed {
-        font-size: 0.32rem;
+        font-size: 0.3rem;
         font-family: Helvetica;
         color: rgba(51, 51, 51, 0.4);
         line-height: 0.4rem;

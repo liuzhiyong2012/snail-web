@@ -50,7 +50,7 @@ import Banner from "../../components/banner.vue";
 import NewsListItem from "./components/NewsListItem.vue";
 import NewsService from "../../service/news";
 import { localStore } from "../../utils/data-management";
-import AbusTitle from "@/components/AbusTitle.vue";
+import AbusTitle from "../../components/AbusTitle.vue";
 import Tile from "ol/Tile";
 @Component({
   name: "NewsList",
@@ -94,7 +94,7 @@ export default class NewsList extends Vue {
   public getNewsList() {
     NewsService.getNewsList({}).then((res) => {
       if (res.code == 200) {
-        res.data.News.forEach((item) => {
+        res.data.News.forEach((item: any) => {
           if (item.isLike) {
             item.isCollect = true;
           } else {
@@ -104,7 +104,7 @@ export default class NewsList extends Vue {
         this.newsList = res.data.News;
         this.newsListBackup = res.data.News;
         this.bannerData = res.data.News;
-        this.bannerData.forEach((item) => {
+        this.bannerData.forEach((item: any) => {
           item.img = item.BannerImg;
         });
       }
@@ -126,19 +126,19 @@ export default class NewsList extends Vue {
     if (title == "所有") {
       this.newsListBackup = this.newsList;
     } else if (title == "收藏") {
-      this.newsList.forEach((item) => {
+      this.newsList.forEach((item: any) => {
         if (item.isCollect == true) {
           this.newsListBackup.push(item);
         }
       });
     } else {
       let i = "";
-      this.navTar.forEach((item) => {
+      this.navTar.forEach((item: any) => {
         if (item.category == title) {
           i = item.Id;
         }
       });
-      this.newsList.forEach((item) => {
+      this.newsList.forEach((item: any) => {
         if (i == item.Category) {
           this.newsListBackup.push(item);
         }

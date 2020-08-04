@@ -39,7 +39,7 @@
 import { Component, Prop, Vue, Watch, Emit } from "vue-property-decorator";
 import { localStore } from "../../../utils/data-management";
 import NewsService from "../../../service/news";
-declare function require(string): string;
+declare function require(type: string): string;
 
 @Component({
   name: "NewsListItem",
