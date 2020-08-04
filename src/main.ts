@@ -8,10 +8,13 @@ import Vant from 'vant';
 import 'vant/lib/index.css';
 import VueI18n from 'vue-i18n'
 import { Lazyload } from 'vant';
+//引入rem适配
+// import 'amfe-flexible/index.js';
 // import myCharts from './comm/js/myCharts.js';
 
 
 filters.forEach((filter: any, index) => {
+	// debugger;
   Vue.filter(filter.name, filter.handler)
 });
    
@@ -39,17 +42,19 @@ Vue.config.productionTip = false;
 Vue.prototype.$globalEvent = new Vue;
 // Vue.prototype.$globalEvent = new Vue;
 
-// function getHostUrl(){
-//    return window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
-// }
+
+function getHostUrl(){
+   return window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
+}
 //可根据具体环境配置
-/* if(location.href.indexOf('localhost') > -1 ){
+if(location.href.indexOf('localhost') > -1 ){
+	//http://172.16.125.11:8010/
   Vue.config.SERVER_API = 'http://kf.vpclub.cn/guangmei/api';
-  Vue.config.imgBase = 'http://kf.vpclub.cn';
+  Vue.config.imgBase = 'http://172.16.125.11:8010';
 }else{
   Vue.config.SERVER_API = getHostUrl() +'/guangmei/api';
   Vue.config.imgBase  = getHostUrl();
-} */
+}
 
 
 new Vue({

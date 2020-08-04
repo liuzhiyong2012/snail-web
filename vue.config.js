@@ -1,5 +1,9 @@
 const path = require('path');
 console.log(process.env.VUE_APP_PROXY);
+
+const autoprefixer = require('autoprefixer');
+const pxtorem = require('postcss-pxtorem');
+
 module.exports = {
     configureWebpack: {
         devtool: 'source-map'
@@ -47,6 +51,21 @@ module.exports = {
     //         }
     //     }
     // }
+	css: {
+	    loaderOptions: {
+	      postcss: {
+	        plugins: [
+	          autoprefixer({
+	            browsers: ['Android >= 4.0', 'iOS >= 7']
+	          }),
+	          pxtorem({
+	            rootValue: 100, //37.5,
+	            propList: ['*'],
+	          })
+	        ]
+	      }
+	    }
+	  },
 	chainWebpack: config => {
 	    config.module
 	      .rule('i18n')

@@ -23,7 +23,7 @@ export default {
   },
   data() {
     return {
-      progressBtnWidth: ""
+      progressBtnWidth: ''
     };
   },
   created() {
@@ -63,7 +63,7 @@ export default {
       const barWidth =
         this.$refs.progressBar.clientWidth - this.progressBtnWidth;
       const percent = this.$refs.progress.clientWidth / barWidth;
-      this.$emit("percentChange", percent);
+      this.$emit('percentChange', percent);
     },
     /* 得知播放过的百分比时操作ui变化 */
     _offset(offsetWidth) {
@@ -97,39 +97,43 @@ $screen-width: 37.5;
 .progress-bar {
   // width: rem(200);
   width: 100%;
-  height: rem(30);
+  height: 100%;
+  overflow: visible !important;
 }
 /* 进度线 */
 .bar-inner {
-  position: relative;
-  top: rem(13);
-  height: rem(4);
-  background: rgba(0, 0, 0, 0.3);
+ position: relative;
+     top: 0.12rem;
+     height: 0.08rem;
+	 background:rgba(237,237,237,0.23);
+	 border-radius:4px;
 }
 
 .progress {
   position: absolute;
   height: 100%;
-  background: rgb(255, 205, 50);
+  // background: rgb(255, 205, 50);
+  
+  background: rgba(255,255,255,1);
 }
 
 .progress-btn-wrapper {
   position: absolute;
-  left: rem(-8);
-  top: rem(-13);
-  width: rem(30);
-  height: rem(30);
+  left: - 0.12rem;
+  top: -0.12rem;
+  width: 0.28rem;
+  height:  0.28rem;
 }
 
 .progress-btn {
   position: relative;
-  top: rem(7);
-  left: rem(7);
+  top: 0;
+  left: 0;
   box-sizing: border-box;
-  width: rem(16);
-  height: rem(16);
-  border: rem(3) solid #fff;
+  width: 100%;
+  height:100%;
+  // border: rem(3) solid #fff;
   border-radius: 50%;
-  background: rgb(255, 205, 50);
+  background: rgba(255,255,255,1);
 }
 </style>

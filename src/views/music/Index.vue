@@ -21,7 +21,7 @@
 						</div>
 					</div>
 					
-					<div class="function-item airfm" @click="stepTo('airFm')">
+					<div class="function-item airfm" @click="getFmList()">
 						<div class="function-icon-ctn">
 							<svg class="icon" aria-hidder="true">
 								<use xlink:href="#icon-air-fm"></use>
@@ -42,6 +42,7 @@
 							Top ranks
 						</div>
 					</div>
+					<!-- 学习 --> 
 				</div>
 			</div>
 			
@@ -50,22 +51,30 @@
 					  Pop Album
 				  </div>
 				  <div class="album-list-ctn">
-					  <div class="album-item" v-for="(item,index) in albumList" :key="index" @click="stepToPage(item)">
-						  <div class="album-image" :style="{backgroundImage:`url(${item.CoverImgUrl})`}">
-							  
-						  </div>
-						  <p class="album-label">
-							  {{item.Name}}
-						  </p>
-					  </div>
+					  <van-list v-model="loading" class="album-item-ctn" :finished="finished" finished-text="没有更多了" @load="onLoad" :offset="100" :immediate-check="false" ref="mylist">
+							<div class="album-item-ctn">
+								<div class="album-item" v-for="(item,index) in playList" :key="index" @click="stepToPage(item)">
+									  <div class="album-image" :style="{backgroundImage:`url(${item.CoverImgUrl})`}">
+									  </div>
+									  <p class="album-label">
+										  {{item.Name}}
+									  </p>
+								</div>
+								
+								<div class="album-item" style = "visibility: hidden;" v-if="playList&&(playList.length % 3==2)">  
+								</div>
+								
+							</div>
+							
+					  </van-list>
 				  </div>
 			</div>
 		</section>
-		<music-player class="music-player-ctn"></music-player>
 	</section>
 </template>
 
 <script lang="ts">
+	import UrlUtils from '../../utils/url-utils.ts';
 	import {Vue,Prop,Component} from 'vue-property-decorator';
 	import AbusTitle from '../../components/AbusTitle.vue';
 	import MusicService from '../../service/music.ts';
@@ -80,18 +89,25 @@
 	})
 	export default class MusicIndex extends Vue {
 		 private recomendList:Array<any> = [];
-		 private albumList:any[] = [];
+		 private playList:any[] = [];
+		 private airFmList:any[] = [];
+		 
+		 private loading: boolean = false;
+		 private finished: boolean = false;
+		 
+		 
+		 private pageSize: number = 10;
+		 private pageNumber: number = 1;
 		 
 		 private mounted(){
 			 this.getMusicBanners();
-			 this.getAlbumList();
+			 this.getPlayList();
 		 }
 		 
 		 private getMusicBanners(){
 			 MusicService.getMusicBanners({}).then((res:any)=>{
 				 if(res.code == '200'){
 					 this.recomendList = res.data.Banners;  
-					 // debugger;
 				 }
 			 });
 		 }
@@ -110,15 +126,26 @@
 			 }
 		 }
 		 
-		 private getAlbumList(){
-			 MusicService.getMusicPlaylistHot({}).then((res:any)=>{
-				 // debugger;
-				 if(res.code == '200'){
-					 this.albumList = res.data.Playlists;
-				 }
-				
+		 private getPlayList(){
+			 MusicService.getMusicPlaylistHot({
+				 take: this.pageSize,
+				 skip: (this.pageNumber - 1) * this.pageSize
+			 }).then((resData: any) => {
+			 	if (resData.code == '200') {
+			 		if (resData.data.EOF) {
+			 			this.finished = true;
+			 		}
+					
+			 		this.playList = this.playList.concat(resData.data.Playlists);
+			 	} else {
+			 		this.$toast('获取列表失败!');
+			 	}
+			 	this.loading = false;
+			 	this.refreshing = false;
+			 }).catch((e?: any) => {
+			 	this.loading = false;
+			 	this.refreshing = false;
 			 });
-			 
 		 }
 		 
 		 
@@ -129,9 +156,50 @@
 					 id:item.Id
 				 }
 			 });
-/* 			 MusicService.getPlaylistDetail(item).then((res)=>{
-				
-			 }); */
+		 }
+		 
+		 private getFmList(){
+			 MusicService.getMusicFM({}).then((res)=>{
+			 		if(res.code == '200'){
+						 let songs = [];
+						this.airFmList = res.data.Songs;
+						
+						this.airFmList.forEach((item,index)=>{
+							 songs.push({
+								 album: 'album',
+								 duration: item.Duration/1000,
+								 id: item.Id,
+								 image: '',
+								 mid: '',
+								 name:  item.Name,
+								 singer: this.computeAuthorName(item),
+								 url: 'http://172.16.125.11:8010/' + item.Id,
+							 });
+						});
+						
+						this.$store.dispatch('selectPlay',{
+								list: songs,
+								index: 1
+						 });
+					}
+			 }); 
+			 
+		 }
+		 
+		 public computeAuthorName(item):void{
+		 	 let anthorList = [];
+		 			 
+			 item.Artists.forEach((artistItem,index)=>{
+				 anthorList.push(artistItem.Name);
+			 });
+			 
+			 return anthorList.join(',');
+		 }
+		 
+		 private onLoad(): void {
+		 	this.pageNumber = this.pageNumber + 1;
+		 	this.pageSize = 10;
+		 	this.getPlayList();
 		 }
 		 
 		
@@ -239,36 +307,45 @@
 				}
 				
 				.album-list-ctn{
-					display: flex;
-					justify-content: space-between;
-					align-items: center;
-					flex-wrap: wrap;
+					padding-bottom: 1.80rem;
 					
-					.album-item{
-						width:2.00rem;
-						.album-image{
-							box-sizing: border-box;
-							border:10px solid #e8cebb;
-							border-radius:0.08rem;
-							overflow: hidden;
-							width:100%;
-							height: 2.00rem;
-							margin-bottom: 0.16rem;
-							background-position:center;
-							background-repeat:no-repeat;
-							background-size: contain;
+					.album-item-ctn{
+						
+						.album-item-ctn{
+							display: flex;
+							justify-content: space-between;
+							align-items: center;
+							flex-wrap: wrap;
+							.album-item{
+								width:2.00rem;
+								.album-image{
+									box-sizing: border-box;
+									border:10px solid #e8cebb;
+									border-radius:0.08rem;
+									overflow: hidden;
+									width:100%;
+									height: 2.00rem;
+									margin-bottom: 0.16rem;
+									background-position:center;
+									background-repeat:no-repeat;
+									background-size: contain;
+								}
+								.album-label{
+									white-space: nowrap;
+									overflow: hidden;
+									text-overflow: ellipsis;
+									font-size:0.24rem;
+									font-weight:bold;
+									color:rgba(46,46,46,1);
+									line-height:0.30rem;
+									padding-bottom: 0.14rem;
+								}
+							}
 						}
-						.album-label{
-							white-space: nowrap;
-							overflow: hidden;
-							text-overflow: ellipsis;
-							font-size:0.24rem;
-							font-weight:bold;
-							color:rgba(46,46,46,1);
-							line-height:0.30rem;
-							padding-bottom: 0.14rem;
-						}
+						
 					}
+					
+					
 				}
 			}
 			

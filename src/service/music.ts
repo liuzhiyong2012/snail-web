@@ -21,7 +21,7 @@ export default class MusicService {
 	static getMusicPlaylistHot(data?: Object) {   
 		return request({
 			url: '/v1/api/Music/Playlist/Hot',
-			method: 'GET',
+			method: 'POST',
 			data: data
 		});
 	}
@@ -47,21 +47,13 @@ export default class MusicService {
 	static getMySongList(data?: Object) {   
 		// Playlist
 		return request({
-			url: '/v1/api/Music/Song/Subscribe/List', 
-			method: 'GET',
+			url: `/v1/api/Music/SongSubscribe/List`, 
+			method: 'POST',
 			data: data
 		});
 	}
 	
-	//获取我收藏的歌单
-	static getMyAlbumList(data?: Object) {
-		return request({
-			url: '/v1/api/Music/Song/Subscribe/Playlist', 
-			method: 'GET',
-			data: data
-		});
-	}
-	
+	//:version/api/Music/SongSubscribe/List
 	
 	//根据歌单获取歌单详情
 	static getPlaylistDetail(data?: Object) {
@@ -91,26 +83,60 @@ export default class MusicService {
 	
 	//取消收藏歌单
 	static unSubscribePlaylist(data?: Object) {
+		
 		return request({
 			url: '/v1/api/Music/PlaylistUnSubscribe/' + data.id, 
 			method: 'GET',
 			data: data
 		});
+		
 	}
 	
 	//我收藏的歌单
 	static getMyPlaylist(data?: Object) {
 		return request({
 			url: '/v1/api/Music/PlaylistSubscribe/List', 
-			method: 'GET',
+			method: 'POST',
 			data: data
 		});
 	}
 	
 	
-/* 	Route::get(':version/api/Music/PlaylistSubscribe/:id', 'apiersion.app.Music/PlaylistSubscribe');//收藏歌单
+	
+	//收藏歌曲
+	static subscribeSong(data?: Object) {
+		return request({
+			url: '/v1/api/Music/Song/Subscribe', 
+			method: 'POST',
+			data: data
+		});
+	}
+	
+	//取消收藏歌曲
+	static unSubscribeSong(data?: Object) {
+		return request({
+			url: '/v1/api/Music/Song/UnSubscribe',
+			method: 'POST',
+			data: data
+		});
+	}
+	
+	
+	// Route::post(':version/api/Music/Song/Subscribe/:id', 'api/:version.app.Music/subscribe');
+	//收藏歌曲
+	// Route::post(':version/api/Music/Song/UnSubscribe/:id', 'api/:version.app.Music/un_subscribe');
+	// //取消收藏歌曲
+	
+/* 	
+    Route::get(':version/api/Music/PlaylistSubscribe/:id', 'apiersion.app.Music/PlaylistSubscribe');//收藏歌单
 	Route::get(':version/api/Music/PlaylistUnSubscribe/:id', 'apiersion.app.Music/PlaylistUnSubscribe');//取消收藏专辑
-	Route::post(':version/api/Music/PlaylistSubscribe/List', 'apiersion.app.Music/PlaylistSubscribeList');//我收藏的专辑列表 */
+	Route::post(':version/api/Music/PlaylistSubscribe/List', 'apiersion.app.Music/PlaylistSubscribeList');//我收藏的专辑列表 
+	
+*/
+
+// Route::get(':version/api/Music/PlaylistSubscribe/:id', 'apiersion.app.Music/PlaylistSubscribe');//收藏歌单
+// Route::get(':version/api/Music/PlaylistUnSubscribe/:id', 'apiersion.app.Music/PlaylistUnSubscribe');//取消收藏专辑
+// Route::post(':version/api/Music/PlaylistSubscribe/List', 'apiersion.app.Music/PlaylistSubscribeList');//我收藏的专辑列表
 	
 /* 	//音乐管理
 	Route::get(':version/api/Music/Banners', 'api/:version.app.Music/Banners');//音乐轮播图

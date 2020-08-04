@@ -1,8 +1,8 @@
 <template>
 	<section class="music-icon-ctn">
-		  <span class="bar-item bar-item1"></span>
-		  <span class="bar-item bar-item2"></span>
-		  <span class="bar-item bar-item3"></span>
+		  <span class="bar-item bar-item1" :style="{backgroundColor:color}"></span>
+		  <span class="bar-item bar-item2" :style="{backgroundColor:color}"></span>
+		  <span class="bar-item bar-item3" :style="{backgroundColor:color}"></span>
 	</section>
 </template>
 
@@ -27,23 +27,45 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 	} 
 })
 export default class AbusMusicIcon extends Vue {
+	@Prop({
+		default:'#00205b'
+	})
+	color:string;
 	
 }
 </script>
 
 <style lang="scss" scoped>
-	@keyframes up-and-down {
+	@keyframes up-and-down-middle {
 	  10% {
-	    height: 30%;
+	    height: 80%;
 	  }
 	  30% {
-	    height: 100%;
+	    height: 70%;
+	  }
+	  60% {
+	    height: 75%;
+	  }
+	  80% {
+	    height: 65%;
+	  }
+	  100% {
+	    height: 50%;
+	  }
+	}
+	
+	@keyframes up-and-down-aside {
+	  10% {
+	    height: 10%;
+	  }
+	  30% {
+	    height: 60%;
 	  }
 	  60% {
 	    height: 50%;
 	  }
 	  80% {
-	    height: 75%;
+	    height: 30%;
 	  }
 	  100% {
 	    height: 20%;
@@ -51,37 +73,49 @@ export default class AbusMusicIcon extends Vue {
 	}
 	
 .music-icon-ctn {
-	    background: rgba(255, 255, 255, 0.1);
+	    // background: rgba(255, 255, 255, 0.1);
 	    width: 0.40rem;
 	    height: 0.40rem;
 	    border-radius: 0;
 	    display: flex;
 	    justify-content: space-between;
-	    align-items: flex-end;
-	    padding: 0.08rem;
+	    // align-items: flex-end;
+	    padding: 0rem 0.04rem;
 	    box-sizing: border-box;
+		align-items: center;
+		justify-content: space-around;
 		
 		.bar-item{
 			&.bar-item1{
-				height: 60%;
+				height: 30%;
+				-webkit-animation-delay: -0s;
+				animation-delay: -0s;
+				-webkit-animation: up-and-down-aside 1.3s ease infinite alternate;
+				animation: up-and-down-aside 1.3s ease infinite alternate;
 			}
+			
 			&.bar-item2{
-				    height: 30%;
-				    -webkit-animation-delay: -2.4s;
-				    animation-delay: -2.4s;
+				height: 70%;
+				-webkit-animation-delay: -1.7s;
+				animation-delay: -1.7s;
+				-webkit-animation: up-and-down-middle 1.3s ease infinite alternate;
+				animation: up-and-down-middle 1.3s ease infinite alternate;
 			}
+			
 			&.bar-item3{
-				height: 75%;
-				    -webkit-animation-delay: -3.7s;
-				    animation-delay: -3.7s;
-				
+				height: 45%;
+				-webkit-animation-delay: -2.0s;
+				animation-delay: -2.0s;
+				-webkit-animation: up-and-down-aside 1.3s ease infinite alternate;
+				animation: up-and-down-aside 1.3s ease infinite alternate;
 			}
+			
 			display: inline-block;
-			    background: #03225c;
-			    width: 0.05rem;
-			    height: 100%;
-			    -webkit-animation: up-and-down 1.3s ease infinite alternate;
-			    animation: up-and-down 1.3s ease infinite alternate;
+			background: #03225c;
+			width: 0.05rem;
+			border-radius: 0.02rem;
+			height: 100%;
+			    
 			
 		} 
 }

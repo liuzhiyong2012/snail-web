@@ -3,14 +3,8 @@
 		<abus-title title="Music"></abus-title>
 		我是FM
 		<section class="content-ctn">
-			
-			
-			
-			
 			<div class="content-main-ctn">
-				
 			</div>
-			
 		</section>
 	</section>
 </template>

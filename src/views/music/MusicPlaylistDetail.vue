@@ -13,19 +13,18 @@
 					<div class="cover-name">
 						{{playListObj.Name}}
 					</div>
-					
 					<div class="collect-ctn" v-if="!isCollected" @click="subscribePlaylist()">
 						<svg class="icon" aria-hidden="true">
-							<use xlink:href="#icon-music-favourites"></use>
+							<use xlink:href="#icon-collect"></use>
 						</svg>
-						<span class="collect-txt">收藏</span>
+						<span class="collect-txt">Collect</span>
 					</div>
 					
 					<div class="collect-ctn disable" v-if="isCollected" @click="unSubscribePlaylist()">
 						<svg class="icon" aria-hidden="true">
-							<use xlink:href="#icon-music-favourites"></use>
+							<use xlink:href="#icon-collect-cancle"></use>
 						</svg>
-						<span class="collect-txt">取消收藏</span>
+						<span class="collect-txt">Cancel</span>
 					</div>
 				</div>
 			</div>
@@ -36,7 +35,7 @@
 			<div class="title-top">
 				<div class="title-left">
 					<span>Total song:</span>
-					<span>23</span>
+					<span>{{total}}</span>
 				</div>
 				
 				<div class="title-right" @click="playAll()">
@@ -57,12 +56,7 @@
 						<div>{{item.Name}}</div>
 						<div>{{computeAuthorName(item)}}</div>
 					</div>
-					
-					<!-- <div class="oper-ctn"> -->
-						<!-- <i class="icon icon-play-disable"></i> -->
-						<!-- <i class="icon icon-delete"></i> -->
-						<abus-music-icon class="music-status-icon-ctn"></abus-music-icon>
-					<!-- </div> -->
+					<abus-music-icon v-if="currentSong.id == item.Id" class="music-status-icon-ctn"></abus-music-icon>
 				</div>
 			</div>
 		</section>
@@ -87,9 +81,15 @@
 		 private recomendList:Array<any> = [];
 		 private playListId:any|string = '';
 		 
+		 private total:number = 0;
+		 
 		 private playListObj:any = {
 			 Tracks:[]
 		 };
+		 
+		 private get currentSong() {
+		 	return this.$store.getters.currentSong;
+		 }
 		 
 		 private isCollected:boolean = false;
 		 
@@ -101,7 +101,9 @@
 		 public getPlaylistDetail(){
 			 MusicService.getPlaylistDetail({id:this.playListId}).then((res)=>{
 				if(res.code == '200'){
+					this.total = res.data.TrackCount;
 					this.playListObj = res.data;
+					this.isCollected = Boolean(this.playListObj.isLike);
 				}
 			 }); 
 		 }
@@ -147,7 +149,7 @@
 			 this.playListObj.Tracks.forEach((item,index)=>{
 				 songs.push({
 					 album: 'album',
-					 duration: item.Duration,
+					 duration: item.Duration/1000,
 					 id: item.Id,
 					 image: this.playListObj.CoverImgUrl,
 					 mid: '',
@@ -155,43 +157,13 @@
 					 singer: this.computeAuthorName(item),
 					 url: 'http://172.16.125.11:8010/' + item.Id,
 				 });
-				 
-				 // http://172.16.125.11:8010/5249340f-a222-e911-bd22-c4209d3e3b89
-				/* Album: {Name: "I beg you / 花びらたちのマーチ / Sailing", Type: 0, TypeName: "EP",…}
-				 Alias: null
-				 Artists: [{Name: "Aimer", Alias: null,…}]
-				 Duration: 266533
-				 Id: ""
-				 Name: "I beg you"
-				 PlayCount: 13020
-				 SubCount: 0, */
-				 
 			 });
 			 
 			 this.$store.dispatch('selectPlay',{
 				list: songs,
 				index: 1
-				// vkey: that.vkey
 			  });
-			 // debugger;
-			/* [
-			 album: (...)
-			 duration: 271
-			 id: (...)
-			 image: (...)
-			 mid: (...)
-			 name: (...)
-			 singer: (...)
-			 url: (...)
-			 ] */
-			 
-			 // http://localhost:8888/#/music/index
-			 
-			/* this.selectPlay({
-			         list: that.songs,
-			         index: index
-			         // vkey: that.vkey
-			       }); */
+		
 		 }
 		 
 		
@@ -246,27 +218,33 @@
 						align-items: center;
 						justify-content: center;
 						
-						width: 2.00rem;
-						height: 0.70rem;
-						background:rgba(228,0,43,1);
+						width: 1.70rem;
+						height: 0.50rem;
+						background:#E4002B;
 						border-radius:0.35rem;
 						
+						border:0.02rem solid #E4002B;
+						
 						&.disable{
-							background-color: grey;
+							background-color: transparent;
+							border:0.02rem solid #ffffff;
 						}
 						
 						
 						.icon{
-							width: 0.40rem;
-							height: 0.40rem;
+							width: 0.32rem;
+							height: 0.32rem;
 							margin-right: 0.10rem;
 						}
 						
 						.collect-txt{
 							font-size:0.26rem;
-							font-family:Helvetica;
+							font-family:Helvetica-Bold,Helvetica;
+							font-weight:bold;
 							color:rgba(255,255,255,1);
 							line-height:0.30rem;
+							
+							
 						}
 					}
 				}

@@ -3,20 +3,28 @@
     <!-- 全屏播放器 -->
     <transition name="normal">
       <div class="normal-player" v-show="fullScreen">
-        <div class="normal-bg">
+       <!-- <div class="normal-bg">
           <img :src="currentSong.image" alt="">
-        </div>
+        </div> -->
         <div class="header">
-          <img src="./toDown.png" alt="收回" title="收回" @click="toDown">
-          <h1 v-html="currentSong.name"></h1>
+			<i class="icon icon-back"  @click="toDown"></i>
+          <!-- <img src="./toDown.png" alt="收回" title="收回" @click="toDown"> -->
+          <!-- <h1 v-html="currentSong.name"></h1> -->
         </div>
-        <h1 class="title-singer" v-html="currentSong.singer"></h1>
+		
+        
         <!-- 旋转大头像 -->
         <div class="middle" @touchstart.prevent="middleTouchStart" @touchmove.prevent="middleTouchMove" @touchend="middleTouchEnd">
-          <img :class="playImg" :src="currentSong.image" alt="">
+			
+		  <div class="title-ctn">
+			  <img :class="playImg" class="album-img" :src="coverImage" alt="">
+			   <h1 class="title-sing-name" v-html="currentSong.name"></h1>
+			   <h1 class="title-singer" v-html="currentSong.singer"></h1>
+		  </div>
           <p :class="playImgTxt" class="cd-lyric">
             {{playingLyric}}
           </p>
+	
           <scroll class="middle-r middleTime" ref="lyricList" :data="currentLyric && currentLyric.lines">
             <div class="lyric-wrapper">
               <div v-if="currentLyric">
@@ -24,86 +32,150 @@
               </div>
             </div>
           </scroll>
+		  
         </div>
+		
         <!-- 歌词旋转图像轮播 -->
         <div class="dot-wrapper">
           <span class="dot" :class="{'active':currentShow==='cd'}"></span>
           <span class="dot" :class="{'active':currentShow==='lyric'}"></span>
         </div>
+		
         <!-- 播放进度条 -->
-        <div class="time-box">
-          <div class="time">
-            <span class="time-l">{{ format(currentTime) }}</span>
-            <progressBar style="overflow:hidden" :percent="percent" @percentChange="percentChange"></progressBar>
-            <span class="time-r">{{ format(currentSong.duration) }}</span>
-          </div>
-        </div>
-        <!-- 控制按钮栏 -->
-        <div class="bottom-button-box">
-          <span @click="changeMode">
-            <img v-if="mode === 2" src="./btnImg/random.png" alt="">
-            <img v-if="mode === 0" src="./btnImg/sequence.png" alt="">
-            <img v-if="mode === 1" src="./btnImg/loop.png" alt="">
-          </span>
-          <span @click="prev"><img src="./btnImg/prve.png" alt=""></span>
-          <span @click="togglePlaying">
-            <img v-if="playing" id="playButton" src="./playStrop.png" alt="">
-            <img v-if="!playing" id="playButton" src="./playButton.png" alt="">
-          </span>
-          <span @click="next"><img src="./btnImg/next.png" alt=""></span>
-          <span @click="toggleFavoriteList(currentSong)">
-            <img v-if="getFavoriteListCollect(currentSong)" src="./btnImg/collect.png" alt="收藏">
-            <img v-else src="./btnImg/collect2.png" alt="收藏">
-          </span>
-        </div>
+		<!-- <div class="normal-bottom-ctn"> -->
+			<div class="time-box">
+			  <div class="time">
+			    <progressBar style="overflow:hidden" :percent="percent" @percentChange="percentChange"></progressBar>
+			  </div>
+			  <div class="time-label">
+				  <span class="time-l">{{ format(currentTime) }}</span>
+				  <span class="time-r">{{ format(currentSong.duration) }}</span>
+			  </div>
+			  
+			</div>
+			<!-- 控制按钮栏 -->
+			<div class="bottom-button-box">
+				<div class="icon-ctn" @click="changeMode">
+					<i v-if="mode === 0" class="icon icon-play-randon"></i>
+					<i v-if="mode === 1" class="icon icon-play-single"></i>
+					<i v-if="mode === 2" class="icon icon-play-cycle"></i>
+				</div>
+				
+				<div class="icon-ctn">
+					<i v-if="!currentSong.isLike" class="icon icon-collect-undo" @click="collectSong(currentSong)"></i>
+					<i v-if="currentSong.isLike" class="icon icon-collect" @click="unCollectSong(currentSong)"></i>
+				</div>
+				
+				<div class="icon-ctn play-ctn" @click="togglePlaying">
+					
+					<svg v-if="playing" class="icon" aria-hidden="true">
+						<use xlink:href="#icon-stop"></use>
+					</svg>
+					
+					<svg v-if="!playing" class="icon play-btn" aria-hidden="true">
+						<use xlink:href="#icon-play-white"></use>
+					</svg>
+				</div>
+				<div class="icon-ctn" @click="next" >
+					<i class="icon icon-next-step"></i>
+				</div>
+				<div class="icon-ctn" @click.stop="playListClick">
+					<i class="icon icon-song-list"></i>
+				</div>
+				
+			<!-- 	
+			  <span @click="changeMode">
+			    <img v-if="mode === 2" src="./btnImg/random.png" alt="">
+			    <img v-if="mode === 0" src="./btnImg/sequence.png" alt="">
+			    <img v-if="mode === 1" src="./btnImg/loop.png" alt="">
+			  </span>
+			  
+			  <span @click="prev"><img src="./btnImg/prve.png" alt=""></span>
+			  <span @click="togglePlaying">
+			    <img v-if="playing" id="playButton" src="./playStrop.png" alt="">
+			    <img v-if="!playing" id="playButton" src="./playButton.png" alt="">
+			  </span>
+			  <span @click="next"><img src="./btnImg/next.png" alt=""></span>
+			  <span @click="toggleFavoriteList(currentSong)">
+			    <img v-if="getFavoriteListCollect(currentSong)" src="./btnImg/collect.png" alt="收藏">
+			    <img v-else src="./btnImg/collect2.png" alt="收藏">
+			  </span> -->
+			</div>
+			
+			<!-- <div class="bottom-button-box">
+			  <span @click="changeMode">
+			    <img v-if="mode === 2" src="./btnImg/random.png" alt="">
+			    <img v-if="mode === 0" src="./btnImg/sequence.png" alt="">
+			    <img v-if="mode === 1" src="./btnImg/loop.png" alt="">
+			  </span>
+			  
+			  <span @click="prev"><img src="./btnImg/prve.png" alt=""></span>
+			  <span @click="togglePlaying">
+			    <img v-if="playing" id="playButton" src="./playStrop.png" alt="">
+			    <img v-if="!playing" id="playButton" src="./playButton.png" alt="">
+			  </span>
+			  <span @click="next"><img src="./btnImg/next.png" alt=""></span>
+			  <span @click="toggleFavoriteList(currentSong)">
+			    <img v-if="getFavoriteListCollect(currentSong)" src="./btnImg/collect.png" alt="收藏">
+			    <img v-else src="./btnImg/collect2.png" alt="收藏">
+			  </span>
+			</div> -->
+<!-- 		</div> -->
+        
         <!-- 音乐播放器 -->
         <audio ref="audio" @canplay="audioReady" @error="audioError" @timeupdate="timeUpdate" @ended="songEnd"></audio>
       </div>
     </transition>
+	
     <!-- 收回的迷你播放器 -->
-    <div class="mini-player" v-show="!fullScreen" @click="toUp">
+	
+	<music-player :currentSong = "currentSong" :playing="playing" @toUp="toUp" @togglePlaying="togglePlaying" @playListClick="playListClick"></music-player>
+    <!-- <div class="mini-player" v-show="!fullScreen" @click="toUp">
       <div class="mini-player-con">
         <img :class="playing? 'playSrart' : 'playStorp'" :src="currentSong.image" alt="">
         <p>
           <span class="mini-title" v-html="currentSong.name"></span>
           <span class="mini-name" v-html="currentSong.singer"></span>
         </p>
+		
         <div class="playButton-box">
-
           <span @click.stop="togglePlaying" class="playButton">
             <img v-if="playing" src="./playStrop.png" alt="">
             <img v-if="!playing" src="./playButton.png" alt="">
           </span>
-
+		  
           <span class="playList" @click.stop="playListClick">
             <img src="./playList.png" alt="播放按钮" title="播放">
           </span>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- 查看播放歌曲列表 -->
-    <!-- <playList ref="playList"></playList> -->
+    <playList ref="playList"></playList>
   </div>
 </template>
 
 <script>
+import MusicPlayer from '../MusicPlayer.vue';
 import { mapGetters, mapMutations, mapActions } from 'vuex';
 import { songUrl } from '../../js/song';
 import { shuffle } from '../../js/util';
 import { getVkey, getLyric } from '../../api/song';
 import { ERR_OK } from '../../api/config';
 import progressBar from './components/progress-bar';
-// import playList from "../playList/playList";
+import playList from '../playList/playList';
 import { playMode } from '../../js/config';
 import { Base64 } from 'js-base64';
 import Lyric from 'lyric-parser';
 import Scroll from '../../base/scroll/scroll';
+import MusicService from '../../../../service/music.ts';
 
 export default {
   components: {
     progressBar,
-    Scroll
-    // playList
+    Scroll,
+	MusicPlayer,
+    playList
   },
   computed: {
     ...mapGetters([
@@ -117,6 +189,14 @@ export default {
       'sequenceList',
       'favoriteList' // 收藏
     ]),
+	coverImage(){
+		if(this.currentSong.image){
+			return this.currentSong.image;
+		}else{
+			return require('../../images/default_cover.png');
+		}
+	
+	},
     percent() {
       return this.currentTime / this.currentSong.duration;
     },
@@ -149,6 +229,31 @@ export default {
     // this._songUrl();
   },
   methods: {
+	  collectSong(song){
+		  MusicService.subscribeSong({
+				id:song.id
+		  }).then((res)=>{
+			  if(res.code== '200'){
+				   this.$toast('收藏歌曲成功!');
+			  }else{
+				  this.$toast(res.message);
+			  }
+		  });
+	  },
+	  unCollectSong(song){
+		  
+		  MusicService.unSubscribeSong({
+				id:song.id
+		  }).then((res)=>{
+			  if(res.code== '200'){
+				   this.$toast('取消收藏歌曲成功!');
+			  }else{
+				  this.$toast(res.message);
+			  }
+		  }); 
+		  
+		  
+	  },
     // 收藏显示
     getFavoriteListCollect(song) {
       if (this.isFavoriteList(song)) {
@@ -248,6 +353,7 @@ export default {
     },
     /* 封装歌曲当前播放时间 */
     format(interval) {
+		// debugger;
       interval = interval | 0;
       var min = (interval / 60) | 0;
       var sec = interval % 60;
@@ -450,16 +556,22 @@ $screen-width: 37.5;
 }
 
 .normal-player {
-  color: #fff;
-  z-index: 400;
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  background: rgb(34, 34, 34);
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	  color: #fff;
+	  z-index: 400;
+	  position: fixed;
+	  left: 0;
+	  right: 0;
+	  top: 0;
+	  bottom: 0;
+	  // background: rgb(34, 34, 34);
+	  background:#020000;
+  
 }
 .normal-bg {
+	display: none;
   z-index: -1;
   position: fixed;
   left: 0;
@@ -474,17 +586,33 @@ $screen-width: 37.5;
   height: 100%;
 }
 .mini-player {
-  display: flex;
-  align-items: center;
+  // display: flex;
+  // align-items: center;
+  // position: fixed;
+  // left: 0;
+  // bottom: 0;
+  // z-index: 410;
+  // width: 100%;
+  // height: rem(60);
+  // background: rgb(51, 51, 51);
+  // padding: rem(10) rem(10) rem(10) rem(20);
+  // box-sizing: border-box;
   position: fixed;
   left: 0;
   bottom: 0;
   z-index: 410;
+  
   width: 100%;
-  height: rem(60);
-  background: rgb(51, 51, 51);
-  padding: rem(10) rem(10) rem(10) rem(20);
+  height: 1.70rem;
+  background:#ffffff;
+  display: flex;
   box-sizing: border-box;
+  padding:0.20rem 0.30rem;
+  // align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  background:rgba(255,255,255,1);
+  box-shadow:0px -11px 25px 0px rgba(36,37,51,0.06);
 }
 .mini-player-con {
   width: 100%;
@@ -547,6 +675,13 @@ $screen-width: 37.5;
   background-size: 100% auto;
   position: relative;
   transition: all 0.4s cubic-bezier(0.86, 0.18, 0.82, 1.32);
+  height: 1.00rem;
+  line-height: 1.00rem;
+  padding-left: 0.30rem;
+  box-sizing: border-box;
+  .icon-back{
+	  font-size: 0.40rem;
+  }
 }
 .header img {
   width: rem(30);
@@ -564,49 +699,108 @@ $screen-width: 37.5;
   line-height: rem(45);
   font-size: rem(18);
 }
-.title-singer {
-  width: 60%;
-  height: rem(15);
-  margin: auto;
-  overflow: hidden;
-  font-size: rem(15);
-  text-align: center;
-  margin-bottom: rem(25);
+
+
+.title-ctn{
+	.title-sing-name{
+		margin-top: 0.70rem;
+	   text-align: center;		
+		font-size:0.36rem;
+		font-family:Helvetica-Bold,Helvetica;
+		font-weight:bold;
+		color:rgba(255,255,255,1);
+		line-height:0.43rem;
+		// margin-top: 0.70rem;
+		margin-bottom: 0.24rem;
+	}
+	
+	
+	.title-singer {
+	 font-size:0.23rem;
+	 font-family:Helvetica;
+	 color:rgba(255,255,255,1);
+	 line-height:0.28rem;
+	}
+	
+	
+	>.album-img{
+		margin:auto;
+		display: block;
+		width: 30vh;
+		height: 30vh;
+		border-radius: 50%;
+		// border: rem(10) solid hsla(0, 0%, 100%, 0.1);
+		opacity: 1;
+		transition: all 0.5s;
+	}
 }
 /* 大头像 */
 .middle {
+	height: 7.40rem;
   width: 100%;
-  height: 64%;
   text-align: center;
   overflow: hidden;
   position: relative;
 }
-.middle img {
+/* .middle img {
   width: rem(300);
   height: rem(300);
   border-radius: rem(300);
   border: rem(10) solid hsla(0, 0%, 100%, 0.1);
   opacity: 1;
   transition: all 0.5s;
-}
+} */
 /* 底部按钮 */
 .bottom-button-box {
+	
   width: 100%;
-  height: rem(40);
-  padding: 0 rem(38);
+  padding: 0 0.44rem;
+  padding-bottom: 0.84rem;
   box-sizing: border-box;
-  position: absolute;
-  bottom: 7%;
-  line-height: rem(40);
   display: flex;
+  align-items: center;
   justify-content: space-between;
   transition: all 0.4s cubic-bezier(0.86, 0.18, 0.82, 1.32);
+  
+  
+  .icon-ctn{
+	  text-align: center;
+  	&.play-ctn{
+		display: flex;
+		border-radius: 50%;
+		border:0.15rem solid #616161;
+		width: 0.96rem;
+		height: 0.96rem;
+		text-align: center;
+		align-items: center;
+		justify-content: center;
+		// background:rgba(255,255,255,0.38);
+        background:rgba(255,255,255,1);
+		
+  		>svg.icon{
+			&.play-btn{
+				width: 0.80rem;
+				height: 0.80rem;
+			}
+			
+  			width: 0.44rem;
+  			height: 0.44rem;
+  		}
+  	}
+  	>.icon{
+		color:#ffffff;
+  		font-size: 0.44rem;
+  	}
+  }
+  
+ /* img{
+	  width: rem(33);
+	  height: rem(33);
+	  vertical-align: middle;
+  } */
 }
-.bottom-button-box img {
-  width: rem(33);
-  height: rem(33);
-  vertical-align: middle;
-}
+
+
 #playButton {
   width: rem(40);
   height: rem(40);
@@ -643,21 +837,38 @@ $screen-width: 37.5;
   animation: rotate 20s linear infinite;
   -webkit-animation-play-state: paused;
 }
-/* 播放进度条 */
+
+	/* 播放进度条 */
 .time-box {
-  width: 100%;
-  height: rem(30);
-  margin: auto;
-  position: fixed;
-  bottom: 12%;
-  padding: rem(10) 0;
+	  margin: auto;
+  margin-left:0.52rem;
+  margin-right:0.52rem;
+  
+  .time-label{
+	  display: flex;
+	  justify-content: space-between;
+	  
+	  font-size:0.22rem;
+	  font-family:Helvetica;
+	  color:rgba(255,255,255,1);
+	  line-height:0.26rem;
+	  
+	  .time-l {
+	    
+	  }
+	  .time-r {
+	    
+	  }
+  }
+
 }
+
 .time {
-  width: rem(300);
-  height: rem(30);
+  height: 0.28rem;
   margin: auto;
   display: flex;
   justify-content: space-between;
+  margin-bottom: 0.04rem;
 }
 .time span {
   display: inline-block;
@@ -666,18 +877,12 @@ $screen-width: 37.5;
   line-height: rem(30);
   font-size: rem(12);
 }
-.time-l {
-  padding-right: rem(7);
-}
-.time-r {
-  padding-left: rem(7);
-}
+
 /* 底部轮播导航 */
 .dot-wrapper {
+	display: none;
   width: 100%;
   height: rem(8);
-  position: fixed;
-  bottom: 22%;
   text-align: center;
 }
 .dot {
@@ -727,6 +932,7 @@ $screen-width: 37.5;
   transition: all 0.5s;
 }
 .cd-lyric {
+  display: none;
   width: 80%;
   margin: 0 auto;
   overflow: hidden;

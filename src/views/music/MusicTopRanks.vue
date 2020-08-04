@@ -8,9 +8,8 @@
 				</div>
 				
 				<div class="playlist-ctn">
-					<div class="playlist-item" v-for="(playItem,playIndex) in type.Playlists" :key="playIndex">
+					<div class="playlist-item" v-for="(playItem,playIndex) in type.Playlists" :key="playIndex" @click="stepToPage(playItem)">
 						<div class="play-img-ctn" :style="{backgroundImage:`url(${playItem.CoverImgUrl})`}" >
-							<!-- {{playItem.Name}} -->
 						</div>
 						<div class="track-list-ctn">
 							<div class="track-item" v-for="(tracksItem,tracksIndex) in playItem.Tracks" :key="tracksIndex">
@@ -54,8 +53,6 @@ export default class MusicTopRanks extends Vue {
 	}
 
 	public getMusicTop() {
-		
-
 		MusicService.getMusicTop().then((res: any) => {
 			if (res.code == '200') {
 				// debugger;
@@ -64,6 +61,15 @@ export default class MusicTopRanks extends Vue {
 				
 			}
 		});
+	}
+	
+	private stepToPage(item:any):void{
+				 this.$router.push({
+					 name:'musicPlaylistDetail',
+					 query:{
+						 id:item.Id
+					 }
+				 });
 	}
 }
 </script>

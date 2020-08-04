@@ -4,7 +4,9 @@
       <div class="playlist" @click.stop>
         <!-- 头部 -->
         <div class="list-header">
-          <h1>
+			<span class="song-total">Currently playing (117)</span>
+			<i class="icon icon-toggle-down" @click="hide"></i> 
+          <!-- <h1>
             <img v-if="modeText === '顺序播放'" src="./img/sequence.png" alt="顺序">
             <img v-if="modeText === '单曲循环'" src="./img/loop.png" alt="单曲">
             <img v-if="modeText === '随机播放'" src="./img/random.png" alt="随机">
@@ -12,35 +14,58 @@
             <span class="del" @click="showConfirm">
               <img src="./img/del.png" alt="清空">
             </span>
-          </h1>
+          </h1> -->
         </div>
         <!-- 歌曲列表 -->
         <Scroll class="list-con" :data="sequenceList" ref="listContent">
           <transition-group ref="list" name="list-li" tag="ul">
-            <li ref="listItem" v-for="(item, index) in sequenceList" :key="index" @click="selectItem(item, index)">
+            <li ref="listItem" :class="{playing:getCurrentIcon(item)}" v-for="(item, index) in sequenceList" :key="index" @click="selectItem(item, index)">
               <div class="lihear-img-box">
-                <img v-if="getCurrentIcon(item)" src="./img/playButton.png" alt="">
+				  <span class="number-ctn">
+					  {{index + 1}}
+				  </span>
+				  
+				  <abus-music-icon class="music-ctn" color="#ffffff"></abus-music-icon>
+				
               </div>
               <p class="list2-con">{{ item.name }}</p>
+			  
               <div class="list-end">
-                <span class="collect-box" @click.stop="toggleFavoriteList(item)">
-                  <img v-if="getFavoriteListCollect(item)" src="./img/collect.png" alt="">
-                  <img v-else src="./img/collect2.png" alt="">
-                </span>
-                <img @click.stop="deleteOne(item)" class="cha" src="./img/smldel.png" alt="">
+               <i class="icon icon-music-delete" @click.stop="deleteOne(item)"></i>
+			   
+                <!-- <img @click.stop="deleteOne(item)" class="cha" src="./img/smldel.png" alt=""> -->
               </div>
             </li>
           </transition-group>
         </Scroll>
-        <div class="list-operate">
+		
+		<!-- <Scroll class="list-con" :data="sequenceList" ref="listContent">
+		  <transition-group ref="list" name="list-li" tag="ul">
+		    <li ref="listItem" v-for="(item, index) in sequenceList" :key="index" @click="selectItem(item, index)">
+		      <div class="lihear-img-box">
+		        <img v-if="getCurrentIcon(item)" src="./img/playButton.png" alt="">
+		      </div>
+		      <p class="list2-con">{{ item.name }}</p>
+		      <div class="list-end">
+		        <span class="collect-box" @click.stop="toggleFavoriteList(item)">
+		          <img v-if="getFavoriteListCollect(item)" src="./img/collect.png" alt="">
+		          <img v-else src="./img/collect2.png" alt="">
+		        </span>
+		        <img @click.stop="deleteOne(item)" class="cha" src="./img/smldel.png" alt="">
+		      </div>
+		    </li>
+		  </transition-group>
+		</Scroll> -->
+		
+        <!-- <div class="list-operate">
           <div class="add-song">
             <img src="./img/songListAdd.png" alt="添加歌曲">
             <span class="text" @click="showAddSong">添加歌曲到队列</span>
           </div>
-        </div>
-        <div @click="hide" class="list-close">
+        </div> -->
+       <!-- <div @click="hide" class="list-close">
           <span>关闭</span>
-        </div>
+        </div> -->
       </div>
       <!-- 确认清除 -->
       <!-- <confirm ref="confirm" @confirm="confirmClear" text="是否清空播放列表" confirmBtnText="清空"></confirm> -->
@@ -56,12 +81,15 @@
   </transition>
 </template>
 <script type="text/ecmascript-6">
-import { mapGetters, mapMutations, mapActions } from "vuex";
-import { playMode } from "../../js/config";
-import Scroll from "../../base/scroll/scroll";
-import Confirm from "../../base/confirm/confirm";
+import { mapGetters, mapMutations, mapActions } from 'vuex';
+import { playMode } from '../../js/config';
+import Scroll from '../../base/scroll/scroll';
+// import Confirm from "../../base/confirm/confirm";
 // import addSong from "components/addSong/addSong";
-import { playerMixin } from "../../js/mixin";
+import { playerMixin } from '../../js/mixin';
+
+import AbusMusicIcon from '../../../../components/AbusMusicIcon.vue';
+
 // import TopTip from "../../base/topTip/topTip";
 
 export default {
@@ -75,6 +103,7 @@ export default {
   },
   components: {
     Scroll,
+	AbusMusicIcon
     // Confirm,
     // addSong,
     // TopTip
@@ -82,10 +111,10 @@ export default {
   computed: {
     modeText() {
       return this.mode === playMode.sequence
-        ? "顺序播放"
-        : this.mode === playMode.random ? "随机播放" : "单曲循环";
+        ? '顺序播放'
+        : this.mode === playMode.random ? '随机播放' : '单曲循环';
     },
-    ...mapGetters(["sequenceList", "currentSong", "playlist", "mode"])
+    ...mapGetters(['sequenceList', 'currentSong', 'playlist', 'mode'])
   },
   methods: {
     show() {
@@ -169,14 +198,14 @@ export default {
       // this.$refs.addSong.show();
     },
     ...mapMutations({
-      setCurrentIndex: "SET_CURRENT_INDEX",
-      setPlayingState: "SET_PLAYING_STATE"
+      setCurrentIndex: 'SET_CURRENT_INDEX',
+      setPlayingState: 'SET_PLAYING_STATE'
     }),
     ...mapActions([
-      "deleteSong",
-      "deleteSongList",
-      "saveFavoriteList",
-      "deleteFavoriteList"
+      'deleteSong',
+      'deleteSongList',
+      'saveFavoriteList',
+      'deleteFavoriteList'
     ])
   },
   watch: {
@@ -215,78 +244,114 @@ $screen-width: 37.5;
   position: absolute;
   left: 0;
   bottom: 0;
-  padding: rem(20) rem(30) rem(0) rem(20);
+  padding: 0.50rem 0.40rem 0;
   background: #333333;
   box-sizing: border-box;
   font-size: rem(14);
 }
 .list-header {
   width: 100%;
-  padding-bottom: rem(10);
-  height: rem(30);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.58rem;
+  .song-total{
+	  font-size:0.30rem;
+	  font-family:Helvetica-Bold,Helvetica;
+	  font-weight:bold;
+	  color:rgba(255,255,255,1);
+	  line-height:0.36rem;
+  }
+  .icon{
+	  color:#ffffff;
+	  font-size: 0.40rem;
+  }
+  
 }
-.list-header h1 {
-  widows: 100%;
-  height: 100%;
-  color: hsla(0, 0%, 100%, 0.644);
-}
-.list-header h1 img {
-  width: rem(30);
-  height: rem(30);
-  vertical-align: middle;
-  margin-right: rem(10);
-}
-.list-header .del img {
-  width: rem(20);
-  height: rem(20);
-}
+
 .del {
   float: right;
 }
 .list-con {
   width: 100%;
-  max-height: 35vh;
+  max-height: 61.8vh;
   overflow: hidden;
+  
+   li{
+	   
+	   &.playing{
+		   .lihear-img-box{
+			   .number-ctn{
+			   	display: none !important;
+			   }
+			   .music-ctn{
+			   	display: block !important;
+			   }
+		   }
+		   .list2-con{
+			   font-weight:bold;
+		   }
+		   
+	   }
+	   
+	  position: relative;
+	  width: 100%;
+	  overflow: hidden;
+	  position: relative;
+	  margin-bottom: 0.40rem;
+	  
+	  
+	  .lihear-img-box {
+	  	position: absolute;
+	  	left:0;
+	  	top:0;
+	    width: 0.40rem;
+		height: 0.40rem;
+		text-align: center;
+		line-height: 0.40rem;
+		
+		.number-ctn{
+			display: block;
+			
+			font-size:0.34rem;
+			font-family:Helvetica-Bold,Helvetica;
+			font-weight:bold;
+			color:rgba(206,206,206,1);
+			line-height:0.40rem;
+		}
+		.music-ctn{
+			display: none;
+		}
+	  
+	  }
+	  
+	  .list2-con {
+	    padding:0 0.55rem;
+		font-size:0.30rem;
+		font-family:Helvetica-Bold,Helvetica;
+		color:rgba(255,255,255,1);
+		line-height:0.40rem;
+	  }
+	  
+	  .list-end {
+	    position: absolute;
+	    top: 0;
+	    right: 0;
+	    width: 0.40rem;
+	    height:  0.40rem;
+		
+		>.icon{
+			color: #ffffff;
+			font-size: 0.40rem;
+		}
+	    
+	  }
+	  
+  }
 }
-.list-con li {
-  width: 100%;
-  height: rem(40);
-  line-height: rem(40);
-  color: hsla(0, 0%, 100%, 0.5);
-  overflow: hidden;
-  position: relative;
-}
-.lihear-img-box {
-  width: rem(14);
-  height: rem(40);
-  display: inline-block;
-  margin-right: rem(5);
-  vertical-align: top;
-  line-height: rem(40);
-}
-.lihear-img-box img {
-  width: rem(14);
-  height: rem(14);
-  vertical-align: middle;
-}
-.list2-con {
-  display: inline-block;
-  width: 70%;
-}
-.list-end {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: rem(60);
-  height: rem(40);
-  // line-height: rem(40);
-  vertical-align: middle;
-}
-.list-end img {
-  width: rem(15);
-  height: rem(15);
-  // margin-right: rem(12);
-}
+
+
+
 .cha {
   margin-left: rem(10);
 }
