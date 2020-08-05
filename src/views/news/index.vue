@@ -10,6 +10,7 @@
         <div slot style="width:0.3rem"></div>
       </abus-title>
     </van-sticky>
+
     <div class="abus-scroller-box">
       <banner :bannerData="bannerData" />
     </div>
@@ -88,10 +89,10 @@ export default class NewsList extends Vue {
   public goBack(): void {
     this.$router.go(-1);
   }
- 
+
   // 获取新闻列表
   public getNewsList() {
-    NewsService.getNewsList({}).then((res:any) => {
+    NewsService.getNewsList({}).then((res) => {
       if (res.code == 200) {
         res.data.News.forEach((item: any) => {
           if (item.isLike) {
@@ -112,7 +113,7 @@ export default class NewsList extends Vue {
 
   // 获取新闻的分类
   public getCategory() {
-    NewsService.getNewsCategory({}).then((res:any) => {
+    NewsService.getNewsCategory({}).then((res) => {
       if (res.code == 200) {
         this.navTar = [...this.navTar, ...res.data];
       }
@@ -147,7 +148,7 @@ export default class NewsList extends Vue {
 
   // 我收藏的新闻
   public postNewsMyLike() {
-    NewsService.postNewsMyLike({}).then((res:any) => {
+    NewsService.postNewsMyLike({}).then((res) => {
       if (res.code == 200) {
       }
     });
