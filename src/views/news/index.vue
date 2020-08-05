@@ -10,7 +10,6 @@
         <div slot style="width:0.3rem"></div>
       </abus-title>
     </van-sticky>
-
     <div class="abus-scroller-box">
       <banner :bannerData="bannerData" />
     </div>
