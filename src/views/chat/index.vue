@@ -16,6 +16,7 @@
             color="rgb(0,32,91)"
             title-active-color="rgb(0,32,91)"
           >
+          
             <!-- <template slot="nav-left" class="nav-left"> -->
             <template #nav-left class="nav-left">
               <van-icon
