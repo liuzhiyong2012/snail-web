@@ -88,7 +88,7 @@ export default class NewsList extends Vue {
   public goBack(): void {
     this.$router.go(-1);
   }
-
+ 
   // 获取新闻列表
   public getNewsList() {
     NewsService.getNewsList({}).then((res:any) => {
