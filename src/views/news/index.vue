@@ -11,7 +11,6 @@
     <div class="abus-scroller-box">
       <banner :bannerData="bannerData" />
     </div>
-
     <!-- <h2 class="abus-block-title">
       <van-cell center title="Filter" icon="filter-o">
         <span>Sort by:</span>

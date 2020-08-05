@@ -18,7 +18,6 @@
         <p class="scoller-name">{{ item.name }}</p>
       </div>
     </div>
-
     <hot-game-list />
 
     <h2 class="abus-block-title">
