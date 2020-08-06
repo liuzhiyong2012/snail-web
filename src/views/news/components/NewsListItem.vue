@@ -53,7 +53,7 @@ export default class NewsListItem extends Vue {
   //     },
   //   },
 
-  private recommedNewsItem = this.newsItem;
+  private recommedNewsItem:any = this.newsItem;
   // private loveTrue = require("../images/love_true.png");
   // private loveFalse = require("../images/love_false.png");
   private loveTrue = ("../images/love_true.png");
@@ -79,7 +79,7 @@ export default class NewsListItem extends Vue {
   public postNewsUnLike(val: string): void {
     NewsService.postNewsUnLike({
       id: val,
-    }).then((res) => {
+    }).then((res:any) => {
       if (res.code == 200) {
         console.log("取消收藏", res);
         this.recommedNewsItem.isCollect = false
@@ -91,7 +91,7 @@ export default class NewsListItem extends Vue {
   public postNewsLike(val: string): void {
     NewsService.postNewsLike({
       id: val,
-    }).then((res) => {
+    }).then((res:any) => {
       if (res.code == 200) {
         console.log("进行收藏", res);
         this.recommedNewsItem.isCollect = true

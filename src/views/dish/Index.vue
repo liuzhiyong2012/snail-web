@@ -4,6 +4,7 @@
 
 		<van-swipe :autoplay="3000">
 			<van-swipe-item class="dish-recomend-item" v-for="(item, index) in recomendList" :key="index">
+				<!-- <img :src="item.BannerImgPath|addBaseUrl" alt=""> -->
 				<div class="dish-recomend-img" :style="{ backgroundImage: `url(${item.BannerImgPath})` }"></div>
 			</van-swipe-item>
 		</van-swipe>
@@ -37,6 +38,8 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import AbusTitle from '../../components/AbusTitle.vue';
 import DishService from '../../service/dish';
 
+import UrlUtils from '../../utils/url-utils';
+
 @Component({
 	name: 'DishIndex',
 	components: {
@@ -57,6 +60,11 @@ export default class DishIndex extends Vue {
 		DishService.getDishesRecommendedList({}).then((res: any) => {
 			if (res.code == 200) {
 				this.recomendList = res.data.RecommendedDishes;
+				
+				this.recomendList.forEach((item,index)=>{
+					item.BannerImgPath = UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(item.BannerImgPath));
+				});
+				
 			}
 		});
 	}
@@ -65,6 +73,10 @@ export default class DishIndex extends Vue {
 		DishService.getDishesList({}).then((res: any) => {
 			if (res.code == 200) {
 				this.dishesList = res.data.Dishes;
+				
+				this.dishesList.forEach((item,index)=>{
+					item.BannerImgPath = UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(item.BannerImgPath));
+				});
 			}
 		});
 	}
