@@ -81,7 +81,6 @@ export default {
     goBack() {
       this.$router.go(-1);
     },
-
     // goToDetail(id) {
     //   //进入新闻详情
     //   this.$router.push({

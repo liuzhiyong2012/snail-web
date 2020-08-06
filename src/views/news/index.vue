@@ -30,6 +30,7 @@
         title-active-color="#3056EF"
         :key="index"
       >
+      
         <div v-if="val.category == navTar[index].category" class="">
           <ul class="news-list">
             <news-list-item
