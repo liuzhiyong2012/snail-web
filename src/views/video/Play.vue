@@ -258,8 +258,8 @@ export default class VideoPlay extends Vue {
   height: 100vh;
 }
 .van-swipe {
-  width: 100%;
-  height: 100%;
+  height: 100vh;
+  max-width: 100vw;
 }
 .video-item {
   display: flex;

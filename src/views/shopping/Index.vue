@@ -185,9 +185,12 @@ export default class ShoppingIndex extends Vue {
   box-sizing: border-box;
   padding: 10px 0;
   position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   right: 0;
-  width: 13%;
-  height: 44px;
+  width: 15%;
+  height: .88rem;
   background-color: #fff;
   z-index: 9999;
   box-shadow: -0.2rem 0 0.2rem rgba(0, 0, 0, 0.1);
@@ -213,10 +216,7 @@ export default class ShoppingIndex extends Vue {
     height: 1rem;
   }
 }
-.van-tabs--line .van-tabs__wrap {
-  height: 44px;
-  padding-right: 1rem;
-}
+
 .van-tabs__wrap--scrollable .van-tabs__nav {
   padding-right: 1rem;
 }

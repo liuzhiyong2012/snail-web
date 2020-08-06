@@ -37,7 +37,7 @@ svg.icon {
 }
 .abus-block-title {
   margin: 0;
-  padding: 0.2rem 0 0;
+  padding: 0.4rem 0 0.2rem;
   color: rgb(51, 51, 51);
   font-weight: normal;
   font-size: 0.32rem;
@@ -47,6 +47,13 @@ svg.icon {
   color: rgb(51, 51, 51);
   font-size: 0.36rem;
   font-weight: bold;
+}
+.van-tab{
+ font-size: .28rem !important;
+}
+.van-tabs--line .van-tabs__wrap {
+  height: .88rem !important;
+  
 }
 .abus-scroller-box {
   margin: 0 0.28rem;
