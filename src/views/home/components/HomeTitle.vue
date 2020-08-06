@@ -3,7 +3,7 @@
 	<section class="home-title-ctn">
 		
 		<div class="title-left-ctn">
-			<svg aira-hidden="true" class="icon">
+			<svg aira-hidden="true" class="icon"  @click="stepTo('scan')">
 				<use xlink:href="#icon-scan"></use>
 			</svg>
 			<span class="flow-ctn" @click="stepTo('internet')">

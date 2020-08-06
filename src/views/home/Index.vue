@@ -159,6 +159,7 @@ import HomeAboutUs from "./components/HomeAboutUs.vue";
 import { localStore } from "../../utils/data-management";
 import MessageService from "../../service/message";
 declare function require(type: string): string;
+declare let io: any;
 // import { getApprovalDetail } from "@/service/center";
 @Component({
   name: "Home",
@@ -264,6 +265,7 @@ export default class Home extends Vue {
       message: "messageIndex",
       internet: "internet",
       internetCart: "internetCart",
+      scan: "scan",
     };
     this.$router.push({
       name: routeMap[pageType],
@@ -276,7 +278,7 @@ export default class Home extends Vue {
     // 连接服务端，workerman.net:2120换成实际部署web-msg-sender服务的域名或者ip
     _this.socket = io("http://172.16.8.69:2120");
     // uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
-    let uid = _this.uInfo.uid;
+    let uid = _this.uInfo.id;
 
     // socket连接后以uid登录
     _this.socket.on("connect", function() {
@@ -289,12 +291,11 @@ export default class Home extends Vue {
       if (endMsg.type == "system") {
         // 系统通知
         _this.showRedPoint= true;
-        console.log('1111', _this.showRedPoint);
-        
+        console.log('推送-系统通知', _this.showRedPoint);
       } else if (endMsg.type == "message") {
         // 聊天
         _this.showRedPoint= true;
-        console.log('2222', _this.showRedPoint);
+        console.log('推送-聊天', _this.showRedPoint);
       }
     });
     // 后端推送来在线数据时
@@ -309,7 +310,7 @@ export default class Home extends Vue {
       if (res.code == 200) {
         if(res.data.length !=0){
           _this.showRedPoint = true;
-          console.log('3333', _this.showRedPoint);
+          console.log('接口返回-聊天', _this.showRedPoint);
         }
       }
     });
@@ -321,7 +322,7 @@ export default class Home extends Vue {
       if (res.code == 200) {
         if(res.data.notice.length !=0){
           _this.showRedPoint = true;
-          console.log('4444', _this.showRedPoint);
+          console.log('接口返回-系统通知', _this.showRedPoint);
         }
       }
     });

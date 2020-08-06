@@ -25,8 +25,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import echarts from 'echarts';
-import AbusFlight from  '../../../components/AbusFlight.vue';
-
+import AbusFlight from '../../../components/AbusFlight.vue';
 
 
 @Component({
