@@ -6,7 +6,8 @@ import Shopping from './shopping';
 import Home from './home';
 import Me from './me';
 import News from './news';
-import Message from './message'
+import Music from './music/index';
+import Message from './message';
 
 Vue.use(Vuex)
 
@@ -26,7 +27,8 @@ export default new Vuex.Store<any>({
   me:Me,
   home: Home,
   news:News,
-  message:Message
+  music:Music,
+    message:Message
   }
 })
 

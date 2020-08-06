@@ -97,7 +97,7 @@ export default {
   img {
     width: 100%;
     border-radius: 0.1rem;
-    z-index: 99;
+    z-index: 96;
   }
 }
 .s-box-right {

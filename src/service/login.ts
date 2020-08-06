@@ -47,6 +47,14 @@ export default class LoginService {
             data: data
         })
     }
+    // Route::get(':version/api/User/Me', 'api/:version.app.User/Me');//用户详情
+    static getUserMe(data?: object) {
+        return request({
+            url: '/v1/api/User/Me',
+            method: 'GET',
+            data: data
+        })
+    }
     //当前航班座位列表
     // Route::get(':version/api/Crm/SeatInfo', 'api/:version.app.Crm/SeatInfo');
 // Route::get(':version/api/Crm/OtherSeatList', 'api/:version.app.Crm/OtherSeatList');//剩余座位。

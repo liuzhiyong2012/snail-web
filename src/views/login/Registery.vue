@@ -173,11 +173,11 @@
 </i18n>
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import LoginServe from "../../service/login";
+import LoginService from "../../service/login";
 
 @Component({
   name: "Registery",
-  components: {}
+  components: {},
 })
 export default class Register extends Vue {
   private fileList: Array<any> = [];
@@ -194,7 +194,7 @@ export default class Register extends Vue {
     "My father's name?",
     "My mother's name?",
     "My favorite singer?",
-    "My favorite animal?"
+    "My favorite animal?",
   ];
   // 校验密码是否一致
   private isCheckPassword: boolean = false;
@@ -267,29 +267,65 @@ export default class Register extends Vue {
       var data = {
         nickname: this.nickname,
         gender: this.radio,
-        phone: this.phone,
+        phone: "86_" + this.phone,
         idCard: this.idCard,
         password: this.password,
         birthday: this.birthday,
         question: this.question,
-        answer: this.answer
+        answer: this.answer,
       };
       // console.log(this.radio);
-      LoginServe.postUserRegistery(data)
-        .then((res: any) => {
-          console.log(res);
-          if (res.code == 200) {
-            // 存储用户信息
-            this.$router.push({
-              name: "selectSeat"
+      LoginService.postUserRegistery(data).then((res: any) => {
+        console.log(res);
+        if (res.code == 200) {
+          // 存储用户信息
+          // 写入成功后，判断是否有座位
+          this.$store
+            .dispatch("setUserInfo", {
+              name: res.data.userName,
+              token: res.data.access_token,
+              id: res.data.airbusId
+            })
+            .then((res: any) => {
+              LoginService.getUserMe().then((res: any) => {
+// AvatarPath: ""
+// DisplayName: "mizao"
+// Email: null
+// Flow: {flow: -1}
+// Id: "3a03a40ac79b4f0d6eef58fcd99271d7"
+// IsWeChatBinded: false
+// NickName: "mizao"
+// PhoneNumber: "13570492375"
+// Seat:{
+// Id: "1"
+// Name: "1A"
+// col: 1
+// col-number: 1
+// row: 1
+// }
+// __proto__: Object
+// UserName: "86_13570492375"
+// WeChatId: null
+// points: "2000"
+                if (res.code == 200 && res.data.Seat == null) {
+                      this.$router.push({
+                    name: "selectSeat"
+                  });
+                } else if (res.code == 200 && res.data.Seat.Name){
+                  this.$store.commit('setSeatNumber',res.data.Seat.Name)
+                   this.$router.push({
+                    name: "home"
+                  });
+                }
+              });
             });
-          } else {
-            this.$toast(res.message);
-          }
-        })
-        // .catch((reason: any) => {
-        //   this.$toast("The current mobile number is registered");
-        // });
+        } else {
+          this.$toast(res.message);
+        }
+      });
+      // .catch((reason: any) => {
+      //   this.$toast("The current mobile number is registered");
+      // });
     } else if (!this.isReaded) {
       this.$toast("Have you read the 《Privacy policy》《Terms of service》");
     } else {

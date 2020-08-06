@@ -9,7 +9,8 @@ export default {
     },
     name: '',
     phone: '',
-    token: ''
+    token: '',
+    airbusId: ''
   },
   mutations: {
     setName(state: any, name: any) {
@@ -18,6 +19,7 @@ export default {
       localStore.set('nickname',name)
     },
     setToken(state:any, token: string){
+		// debugger;
       state.token = token
       state.userInfo.token = token
       localStore.set('token',token)
@@ -25,19 +27,26 @@ export default {
     setPhone(state:any,phone: string){
       state.token = phone
       state.userInfo.token = phone
-      localStore.set('phone',phone)
+      window.localStorage.setItem('phone',phone)
     },
-    setUserInfoObj(state:any, userInfo: any){
-      state.userInfo = userInfo
-      localStore.set('userInfo', userInfo)
-    }
+    setAirbusId(state:any,id:string){
+      state.airbusId = id
+      window.localStorage.setItem('airbusId',id)
+    },
+    setSeatNumber(state:any,seat:string){
+      state.voyageInfo.seatNumber = seat
+      window.localStorage.setItem('seatNumber',seat)
+    },
   },
   actions: {
     setUserInfo(context: any, state: any){
       context.commit('setName', state.name)
       context.commit('setToken', state.token)
-      context.commit('setUserInfoObj', state)
-
+      context.commit('setAirbusId', state.id)
+    },
+    setUserLoginInfo(context: any,state:any){
+      context.commit('setToken', state.token)
+      context.commit('setAirbusId', state.id)
     }
   }
 }

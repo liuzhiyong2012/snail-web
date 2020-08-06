@@ -24,6 +24,7 @@ service.interceptors.request.use(
 	  const zctToken = localStore.get('token');
     // const key_token = localStore.get('key_token')
     const authorToken = window.localStorage.getItem('token')
+    const airbusId = window.localStorage.getItem('airbusId')
     // config.headers['key-token'] = key_token
     const timestamp = new Date().getTime() + ''
     const nonce = StringUtils.randomStr(32)
@@ -37,8 +38,8 @@ service.interceptors.request.use(
       sign,
       timestamp,
       nonce,
-	    Authorization: zctToken,
-      AirBus: '4CFC4D33-2C1E-E911-BAD5-F44D307124C0',
+      Authorization: authorToken,
+      AirBus: airbusId,
       // zctToken: zctToken
     }
     return config

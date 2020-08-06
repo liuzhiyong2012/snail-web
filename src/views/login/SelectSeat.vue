@@ -85,11 +85,13 @@ export default class SelectSeat extends Vue {
     });
     if (this.seatId != "") {
       LoginServer.getCrmSelectSeat(this.seatId).then((res: any) => {
+        this.$store.commit('setSeatNumber',this.seatId)
         console.log(res);
         if (res.code == 200) {
           this.$toast(res.data)
+          // user/me
           this.$router.push({
-            name: "login",
+            name: "home",
           });
         }
       });
