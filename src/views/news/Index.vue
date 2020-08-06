@@ -35,7 +35,7 @@
             <news-list-item
               v-for="(item, index) in newsListBackup"
               :key="index"
-              :newsItem.sync="item"
+              :newsItem="item"
             ></news-list-item>
           </ul>
         </div>

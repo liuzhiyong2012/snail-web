@@ -207,7 +207,7 @@ export default class messageIndex extends Vue {
     // 连接服务端，workerman.net:2120换成实际部署web-msg-sender服务的域名或者ip
     _this.socket = io("http://172.16.8.69:2120");
     // uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
-    let uid = _this.uInfo.uid;
+    let uid = _this.uInfo.id;
 
     // socket连接后以uid登录
     _this.socket.on("connect", function() {
@@ -272,11 +272,11 @@ export default class messageIndex extends Vue {
     if (!this.wordContent) return this.$toast("请输入内容");
     let req = {
       id: "", //消息id
-      from_user_id: this.uInfo.uid, //发送人id
+      from_user_id: this.uInfo.id, //发送人id
       to_user_id: "", //接收人id
       content: this.wordContent, //发送的消息
       created_time: "", // 发送时间
-      airbus_id: this.uInfo.airbusId, //航班id
+      airbus_id: '', //航班id
       read: 0, // 已读  0未读 1已读
       type: 1, // 1 发送给空乘  2发送给用户
     };
@@ -297,9 +297,9 @@ export default class messageIndex extends Vue {
   public getSysNoticeList() {
     const _this = this;
     _this.systemMsgList = [];
-    let readList = [];
-    let unreadList = [];
-    let storeList = [];
+    let readList: Array<any> = [];
+    let unreadList: Array<any> = [];
+    let storeList: Array<any> = [];
     MessageService.getSystemNoticeList({ read: 1 }).then((res) => {
       if (res.code == 200) {
         readList = res.data.notice;

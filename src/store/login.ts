@@ -37,12 +37,18 @@ export default {
       state.voyageInfo.seatNumber = seat
       window.localStorage.setItem('seatNumber',seat)
     },
+
+    setUserInfoObj(state:any, userInfo: any){
+      state.userInfo = userInfo
+      localStore.set('userInfo', userInfo)
+    }
   },
   actions: {
     setUserInfo(context: any, state: any){
       context.commit('setName', state.name)
       context.commit('setToken', state.token)
       context.commit('setAirbusId', state.id)
+      context.commit('setUserInfoObj', state)
     },
     setUserLoginInfo(context: any,state:any){
       context.commit('setToken', state.token)
