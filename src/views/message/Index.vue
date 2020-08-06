@@ -109,6 +109,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import MessageTitle from "./components/MessageTitle.vue";
 import MessageService from "../../service/message";
 import { localStore } from "../../utils/data-management";
+declare function io(selector: string): any;
 @Component({
   name: "messageIndex",
   components: {

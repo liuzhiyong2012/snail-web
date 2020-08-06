@@ -150,6 +150,7 @@ import HomeNews from "./components/HomeNews.vue";
 import { localStore } from "../../utils/data-management";
 import MessageService from "../../service/message";
 declare function require(type: string): string;
+declare let io: any;
 // import { getApprovalDetail } from "@/service/center";
 @Component({
   name: "Home",
@@ -250,6 +251,7 @@ export default class Home extends Vue {
       message: "messageIndex",
       internet: "internet",
       internetCart: "internetCart",
+      scan: "scan",
     };
     this.$router.push({
       name: routeMap[pageType],

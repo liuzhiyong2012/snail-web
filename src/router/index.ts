@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import Home from "../views/home/Index.vue";
+import Scan from "../views/home/Scan.vue";
 import Internet from "../views/home/Internet.vue";
 import InternetCart from "../views/home/components/InternetCart.vue";
 import About from "../views/About.vue";
@@ -38,6 +39,11 @@ const routes: Array<RouteConfig> = [
         path: "/home",
         name: "home",
         component: Home,
+      },
+      {
+        path: "/scan",
+        name: "scan",
+        component: Scan,
       },
       {
         path: "/internet",
