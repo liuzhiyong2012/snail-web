@@ -74,10 +74,10 @@
 </template>
 
 <script lang="ts">
-	import UrlUtils from '../../utils/url-utils.ts';
+	import UrlUtils from '../../utils/url-utils';
 	import {Vue,Prop,Component} from 'vue-property-decorator';
 	import AbusTitle from '../../components/AbusTitle.vue';
-	import MusicService from '../../service/music.ts';
+	import MusicService from '../../service/music';
 	import MusicPlayer from './components/MusicPlayer.vue';
 	
 	@Component({
@@ -98,6 +98,7 @@
 		 
 		 private pageSize: number = 10;
 		 private pageNumber: number = 1;
+		 private refreshing:boolean = false;
 		 
 		 private mounted(){
 			 this.getMusicBanners();
@@ -186,7 +187,7 @@
 			 
 		 }
 		 
-		 public computeAuthorName(item):void{
+		 public computeAuthorName(item):string{
 		 	 let anthorList = [];
 		 			 
 			 item.Artists.forEach((artistItem,index)=>{

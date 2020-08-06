@@ -49,11 +49,11 @@ function getHostUrl(){
 //可根据具体环境配置
 if(location.href.indexOf('localhost') > -1 ){
 	//http://172.16.125.11:8010/
-  Vue.config.SERVER_API = 'http://kf.vpclub.cn/guangmei/api';
-  Vue.config.imgBase = 'http://172.16.125.11:8010';
+  (Vue.config as any).SERVER_API = 'http://kf.vpclub.cn/guangmei/api';
+  (Vue.config as any).imgBase = 'http://172.16.125.11:8010';
 }else{
-  Vue.config.SERVER_API = getHostUrl() +'/guangmei/api';
-  Vue.config.imgBase  = getHostUrl();
+  (Vue.config as any).SERVER_API = getHostUrl() +'/guangmei/api';
+  (Vue.config as any).imgBase  = getHostUrl();
 }
 
 

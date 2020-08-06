@@ -32,7 +32,7 @@
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import AbusTitle from '../../components/AbusTitle.vue';
-import MusicService from '../../service/music.ts';
+import MusicService from '../../service/music';
 
 @Component({
 	name: 'MusicTopRanks',

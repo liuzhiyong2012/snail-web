@@ -67,8 +67,8 @@
 <script lang="ts">
 	import {Vue,Prop,Component} from 'vue-property-decorator';
 	import AbusTitle from '../../components/AbusTitle.vue';
-	import MusicService from '../../service/music.ts';
-	import AbusMusicIcon from '../../components/AbusMusicIcon';
+	import MusicService from '../../service/music';
+	import AbusMusicIcon from '../../components/AbusMusicIcon.vue';
 	
 	@Component({
 		name:'MusicPlaylistDetail',
@@ -109,7 +109,7 @@
 		 }
 		 
 		 
-		 public computeAuthorName(item):void{
+		 public computeAuthorName(item):string{
 		 	 let anthorList = [];
 		 			 
 			 item.Artists.forEach((artistItem,index)=>{

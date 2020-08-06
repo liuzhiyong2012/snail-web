@@ -16,7 +16,7 @@ export default class MusicService {
 			data: data
 		});
 	}
-	
+	 
     // 热门歌单
 	static getMusicPlaylistHot(data?: Object) {   
 		return request({
@@ -53,18 +53,7 @@ export default class MusicService {
 		});
 	}
 	
-	//:version/api/Music/SongSubscribe/List
-	
-	//根据歌单获取歌单详情
-	static getPlaylistDetail(data?: Object) {
-		return request({
-			url: '/v1/api/Music/Playlist/' + data.id, 
-			method: 'GET',
-			data: data
-		});
-	}
-	
-	static getPlaylistDetail(data?: Object) {
+	static getPlaylistDetail(data?: any) {
 		return request({
 			url: '/v1/api/Music/Playlist/' + data.id, 
 			method: 'GET',
@@ -73,7 +62,7 @@ export default class MusicService {
 	}
 	
 	//收藏歌单
-	static subscribePlaylist(data?: Object) {
+	static subscribePlaylist(data?: any) {
 		return request({
 			url: '/v1/api/Music/PlaylistSubscribe/' + data.id, 
 			method: 'GET',
@@ -82,7 +71,7 @@ export default class MusicService {
 	}
 	
 	//取消收藏歌单
-	static unSubscribePlaylist(data?: Object) {
+	static unSubscribePlaylist(data?: any) {
 		
 		return request({
 			url: '/v1/api/Music/PlaylistUnSubscribe/' + data.id, 

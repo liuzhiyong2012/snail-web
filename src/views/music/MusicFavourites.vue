@@ -69,11 +69,11 @@
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import AbusTitle from '../../components/AbusTitle.vue';
-import MusicService from '../../service/music.ts';
+import MusicService from '../../service/music';
 import MusicTab from './components/MusicTab.vue';
-import MusicPlayer from './components/MusicPlayer';
-import AbusMusicIcon from '../../components/AbusMusicIcon';
-import UrlUtils from '../../utils/url-utils.ts';
+import MusicPlayer from './components/MusicPlayer.vue';
+import AbusMusicIcon from '../../components/AbusMusicIcon.vue';
+import UrlUtils from '../../utils/url-utils';
 
 @Component({
 	name: 'MusicFavourites',
@@ -92,7 +92,7 @@ export default class MusicFavourites extends Vue {
 		return this.$store.getters.currentSong;
 	}
 
-	private tabList: string[] = [
+	private tabList: any[] = [
 		{
 			name: 'Song',
 			value: 'song'
@@ -149,7 +149,7 @@ export default class MusicFavourites extends Vue {
 	}
 	
 										
-	public computeAuthorName(item): void {
+	public computeAuthorName(item): string {
 		let anthorList = [];
 
 		item.Artists.forEach((artistItem, index) => {
@@ -181,7 +181,7 @@ export default class MusicFavourites extends Vue {
 		MusicService.unSubscribePlaylist().then(() => {});
 	}
 
-	public getMySongList($event): void {
+	public getMySongList(): void {
 		
 		MusicService.getMySongList({
 			take: this.pageSize,
@@ -206,7 +206,7 @@ export default class MusicFavourites extends Vue {
 			});
 	}
 
-	public getMyPlaylist($event): void {
+	public getMyPlaylist(): void {
 		MusicService.getMyPlaylist({
 			take: this.pageSize,
 			skip: (this.pageNumber - 1) * this.pageSize
