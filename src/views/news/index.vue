@@ -148,7 +148,7 @@ export default class NewsList extends Vue {
 
   // 我收藏的新闻
   public postNewsMyLike() {
-    NewsService.postNewsMyLike({}).then((res) => {
+    NewsService.postNewsMyLike({}).then((res: any) => {
       if (res.code == 200) {
       }
     });
