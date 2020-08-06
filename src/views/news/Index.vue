@@ -15,7 +15,7 @@
     <van-tabs
       v-model="active"
       @click="changeTab"
-      sticky
+      sticky  
       line-width="20"
       line-height="4"
       color="rgb(0,32,91)"

@@ -12,7 +12,7 @@
             v-model="active"
             animated
             swipeable
-            line-width="20"
+            line-width="20" 
             line-height="4"
             color="rgb(0,32,91)"
             title-active-color="rgb(0,32,91)"
