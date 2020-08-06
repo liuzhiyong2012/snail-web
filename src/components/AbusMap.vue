@@ -36,6 +36,9 @@ import ImageStyle from 'ol/style/Image';
 import Icon from 'ol/style/Icon';
 import Circle from 'ol/style/Circle';
 
+import OverlayPositioning from 'ol/OverlayPositioning';
+
+
 import ZoomToExtent from 'ol/control/ZoomToExtent';
 // import {defaults} from 'ol/control/defaults';
 import { defaults } from 'ol/control';
@@ -61,8 +64,10 @@ import {Stroke, Style} from 'ol/style'; */
 	}
 })
 export default class AbusMap extends Vue {
-	@Prop()
-	zoom?: string | number = 8;
+	@Prop({
+		default:8
+	})
+	zoom?: string | number;
 
 	private chart: any;
 	private map: any;
@@ -133,12 +138,12 @@ export default class AbusMap extends Vue {
 			target: 'homeMap',
 			layers: [
 				new Tile({
-					source: new OSM({ url: 'http://172.16.8.69:8084/{z}/{x}/{y}.png' })
+					source: new OSM({ url: (Vue.config as any).mapImgBase + '/{z}/{x}/{y}.png' })
 				}),
 				flightTrackLayer,
 				aircfaftLayer
 			],
-			renderer: 'canvas',
+			// renderer: 'canvas',
 			view: new View({
 				projection: 'EPSG:4326', //使用这个坐标系
 				center: [114.064839, 22.548857], //深圳
@@ -154,10 +159,11 @@ export default class AbusMap extends Vue {
 		});
 
 		let markerEl = document.getElementById('geo-marker');
+		// 'OverlayPositioning
 		let marker = new Overlay({
-			positioning: 'bottom-center',
+			positioning:OverlayPositioning.BOTTOM_CENTER,// 'bottom-center',
 			stopEvent: false,
-			dragging: false,
+			// dragging: false,
 			offset: [0, 0],
 			element: markerEl
 		});
@@ -182,7 +188,7 @@ export default class AbusMap extends Vue {
 		theAirplane.setId('123123');
 		theAirplane.set('speed', 323);
 		theAirplane.setStyle(this.createGoodStyle());
-		theAirplane.getStyle().getImage().setRotation(130);
+		// theAirplane.getStyle().getImage().setRotation(130);
 		aircfaftLayer.getSource().addFeature(theAirplane);
 		
 		coords.forEach((item, index) => {
@@ -231,7 +237,7 @@ export default class AbusMap extends Vue {
 		return new Style({
 			image: new Circle({
 				radius: 4,
-				snapToPixel: false,
+				// snapToPixel: false,
 				fill: new Fill({
 					color: 'yellow'
 				}),
