@@ -34,7 +34,7 @@
 		</div>
 		
 		<div class="pay-info-ctn">
-			<div class="seat-ctn">
+			<div class="seat-ctn" >
 				<span>Seat No:</span>
 				<span>{{seatNumber}}</span>
 			</div>
@@ -55,14 +55,14 @@
 					<i class="icon icon-back"></i>
 				</div>
 			</div>
-			<div class="total-money">
+			<div class="total-money" >
 				<span>Total amount</span>
 				<span>${{orderAmount}}</span>
 			</div>
 		</div>
 		
 		<div class="pay-outer-btn">
-			<div class="pay-btn" @click="placeOrder()">
+			<div class="pay-btn" @click="placeOrder">
 				Pay
 			</div>
 		</div>
@@ -108,7 +108,9 @@ export default class DishCart extends Vue {
 	   
 	   return amount;
 	}
-	
+	clickaaa(){
+		console.log('213')
+	}
 	private selectPayType(){
 		this.$router.push({
 			name:'mePayment'

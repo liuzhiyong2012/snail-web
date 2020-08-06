@@ -55,15 +55,15 @@
 
     <div class="login-other">
       <div class="f1">
-        <i class="icon icon-facebook icon-text"></i>
+        <i class="icon icon-facebook_11 icon-text"></i>
         <div class="login-other-name">facebook</div>
       </div>
       <div class="f1">
-        <i class="icon icon-line icon-text"></i>
+        <i class="icon icon-line-diable icon-text"></i>
         <div class="login-other-name">Line</div>
       </div>
       <div class="f1">
-        <i class="icon icon-wechat icon-text"></i>
+        <i class="icon icon-wechat_11 icon-text"></i>
         <div class="login-other-name">Wechat</div>
       </div>
     </div>
@@ -96,7 +96,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import AdModel from "./components/ADModel.vue";
-import LoginServe from "../../service/login";
+import LoginService from "../../service/login";
 import { localStore } from '../../utils/data-management';
 
 @Component({
@@ -111,10 +111,8 @@ export default class Login extends Vue {
   private lang: string = '';
   private userPhone: string = "";
   private userPassword: string = "";
-  private get seatNumber(): string {
-    return this.$store.state.login.voyageInfo.seatNumber;
-  }
-  created() {
+  
+  private created() {
     clearTimeout();
     setTimeout(() => {
       this.isActive = false;
@@ -129,43 +127,63 @@ export default class Login extends Vue {
     localStorage.setItem('lang', 'zh');
     }
   }
-  getUserPhone(e: any) {
+  private get seatNumber(): string {
+    return this.$store.state.login.voyageInfo.seatNumber;
+  }
+  public getUserPhone(e: any) {
     this.userPhone = e.target.value;
   }
-  getUserPassword(e: any) {
+  public getUserPassword(e: any) {
     this.userPassword = e.target.value;
   }
-  showLang() {
+  public showLang() {
     this.isShowLang = !this.isShowLang;
   }
-  changeEn(){
+  public changeEn(){
     this.lang = 'English'
     this.$i18n.locale = 'en'
     localStorage.setItem('lang', 'en');
   }
-  changeZh(){
+  public changeZh(){
     this.lang = '简体中文'
     this.$i18n.locale = 'zh'
     localStorage.setItem('lang', 'zh');
   }
-  postUserLogin() {
+  public postUserLogin() {
     // console.log(this.$store.state.login.name)
     if (this.userPhone != "" && this.userPassword != "") {
       var data = {
         username: "86_" + this.userPhone, // 默认86
         password: this.userPassword
       };
-      LoginServe.postUserLogin(data)
+      LoginService.postUserLogin(data)
         .then((res: any) => {
           console.log(res);
           if (res.code == 200) {
+            // 写入成功后，判断是否有座位
             this.$store.dispatch("setUserInfo", {
               name: res.data.userName,
-              token: res.data.access_token
-            });
-            this.$router.push({
-              name: "home"
-            });
+              token: res.data.access_token,
+              id: res.data.airbusId
+            }).then((res:any)=> {
+              LoginService.getUserMe().then((res: any)=>{
+                if (res.code == 200 && res.data.Seat == null) {
+                      this.$router.push({
+                    name: "selectSeat"
+                  });
+                } else if (res.code == 200 && res.data.Seat.Name){
+                  this.$store.commit('setSeatNumber',res.data.Seat.Name)
+                   this.$router.push({
+                    name: "home"
+                  });
+                }
+              })
+            })
+            // this.$router.push({
+            //   name: "home"
+            // });
+          }else{
+            this.$toast(res.message)
           }
         })
         .catch((error: any) => {

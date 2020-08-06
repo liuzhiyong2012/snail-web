@@ -1,15 +1,20 @@
 <template>
   <div class="abus-scroller-box news-box">
-    <div v-for="(item,index) in newsList.slice(0,2)" class="news-list" :key="index">
+    <div
+      v-for="(item, index) in newsList.slice(0, 2)"
+      class="news-list"
+      :key="index"
+      @click="goToDetail(item)"
+    >
       <div class="news-l">
         <img :src="item.BannerImg" :alt="item.Title" />
       </div>
       <div class="f1">
         <div class="name">
-          <div class="line-two">{{item.Title}}</div>
+          <div class="line-two">{{ item.Title }}</div>
         </div>
         <div class="details">
-          <div class="line-one">{{item.ShortDescription}}</div>
+          <div class="line-one">{{ item.ShortDescription }}</div>
         </div>
       </div>
     </div>
@@ -19,39 +24,60 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import NewsService from "../../../service/news";
+import { localStore } from "@/utils/data-management";
+declare function require(string): string;
 
 @Component({
   name: "HomeNews",
-  components: {}
+  components: {},
 })
 export default class HomeNews extends Vue {
   private musicData: Array<any> = [];
   private newsList: Array<any> = [];
 
-  created() {
+  private created() {
     this.getNewsRecommended();
     this.musicData = [
       {
         img: require("../images/news.jpg"),
         name: "Let Me Down Slowly",
-        details: "Alec Benjamin / Alessia Cara"
+        details: "Alec Benjamin / Alessia Cara",
       },
       {
         img: require("../images/news.jpg"),
         name:
           "Let Me Down SlowlyLet Me Down SlowlyLet Me Down SlowlyLet Me Down Slowly",
-        details: "Alec Benjamin / Alessia CaraAlec Benjamin / Alessia Cara"
-      }
+        details: "Alec Benjamin / Alessia CaraAlec Benjamin / Alessia Cara",
+      },
     ];
   }
   private getNewsRecommended() {
     NewsService.getNewsRecommended().then((res: any) => {
       // console.log(res);
       if (res.code == 200) {
+        res.data.RecommendedNews.forEach((item) => {
+          item.img = item.BannerImg;
+          if (item.isLike) {
+            item.isCollect = true;
+          } else {
+            item.isCollect = false;
+          }
+        });
         this.newsList = res.data.RecommendedNews;
       } else {
         this.$toast(res.message);
       }
+    });
+  }
+  public goToDetail(item): void {
+    // 先将详情存入store
+    if (localStore.get("newsDetails")) {
+      localStore.remove("newsDetails");
+    }
+    this.$store.dispatch("setNewsDetails", item);
+    //进入新闻详情
+    this.$router.push({
+      name: "newsDetail",
     });
   }
 }

@@ -17,7 +17,7 @@
         <van-popup v-model="showIssues" position="bottom" :style="{ height: '30%' }">
           <van-picker
             show-toolbar
-            :columns="columns"
+            :columns="columnsName"
             @cancel="showIssues = false"
             @confirm="onConfirm"
             :default-index="1"
@@ -28,36 +28,79 @@
       </div>
     </div>
     <div class="button-box">
-      <div class="button" @click="onClickRegistery">Registery</div>
+      <div class="button" @click="getCrmSelectSeat">Registery</div>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      seat: "",
-      showIssues: false,
-      columns: ["12A", "12B", "13A", "13B"]
-    };
-  },
-  methods: {
-    showSeat() {
-      this.showIssues = true;
-    },
-    onConfirm(value) {
-      this.seat = value;
-      this.showIssues = false;
-    },
-    onClickRegistery() {
-      // 接口
-      this.$router.push({
-        path: "login"
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+import LoginServer from "../../service/login";
+
+@Component({
+  name: "SelectSeat",
+  components: {},
+})
+export default class SelectSeat extends Vue {
+  private seat: string = "";
+  private seatId: string = "";
+  private showIssues: boolean = false;
+  private columns: Array<any> = [];
+  private columnsName: Array<string> = [];
+
+  private created() {
+    // this.getCrmSeatInfo()
+    this.getCrmOtherSeatList();
+  }
+
+  public showSeat() {
+    this.showIssues = true;
+  }
+  public onConfirm(value: any) {
+    this.seat = value;
+    this.showIssues = false;
+  }
+  public getCrmSeatInfo() {
+    LoginServer.getCrmSeatInfo().then((res: any) => {
+      console.log(res);
+    });
+  }
+  public getCrmOtherSeatList() {
+    LoginServer.getCrmOtherSeatList().then((res: any) => {
+      console.log(res);
+      if (res.code == 200) {
+        this.columns = res.data;
+        this.columns.forEach((item: any, index: any) => {
+          this.columnsName.push(item.Name);
+        });
+      }
+    });
+  }
+  public getCrmSelectSeat() {
+    this.columns.forEach((item: any, index: any) => {
+      if (item.Name == this.seat) {
+        this.seatId = item.id;
+        return;
+      }
+    });
+    if (this.seatId != "") {
+      LoginServer.getCrmSelectSeat(this.seatId).then((res: any) => {
+        this.$store.commit('setSeatNumber',this.seatId)
+        console.log(res);
+        if (res.code == 200) {
+          this.$toast(res.data)
+          // user/me
+          this.$router.push({
+            name: "home",
+          });
+        }
       });
     }
   }
-};
+  public onClickRegistery() {
+    // 接口
+  }
+}
 </script>
 
 <style lang="scss" scoped>

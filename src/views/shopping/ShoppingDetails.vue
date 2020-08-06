@@ -1,61 +1,112 @@
 <template>
   <div>
-    <van-nav-bar left-arrow>
-      <template #right>
-        <van-icon name="scan" size="18" />
-      </template>
-    </van-nav-bar>
+    <abus-title title="Shopping Detail" backRouteName="shopping">
+      <cart-icon></cart-icon>
+    </abus-title>
     <div calss="shopping-details">
-      <banner :bannerData="bannerData" />
+      <!-- <banner :bannerData="bannerData" /> -->
+      <div class="dish-img" :style="{backgroundImage:`url(${shoppingInfo.BannerImgPath})`}"></div>
     </div>
     <div class="m-box">
-      <div class="title">Three Band Ouroboros Ring In Gold</div>
+      <div class="title">{{shoppingInfo.Name || '--'}}</div>
       <div class="info-box">
-        <div class="qty">QTY 300</div>
-        <div class="f1">$30</div>
-        <div class="stepper-box">
+        <div class="qty">QTY {{shoppingInfo.Stocking || '--'}}</div>
+        <div class="f1">
+          <div>${{shoppingInfo.Price || 0}}</div>
+          <van-field class="field-ctn" name="stepper" label>
+            <template #input>
+              <van-stepper v-model="stepper" />
+            </template>
+          </van-field>
+        </div>
+        <!-- <div class="stepper-box">
           <i class="minus">-</i>
           <span class="f1">111111</span>
           <i class="plus">+</i>
-        </div>
+        </div>-->
       </div>
     </div>
+
     <div class="details-box">
       <div class="top">Product Details</div>
-      <div
-        class="details"
-      >Crafted from yellow gold with turquoise stone-set eyes, the ring features an ancient Egyptian symbol, the Ouroboros—a snake eating its own tail. In medieval alchemical tradition.</div>
+      <div class="details">{{shoppingInfo.Remark||'暂无介绍'}}</div>
     </div>
-    <div class="button-box">
+
+    <div class="footer-ctn">
+      <div class="cart-btn primary" @click="addToCart()">Add To Cart</div>
+      <div class="cart-btn normal" @click="buyNow()">Buy Now</div>
+    </div>
+    <!-- <div class="button-box">
       <div class="button">Buy Now</div>
-    </div>
+    </div>-->
   </div>
 </template>
 
-<script>
-import Banner from "@/components/banner";
-export default {
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+import AbusTitle from "../../components/AbusTitle.vue";
+import CartIcon from "./components/ShoppingCartIcon.vue";
+
+@Component({
+  name: "ShoppingDetail",
   components: {
-    Banner
+    AbusTitle,
+    CartIcon,
   },
-  data() {
-    return {
-      bannerData: [
-        {
-          img: require("./images/shopping_details.jpg")
-        },
-        {
-          img: require("./images/shopping_details.jpg")
-        }
-      ]
-    };
+})
+export default class ShoppingDetail extends Vue {
+  private stepper: number = 1;
+  private recomendList: Array<any> = [];
+  private shoppingList: Array<any> = [];
+
+  private shoppingInfo: any = {};
+
+  private get seatNumber(): string {
+    return this.$store.state.login.voyageInfo.seatNumber;
   }
-};
+
+  private created() {
+    // this.shoppingDetail()
+  }
+  private mounted() {
+    // this.$store.commit("setShoppingDetail", this.$route.params.shoppingInfo);
+    this.shoppingInfo = this.$route.params.shoppingInfo;
+  }
+  private get shoppingDetail() {
+    return this.$store.state.shopping.shoppingDetail;
+  }
+
+  public backToIndex(): void {
+    this.$router.push({
+      name: "dishIndex",
+    });
+  }
+
+  public addToCart(): void {
+    this.$store.commit("addShoppingCartItem", this.shoppingInfo);
+    this.$toast("成功加入购物车!");
+  }
+
+  public buyNow(): void {
+    // this.$toast('购买成功!');
+    this.$store.commit("addShoppingCartItem", this.shoppingInfo);
+    this.$router.push({
+      name: "shoppingCart",
+    });
+  }
+}
 </script>
 
 <style lang="scss" scoped>
 .shopping-details {
   width: 100%;
+}
+.dish-img {
+  height: 6.3rem;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: #7b98bc;
 }
 .m-box {
   margin: 0 0 0.2rem 0;
@@ -85,11 +136,18 @@ export default {
     }
     .f1 {
       flex: 1;
+      display: flex;
+      justify-content: flex-end;
       text-align: right;
       font-size: 0.5rem;
       font-weight: bold;
       color: rgba(46, 46, 46, 1);
       line-height: 0.58rem;
+    }
+    .van-cell {
+      width: auto;
+      padding: 0;
+      margin: 0 0 0 0.3rem;
     }
     .stepper-box {
       display: flex;
@@ -141,6 +199,42 @@ export default {
     line-height: 0.36rem;
   }
 }
+.footer-ctn {
+  position: fixed;
+  width: 100%;
+  margin: 0.3rem 0 0;
+  padding: 0 0.3rem;
+  box-sizing: border-box;
+  // bottom: 0.62rem;
+  display: flex;
+  justify-content: space-between;
+
+  .cart-btn {
+    border-radius: 0.4rem;
+    border: 0.02px solid rgba(0, 32, 91, 1);
+    width: 3.3rem;
+    height: 0.8rem;
+    text-align: center;
+    font-weight: bold;
+    line-height: 0.76rem;
+    box-sizing: border-box;
+
+    font-size: 0.34rem;
+
+    &.primary {
+      color: rgba(0, 32, 91, 1);
+      border-color: rgba(0, 32, 91, 1);
+      background: #f8f6f9;
+    }
+
+    &.normal {
+      color: #ffffff;
+      border-color: #00205b;
+      background: #00205b;
+    }
+  }
+}
+
 .button-box {
   margin: 0.4rem 0.3rem 0.5rem;
   .button {

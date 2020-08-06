@@ -20,29 +20,26 @@ const service: AxiosInstance = axios.create({
 // Request interceptors
 service.interceptors.request.use(
   (config: AxiosRequestConfig) => {
+	  // const zctToken = window.localStorage.getItem('token')||localStore.get('token');
+	  const zctToken = localStore.get('token');
     // const key_token = localStore.get('key_token')
-    // const zctToken = localStore.get('token');
-	// debugger;
-	let zctToken = window.localStorage.getItem('token')||localStore.get('token')||'';
-	//@fixme:
-	zctToken = zctToken.replace(/\"/g,'');
-	
+    const authorToken = window.localStorage.getItem('token')
+    const airbusId = window.localStorage.getItem('airbusId')
     // config.headers['key-token'] = key_token
     const timestamp = new Date().getTime() + ''
     const nonce = StringUtils.randomStr(32)
     const ZCT_SECRET = '21fa6sd1f95w1133edsafas6'
     const encrptString = `${timestamp}.${ZCT_SECRET}.${nonce}`
+    // console.log(encrptString);
     const sign = md5(encrptString)
     // console.log(md5("1584948595244.21fa6sd1f95w1133edsafas6.vJdhenTJOYZ3BPWqMpcFb6tpzhhmeDLj"))
-	
-	// 登录后 access_token 放到头部，字段Authorization
-	
     config.headers = {
       ...config.headers, //@temp
       sign,
       timestamp,
       nonce,
-	  Authorization:zctToken
+      Authorization: authorToken,
+      AirBus: airbusId,
       // zctToken: zctToken
     }
     return config

@@ -19,7 +19,7 @@
 	
 		<div class="title-right-ctn">
 			<i class="icon icon-user"  @click="stepTo('me')"></i>
-			<i class="icon icon-message"  @click="stepTo('message')"></i>
+			<i class="icon icon-message" :class="{'show-red': showRed}"  @click="stepTo('message')"></i>
 		</div>
 		
 	</section>
@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-	import {Vue,Prop,Component} from 'vue-property-decorator';
+	import {Vue,Prop,Component, Watch} from 'vue-property-decorator';
     
 	@Component({
 		name:'HomeTitle',
@@ -36,7 +36,11 @@
 		}
 	})
 	export default class HomeTitle extends Vue{
-		
+		@Prop() private showRed!: boolean;
+		@Watch("showRed", { immediate: true })
+		showRedWatch(newVal: boolean, oldVal: boolean) {
+			this.showRed = newVal;
+		}
 		public stepTo(page:any):void{
 			this.$emit('stepTo',page);
 		}
@@ -96,6 +100,18 @@
 			
 			.icon-message{
 				font-size: 0.40rem;
+			}
+			.show-red{
+				&:after{
+					content: "";
+					position: absolute;
+					top: 0.55rem;
+					right: 0.3rem;
+					background: red;
+					width: 0.1rem;
+					height: 0.1rem;
+					border-radius: 50%;
+				}
 			}
 		}
 	}
