@@ -16,26 +16,26 @@ export default {
     setName(state: any, name: any) {
       state.name = name
       state.userInfo.nickname = name
-      localStorage.setItem('nickname',name)
+      localStore.set('nickname',name)
     },
     setToken(state:any, token: string){
 		// debugger;
       state.token = token
       state.userInfo.token = token
-      localStorage.setItem('token',token)
+      localStore.set('token',token)
     },
     setPhone(state:any,phone: string){
       state.token = phone
       state.userInfo.token = phone
-      window.localStorage.setItem('phone',phone)
+      localStore.set('phone',phone)
     },
     setAirbusId(state:any,id:string){
       state.airbusId = id
-      window.localStorage.setItem('airbusId',id)
+      localStore.set('airbusId',id)
     },
     setSeatNumber(state:any,seat:string){
       state.voyageInfo.seatNumber = seat
-      window.localStorage.setItem('seatNumber',seat)
+      localStore.set('seatNumber',seat)
     },
 
     setUserInfoObj(state:any, userInfo: any){

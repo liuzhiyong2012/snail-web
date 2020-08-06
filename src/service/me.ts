@@ -1,9 +1,9 @@
 import request, { request as http } from '@/utils/request';
 import { AxiosPromise } from 'axios';
-
+import {localStore} from '../utils/data-management'
 
 export default class MeService {
-	static header: any =  window.localStorage.getItem('token')
+	static header: any = localStore.get('token')
 	constructor() {
 	}
 	

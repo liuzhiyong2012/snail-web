@@ -21,7 +21,7 @@ const service: AxiosInstance = axios.create({
 service.interceptors.request.use(
   (config: AxiosRequestConfig) => {
 	  const authorToken = localStore.get('token');
-    const airbusId = window.localStorage.getItem('airbusId')
+    const airbusId = localStore.get('airbusId')
     const timestamp = new Date().getTime() + ''
     const nonce = StringUtils.randomStr(32)
     const ZCT_SECRET = '21fa6sd1f95w1133edsafas6'
