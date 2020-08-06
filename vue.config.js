@@ -13,13 +13,24 @@ module.exports = {
     devServer: {
         port: process.env.VUE_APP_PORT,
         proxy: {
-
-            '/jst': {
-                target: process.env.VUE_APP_PROXY_JST,
+			//项目图片映射  
+            '/abusimg': {
+              target: process.env.VUE_IMAGE_SERVER,//后端接口地址
+              changeOrigin: true,//是否允许跨越
+              pathRewrite: {
+                '^/abusimg': '',//重写,
+              }
+            },
+			//地图图片映射
+            '/mapimg': {
+                target: process.env.VUE_MAP_SERVER,
                 changeOrigin: true,
                 secure: false,
-
+				pathRewrite: {
+				  '^/mapimg': '',//重写,
+				}
             },
+			//接口请求地址映射
             '/': {
                 target: process.env.VUE_APP_PROXY,
                 changeOrigin: true,

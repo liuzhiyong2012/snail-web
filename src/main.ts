@@ -46,14 +46,21 @@ Vue.prototype.$globalEvent = new Vue;
 function getHostUrl(){
    return window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
 }
+
 //可根据具体环境配置
 if(location.href.indexOf('localhost') > -1 ){
 	//http://172.16.125.11:8010/
   (Vue.config as any).SERVER_API = 'http://kf.vpclub.cn/guangmei/api';
-  (Vue.config as any).imgBase = 'http://172.16.125.11:8010';
+  (Vue.config as any).mapImgBase = getHostUrl()  + '/mapimg';
+  (Vue.config as any).imgBase = getHostUrl()  + '/abusimg';
+  
+  
+  //http://172.16.8.69:8084/8/208/110.png
+  // http://172.16.125.11:8010/eb8ea336-9434-4295-8215-3821c76baba8
 }else{
   (Vue.config as any).SERVER_API = getHostUrl() +'/guangmei/api';
-  (Vue.config as any).imgBase  = getHostUrl();
+  (Vue.config as any).mapImgBase = getHostUrl()  + '/mapimg';
+  (Vue.config as any).imgBase = getHostUrl()  + '/abusimg';
 }
 
 
