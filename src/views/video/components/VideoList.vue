@@ -1,95 +1,96 @@
 <template>
-  <div>
-    <h2 class="abus-block-title">
-      <van-cell title="Video" class="block-title-background">
-        <template #right-icon>
-          <van-icon name="ellipsis" style="line-height: inherit;" size="25" />
-        </template>
-      </van-cell>
-    </h2>
-    <div class="abus-scroller-box">
-      <scroller>
-        <div slot="list" v-for="(item, index) of dishData" :key="index">
-          <div class="s-box s-box-right" v-if="index+1 == dishData.length">
-            <img :src="item.img" :alt="item.name" />
-          </div>
-          <div class="s-box" v-else>
-            <img :src="item.img" :alt="item.name" />
-          </div>
+  <div class="abus-height" v-if="isNoVideo">
+    <div class="cell-group" v-if="videoList.length % 3 == 1">
+      <div class="cell-item" v-for="(item, index) in videoList" :key="index">
+        <div class="video-box" @click="stepToVideoPlay(item.Id)">
+          <img :src="item.CoverImgPath" :alt="item.title" />
+          <svg class="icon icon-p" aria-hidden="true">
+            <use xlink:href="#icon-play-disable" />
+          </svg>
         </div>
-      </scroller>
+      </div>
+      <div class="cell-item"></div>
+      <div class="cell-item"></div>
     </div>
+    <div class="cell-group" v-else-if="videoList.length % 3 == 2">
+      <div class="cell-item" v-for="(item, index) in videoList" :key="index">123123</div>
+      <div class="cell-item"></div>
+    </div>
+    <div class="cell-group" v-else>
+      <div class="cell-item" v-for="(item, index) in videoList" :key="index">123123</div>
+    </div>
+  </div>
+  <div v-else class="no-video">
+    No favorite video
   </div>
 </template>
 
-<script>
-import Vue from "vue";
-import Scroller from "@nutui/nutui/dist/packages/scroller/scroller.js"; // 加载构建后的JS
-import "@nutui/nutui/dist/packages/scroller/scroller.css";
-Scroller.install(Vue);
-export default {
-  components: {
-    Scroller
-  },
-  data() {
-    return {
-      dishData: [
-        {
-          img: require("../images/video.jpg"),
-          name: "Pock rice"
-        },
-        {
-          img: require("../images/video.jpg"),
-          name: "Pock rice"
-        },
-        {
-          img: require("../images/video.jpg"),
-          name: "Pock rice"
-        },
-        {
-          img: require("../images/video.jpg"),
-          name: "Pock rice"
-        },
-        {
-          img: require("../images/video.jpg"),
-          name: "Pock rice"
-        },
-        {
-          img: require("../images/video.jpg"),
-          name: "Pock rice"
-        },
-        {
-          img: require("../images/video.jpg"),
-          name: "Pock rice"
-        }
-      ]
-    };
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+import VideoService from "../../../service/video";
+@Component({
+  name: "VideoLists",
+  components: {},
+})
+export default class VideoList extends Vue {
+  private videoList: Array<any> = [];
+  private isNoVideo: boolean = false
+  private created() {
+    this.postVideoMyLike();
   }
-};
+  public postVideoMyLike() {
+    VideoService.postVideoMyLike().then((res: any) => {
+      console.log(res);
+      if (res.code == 200) {
+        this.videoList = res.data.Videos;
+        if(res.data.Videos.length == 0){
+          this.isNoVideo = true
+        }
+      }
+    });
+  }
+  public stepToVideoPlay(index:any,id:any){
+    
+  }
+}
 </script>
 
 <style lang="scss" scoped>
-.block-title-background {
-  background-color: #fafafa00;
-}
-.van-cell {
-  font-size: 0.36rem;
-}
-
-.s-box {
-  float: left;
-  // height: 1.6rem;
-  margin: 0 0 0 0.28rem;
-  border-radius: 0.08rem;
-  width: 2.1rem;
-
-  img {
-    width: 100%;
-    border-radius: 0.1rem;
-    box-shadow: 0 0 0.08rem #efefef;
+.cell-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  .cell-item {
+    width: 30%;
+    .video-box {
+      position: relative;
+      display: flex;
+      margin: 0.3rem 0 0;
+      border-radius: 0.1rem;
+      width: 100%;
+      height: 4rem;
+      background-color: #000;
+      align-items: center;
+      overflow: hidden;
+      .icon-p {
+        position: absolute;
+        right: 0.2rem;
+        bottom: 0.2rem;
+        z-index: 98;
+        opacity: 0.8;
+      }
+      img {
+        width: 100%;
+        border-radius: 0.1rem;
+        z-index: 97;
+      }
+    }
   }
 }
-.s-box-right {
-  margin-right: 0.82rem;
+.no-video{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 3rem;
 }
 </style>

@@ -1,5 +1,8 @@
 <template>
+<div>
+  <abus-title :title="$t('Registery')" />
   <div class="registery">
+
     <div class="con">
       <div class="main-item">
         <div class="title line-h">{{$t('Name')}}</div>
@@ -7,7 +10,7 @@
           v-model="nickname"
           class="main-item-con"
           type="text"
-          placeholder="Please enter  your name"
+          :placeholder="$t('NameTips')"
         />
       </div>
       <div class="main-item">
@@ -48,12 +51,12 @@
           v-model="phone"
           class="main-item-con"
           type="text"
-          placeholder="Please enter your phone number"
+          :placeholder="$t('PhoneTips')"
         />
       </div>
       <div class="main-item">
         <div class="title line-h">{{$t('IDCard')}}</div>
-        <input v-model="idCard" class="main-item-con" type="text" placeholder="Please enter IDCard" />
+        <input v-model="idCard" class="main-item-con" type="text" :placeholder="$t('IDCardTips')" />
       </div>
       <div class="main-item">
         <div class="title line-h">{{$t('Password')}}</div>
@@ -61,7 +64,7 @@
           v-model="password"
           class="main-item-con"
           type="password"
-          placeholder="Please enter password"
+          :placeholder="$t('PasswordTips')"
         />
       </div>
       <div class="main-item">
@@ -71,7 +74,7 @@
           @blur="checkPassword"
           class="main-item-con"
           type="password"
-          placeholder="Please Confirm password"
+          :placeholder="$t('ConfirmPasswordTips')"
         />
       </div>
       <div class="main-item">
@@ -81,18 +84,18 @@
           @click="showPopup"
           :value="datetime"
           type="text"
-          placeholder="Please select your date"
+          :placeholder="$t('DateTips')"
         />
         <van-popup v-model="show" position="bottom" :style="{ height: '40%' }">
           <van-datetime-picker
             v-model="currentDate"
             type="date"
-            title="Date"
+            :title="$t('Date')"
             :min-date="minDate"
             :max-date="maxDate"
             @confirm="getConfirmData"
-            cancel-button-text="cancel"
-            confirm-button-text="determine"
+            :cancel-button-text="$t('Cancel')"
+            :confirm-button-text="$t('Determine')"
           />
         </van-popup>
       </div>
@@ -103,7 +106,7 @@
           class="main-item-con"
           type="text"
           :value="question"
-          placeholder="Please enter Security issues"
+          :placeholder="$t('IssuesTips')"
         />
         <van-popup v-model="showIssues" position="bottom" :style="{ height: '30%' }">
           <van-picker
@@ -112,8 +115,8 @@
             @cancel="showIssues = false"
             @confirm="onConfirm"
             :default-index="1"
-            cancel-button-text="cancel"
-            confirm-button-text="determine"
+            :cancel-button-text="$t('Cancel')"
+            :confirm-button-text="$t('Determine')"
           />
         </van-popup>
       </div>
@@ -123,21 +126,22 @@
           v-model="answer"
           class="main-item-con"
           type="text"
-          placeholder="Please enter Security answer"
+          :placeholder="$t('AnswerTips')"
         />
       </div>
     </div>
     <p class="policy">
       <svg class="icon icon-read" aria-hidden="true" @click="onClickRead">
-        <use v-if="isReaded" xlink:href="#icon-readed1" />
+        <use v-if="isReaded" xlink:href="#icon-readed_1" />
         <use v-else xlink:href="#icon-unread" />
       </svg>
-      《Privacy policy》《Terms of service》
+      {{$t('Agreement')}}
     </p>
     <div class="button-box">
-      <div class="button" @click="onClickRegistery">Registery</div>
+      <div class="button" @click="onClickRegistery">{{$t('Registery')}}</div>
     </div>
   </div>
+</div>
 </template>
 <i18n>
 	{
@@ -153,7 +157,20 @@
 			"Confirm-password":"确认密码",
 			"Date":"出生日期",
 			"Security-issues":"密保问题",
-			"Security-answer":"密保答案"
+      "Security-answer":"密保答案",
+      "Agreement":"《隐私政策》《服务条款》",
+      "Registery": "注册",
+      "NameTips":"请输入你的名字",
+      "PhoneTips":"请输入你的手机号码",
+      "IDCardTips":"请输入身份证号",
+      "PasswordTips":"请输入密码",
+      "ConfirmPasswordTips":"请确认密码",
+      "DateTips":"请选择你的生日",
+      "IssuesTips":"请选择密保问题",
+      "AnswerTips":"请输入答案",
+      "Cancel":"取消",
+      "Determine":"确定",
+      "Date":"日期"
 		},
 		"en":{
 			"Name": "Name",
@@ -167,17 +184,33 @@
 			"Confirm-password":"Confirm password",
 			"Date":"Date",
 			"Security-issues":"Security issues",
-			"Security-answer":"Security answer"
+      "Security-answer":"Security answer",
+      "Agreement":"《Privacy policy》《Terms of service》",
+      "Registery": "Registery",
+      "NameTips":"Please enter your name",
+      "PhoneTips":"Please enter your phone number",
+      "IDCardTips":"Please enter IDCard",
+      "PasswordTips":"Please enter your password",
+      "ConfirmPasswordTips":"Please Confirm password",
+      "DateTips":"Please enter your date",
+      "IssuesTips":"Please enter Security issues",
+      "AnswerTips":"Please enter Security answer",
+      "Cancel":"Cancel",
+      "Determine":"Determine",
+      "Date":"Date"
 		}
 	}
 </i18n>
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import LoginService from "../../service/login";
+import AbusTitle from '../../components/AbusTitle.vue'
 
 @Component({
   name: "Registery",
-  components: {},
+  components: {
+    AbusTitle
+  },
 })
 export default class Register extends Vue {
   private fileList: Array<any> = [];

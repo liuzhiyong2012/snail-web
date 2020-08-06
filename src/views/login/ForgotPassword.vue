@@ -1,48 +1,51 @@
 <template>
   <div class="forgot-password">
+    <abus-title :title="$t('ForgotPassword')"></abus-title>
     <div class="tab">
       <div class="place active">
         <div class="place-icon">1</div>
-        <div class="text">Your phone number</div>
       </div>
       <div :class="[isActiveTwo? 'f1 active': 'f1']"></div>
       <div :class="[isActiveTwo? 'place active': 'place']">
         <div class="place-icon">2</div>
-        <div class="text">Identity verification</div>
       </div>
       <div :class="[isActiveThr? 'f1 active': 'f1']"></div>
       <div :class="[isActiveThr? 'place active': 'place']">
         <div class="place-icon">3</div>
-        <div class="text">New password</div>
       </div>
+    </div>
+    <div class="tab-flex">
+      <div class="text1">{{$t('PhoneNumber')}}</div>
+      <div class="text1">{{$t('IdentityVerification')}}</div>
+      <div class="text1">{{$t('NewPassword')}}</div>
     </div>
     <div class="tab-con">
       <div class="item" :style="{width: fullWidth * 3 + 'px', left: aLeft + 'px'}">
         <div class="f1">
           <div class="main-box">
-            <div class="title">Phone</div>
+            <div class="title">{{$t('Phone')}}</div>
             <!-- @change="getPhoneNum($event)" -->
             <input
               class="flex1"
-              placeholder="Enter your phone number"
+              :placeholder="$t('PhoneTips')"
               v-model="phone"
               type="number"
             />
           </div>
-          <div class="next" @click="postCheckPhone">Next</div>
+          <div class="next" @click="postCheckPhone">{{$t('Next')}}</div>
         </div>
         <div class="f1">
           <ul class="ul-box">
             <li :class="[isShowSMS? 'collapse-item active': 'collapse-item']">
-              <div class="collapse-item-title" @click="showSMS">SMS verification</div>
+              <div class="collapse-item-title" @click="showSMS">{{$t('SMSVerification')}}</div>
               <div class="collapse-item-con">
                 <div class="collapse-item-main">
-                  <div class="title">Phone</div>
+                  <div class="title">{{$t('Phone')}}</div>
                   <div class="flex1 no-inp">{{phone}}</div>
                 </div>
                 <div class="collapse-item-main no-pad">
-                  <div class="title">Verification Code</div>
-                  <input class="flex1" placeholder="Enter Verification Code" type="text" />
+                  <div class="title">{{$t('VerificationCode')}}</div>
+                  <input class="flex1" :placeholder="$t('VerificationCodeTips')" type="text" />
                 </div>
               </div>
             </li>
@@ -50,46 +53,46 @@
               <div
                 class="collapse-item-title"
                 @click="showSecurityProblem"
-              >Security problem verification</div>
+              >{{$t('SecurityProblem')}}</div>
               <div class="collapse-item-con add-height">
                 <div class="collapse-item-main">
-                  <div class="title">Security issues</div>
+                  <div class="title">{{$t('SecurityIssues')}}</div>
                   <div class="flex1 no-inp add-line-h">{{question}}</div>
                 </div>
                 <div class="collapse-item-main no-pad">
-                  <div class="title">Security answer</div>
+                  <div class="title">{{$t('SecurityAnswer')}}</div>
                   <input
                     v-model="answer"
                     class="flex1"
-                    placeholder="Please enter your answer"
+                    :placeholder="$t('SecurityAnswerTips')"
                     type="text"
                   />
                 </div>
               </div>
             </li>
           </ul>
-          <div class="next" @click="onClickTwo">Next</div>
+          <div class="next" @click="onClickTwo">{{$t('Next')}}</div>
         </div>
         <div class="f1">
           <div class="main-box line-height">
-            <div class="title pad">New password</div>
+            <div class="title pad">{{$t('NewPassword')}}</div>
             <input
               v-model="newPassword"
               class="flex1"
-              placeholder="Please set new password"
+              :placeholder="$t('NewPasswordTips')"
               type="password"
             />
           </div>
           <div class="main-box no-pad line-height">
-            <div class="title pad">Confirm password</div>
+            <div class="title pad">{{$t('ConfirmPassword')}}</div>
             <input
               v-model="confirmPassword"
               class="flex1"
-              placeholder="Please Confirm password"
+              :placeholder="$t('ConfirmPasswordTips')"
               type="password"
             />
           </div>
-          <div class="next" @click="onClickConfirm">Confirm</div>
+          <div class="next" @click="onClickConfirm">{{$t('Confirm')}}</div>
         </div>
       </div>
     </div>
@@ -98,13 +101,57 @@
     </router-view>-->
   </div>
 </template>
-
+<i18n>
+{
+  "zh":{
+    "ForgotPassword": "忘记密码",
+    "PhoneNumber":"你的手机号",
+    "IdentityVerification": "身份验证",
+    "NewPassword":"新密码",
+    "Phone":"手机号",
+    "PhoneTips":"请输入手机号码",
+    "Next":"下一步",
+    "SMSVerification":"短信验证",
+    "VerificationCode":"验证码",
+    "VerificationCodeTips":"请输入验证码",
+    "SecurityProblem":"安全问题验证",
+    "SecurityIssues":"安全问题",
+    "SecurityAnswer":"问题答案",
+    "SecurityAnswerTips":"请输入你的答案",
+    "NewPasswordTips":"请输入新密码",
+    "ConfirmPassword":"确认密码",
+    "ConfirmPasswordTips":"请再次输入密码",
+    "Confirm":"确认"
+  },
+  "en":{
+    "ForgotPassword": "Forgot Password",
+    "PhoneNumber":"Your phone number",
+    "IdentityVerification": "Identity verification",
+    "NewPassword":"New password",
+    "Phone":"Phone",
+    "PhoneTips":"Enter your phone number",
+    "Next":"Next",
+    "SMSVerification":"SMS verification",
+    "VerificationCode":"Verification Code",
+    "VerificationCodeTips":"Enter Verification Code",
+    "SecurityProblem":"Security problem verification",
+    "SecurityIssues":"Security issues",
+    "SecurityAnswer":"Security answer",
+    "SecurityAnswerTips":"Please enter your answer",
+    "NewPasswordTips":"Please set new password",
+    "ConfirmPassword":"Confirm password",
+    "ConfirmPasswordTips":"Please Confirm password",
+    "Confirm":"Confirm"
+  }
+}
+</i18n>
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import LoginService from "../../service/login";
+import AbusTitle from '../../components/AbusTitle.vue'
 @Component({
   name: "ForgotPassword",
-  components: {}
+  components: {AbusTitle},
 })
 export default class ForgotPassword extends Vue {
   private isActiveTwo: boolean = false;
@@ -124,10 +171,18 @@ export default class ForgotPassword extends Vue {
   private created() {
     this.fullWidth = document.documentElement.clientWidth;
   }
-
+  private mounted() {
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+      localStorage.setItem("lang", "en");
+    } else {
+      this.$i18n.locale = "zh";
+      localStorage.setItem("lang", "zh");
+    }
+  }
   public postCheckPhone() {
     var data = {
-      phone: this.phone
+      phone: this.phone,
     };
     //JSON.stringify(data)
     LoginService.postCheckPhone(data)
@@ -151,7 +206,7 @@ export default class ForgotPassword extends Vue {
     if (this.isshowSecurityProblem) {
       var data = {
         id: this.userId,
-        answer: this.answer
+        answer: this.answer,
       };
       LoginService.postCheckAnswer(data)
         .then((res: any) => {
@@ -160,8 +215,8 @@ export default class ForgotPassword extends Vue {
             this.password = res.password;
             this.aLeft = -(this.fullWidth * 2);
             this.isActiveThr = true;
-          }else{
-            this.$toast(res.message)
+          } else {
+            this.$toast(res.message);
           }
         })
         .catch((reason: any) => {
@@ -180,7 +235,7 @@ export default class ForgotPassword extends Vue {
       var data = {
         id: this.userId,
         password: this.password,
-        newPassword: this.newPassword
+        newPassword: this.newPassword,
       };
       LoginService.postResetPassword(data).then((res: any) => {
         console.log(res);
@@ -189,10 +244,10 @@ export default class ForgotPassword extends Vue {
           this.isActiveTwo = false;
           this.isActiveThr = false;
           this.$router.push({
-            path: "/login"
+            path: "/login",
           });
-        }else{
-          this.$toast(res.message)
+        } else {
+          this.$toast(res.message);
         }
       });
     } else if (
@@ -223,8 +278,8 @@ export default class ForgotPassword extends Vue {
     box-sizing: border-box;
     display: flex;
     align-items: baseline;
-    padding: 0.4rem 1rem;
-    height: 1.7rem;
+    padding: 0.4rem 1rem  0;
+    height: 1rem;
     .place {
       position: relative;
       font-size: 0.24rem;
@@ -273,6 +328,17 @@ export default class ForgotPassword extends Vue {
       transition: all ease-out 0.3s;
     }
   }
+  .tab-flex{
+    display: flex;
+    text-align: center;
+    padding: 0 0 .3rem 0;
+    .text1{
+      flex: 1;
+      font-size: 0.24rem;
+        color: rgba(51, 51, 51, 1);
+        line-height: 0.24rem;
+    }
+  }
   .tab-con {
     position: relative;
     width: 100%;
@@ -300,7 +366,8 @@ export default class ForgotPassword extends Vue {
             width: 1.6rem;
           }
           .title.pad {
-            padding: 0.2rem 0 0 0;
+            display: flex;
+                  align-items: center;
           }
           .flex1 {
             flex: 1;
@@ -351,9 +418,13 @@ export default class ForgotPassword extends Vue {
                 .title {
                   width: 1.6rem;
                   line-height: 0.5rem;
+                  display: flex;
+                  align-items: center;
                 }
                 .title.pad {
-                  padding: 0.2rem 0 0 0;
+                  // padding: 0.2rem 0 0 0;
+                  display: flex;
+                  align-items: center;
                 }
                 .flex1 {
                   flex: 1;

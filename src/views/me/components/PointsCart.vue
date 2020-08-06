@@ -8,18 +8,23 @@
       left-icon="location"
       mode="link"
     >{{this.address || '暂无地址'}}</van-notice-bar>
-    <van-swipe-cell v-for="(item,index) in pointsCartList" :key="index">
+    <div v-if="pointsCartList.length > 0">
+      <van-swipe-cell v-for="(item,index) in pointsCartList" :key="index">
       <van-card :title="item.Name" :thumb="item.BannerImgPath" class="goods-card" />
       <template #right>
-        <van-button square text="删除" type="danger" class="delete-button" />
+        <van-button @click="delGoods(index)" square text="删除" type="danger" class="delete-button" />
       </template>
-      <div class="price">${{item.Price}}</div>
+      <div class="price">{{item.Price}}</div>
       <van-field class="field-ctn" name="stepper" label>
         <template #input>
           <van-stepper v-model="item.orderNumber" @change="chengeStepper" />
         </template>
       </van-field>
     </van-swipe-cell>
+    </div>
+    <div v-else class="no-goods" @click="stepToPage('pointsExchange')">
+      No goods, please go shopping ^_^
+    </div>
     <div class="cell-group">
       <div class="cell">
         <div class="cell-l">Required points</div>
@@ -55,7 +60,7 @@ export default class ShoppingCart extends Vue {
     this.postAddress();
   }
   private mounted() {
-      this.chengeStepper()
+    this.chengeStepper();
   }
   private get pointsCartList(): number {
     return this.$store.state.shopping.pointsCartList;
@@ -63,16 +68,16 @@ export default class ShoppingCart extends Vue {
   private get userPoints(): number {
     return this.$store.state.me.points;
   }
-    // private get orderAmount(): any{
-    //     console.log('点击了')
-    //   let pointsCartList = this.$store.state.shopping.pointsCartList;
-    //   let amount = 0;
+  // private get orderAmount(): any{
+  //     console.log('点击了')
+  //   let pointsCartList = this.$store.state.shopping.pointsCartList;
+  //   let amount = 0;
 
-    //   pointsCartList.forEach((item: any, index: any) => {
-    //     amount = amount + item.Price * item.orderNumber;
-    //   });
-    //   return amount;
-    // }
+  //   pointsCartList.forEach((item: any, index: any) => {
+  //     amount = amount + item.Price * item.orderNumber;
+  //   });
+  //   return amount;
+  // }
   public chengeStepper() {
     let pointsCartList = this.$store.state.shopping.pointsCartList;
     let amount = 0;
@@ -89,6 +94,11 @@ export default class ShoppingCart extends Vue {
       }
     });
   }
+  // 删除操作
+  public delGoods(index: any) {
+    this.$store.commit("delPointsCartItem", index);
+    this.chengeStepper();
+  }
   // 下单$requset = $this->selectParam(['Seat','Remark','Items','type'=>1,'address']);
   public postShoppingPlaceOrder() {
     let CartItems: Array<any> = [];
@@ -96,28 +106,36 @@ export default class ShoppingCart extends Vue {
     pointsCartList.forEach((item: any, index: any) => {
       var items: Object = {
         Id: pointsCartList[index].Id,
-        Quantity: pointsCartList[index].orderNumber
+        Quantity: pointsCartList[index].orderNumber,
       };
       CartItems.push(items);
     });
-    console.log(CartItems)
-    let data = {
-      Seat: "B36",
-      Remark: "",
-      Items: CartItems,
-      type: 2,
-      Address: this.address,
-    };
-    ShoppingServer.postShoppingPlaceOrder(data).then((res: any) => {
-      console.log(res);
-      if(res.code == 200 ){
-         this.$store.commit('clearPointsCart')
-          this.$toast('SUCCESS!')
+    console.log(CartItems);
+    if(this.userPoints< this.orderAmount){
+      this.$toast("You don't have enough points")
+      return;
+    }
+    if (this.address != "" && pointsCartList.length > 0) {
+      let data = {
+        Seat: "B36",
+        Remark: "",
+        Items: CartItems,
+        type: 2,
+        Address: this.address,
+      };
+      ShoppingServer.postShoppingPlaceOrder(data).then((res: any) => {
+        console.log(res);
+        if (res.code == 200) {
+          this.$store.commit("clearPointsCart");
+          this.$toast("SUCCESS!");
           this.$router.push({
-              name: 'pointsExchange'
-          })
-      }
-    });
+            name: "pointsExchange",
+          });
+        }
+      });
+    }else{
+      this.$toast('Address or cart cannot be empty')
+    }
   }
   private stepToPage(name: string) {
     this.$router.push({
@@ -135,6 +153,14 @@ export default class ShoppingCart extends Vue {
   position: absolute;
   right: 0;
   bottom: 0;
+}
+.no-goods{
+  display: flex;
+  width: 100%;
+  height: 2.36rem;
+  justify-content: center;
+  align-items: center;
+  color: #999;
 }
 .cell-group-two {
   margin: 0.3rem 0 0 0;

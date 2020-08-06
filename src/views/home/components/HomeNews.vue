@@ -25,7 +25,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import NewsService from "../../../service/news";
 import { localStore } from "@/utils/data-management";
-declare function require(string): string;
+declare function require(string:any): string;
 
 @Component({
   name: "HomeNews",
@@ -55,7 +55,7 @@ export default class HomeNews extends Vue {
     NewsService.getNewsRecommended().then((res: any) => {
       // console.log(res);
       if (res.code == 200) {
-        res.data.RecommendedNews.forEach((item) => {
+        res.data.RecommendedNews.forEach((item:any) => {
           item.img = item.BannerImg;
           if (item.isLike) {
             item.isCollect = true;
@@ -69,7 +69,7 @@ export default class HomeNews extends Vue {
       }
     });
   }
-  public goToDetail(item): void {
+  public goToDetail(item:any): void {
     // 先将详情存入store
     if (localStore.get("newsDetails")) {
       localStore.remove("newsDetails");

@@ -86,7 +86,6 @@ export default class InternetCart extends Vue {
 	}
   @Watch("stepper", { immediate: true })
   private changeInternetStepper() {
-    console.log('123')
     this.$store.commit("changeInternetStepper", this.stepper);
   }
 

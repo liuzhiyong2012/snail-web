@@ -6,6 +6,7 @@ import Shopping from './shopping';
 import Home from './home';
 import Me from './me';
 import News from './news';
+import Video from './video';
 import Message from './message'
 
 Vue.use(Vuex)
@@ -26,6 +27,7 @@ export default new Vuex.Store<any>({
   me:Me,
   home: Home,
   news:News,
+  video: Video,
   message:Message
   }
 })

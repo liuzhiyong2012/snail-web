@@ -130,6 +130,14 @@
             <home-news />
           </home-components>
         </div>
+        <div v-else-if="item.title == 'About Us'">
+          <home-components
+            :titleConfig="navTar[7]"
+            @stepTo="stepToPage($event)"
+          >
+            <home-about-us />
+          </home-components>
+        </div>
       </van-tab>
     </van-tabs>
   </div>
@@ -147,6 +155,7 @@ import HomeMusic from "./components/HomeMusic.vue";
 import HomeGame from "./components/HomeGame.vue";
 import HomeVideo from "./components/HomeVideo.vue";
 import HomeNews from "./components/HomeNews.vue";
+import HomeAboutUs from "./components/HomeAboutUs.vue";
 import { localStore } from "../../utils/data-management";
 import MessageService from "../../service/message";
 declare function require(type: string): string;
@@ -162,6 +171,7 @@ declare function require(type: string): string;
     HomeGame,
     HomeVideo,
     HomeNews,
+    HomeAboutUs,
     HomeComponents,
   },
 })
@@ -209,6 +219,10 @@ export default class Home extends Vue {
         title: "News",
         value: "news",
       },
+      {
+        title: "About Us",
+        value: "About Us",
+      }
     ];
     this.imagesData = [
       {
@@ -269,7 +283,7 @@ export default class Home extends Vue {
       _this.socket.emit("login", uid);
     });
     // 后端推送来消息时
-    _this.socket.on("new_msg", function(msg) {
+    _this.socket.on("new_msg", (msg:any)=> {
       let midMsg = msg.replace(/&quot;/g, `"`);
       let endMsg = JSON.parse(midMsg);
       if (endMsg.type == "system") {
@@ -284,7 +298,7 @@ export default class Home extends Vue {
       }
     });
     // 后端推送来在线数据时
-    _this.socket.on("update_online_count", function(online_stat) {
+    _this.socket.on("update_online_count", (online_stat:any)=> {
       console.log("后端推送来在线数据时", online_stat);
     });
   }

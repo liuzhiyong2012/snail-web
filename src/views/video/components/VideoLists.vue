@@ -2,7 +2,7 @@
   <div class="abus-height">
     <div class="cell-group" v-if="videoList.length % 3 == 1">
       <div class="cell-item" v-for="(item, index) in videoList" :key="index">
-        <div class="video-box" @click="stepToVideoPlay(item.Id)">
+        <div class="video-box" @click="stepToVideoPlay(index)">
           <img :src="item.CoverImgPath" :alt="item.title" />
           <svg class="icon icon-p" aria-hidden="true">
             <use xlink:href="#icon-play-disable" />
@@ -13,11 +13,25 @@
       <div class="cell-item"></div>
     </div>
     <div class="cell-group" v-else-if="videoList.length % 3 == 2">
-      <div class="cell-item" v-for="(item, index) in videoList" :key="index">123123</div>
+      <div class="cell-item" v-for="(item, index) in videoList" :key="index">
+        <div class="video-box" @click="stepToVideoPlay(index)">
+          <img :src="item.CoverImgPath" :alt="item.title" />
+          <svg class="icon icon-p" aria-hidden="true">
+            <use xlink:href="#icon-play-disable" />
+          </svg>
+        </div>
+      </div>
       <div class="cell-item"></div>
     </div>
     <div class="cell-group" v-else>
-      <div class="cell-item" v-for="(item, index) in videoList" :key="index">123123</div>
+      <div class="cell-item" v-for="(item, index) in videoList" :key="index">
+        <div class="video-box" @click="stepToVideoPlay(index)">
+          <img :src="item.CoverImgPath" :alt="item.title" />
+          <svg class="icon icon-p" aria-hidden="true">
+            <use xlink:href="#icon-play-disable" />
+          </svg>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -33,7 +47,8 @@ export default class VideoList extends Vue {
   private arrLength: number = 13;
   private videoList: Array<any> = [];
   private created() {
-    this.getVideoList();
+    // this.getVideoList();
+    this.videoList = this.$store.state.video.videoList
   }
   public getVideoList() {
     VideoService.getVideoList().then((res: any) => {
@@ -43,8 +58,10 @@ export default class VideoList extends Vue {
       }
     });
   }
-  public stepToVideoPlay(index:any,id:any){
-    
+  public stepToVideoPlay(index:any){
+    this.$router.push({
+      name: 'videoPlay'
+    })
   }
 }
 </script>

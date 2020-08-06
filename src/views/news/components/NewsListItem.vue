@@ -61,7 +61,7 @@ export default class NewsListItem extends Vue {
   private created() {}
   private mounted() {}
 
-  public goToDetail(item): void {
+  public goToDetail(item:any): void {
     // 先将详情存入store
     if (localStore.get("newsDetails")) {
       localStore.remove("newsDetails");

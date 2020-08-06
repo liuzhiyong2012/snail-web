@@ -6,7 +6,7 @@ export default {
     userData: {}
   },
   mutations: {
-    changePayType(state: any, payType: number) {
+    changePayType(state: any, payType: any) {
       state.payType = payType;
     },
     addressData(state: any, data: string){

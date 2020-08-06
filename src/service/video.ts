@@ -20,16 +20,13 @@ export default class VideoService {
 		return request({
 			url: '/v1/api/Video/List',
 			method: 'GET',
-			data: data
+			params: data
 		});
 	}
 	// Route::get(':version/api/Video/:id', 'api/:version.app.Video/detail');//根据Id获取Video
 	static getVideo(id:string,data?: object) {
         return request({
 			url: '/v1/api/Video/'+id,
-			// headers: {
-			// 	'Content-Type':'video/mpeg'
-			// },
             method: 'GET',
             params: data
         })
@@ -41,5 +38,11 @@ export default class VideoService {
 // Route::post(':version/api/Video/Like', 'api/:version.app.VideoComment/like');//收藏视频
 // Route::post(':version/api/Video/MyLike', 'api/:version.app.VideoComment/MyLike');//我收藏的视频
 // Route::post(':version/api/Video/UnLike', 'api/:version.app.VideoComment/un_like');//取消视频收藏
-	
+static postVideoMyLike(data?: object) {
+	return request({
+		url: '/v1/api/Video/MyLike',
+		method: 'POST',
+		data: data
+	})
+}
 }  

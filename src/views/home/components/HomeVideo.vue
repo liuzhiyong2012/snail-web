@@ -62,10 +62,11 @@ export default {
         // title: "网红奶茶火锅吃过吗？帮你们省钱了，踩雷啦！！还不如喝奶茶吃正常火锅"
         if (res.code == 200) {
           this.videoList = res.data.Videos;
-          this.videoList.forEach((item, index) => {
-            item.BannerImgPath =
-              "http://172.16.125.11:8010/78a3dfb2-7b10-42b4-8a3b-e6d626e34c99";
-          });
+          this.$store.commit("setVideoList",this.videoList)
+          // this.videoList.forEach((item, index) => {
+          //   item.BannerImgPath =
+          //     "http://172.16.125.11:8010/78a3dfb2-7b10-42b4-8a3b-e6d626e34c99";
+          // });
         }
       });
     }

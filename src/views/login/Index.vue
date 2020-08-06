@@ -22,7 +22,7 @@
         <input
           v-model="userPhone"
           class="form-input"
-          :placeholder="$t('placeholder-Phone')"
+          :placeholder="$t('placeholderPhone')"
           type="text"
         />
       </div>
@@ -35,7 +35,7 @@
         <input
           v-model="userPassword"
           class="form-input"
-          :placeholder="$t('placeholder-Password')"
+          :placeholder="$t('placeholderPassword')"
           type="password"
         />
       </div>
@@ -46,7 +46,7 @@
         <div class="registery">{{$t('Registery')}}</div>
       </router-link>
       <router-link to="/forgot/password">
-        <div class="forgot-password">{{$t('Forgot-Password')}}?</div>
+        <div class="forgot-password">{{$t('ForgotPassword')}}?</div>
       </router-link>
     </div>
     <div class="button-box">
@@ -79,17 +79,17 @@
 			  "LOGIN": "登录",
         "Login": "登录",
         "Registery": "注册",
-        "Forgot-Password": "忘记密码",
-        "placeholder-Phone": "你的手机号码",
-        "placeholder-Password": "请输入密码"
+        "ForgotPassword": "忘记密码",
+        "placeholderPhone": "你的手机号码",
+        "placeholderPassword": "请输入密码"
 		},
 		"en":{
 			  "LOGIN": "LOGIN",
         "Login": "Login",
         "Registery": "Registery",
-        "Forgot-Password": "Forgot Password",
-        "placeholder-Phone": "Your phone",
-        "placeholder-Password": "Password"
+        "ForgotPassword": "Forgot Password",
+        "placeholderPhone": "Your phone",
+        "placeholderPassword": "Password"
 		}
 	}
 </i18n>
@@ -120,11 +120,11 @@ export default class Login extends Vue {
     if(localStorage.getItem('lang') == 'en'){
       this.lang = 'English'
       this.$i18n.locale = 'en'
-    localStorage.setItem('lang', 'en');
+      localStorage.setItem('lang', 'en');
     }else{
       this.lang = '简体中文'
       this.$i18n.locale = 'zh'
-    localStorage.setItem('lang', 'zh');
+      localStorage.setItem('lang', 'zh');
     }
   }
   private get seatNumber(): string {
@@ -165,8 +165,10 @@ export default class Login extends Vue {
               name: res.data.userName,
               token: res.data.access_token,
               id: res.data.airbusId
-            }).then((res:any)=> {
+            }).then((res:any)=>{
+              console.log(localStorage.getItem('token'))
               LoginService.getUserMe().then((res: any)=>{
+              console.log(res)
                 if (res.code == 200 && res.data.Seat == null) {
                       this.$router.push({
                     name: "selectSeat"
@@ -176,9 +178,12 @@ export default class Login extends Vue {
                    this.$router.push({
                     name: "home"
                   });
+                }else{
+                  this.$toast(res.message)
                 }
               })
             })
+            
             // this.$router.push({
             //   name: "home"
             // });
@@ -220,7 +225,7 @@ export default class Login extends Vue {
       right: 0.3rem;
       top: 0.1rem;
       padding: 0.2rem;
-      font-size: 0.32rem;
+      font-size: 0.28rem;
       color: rgba(255, 255, 255, 1);
       font-weight: 400;
       .lang-change {
@@ -262,7 +267,7 @@ export default class Login extends Vue {
         padding: 0 0 0 0.1rem;
         flex: 1;
         background-color: #00205b;
-        font-size: 0.32rem;
+        font-size: 0.30rem;
         color: #fff;
       }
     }

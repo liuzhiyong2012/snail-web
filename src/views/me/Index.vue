@@ -1,6 +1,6 @@
 <template>
   <div class="me"> 
-    <abus-title title="Me" backRootName="home"></abus-title>
+    <abus-title :title="$t('Me')" backRootName="home"></abus-title>
     <div class="user-info">
       <div class="user">
         <div class="user-img">
@@ -20,7 +20,7 @@
       
       <router-link to="/me/pointsexchange">
         <div class="exchange">
-          exchange
+          {{$t('exchange')}}
           <div class="icon-box">
             <span class="i-icon"></span>
             {{userInfo.points|| '--'}}
@@ -30,7 +30,7 @@
     </div>
     <div class="cell-group mt2">
       <div class="cell-item" @click="stepToPage('myorder')">
-        <div class="title">My order</div>
+        <div class="title">{{$t('MyOrder')}}</div>
         <div class="f1">
           <svg class="icon icon-right" aria-hidden="true">
             <use xlink:href="#icon-youjiantou_1" />
@@ -38,7 +38,7 @@
         </div>
       </div>
         <div class="cell-item" @click="stepToPage('address')" >
-          <div class="title">Shopping address</div>
+          <div class="title">{{$t('ShoppingAddress')}}</div>
           <div class="f1">
             <div class="icon-right-2">{{address}}</div>
             <svg class="icon icon-right" aria-hidden="true">
@@ -47,7 +47,7 @@
           </div>
         </div>
         <div class="cell-item" @click="stepToPage('payment')">
-          <div class="title">Payment method</div>
+          <div class="title">{{$t('PaymentMethod')}}</div>
           <div class="f1">
             <svg class="icon icon-right-1" aria-hidden="true">
               <use v-if="payType == '1'" xlink:href="#icon-wechat-pay" />
@@ -61,7 +61,7 @@
           </div>
         </div>
         <div class="cell-item" @click="stepToPage('thirdaccount')">
-          <div class="title">Other account number</div>
+          <div class="title">{{$t('OtherAccountNumber')}}</div>
           <div class="f1">
             <svg class="icon icon-right" aria-hidden="true">
               <use xlink:href="#icon-youjiantou_1" />
@@ -69,9 +69,9 @@
           </div>
         </div>
         <div class="cell-item" @click="stepToPage('lang')">
-          <div class="title">language</div>
+          <div class="title">{{$t('Language')}}</div>
           <div class="f1">
-            <div class="icon-right-2">English</div>
+            <div class="icon-right-2">{{$t('ChineseAndEnglish')}}</div>
             <svg class="icon icon-right" aria-hidden="true">
               <use xlink:href="#icon-youjiantou_1" />
             </svg>
@@ -81,7 +81,7 @@
 
     <div class="cell-group mt2">
       <div class="cell-item">
-        <div class="title">Privacy policy</div>
+        <div class="title">{{$t('PrivacyPolicy')}}</div>
         <div class="f1">
           <svg class="icon icon-right" aria-hidden="true">
             <use xlink:href="#icon-youjiantou_1" />
@@ -89,7 +89,7 @@
         </div>
       </div>
       <div class="cell-item">
-        <div class="title">Terms of service</div>
+        <div class="title">{{$t('TermsOfService')}}</div>
         <div class="f1">
           <svg class="icon icon-right" aria-hidden="true">
             <use xlink:href="#icon-youjiantou_1" />
@@ -99,7 +99,34 @@
     </div>
   </div>
 </template>
-
+<i18n>
+	{
+		"zh":{
+			  "Me":"我的",
+			  "Language":"语言",
+			  "ChineseAndEnglish":"简体中文",
+			  "exchange":"积分",
+			  "MyOrder":"我的订单",
+			  "ShoppingAddress":"收货地址",
+			  "PaymentMethod":"支付方式",
+			  "OtherAccountNumber":"第三方授权",
+			  "PrivacyPolicy":"隐私政策",
+			  "TermsOfService":"服务条款"
+		},
+		"en":{
+			  "Me":"Me",
+			  "Language":"Language",
+			  "ChineseAndEnglish":"English",
+			  "exchange":"exchange",
+			  "MyOrder":"My order",
+			  "ShoppingAddress":"Shopping address",
+			  "PaymentMethod":"Payment method",
+			  "OtherAccountNumber":"Other account number",
+			  "PrivacyPolicy":"Privacy policy",
+			  "TermsOfService":"Terms of service"
+		}
+	}
+</i18n>
 <script lang="ts">
 import AbusTitle from "../../components/AbusTitle.vue";
 import { Vue, Prop, Component } from "vue-property-decorator";
@@ -117,6 +144,13 @@ export default class meIndex extends Vue {
   private created() {
     this.getUserInfo()
     this.postAddress()
+  }
+  private mounted() {
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+    } else {
+      this.$i18n.locale = "zh";
+    }
   }
   private get payType():number{
 		return this.$store.state.me.payType;
@@ -138,10 +172,12 @@ export default class meIndex extends Vue {
 // WeChatId: null
 // points: "2000"
     MeServer.getUserInfo().then((res:any)=>{
-      console.log(res)
+      // console.log(res)
       if(res.code == 200){
         this.userInfo = res.data
         this.$store.commit('setUserData',res.data)
+      }else{
+        this.$toast(res.message)
       }
     })
   }
@@ -229,6 +265,7 @@ export default class meIndex extends Vue {
       line-height: 0.48rem;
       font-weight: 400;
       font-style: oblique;
+      transition: all cubic-bezier(0.075, 0.82, 0.165, 1) .3s;
       .i-icon {
         position: absolute;
         top: 0;

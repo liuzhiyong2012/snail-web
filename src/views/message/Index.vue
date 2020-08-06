@@ -157,7 +157,7 @@ export default class messageIndex extends Vue {
 
   private updated() {
     // 聊天定位到底部
-    let ele = document.getElementById("chat-inner");
+    let ele:any = document.getElementById("chat-inner");
     ele.scrollTop = ele.scrollHeight;
   }
 
@@ -213,7 +213,7 @@ export default class messageIndex extends Vue {
       _this.socket.emit("login", uid);
     });
     // 后端推送来消息时
-    _this.socket.on("new_msg", function(msg) {
+    _this.socket.on("new_msg", (msg:any)=> {
       let midMsg = msg.replace(/&quot;/g, `"`);
       let endMsg = JSON.parse(midMsg);
       // {type: "message", content: "Your netFlow order has been completed", mark: "你的流量套餐订单已完成"}
@@ -243,7 +243,7 @@ export default class messageIndex extends Vue {
       }
     });
     // 后端推送来在线数据时
-    _this.socket.on("update_online_count", function(online_stat) {
+    _this.socket.on("update_online_count", (online_stat:any)=> {
       console.log("后端推送来在线数据时", online_stat);
     });
   }
@@ -251,7 +251,7 @@ export default class messageIndex extends Vue {
   // 获取聊天记录 1已读  0未读
   public getChatMessage() {
     const _this = this;
-    let messageList = [];
+    let messageList:Array<any> = [];
     if (localStore.get("chatList")) {
       messageList = localStore.get("chatList");
     }
@@ -296,9 +296,9 @@ export default class messageIndex extends Vue {
   public getSysNoticeList() {
     const _this = this;
     _this.systemMsgList = [];
-    let readList = [];
-    let unreadList = [];
-    let storeList = [];
+    let readList:Array<any> = [];
+    let unreadList:Array<any> = [];
+    let storeList:Array<any> = [];
     MessageService.getSystemNoticeList({ read: 1 }).then((res) => {
       if (res.code == 200) {
         readList = res.data.notice;

@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <abus-title title="Video" backRootName="home"></abus-title>
     <van-tabs
       sticky
       line-width="20"
@@ -8,18 +9,12 @@
       title-active-color="rgb(0,32,91)"
     >
       <van-tab v-for="(val,index) in navTar" :title="val" title-active-color="#3056EF" :key="index">
-        <div v-if="val == 'Video'" class="flight">
+        <div v-if="val == 'All'" class="flight">
           <video-lists />
         </div>
-        <div v-else-if="val == 'Video1'" class="flight">
+        <div v-else-if="val == 'My collection'" class="flight">
           <video-list />
         </div>
-        <div v-else-if="val == 'Video2'" class="flight">
-          <video-list />
-        </div>
-       <div v-else-if="val == 'Video3'" class="flight">
-          <video-list />
-        </div> 
       </van-tab>
     </van-tabs>
   </div>
@@ -28,18 +23,19 @@
 <script>
 // @ is an alias to /src
 
-import VideoList from "@/views/video/components/VideoList";
 import VideoLists from "@/views/video/components/VideoLists";
-
+import VideoList from "@/views/video/components/VideoList";
+import AbusTitle from "../../components/AbusTitle.vue";
 export default {
   name: "Video",
   components: {
     VideoList,
-    VideoLists
+    VideoLists,
+    AbusTitle
   },
   data() {
     return {
-      navTar: ["Video","Video1","Video2","Video3" ],
+      navTar: ["All","My collection"],
       imagesData: [
         {
           img: require("./images/video.jpg"),
@@ -68,6 +64,9 @@ export default {
 <style scoped lang="scss">
 .home {
   padding: 0 0 0.5rem 0;
+  .video-top{
+    margin: .3rem 0 0;
+  }
 }
 .van-tab--active {
   font-weight: 600;

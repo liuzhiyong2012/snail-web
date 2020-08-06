@@ -16,12 +16,12 @@ export default {
     setName(state: any, name: any) {
       state.name = name
       state.userInfo.nickname = name
-      localStore.set('nickname',name)
+      localStorage.setItem('nickname',name)
     },
     setToken(state:any, token: string){
       state.token = token
       state.userInfo.token = token
-      localStore.set('token',token)
+      localStorage.setItem('token',token)
     },
     setPhone(state:any,phone: string){
       state.token = phone

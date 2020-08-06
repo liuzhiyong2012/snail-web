@@ -39,7 +39,7 @@ export default {
             state.shoppingDetail = data
         },
         delShoppingCartItem(state: any, index: number) {
-            state.cartList.splice(index, 1, 0);
+            state.cartList.splice(index, 1);
         },
         clearShoppingCart(state: any) {
             state.cartList = [];
@@ -58,7 +58,7 @@ export default {
             state.shoppingDetail = data
         },
         delPointsCartItem(state: any, index: number) {
-            state.pointsCartList.splice(index, 1, 0);
+            state.pointsCartList.splice(index, 1);
         },
         clearPointsCart(state: any) {
             state.pointsCartList = [];

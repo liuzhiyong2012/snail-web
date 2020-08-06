@@ -72,17 +72,13 @@ import AbusTitle from '../../../components/AbusTitle.vue';
 	}
 })
 export default class PayMent extends Vue{
-	private radio:any = "1";
+	private radio:any = this.$store.state.me.payType;
 	
-	@Watch('radio',{immediate:true})
+	@Watch('radio')
 	private changePayType(){
 		this.$store.commit('changePayType',this.radio);
 	}
 	
-	
-	private mounted(){
-		this.radio = this.$store.state.me.payType;
-	}
 	
 }
 </script>

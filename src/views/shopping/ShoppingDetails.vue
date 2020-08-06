@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch} from "vue-property-decorator";
 import AbusTitle from "../../components/AbusTitle.vue";
 import CartIcon from "./components/ShoppingCartIcon.vue";
 
@@ -71,6 +71,10 @@ export default class ShoppingDetail extends Vue {
   private mounted() {
     // this.$store.commit("setShoppingDetail", this.$route.params.shoppingInfo);
     this.shoppingInfo = this.$route.params.shoppingInfo;
+  }
+  @Watch("stepper", { immediate: true })
+  private watchStepper() {
+    this.shoppingInfo.orderNumber = this.stepper
   }
   private get shoppingDetail() {
     return this.$store.state.shopping.shoppingDetail;

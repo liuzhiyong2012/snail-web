@@ -1,18 +1,20 @@
 <template>
-  <div class="registery">
+<div  class="registery">
+  <abus-title :title="$t('SeatSelection')" />
+  <div>
     <div class="con">
       <div class="main-item">
-        <div class="title line-h">Name</div>
+        <div class="title line-h">{{$t('Name')}}</div>
         <p class="main-p">Vision Airlines VA3928</p>
       </div>
       <div class="main-item">
-        <div class="title line-h">Name</div>
+        <div class="title line-h">{{$t('Seat')}}</div>
         <input
           v-model="seat"
           @click="showSeat"
           class="main-item-con"
           type="text"
-          placeholder="Please enter  your name"
+          :placeholder="$t('SeatTips')"
         />
         <van-popup v-model="showIssues" position="bottom" :style="{ height: '30%' }">
           <van-picker
@@ -21,25 +23,47 @@
             @cancel="showIssues = false"
             @confirm="onConfirm"
             :default-index="1"
-            cancel-button-text="cancel"
-            confirm-button-text="determine"
+            :cancel-button-text="$t('Cancel')"
+            :confirm-button-text="$t('Determine')"
           />
         </van-popup>
       </div>
     </div>
     <div class="button-box">
-      <div class="button" @click="getCrmSelectSeat">Registery</div>
+      <div class="button" @click="getCrmSelectSeat">{{$t('Confirm')}}</div>
     </div>
   </div>
+</div>
 </template>
-
+<i18n>
+{
+  "zh":{
+    "Name":"航班名称",
+    "Seat":"座位",
+    "SeatTips":"请选择座位",
+    "Cancel":"取消",
+    "Determine":"确认",
+    "Confirm":"确认",
+    "SeatSelection":"座位选择"
+  },
+  "en":{
+    "Name":"Name",
+    "Seat":"Seat",
+    "SeatTips":"Please enter your seat",
+    "Cancel":"Cancel",
+    "Determine":"Determine",
+    "Confirm":"Confirm",
+    "SeatSelection":"Seat selection"
+  }
+}
+</i18n>
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import LoginServer from "../../service/login";
-
+import AbusTitle from '../../components/AbusTitle.vue'
 @Component({
   name: "SelectSeat",
-  components: {},
+  components: {AbusTitle},
 })
 export default class SelectSeat extends Vue {
   private seat: string = "";
@@ -51,6 +75,15 @@ export default class SelectSeat extends Vue {
   private created() {
     // this.getCrmSeatInfo()
     this.getCrmOtherSeatList();
+  }
+  private mounted() {
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+      localStorage.setItem("lang", "en");
+    } else {
+      this.$i18n.locale = "zh";
+      localStorage.setItem("lang", "zh");
+    }
   }
 
   public showSeat() {
@@ -105,10 +138,12 @@ export default class SelectSeat extends Vue {
 
 <style lang="scss" scoped>
 .registery {
-  padding: 0.3rem 0 0;
+
   box-sizing: border-box;
   height: 100vh;
+
   .con {
+    margin: 0.3rem 0 0;
     background-color: #fff;
     padding: 0.3rem 0.3rem 0;
     .main-item {
