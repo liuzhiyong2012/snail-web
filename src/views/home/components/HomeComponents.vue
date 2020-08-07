@@ -22,8 +22,12 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 	}
 })
 export default class HomeComponents extends Vue{
-	@Prop()
-	private titleConfig:any = {};
+	@Prop({
+		default:()=>{
+			return {};
+		}
+	})
+	private titleConfig:any;
 	
 	public stepTo(value:string){
 		this.$emit('stepTo',value);

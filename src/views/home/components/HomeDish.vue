@@ -5,14 +5,14 @@
         <div slot="list" v-for="(item, index) of recomendList" :key="index">
           <div class="s-box s-box-right" v-if="index+1 == recomendList.length">
             <div class="img-box">
-              <img :src="item.SampleImgPath" :alt="item.Name" />
+              <img :src="item.SampleImgPath|addBaseUrl" :alt="item.Name" />
             </div>
             <div class="name">{{item.Name}}</div>
             <div class="price">${{item.Price}}</div>
           </div>
           <div class="s-box" v-else>
             <div class="img-box">
-              <img :src="item.SampleImgPath" :alt="item.Name" />
+              <img :src="item.SampleImgPath|addBaseUrl" :alt="item.Name" />
             </div>
             <div class="name">{{item.Name}}</div>
             <div class="price">${{item.Price}}</div>
