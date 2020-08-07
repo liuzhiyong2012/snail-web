@@ -1,6 +1,6 @@
 <template>
   <div class="abus-height">
-    <abus-title title="Shopping" backRootName="home"></abus-title>
+    <abus-title title="Shopping" backRouteName="home"></abus-title>
     <div class="banner">
       <van-swipe :autoplay="3000">
         <van-swipe-item
@@ -10,7 +10,7 @@
         >
           <div
             class="shopping-recomend-img"
-            :style="{backgroundImage:`url(${item.SampleImgPath|addBaseUrl})`}"
+            :style="{backgroundImage:`url(${item.CoverImgUrl})`}"
           ></div>
         </van-swipe-item>
       </van-swipe>
@@ -79,7 +79,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import DishService from "../../service/shopping";
 import ShoppingService from "../../service/shopping";
 import AbusTitle from "../../components/AbusTitle.vue";
-
+import UrlUtils from '../../utils/url-utils';
 // import Banner from "@/components/banner";
 @Component({
   name: "Shopping",
@@ -149,7 +149,10 @@ export default class ShoppingIndex extends Vue {
   private getShoppingRecommendedList() {
     ShoppingService.getShoppingRecommendedList({}).then((res: any) => {
       this.recomendList = res.data.RecommendedShopping;
-      // console.log(res);
+      this.recomendList.forEach((item:any,index:any)=>{
+					item.CoverImgUrl = UrlUtils.addBaseUrl( UrlUtils.delBaseUrl(item.BannerImgPath));
+				});
+      console.log(res);
     });
   }
 

@@ -1,6 +1,6 @@
 <template>
   <div class="internet-cart">
-    <abus-title title="Internet Cart" backRootName="internet"></abus-title>
+    <abus-title title="Internet Cart" backRouteName="internet"></abus-title>
     <div class="cart">
       <div class="name-bg" v-if="getInternetData.DisplayOrder == 1">ALL DAY</div>
       <div class="name-bg text-two" v-else-if="getInternetData.DisplayOrder == 2">1 G</div>

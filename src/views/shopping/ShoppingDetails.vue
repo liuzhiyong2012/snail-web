@@ -46,7 +46,7 @@
 import { Component, Prop, Vue, Watch} from "vue-property-decorator";
 import AbusTitle from "../../components/AbusTitle.vue";
 import CartIcon from "./components/ShoppingCartIcon.vue";
-
+import UrlUtils from '../../utils/url-utils';
 @Component({
   name: "ShoppingDetail",
   components: {
@@ -71,6 +71,7 @@ export default class ShoppingDetail extends Vue {
   private mounted() {
     // this.$store.commit("setShoppingDetail", this.$route.params.shoppingInfo);
     this.shoppingInfo = this.$route.params.shoppingInfo;
+    this.shoppingInfo.BannerImgPath = UrlUtils.addBaseUrl( UrlUtils.delBaseUrl(this.shoppingInfo.BannerImgPath));
   }
   @Watch("stepper", { immediate: true })
   private watchStepper() {

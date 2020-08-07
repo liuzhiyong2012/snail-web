@@ -1,6 +1,6 @@
 <template>
   <div class="abus-height">
-      <abus-title title="My order" backRootName="meIndex"></abus-title>
+      <abus-title title="My order" backRouteName="meIndex"></abus-title>
     <van-tabs
       line-width="20"
       line-height="4"

@@ -1,6 +1,6 @@
 <template>
   <section>
-    <abus-title title="Scan" backRootName="home"></abus-title>
+    <abus-title title="Scan" backRouteName="home"></abus-title>
 
     <section class="scan-wrap">
       <div id="support"></div>
