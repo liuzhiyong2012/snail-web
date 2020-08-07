@@ -76,9 +76,10 @@ router.beforeEach((to, from, next) => {
 	
 	
   let islogin = localStore.get('token');
+             // debugger;   
   
-  islogin = Boolean(Number(islogin));
-  // debugger;
+  islogin = Boolean(islogin);
+  
   if(to.meta.noRequireAuth ||islogin) {
     next();
   }else{

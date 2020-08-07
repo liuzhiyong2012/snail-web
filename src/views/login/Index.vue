@@ -166,7 +166,7 @@ export default class Login extends Vue {
               token: res.data.access_token,
               id: res.data.airbusId
             }).then((res:any)=>{
-              console.log(localStore.get('token'))
+              console.log('token:' + localStore.get('token'))
               LoginService.getUserMe().then((res: any)=>{
               console.log(res)
                 if (res.code == 200 && res.data.Seat == null) {
