@@ -1,5 +1,5 @@
 <template>
-  <div class="abus-height" v-if="isNoVideo">
+  <div class="abus-height" v-if="!isNoVideo">
     <div class="cell-group" v-if="videoList.length % 3 == 1">
       <div class="cell-item" v-for="(item, index) in videoList" :key="index">
         <div class="video-box" @click="stepToVideoPlay(item.Id)">
@@ -42,8 +42,8 @@ export default class VideoList extends Vue {
     VideoService.postVideoMyLike().then((res: any) => {
       console.log(res);
       if (res.code == 200) {
-        this.videoList = res.data.Videos;
-        if(res.data.Videos.length == 0){
+        this.videoList = res.data.video;
+        if(res.data.video.length == 0){
           this.isNoVideo = true
         }
       }

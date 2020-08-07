@@ -49,6 +49,7 @@ export default class VideoList extends Vue {
   private created() {
     // this.getVideoList();
     this.videoList = this.$store.state.video.videoList
+    console.log(this.videoList)
   }
   public postVideoList() {
     VideoService.postVideoList().then((res: any) => {
@@ -60,7 +61,10 @@ export default class VideoList extends Vue {
   }
   public stepToVideoPlay(index:any){
     this.$router.push({
-      name: 'videoPlay'
+      name: 'videoPlay',
+      params:{
+        index: index
+      }
     })
   }
 }
