@@ -162,7 +162,7 @@ export default class messageIndex extends Vue {
     ele.scrollTop = ele.scrollHeight;
   }
 
-  private destroyed() {
+  private beforeDestroy() {
     // if(this.socket){
     //   this.socket.close();
     //   this.socket = null;
