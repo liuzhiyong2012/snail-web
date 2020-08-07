@@ -5,7 +5,7 @@
     <div class="goods-item" v-for="(item,index) in shoppingList" :key="index">
       <div class="goods"  @click="stepToDetail(item)">
         <div class="goods-img">
-          <img :src="item.SampleImgPath" :alt="item.Name" />
+          <img :src="item.SampleImgPath|addBaseUrl" :alt="item.Name" />
         </div>
         <!-- <div class="price">${{item.Price}}</div> -->
         <div class="name">{{item.Name}}</div>

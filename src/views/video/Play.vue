@@ -4,7 +4,12 @@
       <svg @click="stepToVideo" class="icon step-icon" aria-hidden="true">
         <use xlink:href="#icon-white_1" />
       </svg>
-      <van-swipe @change="onChange" :show-indicators="false" vertical>
+      <van-swipe
+        @change="onChange"
+        :initial-swipe="videoListIndex"
+        :show-indicators="false"
+        vertical
+      >
         <van-swipe-item v-for="(item, index) in videoListOne" class="product-swiper" :key="index">
           <div class="video-item">
             <!--video属性
@@ -43,26 +48,55 @@
               preload="auto"
               @click="playVideo(index)"
               :src="'http://172.16.125.11:8010/'+item.Id"
-              :poster="item.CoverImgPath"
+              :poster="item.CoverImgPath|addBaseUrl"
               class="video-box"
             ></video>
             <!-- 右侧栏 -->
             <div class="right-box">
-              <svg @click="clickLike(index)" class="icon right-icon" aria-hidden="true">
-                <use v-if="item.isLike" xlink:href="#icon-collect" />
+              <svg @click="clickLike(index,item.Id)" class="icon right-icon" aria-hidden="true">
+                <use v-if="item.isLike != null" xlink:href="#icon-collect" />
                 <use v-else xlink:href="#icon-collect-undo" />
               </svg>
               <div class="text">{{item.LikeCount}}</div>
-              <svg @click="showComment(index)" class="icon right-icon1" aria-hidden="true">
+              <svg @click="showComment(index,item.Id)" class="icon right-icon1" aria-hidden="true">
                 <use xlink:href="#icon-1-chat" />
               </svg>
               <div class="text">{{item.CommentCount}}</div>
             </div>
             <!-- 评论 -->
+            <!-- <div class="comment-mask active"> -->
             <div :class="[item.isCommentShow?'comment-mask active':'comment-mask']">
               <svg @click="closePopup(index)" class="icon c-icon" aria-hidden="true">
                 <use xlink:href="#icon-close" />
               </svg>
+              <div class="comment-list" v-if="item.Comments">
+                <div
+                  class="list-cell"
+                  v-for="(i,aIndex) in item.Comments.slice(0, 5)"
+                  :key="aIndex"
+                >
+                  <div class="list-l">
+                    <div class="img-box">{{getOneText(i.Creator.NickName)}}</div>
+                  </div>
+                  <div class="list-r">
+                    <div class="name">{{i.Creator.NickName}}</div>
+                    <div class="comment">{{i.Comment}}</div>
+                  </div>
+                </div>
+                <div v-if="item.Comments.length > 5" class="more">显示更多...</div>
+              </div>
+              <div v-else-if="item.Comments.length == 0" class="comment-list text-c">loading...</div>
+              <div class="comment-init">
+                <input
+                  v-model="Comment"
+                  class="input-box"
+                  type="text"
+                  placeholder="Leave your wonderful comments"
+                />
+                <div class="btn-box">
+                  <div class="btn" @click="sendComment(index,item.Id)">Send</div>
+                </div>
+              </div>
             </div>
             <!-- 下侧栏 -->
             <div class="bottom-box">
@@ -108,8 +142,17 @@ export default class VideoPlay extends Vue {
   private isCommentShow: boolean = false;
   private adShowTime: any = "";
   private current: any = 0;
+  private videoListIndex: any = 0;
+  private Comment: string = "";
   private mounted() {
-    this.postVideoList();
+    this.videoListIndex = this.$route.params.index;
+    console.log(this.videoListIndex);
+    // this.postVideoList();
+    this.videoListOne = this.$store.state.video.videoList;
+    this.videoListOne.forEach((item: any, index: any) => {
+      item.isCommentShow = false;
+      item.Comments = [];
+    });
     clearTimeout(this.adShowTime);
     this.adShowTime = setTimeout(() => {
       this.isShowAd = true;
@@ -122,8 +165,9 @@ export default class VideoPlay extends Vue {
         this.videoListOne = res.data.Videos;
         this.videoListOne.forEach((item: any, index: any) => {
           item.isCommentShow = false;
+          item.Comments = [];
           // 测试使用
-          item.isLike = false;
+          // item.isLike = false;
         });
 
         // VideoService.getVideo(res.data.Videos[0].Id).then((res: any) => {
@@ -155,14 +199,19 @@ export default class VideoPlay extends Vue {
     this.playVideoSwipe(index);
     if (index == Math.round(this.videoListOne.length / 2) && this.isGetVideo) {
       this.isGetVideo = false;
-      VideoService.postVideoList().then((res: any) => {
+      //['skip'=>0,'take'=>10]
+      VideoService.getVideoRecommended({
+        skip: 0,
+        take: 15,
+      }).then((res: any) => {
         // console.log(res);
         if (res.code == 200) {
           this.videoListTwo = res.data.Videos;
           this.videoListTwo.forEach((item: any, index: any) => {
             item.isCommentShow = false;
+            item.Comments = [];
             // 测试使用
-            item.isLike = false;
+            // item.isLike = false;
           });
         }
       });
@@ -172,29 +221,79 @@ export default class VideoPlay extends Vue {
       this.isPlay = false;
     }
   }
+  // 取首字母
+  public getOneText(str: string) {
+    return str.substring(0, 1);
+  }
   // 关闭广告
   public closeAd() {
     this.isShowAd = false;
   }
-  public clickLike(index: any) {
-    this.videoListOne[index].isLike = !this.videoListOne[index].isLike;
+  // 喜欢
+  public clickLike(index: any,id:any) {
+    // this.videoListOne[index].isLike = !this.videoListOne[index].isLike;
+    // Vue.set(this.videoListOne, index, this.videoListOne[index]);
+    if (this.videoListOne[index].isLike != null) {
+      this.videoListOne[index].isLike = null;
+    } else {
+      this.videoListOne[index].isLike = "1";
+    }
     Vue.set(this.videoListOne, index, this.videoListOne[index]);
-    if (this.videoListOne[index].isLike) {
+    if (this.videoListOne[index].isLike != null) {
       this.videoListOne[index].LikeCount =
         this.videoListOne[index].LikeCount + 1;
       Vue.set(this.videoListOne, index, this.videoListOne[index]);
       // 接口交互
+      VideoService.postVideoLike({id:id}).then((res: any)=>{
+        console.log(res)
+      })
     } else {
       this.videoListOne[index].LikeCount =
         this.videoListOne[index].LikeCount - 1;
       Vue.set(this.videoListOne, index, this.videoListOne[index]);
+      VideoService.postVideoUnLike({id:id}).then((res: any)=>{
+        console.log(res)
+      })
     }
   }
+  // 发送评论
+  public sendComment(index: any, id: any) {
+    let data = {
+      VideoId: id,
+      Comment: this.Comment,
+    };
+    VideoService.postVideoComments(data).then((res: any) => {
+      // console.log(res);
+      if (res.code == 200) {
+        VideoService.getVideoCommentsList({
+          videoId: id,
+        }).then((res: any) => {
+          // console.log(res);
+          if (res.code == 200) {
+            this.videoListOne[index].Comments = res.data.Comments;
+            Vue.set(this.videoListOne, index, this.videoListOne[index]);
+            this.videoListOne[index].CommentCount =
+              this.videoListOne[index].CommentCount + 1;
+            Vue.set(this.videoListOne, index, this.videoListOne[index]);
+          }
+        });
+      }
+    });
+  }
   //弹出评论操作
-  public showComment(index: any) {
+  public showComment(index: any, id: any) {
     this.videoListOne[index].isCommentShow = true;
     Vue.set(this.videoListOne, index, this.videoListOne[index]);
     this.isPlayVideoFalse(index);
+    VideoService.getVideoCommentsList({
+      videoId: id,
+    }).then((res: any) => {
+      console.log(res);
+      if (res.code == 200) {
+        this.videoListOne[index].Comments = res.data.Comments;
+        Vue.set(this.videoListOne, index, this.videoListOne[index]);
+      }
+    });
   }
   //关闭评论操作
   public closePopup(index: any) {
@@ -222,10 +321,10 @@ export default class VideoPlay extends Vue {
     video.pause();
     this.isPlay = false;
   }
-  public stepToVideo(){
+  public stepToVideo() {
     this.$router.push({
-      name: 'video'
-    })
+      name: "video",
+    });
   }
 }
 </script>
@@ -241,16 +340,16 @@ export default class VideoPlay extends Vue {
 .van-swipe {
   width: 100vw;
   height: 100vh;
-  max-width: 550px;
+  // max-width: 550px;
   margin: 0 auto;
   position: relative;
 }
-.step-icon{
+.step-icon {
   position: absolute;
-  left: .3rem;
-  top:.3rem;
-  width: .5rem;
-  height: .5rem;
+  left: 0.3rem;
+  top: 0.3rem;
+  width: 0.5rem;
+  height: 0.5rem;
   z-index: 99;
 }
 .product-swiper {
@@ -280,18 +379,22 @@ export default class VideoPlay extends Vue {
   }
 }
 .comment-mask {
+  display: none;
   position: absolute;
   left: 0;
   bottom: 0;
   right: 0;
   width: 100%;
-  height: 0;
+  height: auto;
   background-color: #fff;
   border-radius: 0.2rem 0.2rem 0 0;
+  overflow: hidden;
   z-index: 100;
   transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 0.3s;
+  touch-action: cross-slide-y;
   &.active {
-    height: 38vh;
+    display: block;
+    max-height: 70vh;
     .c-icon {
       position: absolute;
       right: 0;
@@ -308,6 +411,99 @@ export default class VideoPlay extends Vue {
     width: 0;
     height: 0;
     color: #666;
+  }
+  .comment-list {
+    padding: 0.3rem 0 1rem;
+    height: 100%;
+    box-sizing: border-box;
+    min-height: 3rem;
+    &.text-c {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #666;
+    }
+    .more {
+      padding: 0.3rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .list-cell {
+      display: flex;
+      margin: 0.2rem 0 0;
+      .list-l {
+        display: flex;
+        justify-content: center;
+        // width: 1.2rem;
+        .img-box {
+          margin: 0.1rem 0.2rem;
+          width: 1rem;
+          height: 1rem;
+          border-radius: 50%;
+          background-color: #00205b;
+          color: #fff;
+          text-align: center;
+          line-height: 1rem;
+          font-size: 0.5rem;
+        }
+      }
+      .list-r {
+        flex: 1;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        .name {
+          width: 100%;
+          line-height: 0.48rem;
+          height: 0.48rem;
+          font-size: 0.32rem;
+          color: #333;
+          font-weight: bold;
+        }
+        .comment {
+          width: 100%;
+          height: auto;
+          line-height: 0.4rem;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          color: #999;
+        }
+      }
+    }
+  }
+  .comment-init {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    background-color: #fff;
+    border-top: 0.01rem solid #888;
+    width: 100%;
+    height: 1rem;
+    .btn-box {
+      display: flex;
+      width: 1.5rem;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      .btn {
+        width: 80%;
+        height: 0.6rem;
+        text-align: center;
+        line-height: 0.6rem;
+        color: #fff;
+        background-color: #00205b;
+        border-radius: 0.3rem;
+      }
+    }
+    .input-box {
+      flex: 1;
+      padding: 0 0 0 0.3rem;
+    }
   }
 }
 .right-box {

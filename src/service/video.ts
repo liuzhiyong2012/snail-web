@@ -7,15 +7,15 @@ export default class VideoService {
 	constructor() {
 		
 	}
-    // 获取评论列表
-	static getVideoCommentsList(data: Object) {   
+    // 推荐视频
+	static getVideoRecommended(data?: Object) {   
 		return request({
-			url: '/v1/api/Video/Comments/List',
+			url: '/v1/api/Video/Recommended',
 			method: 'GET',
 			data: data
 		});
 	}
-    // 推荐视频
+    // 视频列表
 	static postVideoList(data?: Object) {   
 		return request({
 			url: '/v1/api/Video/List',
@@ -31,8 +31,15 @@ export default class VideoService {
             params: data
         })
 	}
-	
-// 	Route::post(':version/api/Video/Comments', 'api/:version.app.Video/comments');//评论视频
+	static getVideoCommentsList(data?: object) {
+        return request({
+			url: '/v1/api/Video/Comments/List',
+            method: 'GET',
+            params: data
+        })
+	}
+// Route::get(':version/api/Video/Comments/List', 'api/:version.app.VideoComment/index');//获取评论列表
+// Route::post(':version/api/Video/Comments', 'api/:version.app.Video/comments');//评论视频
 // Route::delete(':version/api/Video/Comments/:id', 'api/:version.app.VideoComment/del');//删除评论
 // Route::post(':version/api/Video/IsLike', 'api/:version.app.VideoComment/is_like');//是否已收藏
 // Route::post(':version/api/Video/Like', 'api/:version.app.VideoComment/like');//收藏视频
@@ -41,6 +48,30 @@ export default class VideoService {
 static postVideoMyLike(data?: object) {
 	return request({
 		url: '/v1/api/Video/MyLike',
+		method: 'POST',
+		data: data
+	})
+}
+// 收藏视频
+static postVideoLike(data?: object) {
+	return request({
+		url: '/v1/api/Video/Like',
+		method: 'POST',
+		data: data
+	})
+}
+// 取消收藏视频
+static postVideoUnLike(data?: object) {
+	return request({
+		url: '/v1/api/Video/UnLike',
+		method: 'POST',
+		data: data
+	})
+}
+// 评论视频
+static postVideoComments(data?: object) {
+	return request({
+		url: '/v1/api/Video/Comments',
 		method: 'POST',
 		data: data
 	})

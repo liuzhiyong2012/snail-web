@@ -12,7 +12,7 @@
     >{{this.address || '暂无地址'}}</van-notice-bar>
     <div v-if="cartList.length > 0">
       <van-swipe-cell v-for="(item,index) in cartList" :key="index">
-      <van-card :title="item.Name" :thumb="item.BannerImgPath" class="goods-card" />
+      <van-card :title="item.Name" :thumb="item.BannerImgPath|addBaseUrl" class="goods-card" />
       <template #right>
         <van-button @click="delGoods(index)" square text="删除" type="danger" class="delete-button" />
       </template>

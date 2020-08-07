@@ -10,7 +10,7 @@
         >
           <div
             class="shopping-recomend-img"
-            :style="{backgroundImage:`url(${item.SampleImgPath})`}"
+            :style="{backgroundImage:`url(${item.SampleImgPath|addBaseUrl})`}"
           ></div>
         </van-swipe-item>
       </van-swipe>
@@ -55,7 +55,7 @@
             <div class="goods-item" v-for="(item,i) in options1[index].data" :key="i">
               <div class="goods">
                 <div class="goods-img">
-                  <img :src="item.SampleImgPath" :alt="item.Name" />
+                  <img :src="item.SampleImgPath|addBaseUrl" :alt="item.Name" />
                 </div>
                 <div class="price">${{item.Price}}</div>
                 <div class="name">{{item.Name}}</div>

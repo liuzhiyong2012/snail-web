@@ -5,7 +5,7 @@
     </abus-title>
     <div calss="shopping-details">
       <!-- <banner :bannerData="bannerData" /> -->
-      <div class="dish-img" :style="{backgroundImage:`url(${pointsInfo.BannerImgPath})`}"></div>
+      <div class="dish-img" :style="{backgroundImage:`url(${pointsInfo.BannerImgPath|addBaseUrl})`}"></div>
     </div>
     <div class="m-box">
       <div class="title">{{pointsInfo.Name || '--'}}</div>

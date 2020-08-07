@@ -27,7 +27,7 @@
       <div class="main">
         <div class="item" v-for="(aItem,aIndex) in item.Items" :key="aIndex">
           <div class="img">
-            <img :src="aItem.Dish.BannerImgPath" alt />
+            <img :src="aItem.Dish.BannerImgPath|addBaseUrl" alt />
           </div>
           <div class="f1">
             <div class="title">{{aItem.Dish.Name}}</div>

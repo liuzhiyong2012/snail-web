@@ -3,7 +3,7 @@
     <div class="cell-group" v-if="videoList.length % 3 == 1">
       <div class="cell-item" v-for="(item, index) in videoList" :key="index">
         <div class="video-box" @click="stepToVideoPlay(index)">
-          <img :src="item.CoverImgPath" :alt="item.title" />
+          <img :src="item.CoverImgPath|addBaseUrl" :alt="item.title" />
           <svg class="icon icon-p" aria-hidden="true">
             <use xlink:href="#icon-play-disable" />
           </svg>
@@ -15,7 +15,7 @@
     <div class="cell-group" v-else-if="videoList.length % 3 == 2">
       <div class="cell-item" v-for="(item, index) in videoList" :key="index">
         <div class="video-box" @click="stepToVideoPlay(index)">
-          <img :src="item.CoverImgPath" :alt="item.title" />
+          <img :src="item.CoverImgPath|addBaseUrl" :alt="item.title" />
           <svg class="icon icon-p" aria-hidden="true">
             <use xlink:href="#icon-play-disable" />
           </svg>
@@ -26,7 +26,7 @@
     <div class="cell-group" v-else>
       <div class="cell-item" v-for="(item, index) in videoList" :key="index">
         <div class="video-box" @click="stepToVideoPlay(index)">
-          <img :src="item.CoverImgPath" :alt="item.title" />
+          <img :src="item.CoverImgPath|addBaseUrl" :alt="item.title" />
           <svg class="icon icon-p" aria-hidden="true">
             <use xlink:href="#icon-play-disable" />
           </svg>
@@ -49,6 +49,7 @@ export default class VideoList extends Vue {
   private created() {
     // this.getVideoList();
     this.videoList = this.$store.state.video.videoList
+    console.log(this.videoList)
   }
   public postVideoList() {
     VideoService.postVideoList().then((res: any) => {
@@ -60,7 +61,10 @@ export default class VideoList extends Vue {
   }
   public stepToVideoPlay(index:any){
     this.$router.push({
-      name: 'videoPlay'
+      name: 'videoPlay',
+      params:{
+        index: index
+      }
     })
   }
 }

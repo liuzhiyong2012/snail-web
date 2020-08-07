@@ -1,9 +1,9 @@
 <template>
-  <div class="abus-height" v-if="isNoVideo">
+  <div class="abus-height" v-if="!isNoVideo">
     <div class="cell-group" v-if="videoList.length % 3 == 1">
       <div class="cell-item" v-for="(item, index) in videoList" :key="index">
         <div class="video-box" @click="stepToVideoPlay(item.Id)">
-          <img :src="item.CoverImgPath" :alt="item.title" />
+          <img :src="item.CoverImgPath|addBaseUrl" :alt="item.title" />
           <svg class="icon icon-p" aria-hidden="true">
             <use xlink:href="#icon-play-disable" />
           </svg>
@@ -42,8 +42,8 @@ export default class VideoList extends Vue {
     VideoService.postVideoMyLike().then((res: any) => {
       console.log(res);
       if (res.code == 200) {
-        this.videoList = res.data.Videos;
-        if(res.data.Videos.length == 0){
+        this.videoList = res.data.video;
+        if(res.data.video.length == 0){
           this.isNoVideo = true
         }
       }

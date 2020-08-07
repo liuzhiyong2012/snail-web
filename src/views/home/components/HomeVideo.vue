@@ -3,13 +3,13 @@
     <scroller>
       <div slot="list" v-for="(item, index) of videoList" :key="index">
         <div class="s-box s-box-right" v-if="index+1 == videoList.length">
-          <img :src="item.CoverImgPath" :alt="item.title" />
+          <img :src="item.CoverImgPath|addBaseUrl" :alt="item.title" />
           <svg class="icon icon-p" aria-hidden="true">
             <use xlink:href="#icon-play-disable" />
           </svg>
         </div>
         <div class="s-box" v-else>
-          <img :src="item.CoverImgPath" :alt="item.title" />
+          <img :src="item.CoverImgPath|addBaseUrl" :alt="item.title" />
           <svg class="icon icon-p" aria-hidden="true">
             <use xlink:href="#icon-play-disable" />
           </svg>
