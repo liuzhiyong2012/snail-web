@@ -2,7 +2,7 @@
   <div>
     <van-swipe :autoplay="3000">
       <van-swipe-item class="van_swipe_item" v-for="(item, index) in bannerData" :key="index">
-        <img :src="item.img" />
+        <img :src="item.img |addBaseUrl" @click="stepTo(item)" />
       </van-swipe-item>
     </van-swipe>
   </div>
@@ -16,6 +16,11 @@ export default {
     return {
       
     };
+  },
+  methods: {
+   stepTo(item){
+			this.$emit('stepTo',item);
+		}
   }
 };
 </script>

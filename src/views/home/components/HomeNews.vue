@@ -7,7 +7,7 @@
       @click="goToDetail(item)"
     >
       <div class="news-l">
-        <img :src="item.BannerImg" :alt="item.Title" />
+        <img :src="item.BannerImg |addBaseUrl" :alt="item.Title" />
       </div>
       <div class="f1">
         <div class="name">
@@ -24,7 +24,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import NewsService from "../../../service/news";
-import { localStore } from "@/utils/data-management";
+import { localStore } from "../../../utils/data-management";
 declare function require(string:any): string;
 
 @Component({
