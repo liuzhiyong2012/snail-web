@@ -70,7 +70,7 @@
     >
       <van-tab
         v-for="(item, index) in navTar"
-        :title="item.title"
+        :title="$t(item.value)"
         title-active-color="#3056EF"
         :key="index"
       >
@@ -143,6 +143,31 @@
   </div>
 </template>
 
+<i18n>
+	{
+		"zh":{
+			"flight":"航班",
+			"dish":"餐品",
+			"shopping":"机上购物",
+			"music":"音乐",
+			"game":"游戏",
+			"video":"视频",
+			"news":"新闻",
+			"aboutUs":"关于我们"
+		},
+		"en":{
+			"flight":"Flight",
+			"dish":"Dish",
+			"shopping":"Shopping",
+			"music":"Music",
+			"game":"Game",
+			"video":"Video",
+			"news":"News",
+			"aboutUs":"About Us"
+		}
+	}
+</i18n>
+
 <script lang="ts">
 // @ is an alias to /src
 import { Component, Prop, Vue } from "vue-property-decorator";
@@ -191,6 +216,7 @@ export default class Home extends Vue {
     setTimeout(() => {
       this.showService = false;
     }, 1000);
+	
     this.navTar = [
       {
         title: "Flight",
@@ -222,7 +248,7 @@ export default class Home extends Vue {
       },
       {
         title: "About Us",
-        value: "About Us",
+        value: "aboutUs",
       }
     ];
     this.imagesData = [
@@ -257,7 +283,7 @@ export default class Home extends Vue {
       flight: "flightIndex",
       dish: "dishIndex",
       shopping: "shopping",
-      music: "",
+      music: "musicIndex",
       game: "game",
       video: "video",
       news: "news",

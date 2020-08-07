@@ -83,6 +83,7 @@ export default class ShoppingAddress extends Vue {
   .van-field {
     border: 0.02rem solid #ccc;
     border-radius: 0.05rem;
+    min-height: 2rem;
   }
 }
 </style>

@@ -11,8 +11,8 @@
 <style lang="scss">
 @import "./assets/style/variables.scss";
 svg.icon {
-  width: .4rem;
-  height: .4rem;
+  width: 0.4rem;
+  height: 0.4rem;
   vertical-align: -0.15em;
   fill: currentColor;
   overflow: hidden;
@@ -25,7 +25,7 @@ svg.icon {
   background-color: $background-color-theme;
   font-family: Helvetica-Bold, Helvetica;
 }
-.abus-height{
+.abus-height {
   min-height: 100vh;
 }
 .abus-icon {
@@ -48,12 +48,52 @@ svg.icon {
   font-size: 0.36rem;
   font-weight: bold;
 }
-.van-tab{
- font-size: .28rem !important;
+.van-tab {
+  font-size: 0.28rem !important;
 }
 .van-tabs--line .van-tabs__wrap {
-  height: .88rem !important;
-  
+  height: 0.88rem !important;
+}
+.van-stepper__input {
+  width: 0.58rem !important;
+  height: 0.56rem !important;
+  font-size: 0.24rem !important;
+}
+.van-stepper__minus {
+  width: 0.56rem !important;
+  height: 0.56rem !important;
+}
+.van-stepper__plus {
+  width: 0.56rem !important;
+  height: 0.56rem !important;
+}
+.van-card__thumb {
+  width: 1.88rem !important;
+  height: 1.88rem !important;
+  margin-right: 0.2rem !important;
+}
+.van-notice-bar {
+  height: 0.7rem !important;
+  font-size: 0.26rem !important;
+}
+.van-notice-bar__left-icon {
+  font-size: 0.32rem !important;
+}
+.van-notice-bar__right-icon{
+  font-size: 0.32rem !important;
+}
+.van-card__title{
+  max-height: .48rem !important;
+}
+.van-cell{
+  font-size: .36rem !important;
+  line-height: .36rem !important;
+}
+.van-field{
+  font-size: .28rem !important;
+}
+.nut-hor-scroll{
+  touch-action: auto  !important;
 }
 .abus-scroller-box {
   margin: 0 0.28rem;

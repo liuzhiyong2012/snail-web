@@ -1,6 +1,7 @@
-import { localStore } from '@/utils/data-management'
-import { AxiosResponseForZCT, ZCTAPI } from '@/utils/types'
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import { localStore } from '@/utils/data-management';
+import { AxiosResponseForZCT, ZCTAPI } from '@/utils/types';
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import Vue from 'vue';
 // import { Message } from 'element-ui'
 // 验签---------------
 import md5 from 'js-md5'
@@ -49,11 +50,20 @@ service.interceptors.response.use(
     /**
      * TODO: 补充服务端状态码规范
      */
-	//response.data.code === 1000 || response.data.code === 0
+	//状态编码
 	// debugger;
-    if (response.status === 200&&(!response.data.error)) {
-      return response.data;
-    } else {
+	
+    if (response.status === 200&&(!response.data.error)&&response.data.code=="200") {
+       return response.data;
+    } else if(response.status === 200&&(!response.data.error)&&response.data.code=="401"){
+		//当token失效跳转登录页面
+		let host = (Vue.config as any).host; 
+		
+		if(!host.$route.meta.noRequireAuth){
+			host.$router.push('/login');
+		}
+		//跳转到登录页面。
+	}else{
       // Message.error(response.data.message || '网络错误')
       return Promise.reject(response.data)
     }

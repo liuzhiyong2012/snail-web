@@ -100,7 +100,7 @@ export default class ShoppingIndex extends Vue {
     
   }
   private mounted() {
-    window.addEventListener("scroll", this.handleScroll);
+    document.addEventListener("scroll", this.handleScroll);
     var object = document.getElementById("ibox");
   }
   private beforeDestroy() {
@@ -154,8 +154,8 @@ export default class ShoppingIndex extends Vue {
   }
 
   private handleScroll() {
-    var object: any = document.getElementById("ibox");
-    var rectObject = object.getBoundingClientRect().top;
+    let object: any = document.getElementById("ibox");
+    let rectObject = object.getBoundingClientRect().top;
     if (rectObject <= 0) {
       this.isActive = true;
     } else {
@@ -272,7 +272,7 @@ export default class ShoppingIndex extends Vue {
       }
       .qty {
         padding: 0 0.2rem 0.3rem 0.2rem;
-        font-size: 12px;
+        font-size: .24rem !important;
         color: #999;
         position: relative;
         .buy {

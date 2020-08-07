@@ -130,7 +130,7 @@ export default class ShoppingIndex extends Vue {
       }
       .qty {
         padding: 0 0.2rem 0.3rem 0.2rem;
-        font-size: 12px;
+        font-size: .28rem !important;
         color: #999;
         position: relative;
         .buy {

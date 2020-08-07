@@ -137,7 +137,7 @@ export default class PointsDetail extends Vue {
     // height: 0.58rem;
     line-height: 0.58rem;
     .qty {
-      font-size: 0.28rem;
+      font-size: 0.28rem !important;
       color: rgba(96, 116, 153, 1);
     }
     .f1 {
@@ -206,9 +206,9 @@ export default class PointsDetail extends Vue {
   }
 }
 .footer-ctn {
-  position: fixed;
+  // position: fixed;
   width: 100%;
-  margin: 0.3rem 0 0;
+  margin: 0.3rem 0;
   padding: 0 0.3rem;
   box-sizing: border-box;
   // bottom: 0.62rem;
