@@ -2,7 +2,7 @@
   <div>
     <div class="abus-scroller-box">
       <scroller>
-        <div slot="list" v-for="(item, index) of recomendList" :key="index">
+        <div slot="list" v-for="(item, index) of recomendList" :key="index" @click="stepToDetail(item)">
           <div class="s-box s-box-right" v-if="index+1 == recomendList.length">
             <div class="img-box">
               <img :src="item.SampleImgPath|addBaseUrl" :alt="item.Name" />
@@ -84,6 +84,14 @@ export default {
     this.getDishesRecommendedList();
   },
   methods: {
+	 stepToDetail(item){
+		 this.$router.push({
+		 	name: 'dishDetail',
+		 	query: {
+		 		id: item.Id
+		 	}
+		 });
+	 },
     getDishesRecommendedList() {
       DishService.getDishesRecommendedList({}).then(res => {
         // debugger;
