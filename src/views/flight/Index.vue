@@ -29,7 +29,7 @@
 					</div>
 				</div>
 				<div class="camera-video-ctn">
-					<video muted  autoplay loop class="camera-video" v-if="cameraUrl[activeCamera]"  :src="cameraUrl[activeCamera]"  alt="" controls="controls" x5-playsinline="" playsinline="" webkit-playsinline=""></video>
+					<video muted  autoplay loop class="camera-video" v-if="cameraUrl[activeCamera]"  :src="cameraUrl[activeCamera]|addBaseUrl"  alt="" controls="controls" x5-playsinline="" playsinline="" webkit-playsinline=""></video>
 				</div>
 			</section>
 			

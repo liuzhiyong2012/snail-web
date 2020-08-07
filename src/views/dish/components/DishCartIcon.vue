@@ -21,8 +21,7 @@
 	
 	@Component({
 		name:'DishCartIcon',
-		components:{
-			
+		components: {
 		}
 	})
 	export default class DishCartIcon extends Vue{

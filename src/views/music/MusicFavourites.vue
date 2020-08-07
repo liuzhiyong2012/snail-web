@@ -11,7 +11,7 @@
 					<span>{{total}}</span>
 				</div>
 
-				<div class="title-right" v-if="activePage == 'song'" @click="playAll()">
+				<div class="title-right" v-if="activePage == 'song'" @click="playSong(0)">
 					<i class="icon icon-play"></i>
 					<span class="play-btn">Play all</span>
 				</div>
@@ -21,7 +21,7 @@
 				<van-pull-refresh v-model="refreshing" @refresh="onRefresh">
 					<van-list  v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :offset="100" :immediate-check="false" ref="mylist">
 						<div  v-if="activePage == 'song'" refs="aaa" class="collect-list-ctn song">
-							<van-swipe-cell v-for="(item, index) in resultList" :key="index" class="mysong-swipe-item" >
+							<van-swipe-cell v-for="(item, index) in resultList" :key="index" class="mysong-swipe-item" @click="playSong(index)" >
 								<template #right>
 									<div class="delete-btn" >
 										<i class="icon icon-trash" @click="unSubscribeSong(index,item)"></i>
@@ -42,7 +42,7 @@
 						</div>
 						
 						<div  v-if="activePage == 'playList'" class="collect-list-ctn play-list"  >
-							<van-swipe-cell v-for="(item, index) in resultList" :key="index" class="mysong-swipe-item" >
+							<van-swipe-cell v-for="(item, index) in resultList" :key="index" class="mysong-swipe-item" @click="stepToPage(item)">
 								<template #right>
 									<div class="delete-btn">
 										<i class="icon icon-trash" @click="unSubscribePlaylist(index,item)"></i>
@@ -102,7 +102,8 @@ export default class MusicFavourites extends Vue {
 			value: 'playList'
 		}
 	];
-
+	
+    private allSongs: any[] = [];
 	private refreshing: boolean = false;
 	private loading: boolean = false;
 	private finished: boolean = false;
@@ -116,11 +117,21 @@ export default class MusicFavourites extends Vue {
 
 	private mounted() {
 		this.resetList();
+		this.getAllSong();
 	}
 
 
 	public deleteSong(item:any){
 		
+	}
+	
+	private stepToPage(item:any):void{
+				 this.$router.push({
+					 name:'musicPlaylistDetail',
+					 query:{
+						 id:item.Id
+					 }
+				 });
 	}
 	
 	//取消收藏歌单
@@ -214,7 +225,7 @@ export default class MusicFavourites extends Vue {
 			if (resData.code == '200') {
 				
 				resData.data.Playlist.forEach((item:any,index:any)=>{
-					item.CoverImgUrl = UrlUtils.addBaseUrl(item.CoverImgUrl);
+					item.CoverImgUrl = UrlUtils.addBaseUrl( UrlUtils.delBaseUrl(item.CoverImgUrl));
 				});
 				
 				this.resultList = this.resultList.concat(resData.data.Playlist); 
@@ -253,16 +264,23 @@ export default class MusicFavourites extends Vue {
 					mid: '',
 					name: item.Name,
 					singer: this.computeAuthorName(item),
-					url: 'http://172.16.125.11:8010/' + item.Id
+					url: UrlUtils.addBaseUrl( UrlUtils.delBaseUrl(item.Id))
 				}
 			],
 			index: 0
 		});
 	}
-
-	private playAll(): void {
-		let songs = [];
-
+    
+	
+	
+	private playSong(index){
+		this.$store.dispatch('selectPlay', {
+			list: this.allSongs,
+			index: index
+		});
+	}
+	
+	private getAllSong(): void {
 		MusicService.getMySongList({
 			take: 1000,
 			skip: 0
@@ -280,43 +298,18 @@ export default class MusicFavourites extends Vue {
 							mid: '',
 							name: item.Name,
 							singer: this.computeAuthorName(item),
-							url: 'http://172.16.125.11:8010/' + item.Id
+							url: UrlUtils.addBaseUrl( UrlUtils.delBaseUrl(item.Id))
 						});
 					});
-
-					this.$store.dispatch('selectPlay', {
-						list: songs,
-						index: 1
-					});
+					
+					this.allSongs = songs;
+					
 				} else {
 					this.$toast('获取列表失败!');
 				}
-
-				/* this.loading = false;
-			 	   this.refreshing = false; */
 			})
 			.catch((e?: any) => {
-				/* this.loading = false;
-			 				 this.refreshing = false; */
 			});
-
-		/* this.playListObj.Tracks.forEach((item,index)=>{
-			 				 songs.push({
-			 					 album: 'album',
-			 					 duration: item.Duration,
-			 					 id: item.Id,
-			 					 image: this.playListObj.CoverImgUrl,
-			 					 mid: '',
-			 					 name:  item.Name,
-			 					 singer: this.computeAuthorName(item),
-			 					 url: 'http://172.16.125.11:8010/' + item.Id,
-			 				 });
-			 });
-			 
-			 this.$store.dispatch('selectPlay',{
-			 				list: songs,
-			 				index: 1
-			  }); */
 	}
 
 	private onLoad(): void {

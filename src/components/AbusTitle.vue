@@ -33,11 +33,11 @@
 		}
 	})
 	export default class AbusTitle extends Vue{
-		@Prop({default:'qqq'})
+		@Prop({default:'默认标题'})
 		private title?:string;
 		
 		@Prop({default:''})
-		private backRootName?:string;
+		private backRouteName?:string;
 			
 		@Prop({default:()=>{
 			return {};
@@ -45,11 +45,11 @@
 		private params?:object;
 		
 		public back():void {
-			if(!this.backRootName){
+			if(!this.backRouteName){
 				this.$router.go(-1);
 			}else{
 				(this as any).$router.push({
-					name:this.backRootName,
+					name:this.backRouteName,
 					params:this.params
 				});
 			}

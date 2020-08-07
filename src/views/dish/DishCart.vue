@@ -1,15 +1,13 @@
 <template>
 	<section class="dishcart-main-ctn">
 		<div class="dishcart-title">
-			<abus-title backRouteName="dishIndex">
-				<!-- <dish-cart-icon></dish-cart-icon> -->
+			<abus-title backRouteName="dishIndex" :title="$t('title')">
 			</abus-title>
 		</div>
 
 		<div class="cart-ctn">
 			<van-swipe-cell class="cart-item-ctn" v-for="(item,index) in cartList"  :key="index">
 				<template #right>
-					<!-- v-for="(item,index) in index" -->
 					<van-button square text="删除" type="danger" class="delete-button" />
 				</template>
 				
@@ -35,15 +33,14 @@
 		
 		<div class="pay-info-ctn">
 			<div class="seat-ctn" >
-				<span>Seat No:</span>
+				<span>$t('seatNumber')</span>
 				<span>{{seatNumber}}</span>
 			</div>
 			
 			<div class="pay-ctn">
 				<div class="pay-label">
-					Payment Method
+					{{$t('payWay')}}
 				</div>
-				
 				<div class="pay-way" @click="selectPayType()">
 					<svg class="icon i-icon" aria-hidden="true">
 					    <use v-if="payType == '1'" xlink:href="#icon-wechat-pay" />
@@ -56,20 +53,39 @@
 				</div>
 			</div>
 			<div class="total-money" >
-				<span>Total amount</span>
+				<span>$t('totalAmount')</span>
 				<span>${{orderAmount}}</span>
 			</div>
 		</div>
 		
 		<div class="pay-outer-btn">
 			<div class="pay-btn" @click="placeOrder">
-				Pay
+				{{$t('payBtn')}}
 			</div>
 		</div>
 		
 		
 	</section>
 </template>
+
+<i18n>
+	{
+		"zh":{
+			"title":"餐品详情",
+			"seatNumber":"座位",
+			"payWay":"支付方式",
+			"totalAmount":"总金额",
+			"payBtn":"支付"
+		},
+		"en":{
+			"title":"DishDetail",
+			"seatNumber":"Seat No:",
+			"payWay":"Payment Method",
+			"totalAmount":"Total Amount",
+			"payBtn":"Pay"
+		}
+	}
+</i18n>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
@@ -113,7 +129,7 @@ export default class DishCart extends Vue {
 	}
 	private selectPayType(){
 		this.$router.push({
-			name:'mePayment'
+			name:'payment'
 		});
 	}
 	

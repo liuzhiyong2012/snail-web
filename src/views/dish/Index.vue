@@ -1,10 +1,8 @@
 <template>
 	<section class="dish-main-ctn">
-		<abus-title title="Dish" backRouteName="home"></abus-title>
-
+		<abus-title :title="$t('title')" backRouteName="home"></abus-title>
 		<van-swipe :autoplay="3000">
-			<van-swipe-item class="dish-recomend-item" v-for="(item, index) in recomendList" :key="index">
-				<!-- <img :src="item.BannerImgPath|addBaseUrl" alt=""> -->
+			<van-swipe-item class="dish-recomend-item" v-for="(item, index) in recomendList" :key="index" @click="stepToDetail(item)">
 				<div class="dish-recomend-img" :style="{ backgroundImage: `url(${item.BannerImgPath})` }"></div>
 			</van-swipe-item>
 		</van-swipe>
@@ -32,6 +30,17 @@
 		<!-- 点单列表 -->
 	</section>
 </template>
+
+<i18n>
+	{
+		"zh":{
+			"title":"餐品列表"
+		},
+		"en":{
+			"title":"Dish"
+		}
+	}
+</i18n>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
@@ -145,7 +154,7 @@ export default class DishIndex extends Vue {
 				height: 3rem;
 				background-repeat: no-repeat;
 				background-position: center;
-				background-size: cover;
+				background-size: contain;
 			}
 			.dish-info {
 				padding: 0.2rem;
