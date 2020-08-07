@@ -213,7 +213,7 @@ export default class MusicFavourites extends Vue {
 		}).then((resData: any) => {
 			if (resData.code == '200') {
 				
-				resData.data.Playlist.forEach((item,index)=>{
+				resData.data.Playlist.forEach((item:any,index:any)=>{
 					item.CoverImgUrl = UrlUtils.addBaseUrl(item.CoverImgUrl);
 				});
 				

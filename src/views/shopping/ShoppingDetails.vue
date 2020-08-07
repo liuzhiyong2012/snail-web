@@ -204,9 +204,9 @@ export default class ShoppingDetail extends Vue {
   }
 }
 .footer-ctn {
-  position: fixed;
+  // position: fixed;
   width: 100%;
-  margin: 0.3rem 0 0;
+  margin: 0.3rem 0 ;
   padding: 0 0.3rem;
   box-sizing: border-box;
   // bottom: 0.62rem;

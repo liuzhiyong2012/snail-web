@@ -109,14 +109,14 @@ export default class VideoPlay extends Vue {
   private adShowTime: any = "";
   private current: any = 0;
   private mounted() {
-    this.getVideoList();
+    this.postVideoList();
     clearTimeout(this.adShowTime);
     this.adShowTime = setTimeout(() => {
       this.isShowAd = true;
     }, 10000);
   }
-  public getVideoList() {
-    VideoService.getVideoList().then((res: any) => {
+  public postVideoList() {
+    VideoService.postVideoList().then((res: any) => {
       // console.log(res);
       if (res.code == 200) {
         this.videoListOne = res.data.Videos;
@@ -155,7 +155,7 @@ export default class VideoPlay extends Vue {
     this.playVideoSwipe(index);
     if (index == Math.round(this.videoListOne.length / 2) && this.isGetVideo) {
       this.isGetVideo = false;
-      VideoService.getVideoList().then((res: any) => {
+      VideoService.postVideoList().then((res: any) => {
         // console.log(res);
         if (res.code == 200) {
           this.videoListTwo = res.data.Videos;

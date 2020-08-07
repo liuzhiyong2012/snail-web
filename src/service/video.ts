@@ -16,11 +16,11 @@ export default class VideoService {
 		});
 	}
     // 推荐视频
-	static getVideoList(data?: Object) {   
+	static postVideoList(data?: Object) {   
 		return request({
 			url: '/v1/api/Video/List',
-			method: 'GET',
-			params: data
+			method: 'POST',
+			data: data
 		});
 	}
 	// Route::get(':version/api/Video/:id', 'api/:version.app.Video/detail');//根据Id获取Video
