@@ -62,7 +62,6 @@
     <van-tabs
       scrollspy
       sticky
-      offset-top="50"
       line-width="20"
       line-height="4"
       color="rgb(0,32,91)"

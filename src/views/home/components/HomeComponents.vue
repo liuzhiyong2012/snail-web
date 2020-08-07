@@ -3,7 +3,7 @@
     <h2 class="abus-block-title">
       <van-cell :title="$t(titleConfig.value)" class="block-title-background">
         <template #right-icon>
-          <van-icon name="ellipsis" style="line-height: inherit;" size="25"  @click="stepTo(titleConfig.value)" />
+          <van-icon class="i-icon" name="ellipsis" style="line-height: inherit;"  @click="stepTo(titleConfig.value)" />
         </template>
       </van-cell>
     </h2>    
@@ -67,5 +67,9 @@ export default class HomeComponents extends Vue{
 }
 .van-cell {
   font-size: 0.36rem;
+      padding: 0.1rem 0.3rem !important; 
+}
+.i-icon{
+	font-size: .5rem !important;
 }
 </style>
