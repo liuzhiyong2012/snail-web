@@ -50,8 +50,8 @@ export default class VideoList extends Vue {
     // this.getVideoList();
     this.videoList = this.$store.state.video.videoList
   }
-  public getVideoList() {
-    VideoService.getVideoList().then((res: any) => {
+  public postVideoList() {
+    VideoService.postVideoList().then((res: any) => {
       console.log(res);
       if (res.code == 200) {
         this.videoList = res.data.Videos;

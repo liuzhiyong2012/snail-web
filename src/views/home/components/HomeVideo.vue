@@ -41,11 +41,11 @@ export default {
     };
   },
   created() {
-    this.getVideoList();
+    this.postVideoList();
   },
   methods: {
-    getVideoList() {
-      VideoService.getVideoList().then(res => {
+    postVideoList() {
+      VideoService.postVideoList().then(res => {
         // console.log(res);
         // CommentCount: 1
         // CoverImgId: "75840a83-3425-e911-bd22-c4209d3e3b89"
