@@ -16,6 +16,7 @@ import GameRouter from "./game/router";
 import MessageRouter from "./message/router";
 import MusicRouter from "./music/router";
 import Me from "./me/router";
+import {localStore} from '../utils/data-management';
 
 Vue.use(VueRouter);
 
@@ -66,6 +67,39 @@ const routes: Array<RouteConfig> = [
 
 const router = new VueRouter({
   routes,
+});
+
+//获取token
+router.beforeEach((to, from, next) => {
+	//localStore
+	/* import {localStore} from '../utils/data-management';*/
+	
+	
+  let islogin = localStore.get('token');
+  
+  islogin = Boolean(Number(islogin));
+  // debugger;
+  if(to.meta.noRequireAuth ||islogin) {
+    next();
+  }else{
+	  // next();
+      next("/login");
+  }  
+  
+
+  /* if(to.name == "/login"){
+    if(islogin){
+      next("/table");
+    }else{
+      next();
+    }
+  }else{
+    if(to.meta.requireAuth && islogin) {
+      next();
+    }else{
+      next("/login");
+    }
+  } */
 });
 
 export default router;
