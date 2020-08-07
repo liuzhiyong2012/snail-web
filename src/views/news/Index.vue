@@ -12,7 +12,7 @@
     </van-sticky>
 
     <div class="abus-scroller-box">
-      <banner :bannerData="bannerData" />
+      <banner :bannerData="bannerData" @stepTo="gotoNews($event)" />
     </div>
 
     <van-tabs
@@ -151,6 +151,18 @@ export default class NewsList extends Vue {
     NewsService.postNewsMyLike({}).then((res: any) => {
       if (res.code == 200) {
       }
+    });
+  }
+
+  public gotoNews(item:any): void {
+    // 先将详情存入store
+    if (localStore.get("newsDetails")) {
+      localStore.remove("newsDetails");
+    }
+    this.$store.dispatch("setNewsDetails", item);
+    //进入新闻详情
+    this.$router.push({
+      name: "newsDetail",
     });
   }
 }

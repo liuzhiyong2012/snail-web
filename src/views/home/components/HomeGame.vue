@@ -1,6 +1,6 @@
 <template>
   <div class="abus-scroller-box">
-    <banner :bannerData="gameList" />
+    <banner :bannerData="gameList" @stepTo='goToGame($event)' />
   </div>
 </template>
 
@@ -31,6 +31,12 @@ export default {
         }
       });
     },
+    goToGame(item){
+      // console.log('游戏',item);
+      this.$router.push({
+        name:'game'
+      })
+    }
   },
 };
 </script>

@@ -10,10 +10,10 @@
       <div class="game-item" v-for="(item, index) in gameList" :key="index">
         <div class="game" @click="goToDetail(item)">
           <div class="game-img">
-            <img class="game-img-up" :src="item.CoverImgPath" alt="" />
+            <img class="game-img-up" :src="item.CoverImgPath |addBaseUrl" alt="" />
             <div class="game-img-down">
-              <img :src="item.CoverImgPath" alt="" />
-              <img :src="item.CoverImgPath" alt="" />
+              <img :src="item.CoverImgPath |addBaseUrl" alt="" />
+              <img :src="item.CoverImgPath |addBaseUrl" alt="" />
             </div>
           </div>
           <div style="height:1.1rem">

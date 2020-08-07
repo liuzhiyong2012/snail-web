@@ -2,7 +2,7 @@
   <li class="news-list-wrap">
     <div class="news-list-item">
       <div class="item-img" @click="goToDetail(recommedNewsItem)">
-        <img v-lazy="recommedNewsItem.ThumbsImg[0]" />
+        <img :src="recommedNewsItem.ThumbsImg[0] | addBaseUrl" />
       </div>
 
       <div class="item-info">
