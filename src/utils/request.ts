@@ -56,7 +56,7 @@ service.interceptors.response.use(
     if (response.status === 200&&(!response.data.error)&&response.data.code=="200") {
        return response.data;
     } else if(response.status === 200&&(!response.data.error)&&response.data.code=="401"){
-		//当token实现跳转登录页面
+		//当token失效跳转登录页面
 		let host = (Vue.config as any).host; 
 		
 		if(!host.$route.meta.noRequireAuth){
