@@ -1,6 +1,6 @@
 <template>
 	<section class="music-main-ctn">
-		<abus-title title="Music"></abus-title>
+		<abus-title title="Music" backRouteName="home" :title="$t('title')" class="title-ctn"></abus-title>
 		<section class="content-ctn">
 			<div class="content-top-ctn">
 				<van-swipe :autoplay="3000" class="music-recomend-ctn">
@@ -17,10 +17,9 @@
 							</svg>
 						</div>
 						<div class="function-name">
-							Favourites
+							{{$t('favourites')}}
 						</div>
 					</div>
-					
 					<div class="function-item airfm" @click="getFmList()">
 						<div class="function-icon-ctn">
 							<svg class="icon" aria-hidder="true">
@@ -28,7 +27,7 @@
 							</svg>
 						</div>
 						<div  class="function-name">
-							Air Fm
+							{{$t('airFm')}}
 						</div>
 					</div>
 					
@@ -39,16 +38,15 @@
 							</svg>
 						</div>
 						<div  class="function-name">
-							Top ranks
+							{{$t('topRanks')}}
 						</div>
 					</div>
-					<!-- 学习 --> 
 				</div>
 			</div>
 			
 			<div class="album-ctn">
 				  <div class="album-title">
-					  Pop Album
+					  {{$t('popAlbum')}}
 				  </div>
 				  <div class="album-list-ctn">
 					  <van-list v-model="loading" class="album-item-ctn" :finished="finished" finished-text="没有更多了" @load="onLoad" :offset="100" :immediate-check="false" ref="mylist">
@@ -72,6 +70,25 @@
 		</section>
 	</section>
 </template>
+
+<i18n>
+	{
+		"zh":{
+			"title":"音乐",
+			"favourites":"我的收藏",
+			"airFm":"机上FM",
+			"topRanks":"排名置顶",
+			"popAlbum":"流行专辑"
+		},
+		"en":{
+			"title":"Music",
+			"favourites":"Favourites",
+			"airFm":"Air Fm",
+			"topRanks":"Top ranks",
+			"popAlbum":"Pop Album"
+		}
+	}
+</i18n>
 
 <script lang="ts">
 	import UrlUtils from '../../utils/url-utils';
@@ -202,15 +219,21 @@
 		 	this.pageSize = 10;
 		 	this.getPlayList();
 		 }
-		 
-		
 	}
 </script>
 
-
 <style lang="scss" scoped>
 	.music-main-ctn{
+		.title-ctn{
+			position: fixed;
+			z-index: 100;
+			top:0;
+			left: 0;
+			width: 100%;
+		}
+		
 		.content-ctn{
+			padding-top:1.00rem;
 			.content-top-ctn{
 				padding:0.40rem 0.30rem 0.34rem;
 				background:#ffffff;

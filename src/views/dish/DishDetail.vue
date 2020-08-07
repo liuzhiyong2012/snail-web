@@ -1,8 +1,8 @@
 <template>
 	<section class="dishdetail-main-ctn">
 		<div class="dish-title">
-			<abus-title backRouteName="dishIndex">
-				 <dish-cart-icon></dish-cart-icon>
+			<abus-title :title="$t('title')" backRouteName="dishIndex">
+				 <dish-cart-icon @toCart="stepToCart()"></dish-cart-icon>
 			</abus-title>
 		</div>
 		<div class="order-ctn">
@@ -16,7 +16,7 @@
 
 				<div class="order-item-ctn">
 					<div class="qty-ctn">
-						<span>QTY</span>
+						<span>{{$t('qty')}}</span>
 						<span>{{dishInfo.Stocking||'--'}}</span>
 					</div>
 
@@ -25,7 +25,7 @@
 
 						<van-field class="field-ctn" name="stepper" label="">
 							<template #input>
-								<van-stepper v-model="stepper" />
+								<van-stepper v-model="dishInfo.orderNumber" />
 							</template>
 						</van-field>
 					</div>
@@ -33,17 +33,36 @@
 			</div>
 
 			<div class="seat-ctn">
-				<span>Seat No:</span>
+				<span>S{{$t('seatNumber')}}</span>
 				<span>{{seatNumber}}</span>
 			</div>
 		</div>
 
 		<div class="footer-ctn">
-			<div class="cart-btn primary" @click="addToCart()">Add To Cart</div>
-			<div class="cart-btn normal" @click="buyNow()">Buy Now</div>
+			<div class="cart-btn primary" @click="addToCart()">{{$t('addToCart')}} </div>
+			<div class="cart-btn normal" @click="buyNow()">{{$t('buyNow')}}</div>
 		</div>
 	</section>
 </template>
+
+<i18n>
+	{
+		"zh":{
+			"title":"餐品详情",
+			"addToCart":"添加购物车",
+			"buyNow":"立即购买",
+			"seatNumber":"座位",
+			"qty":"剩余"
+		},
+		"en":{
+			"title":"DishDetail",
+			"addToCart":"Add To Cart",
+			"buyNow":"Buy Now",
+			"seatNumber":"Seat No:",
+			"qty":"QTY"
+		}
+	}
+</i18n>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
@@ -84,6 +103,7 @@ export default class DishDetail extends Vue {
 		}).then((res:any)=>{
 			if(res.code == '200'){
 				 this.dishInfo = res.data;
+				 this.dishInfo.orderNumber = 1;
 			}else{
 				
 			}
@@ -96,6 +116,7 @@ export default class DishDetail extends Vue {
 	}
 	
 	public addToCart():void{
+		// debugger;
 		this.$store.commit('addCartItem',this.dishInfo);
 		this.$toast('成功加入购物车!');
 	}
@@ -103,6 +124,13 @@ export default class DishDetail extends Vue {
 	public buyNow():void{
 		// this.$toast('购买成功!');
 		this.$store.commit('addCartItem',this.dishInfo);
+		this.$router.push({
+			name:'dishCart'
+		});
+	}
+	
+	public stepToCart():void{
+		// debugger;
 		this.$router.push({
 			name:'dishCart'
 		});

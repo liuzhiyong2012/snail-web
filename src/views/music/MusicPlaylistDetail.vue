@@ -138,9 +138,7 @@
 		 }
 		 
 		 private goBack(){
-			 this.$router.push({
-				 name:'musicIndex'
-			 });
+			 this.$router.go(-1);
 		 }
 		 
 		 private playAll(){
