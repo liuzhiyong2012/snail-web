@@ -64,9 +64,10 @@ if(location.href.indexOf('localhost') > -1 ){
 }
 
 
-new Vue({
+let host = new Vue({
   router,
   store,
   i18n,
   render: h => h(App)
-}).$mount('#app')
+}).$mount('#app');
+(Vue.config as any).host = host;
