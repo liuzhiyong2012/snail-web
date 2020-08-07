@@ -4,7 +4,7 @@
       <div slot="list" v-for="(item, index) of shoppingList" :key="index">
         <div class="s-box s-box-right" v-if="index+1 == shoppingList.length">
           <div class="img-box">
-            <img :src="item.SampleImgPath" :alt="item.Name" />
+            <img :src="item.SampleImgPath|addBaseUrl" :alt="item.Name" />
           </div>
           <div class="name">{{item.Name}}</div>
           <div class="price">
@@ -14,7 +14,7 @@
         </div>
         <div class="s-box" v-else>
           <div class="img-box">
-            <img :src="item.SampleImgPath" :alt="item.Name" />
+            <img :src="item.SampleImgPath|addBaseUrl" :alt="item.Name" />
           </div>
           <div class="name">{{item.Name}}</div>
           <div class="price">

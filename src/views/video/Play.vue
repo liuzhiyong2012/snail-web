@@ -48,7 +48,7 @@
               preload="auto"
               @click="playVideo(index)"
               :src="'http://172.16.125.11:8010/'+item.Id"
-              :poster="item.CoverImgPath"
+              :poster="item.CoverImgPath|addBaseUrl"
               class="video-box"
             ></video>
             <!-- 右侧栏 -->
