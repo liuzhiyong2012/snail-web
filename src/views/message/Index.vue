@@ -15,20 +15,20 @@
             showMessage == true ? 'header-message' : 'header-message-disable'
           "
         >
-          <span class="message-mr" @click="gotoChatMessage('notice')"
-            >message</span
-          >
+          <span class="message-mr" @click="gotoChatMessage('notice')">message</span>
           <span>
-            <i
-              class="icon icon-able3_1"
-              v-show="showDelete == false"
-              @click="deleteMsgShow"
-            ></i>
+            <!-- <i class="icon icon-able3_1" v-show="showDelete == false" @click="deleteMsgShow"></i>
             <i
               class="icon icon-able3_1"
               style="color: rgba(46, 46, 46, 0.3);"
               v-show="showDelete == true"
-            ></i>
+            ></i> -->
+            <svg class="icon icon-p" v-show="showDelete == false" @click="deleteMsgShow" aria-hidden="true">
+              <use xlink:href="#icon-able3_1" />
+            </svg>
+            <svg class="icon icon-p" v-show="showDelete == true" aria-hidden="true">
+              <use xlink:href="#icon-diasable_1" />
+            </svg>
           </span>
         </div>
       </message-title>
@@ -45,12 +45,10 @@
             <section class="talk-item">
               <div class="talk-item-box">
                 <div class="item-img" v-if="item.type != 1">
-                  <img src="./images/vadarImg.png" alt="" />
+                  <img src="./images/vadarImg.png" alt />
                 </div>
                 <div class="item-content">
-                  <p class="item-content-name" v-if="item.type != 1">
-                    Air Hostess
-                  </p>
+                  <p class="item-content-name" v-if="item.type != 1">Air Hostess</p>
                   <span class="item-content-word">{{ item.content }}</span>
                 </div>
               </div>
@@ -60,18 +58,8 @@
       </div>
 
       <div class="send-box">
-        <input
-          type="text"
-          class="word-input"
-          v-model="wordContent"
-          @keyup.enter="sendMsgToManager"
-        />
-        <input
-          type="button"
-          value="Send"
-          class="send-btn"
-          @click="sendMsgToManager"
-        />
+        <input type="text" class="word-input" v-model="wordContent" @keyup.enter="sendMsgToManager" />
+        <input type="button" value="Send" class="send-btn" @click="sendMsgToManager" />
       </div>
     </section>
 
@@ -84,20 +72,24 @@
           @click="changeReadStatus(item)"
         >
           <div class="message-icon">
-            <i class="icon icon-unread1_1" v-if="item.Read == 0"></i>
+            <svg class="icon icon-p" v-if="item.Read == 0" aria-hidden="true">
+              <use xlink:href="#icon-unread1_1" />
+            </svg>
+            <svg class="icon icon-p" v-if="item.Read == 1" aria-hidden="true" >
+              <use xlink:href="#icon-readed_11" />
+            </svg>
+            <!-- <i class="icon icon-unread1_1" v-if="item.Read == 0"></i>
             <i
               class="icon icon-unread1_1"
               v-if="item.Read == 1"
               style="color: rgba(46, 46, 46, 0.3);"
-            ></i>
+            ></i> -->
           </div>
           <p
             :class="
               item.Read == 0 ? 'message-content' : 'message-content-readed'
             "
-          >
-            {{ item.Title }}
-          </p>
+          >{{ item.Title }}</p>
         </div>
       </div>
     </section>
@@ -158,7 +150,7 @@ export default class messageIndex extends Vue {
 
   private updated() {
     // 聊天定位到底部
-    let ele:any = document.getElementById("chat-inner");
+    let ele: any = document.getElementById("chat-inner");
     ele.scrollTop = ele.scrollHeight;
   }
 
@@ -210,11 +202,11 @@ export default class messageIndex extends Vue {
     let uid = _this.uInfo.id;
 
     // socket连接后以uid登录
-    _this.socket.on("connect", function() {
+    _this.socket.on("connect", function () {
       _this.socket.emit("login", uid);
     });
     // 后端推送来消息时
-    _this.socket.on("new_msg", (msg:any)=> {
+    _this.socket.on("new_msg", (msg: any) => {
       let midMsg = msg.replace(/&quot;/g, `"`);
       let endMsg = JSON.parse(midMsg);
       // {type: "message", content: "Your netFlow order has been completed", mark: "你的流量套餐订单已完成"}
@@ -244,7 +236,7 @@ export default class messageIndex extends Vue {
       }
     });
     // 后端推送来在线数据时
-    _this.socket.on("update_online_count", (online_stat:any)=> {
+    _this.socket.on("update_online_count", (online_stat: any) => {
       console.log("后端推送来在线数据时", online_stat);
     });
   }
@@ -252,7 +244,7 @@ export default class messageIndex extends Vue {
   // 获取聊天记录 1已读  0未读
   public getChatMessage() {
     const _this = this;
-    let messageList:Array<any> = [];
+    let messageList: Array<any> = [];
     if (localStore.get("chatList")) {
       messageList = localStore.get("chatList");
     }
@@ -276,7 +268,7 @@ export default class messageIndex extends Vue {
       to_user_id: "", //接收人id
       content: this.wordContent, //发送的消息
       created_time: "", // 发送时间
-      airbus_id: '', //航班id
+      airbus_id: "", //航班id
       read: 0, // 已读  0未读 1已读
       type: 1, // 1 发送给空乘  2发送给用户
     };
@@ -322,12 +314,11 @@ export default class messageIndex extends Vue {
     });
   }
 
-  public changeNoticeStatus(){
-    MessageService.changeReadNotice().then(res=>{
-      if(res.code==200){
-
+  public changeNoticeStatus() {
+    MessageService.changeReadNotice().then((res) => {
+      if (res.code == 200) {
       }
-    })
+    });
   }
 
   // 点击某条系统通知
@@ -338,6 +329,10 @@ export default class messageIndex extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.icon-p{
+  width: .3rem;
+  height: .3rem;
+}
 .header-wrap {
   .header-chat {
     margin-right: 0.3rem;

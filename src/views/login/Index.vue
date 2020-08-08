@@ -22,8 +22,9 @@
         <input
           v-model="userPhone"
           class="form-input"
+          maxlength="20"
           :placeholder="$t('placeholderPhone')"
-          type="text"
+          type="number"
         />
       </div>
       <div class="user-details m40">

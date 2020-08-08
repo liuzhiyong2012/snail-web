@@ -1,8 +1,12 @@
 <template>
-  <div class="abus-scroller-box">
+  <div class="abus-scroller-box" :style="{'backgroundColor': isHaveData?'#fff':'#f2f4f7'}">
     <scroller>
       <div slot="list" v-for="(item, index) of shoppingList" :key="index">
-        <div class="s-box s-box-right" v-if="index+1 == shoppingList.length">
+        <div
+          @click="stepToDetail(item)"
+          class="s-box s-box-right"
+          v-if="index+1 == shoppingList.length"
+        >
           <div class="img-box">
             <img :src="item.SampleImgPath|addBaseUrl" :alt="item.Name" />
           </div>
@@ -12,7 +16,7 @@
             <span>${{item.Price+2}}</span>
           </div>
         </div>
-        <div class="s-box" v-else>
+        <div @click="stepToDetail(item)" class="s-box" v-else>
           <div class="img-box">
             <img :src="item.SampleImgPath|addBaseUrl" :alt="item.Name" />
           </div>
@@ -35,26 +39,12 @@ import ShoppingService from "../../../service/shopping";
 Scroller.install(Vue);
 export default {
   components: {
-    Scroller
+    Scroller,
   },
   data() {
     return {
       shoppingList: [],
-      dishData: [
-        {
-          img: require("../images/food.png"),
-          name: "Pock rice",
-          price: "10",
-          oldPrice: "23"
-        },
-        {
-          img: require("../images/shopping.jpg"),
-          name: "Pock rice",
-          price: "14",
-          oldPrice: "10000"
-        }
-        
-      ]
+      isHaveData: false
     };
   },
   created() {
@@ -62,26 +52,21 @@ export default {
   },
   methods: {
     getShoppingList() {
-      ShoppingService.getShoppingList({}).then(res => {
+      ShoppingService.getShoppingList({}).then((res) => {
         // console.log(res);
         this.shoppingList = res.data.Dishes;
-
-        this.shoppingList.forEach((item, index) => {
-          item.GoodsImgPath = "http://172.16.125.11:8010/dcf.png";
-        });
-        //       BannerImgPath: "http://172.16.125.11:8010/133b9f0b-dfa4-4cd9-8ebb-958c44bfbf26"
-        // GoodsImgPath: "http://172.16.125.11:8010/dcf.png"
-        // Id: "e2dc9e2c-6733-e911-b13c-96af276fddb7"
-        // Name: "素食拼盘"
-        // Price: 32
-        // Remark: null
-        // SampleImgPath: "http://172.16.125.11:8010/eb8ea336-9434-4295-8215-3821c76baba8"
-        // Status: 0
-        // Stocking: 0
-        // category: "食物"
+        this.isHaveData = true
       });
-    }
-  }
+    },
+    stepToDetail(item) {
+      this.$router.push({
+        name: "shoppingDetails",
+        params: {
+          shoppingInfo: item,
+        },
+      });
+    },
+  },
 };
 </script>
 

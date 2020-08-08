@@ -9,6 +9,7 @@
         <input
           v-model="nickname"
           class="main-item-con"
+          maxlength="20"
           type="text"
           :placeholder="$t('NameTips')"
         />
@@ -50,13 +51,14 @@
         <input
           v-model="phone"
           class="main-item-con"
-          type="text"
+          type="number"
+          maxlength="20"
           :placeholder="$t('PhoneTips')"
         />
       </div>
       <div class="main-item">
         <div class="title line-h">{{$t('IDCard')}}</div>
-        <input v-model="idCard" class="main-item-con" type="text" :placeholder="$t('IDCardTips')" />
+        <input v-model="idCard" maxlength="25" class="main-item-con" type="text" :placeholder="$t('IDCardTips')" />
       </div>
       <div class="main-item">
         <div class="title line-h">{{$t('Password')}}</div>
@@ -399,6 +401,9 @@ export default class Register extends Vue {
       }
     }
   }
+}
+.text-selected, .text-unselected{
+  font-size: .24rem !important;
 }
 .img-icon {
   width: 0.24rem;

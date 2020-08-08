@@ -120,10 +120,20 @@ svg.icon {
 .van-picker__cancel, .van-picker__confirm{
   font-size: .32rem !important;
 }
+.van-tabs__line{
+  width: .5rem !important;
+  height: .15rem !important;
+  border-radius: .08rem .08rem 0 0 !important;
+  bottom: .1rem !important ;
+}
+.van-tab__text--ellipsis{
+  font-size: .32rem !important;
+}
 .abus-scroller-box {
   margin: 0 0.28rem;
   padding: 0.28rem 0 0.2rem;
   background-color: #fff;
+  min-height: 2.4rem;
   border-radius: 0.1rem;
   box-shadow: 0 0 0.1rem #efefef;
 }
