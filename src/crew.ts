@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import App from './App.vue';
-import router from './router';
-import store from './store';
+import router from './router/crew';
+import store from './store/';
 import filters from './utils/filters/index';
 //引入Vant  
 import Vant from 'vant';
@@ -11,7 +11,7 @@ import { Lazyload } from 'vant';
 //引入rem适配
 // import 'amfe-flexible/index.js';
 // import myCharts from './comm/js/myCharts.js';
-debugger;
+//https://www.cnblogs.com/fqh123/p/11981646.html
 
 filters.forEach((filter: any, index) => {
 	// debugger;
@@ -24,6 +24,7 @@ Vue.use(Lazyload);
 Vue.use(Lazyload, {
   lazyComponent: true,
 });
+
 Vue.use(VueI18n);
 
 //  import Vconsole from 'vconsole'
@@ -74,4 +75,5 @@ let host = new Vue({
   i18n,
   render: h => h(App)
 }).$mount('#app');
+
 (Vue.config as any).host = host;

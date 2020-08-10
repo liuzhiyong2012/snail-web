@@ -4,7 +4,22 @@ console.log(process.env.VUE_APP_PROXY);
 const autoprefixer = require('autoprefixer');
 const pxtorem = require('postcss-pxtorem');
 
+const baseUrl = '/';
 module.exports = {
+	pages: {//配置多页面入口        
+	      crew: {          
+	        entry: 'src/crew.ts',
+	        template: 'public/crew.html',   
+			filename: "crew.html",
+			chunks: ["chunk-vendors", "chunk-common", "crew"]
+	      },        
+	      index: {          
+	        entry: 'src/main.ts',          
+	        template: 'public/index.html', 
+			filename: "index.html",
+			chunks: ["chunk-vendors", "chunk-common", "index"]
+	      }
+	 },
     configureWebpack: {
         devtool: 'source-map'
     },
@@ -38,9 +53,19 @@ module.exports = {
             },
         },
         before(app) {
-            app.post('/goform/**', (req, res) => {
+            /* app.post('/goform/**', (req, res) => {
                 res.redirect(req.originalUrl);
-            });
+            }); */
+			const base = baseUrl.replace(/\/+$/, ''); // 移除尾部斜杠          
+					app.get(`${base}/:page/*`, function(req, res, next) {            
+					if (['crew', 'index'].includes(req.params.page)) {              
+					// 把 /<base>/<page>/* 重定向到 /<base>/<page>/              
+					req.url = `${base}/${req.params.page}/`;              
+					next('route');            
+					} else {              
+						next();            
+					}          
+				});    
         }
     },
 	lintOnSave: false,
