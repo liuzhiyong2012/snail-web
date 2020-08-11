@@ -3,12 +3,20 @@ import CrewLogin from '../../views/crew/Login.vue';
 import CrewIndex from '../../views/crew/Index.vue';
 
 import CrewCatering from '../../views/crew/CrewCatering.vue';
+import CrewDataPackage from '../../views/crew/CrewDataPackage.vue';
+import CrewGoods from '../../views/crew/CrewGoods.vue';
+import CrewIncomeStatistics from '../../views/crew/CrewIncomeStatistics.vue';
+import CrewCabinLayout from '../../views/crew/CrewCabinLayout.vue';
+
+
 
 /* let PersonCenter = (resolve) => {
 	return require.ensure([], () => {
 		resolve(require('@/pages/PersonCenter/personCenter'))
 	}, 'personCenter')
 } */
+// http://localhost:8888/crew.html#/crew/catering
+
 
 const routes: Array<RouteConfig> = [
 	{
@@ -23,8 +31,28 @@ const routes: Array<RouteConfig> = [
 		component: CrewIndex,
 		children: [{
 			path:'/crew/catering',
-			name:'',
+			name:'crewCatering',
 			component:CrewCatering
+		},
+		{
+			path:'/crew/datapackage',
+			name:'crewDataPackage',  
+			component:CrewDataPackage
+		},
+		{
+			path:'/crew/goods',
+			name:'crewGoods',
+			component:CrewGoods
+		},
+		{
+			path:'/crew/incomestatistics',
+			name:'crewIncomeStatistics',
+			component:CrewIncomeStatistics
+		},
+		{
+			path:'/crew/cabinlayout',
+			name:'crewCabinLayout',
+			component:CrewCabinLayout
 		}]
 	}
 ];

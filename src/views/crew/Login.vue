@@ -69,7 +69,7 @@ export default class CrewLogin extends Vue {
 		}
 		
 		this.$router.push({
-			name:'crewIndex'
+			name:'crewCatering'
 		});
 	}
 	

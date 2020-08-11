@@ -1,0 +1,303 @@
+<template>
+	<div class="crew-statistic-chart">
+		<div class="charts-ctn">
+			 <div ref="pieCtn" class="pie-ctn">
+				 
+			 </div>
+			 <p>
+				 食品
+			 </p>
+		</div>
+		
+		<div class="statistic-detail-ctn">
+			<div class="detail-item" v-for="(item,index) in dataList" :key="index">
+				<div class="img-ctn" :style="{backgroundImage:`url(${item.SampleImgPath})`}">
+					
+				</div>
+				<div class="progress-ctn">
+					<div class="top-ctn">
+						<span>{{item.Name}}</span>
+						<span class="dot"></span>
+						<span>{{item.getMoney}}</span>
+					</div>
+					
+					<div class="bottom-ctn">
+						<div class="progress-bar" :style="{width:item.percent + '%'}"></div>
+						<div class="percent">
+							{{item.percent + '%'}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+</template>
+
+<script lang = "ts">
+	import {Vue,Component,Prop} from 'vue-property-decorator';
+	import echarts from 'echarts';
+	import UrlUtils from '../../../utils/url-utils';
+	
+	@Component({
+		name:'CrewStatisticChart',
+		components: {
+		}
+	})
+	export default class CrewStatisticChart extends Vue{
+		private dataList:Array<any> = [];
+		
+		private mounted():void{
+			this.chart = echarts.init((this as any).$refs.pieCtn);
+			// this.renderCharts();
+		}
+		
+		public renderCharts(dataArr) {
+			let chartArr = [];
+			let total = 0;
+			
+			/* BannerImgPath: "http://172.16.125.11:8010/937d7502-fb74-4966-af50-19d6c4e4c3ed"
+			Name: "三文鱼套餐"
+			Remark: null
+			SampleImgPath: "http://172.16.125.11:8010/3ad53e3d-ac8d-47dd-8e16-d0ba3a7ea486"
+			getMoney: "1958.00"
+			id: "009519b8-7723-e911-bd22-c4209d3e3b89", */
+			
+			dataArr.forEach((item,index)=>{
+				 item.getMoney = Number( item.getMoney);
+				total = total + item.getMoney;
+			});
+			
+			dataArr.forEach((item,index)=>{
+				chartArr.push({
+					name:item.Name,
+					value:item.getMoney
+				});
+				// debugger;
+				item.percent = (item.getMoney/total).toFixed(1) * 100;
+				item.SampleImgPath = UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(item.SampleImgPath));
+			});
+			
+			this.dataList = dataArr.splice(0,3);
+			 
+			this.chart.clear();
+			let option = {
+			     		    title: {//标题组件
+			                    textStyle: {    
+			                    color: '#333333',    
+			                    fontSize: 12,   
+			                    }
+			                 },
+			     		    tooltip: {
+			     		        trigger: 'item',
+			     		        formatter: '{a} <br/>{b}: {c} ({d}%)',
+			     		        textStyle:{ //图例文字的样式
+			                         color:'#fff', //文字颜色
+			                         fontSize:10 //文字大小
+			                     }
+			     		    },
+			     		    graphic:[		       	       
+			     		         {
+			     		      		type: 'text',              
+			     		      		top: '40%',           
+			     		      		left: 'center',          
+			     		      		style: {
+			     		      		   text: '10000.00',      
+			     		      		   fill: '#333333',       
+			     		      		   fontSize: 20,          
+			     		      		   fontWeight: 'normal'
+			     		      		}  		      		        
+			     		      	},{
+			     		      		type: 'text',              
+			     		      		top: '53%',           
+			     		      		left: 'center',          
+			     		      		style: {
+			     		      		   text: '实发工资',      
+			     		      		   fill: '#A6A8B6',       
+			     		      		   fontSize: 12,          
+			     		      		   fontWeight: 'normal'
+			     		      		}  		      		        
+			     		      	},      
+			     		    ],
+			     		    //圆环的颜色
+			     		    color:['#48cda6','#fd87fb','#11abff','#ffdf6f','#968ade'],
+			     		    // 图例
+			     		    legend: {
+			     		    	// 图例选择的模式，控制是否可以通过点击图例改变系列的显示状态。默认开启图例选择，可以设成 false 关闭。
+			     		    	selectedMode: true, 
+			     		        /* orient: 'vertical', */
+			     		       /*  x : 'right',   //图例显示在右边
+			                     y: 'center',  */ //图例在垂直方向上面显示居中
+			                     bottom:0,
+			                     itemWidth:10, //图例标记的图形宽度
+			                     itemHeight:10, //图例标记的图形高度
+			     		        data:['基本工资','福利奖金','出差补贴','交补话补','岗位工资'],
+			     		        textStyle:{ //图例文字的样式
+			                         color:'#A6A8B6', //文字颜色
+			                         fontSize:10 //文字大小
+			                     }
+			     		    },   		  
+			     		    series: [
+			     		        {
+			     		            name:'工资占比图',//代表a的值，系列名称
+			     		            type:'pie',
+			     		            center:['50%','45%'], //饼图的中心（圆心）坐标，数组的第一项是横坐标，第二项是纵坐标。
+			     		            radius: ['45%', '60%'],//饼图的半径，数组的第一项是内半径，第二项是外半径。[ default: [0, '75%'] ]
+			     		            avoidLabelOverlap: false,
+			     		           /*  animation: false, */ //是否禁用动画效果
+			     		            label: {
+			     		                normal: {
+			     		                    show: true,//是否显示标签
+			     		                    //// 标签的位置。'outside'饼图扇区外侧，通过视觉引导线连到相应的扇区。'inside','inner' 同 'inside',饼图扇区内部。'center'在饼图中心位置。
+			     		                    position: 'left',
+			     		                    //显示的标签的内容
+			     		                    //a（系列名称），b（数据项名称），c（数值）, d（百分比）
+			     		                    formatter: '{a},{b}:{c}（{d}%）', //  ![在这里插入图片描述](https://img-blog.csdn.net/2018101313580390?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5MzI3NDE4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+			    		                    
+			     		                },
+			     		                emphasis: {
+			     		                	//鼠标放在圆环上显示的标签样式
+			     		                    show: true,
+			     		                    textStyle: {
+			     		                        fontSize: '12',
+			     		                        fontWeight: 'bold'
+			     		                    }
+			     		                }
+			     		            },
+			     		            labelLine: {
+			     		                normal: {
+			     		                    show: true,//是否显示引导线
+			   	               		        length:10, //百分比引导线
+			   	               		        length2:20 //视觉引导项第二段的长度。
+			     		                }
+			     		            },
+			     		            itemStyle: {
+			                             normal: {
+			                                 borderColor: '#FFFFFF', 
+			                                 borderWidth: 1, 
+			                                 label:{  
+			                                     show:true,  
+			                                     formatter:'{d}%'  
+			                                 },  
+			                             }
+			                         },
+			                         // 系列中的数据内容数组。
+			     		            data:chartArr
+			     		        }
+			     		    ]
+			     		};
+			        this.chart.setOption(option);
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	@function rem($px){//$px为需要转换的字号
+	    @return $px / 100px * 1rem; //100px为根字体大小
+	} 
+	
+	.crew-statistic-chart{
+		padding-top:rem(120px);
+		
+		.charts-ctn{
+			margin-bottom: rem(80px);
+			.pie-ctn{
+				margin:auto;
+				width: rem(460px);
+				height: rem(460px);
+				margin-bottom: rem(50px);
+			}
+			
+			p{
+				font-size:rem(32px);
+				font-family:PingFangSC-Medium,PingFang SC;
+				font-weight:500;
+				text-align: center;
+				color:rgba(255,255,255,1);
+				line-height:rem(32px);
+			}
+			
+			
+			
+		}
+		
+		.statistic-detail-ctn{
+			
+			.detail-item{
+				display: flex;
+				align-items: center;
+				padding:0 rem(50px);
+				justify-content: space-between;
+				margin-bottom: rem(42px);
+				
+				.img-ctn{
+					width:rem(98px);
+					height:rem(98px);
+					border-radius:rem(30px);
+					border:rem(2px) solid rgba(32,66,130,1);
+					background-position: center;
+					background-repeat: no-repeat;
+					background-size:contain ;
+				}
+				.progress-ctn{
+					width:rem(356px);
+					.top-ctn{
+						display: flex;
+						align-items: center;
+						margin-bottom: rem(12px);
+						
+						span{
+							&.dot{
+								border-radius: 50%;
+								margin:0 rem(10px);
+								display: inline-block;
+								width:rem(7px);
+								height:rem(7px);
+								background:rgba(255,255,255,1);
+								opacity:0.2;
+							}
+							
+							font-size:rem(28px);
+							font-family:PingFangSC-Semibold,PingFang SC;
+							font-weight:600;
+							color:rgba(255,255,255,1);
+							line-height:rem(28px);
+						}
+					}
+					
+					.bottom-ctn{
+						position: relative;
+						height:rem(20px);
+						background:rgba(8,40,99,1);
+						border-radius:rem(20px);
+						// overflow: hidden;
+						
+						.progress-bar{
+							overflow: hidden;
+							height: 100%;
+							background:rgba(0,174,199,1);
+							border-radius:20px;
+						}
+						
+						.percent{
+							
+							position: absolute;
+							left:100%;
+							margin-left: rem(20px);
+							top:50%;
+							font-size:rem(24px);
+							font-family:Helvetica;
+							color:rgba(255,255,255,1);
+							line-height:rem(24px);
+							transform: translateY(-50%);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+
+		
+</style>
+

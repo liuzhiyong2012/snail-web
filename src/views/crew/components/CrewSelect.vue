@@ -1,7 +1,7 @@
 <template>
 	<section class="crew-select">
-		  <select >
-			  <option v-for="(item,index) in selectList" :value="item.value">{{item.name}}</option>
+		  <select @change="change">
+			  <option v-for="(item,index) in selectList" :value="item.value" :key="index">{{item.name}}</option>
 		  </select>
 	</section>
 </template>
@@ -16,20 +16,18 @@
 		}
 	})
 	export default class CrewTab extends Vue{
-		selectList:Array<any> = [
-			{
-				name:'未选择',
-				value:'未选择'
-			},
-			{
-				name:'未选择1',
-				value:'未选择1'
-			},
-			{
-				name:'未选择2',
-				value:'未选择2'
+		@Prop({
+			default:()=>{
+				return [];
 			}
-		];
+		})
+		selectList:Array<any>;
+		
+		private selectValue:string = '';
+		
+		private change($event):void{
+			this.$emit('valueChange',$event.value);
+		}
 		
 	}
 </script>

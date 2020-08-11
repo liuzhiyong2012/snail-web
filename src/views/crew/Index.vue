@@ -54,6 +54,19 @@ export default class CrewLayoutCtn extends Vue {
 	
 	public switchPage(value):void{
 		this.active = value;
+		let routeMap = {
+			catering:'crewCatering',
+			dataPackage:'crewDataPackage',
+			goods:'crewGoods',
+			incomeStatistics:'crewIncomeStatistics',
+			cabinLayout:'crewCabinLayout'
+		};
+		
+		if(routeMap[value]){
+			this.$router.push({
+				name:routeMap[value]
+			});
+		}
 	}
 }
 </script>

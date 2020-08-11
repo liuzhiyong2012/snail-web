@@ -1,66 +1,137 @@
 <template>
 	<section class="crew-catering-item">
-		  <div class="img-ctn">
-			  
-		  </div>
-		  <div class="info-ctn">
-			  <div class="">
-				  
-			  </div>
-			  
-			  <div class="">
-			  				  
-			  </div>
-			  
-		  </div>
+		<div class="img-ctn" :style="{ backgroundImage: `url(${data.SampleImgPath})` }"></div>
+
+		<div class="info-ctn">
+			<div class="info-left-ctn">
+				<div class="line-one">
+					<span>{{ data.Seat }}</span>
+					<span>3min</span>
+				</div>
+				<div class="line-two">{{ data.Name }}</div>
+			</div>
+
+			<div class="info-right-ctn">
+				<span class="price-ctn">{{ data.Price }}</span>
+				<span class="finish-ctn">Finish</span>
+			</div>
+		</div>
 	</section>
 </template>
 
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator';
 
+@Component({
+	name: 'CrewCateringItem',
+	components: {}
+})
+export default class CrewCateringItem extends Vue {
+	@Prop()
+	data: Array<any>;
 
-
-<script lang = "ts">
-	import {Vue,Component,Prop} from 'vue-property-decorator';
-	
-	@Component({
-		name:'CrewCateringItem',
-		components: {
-		}
-	})
-	export default class CrewCateringItem extends Vue{
-		
-		
-	}
+	/* BannerImgPath: "FB709FE0-0D34-E911-B13C-96AF276FDDB7"
+		Name: "三文鱼套餐"
+		OrderId: "c535f07c04ffe4259b7b33b888ca046f"
+		Price: "89.00"
+		Quantity: 2
+		Remark: null
+		SampleImgPath: "47C591CA-0D34-E911-B13C-96AF276FDDB7"
+		Seat: "2B"
+		id: "43b9d4e */
+	/* 下单时间
+		状态 */
+}
 </script>
 
 <style lang="scss" scoped>
-	
-	@function rem($px){
-	    @return $px / 100px * 1rem; //100px为根字体大小
-	} 
-	
-	.crew-catering-item{
-		width:rem(976px);
-		height:rem(140px);
-		border-radius:rem(30px);
-		box-sizing: border-box;
-		overflow: hidden;
-		border:rem(4px) solid rgba(175,213,253,1);
-		
-		.img-ctn{
-			height: 100%;
-			width: rem(132px);
-			background-color: blue;
+@function rem($px) {
+	@return $px / 100px * 1rem; //100px为根字体大小
+}
+
+.crew-catering-item {
+	position: relative;
+	width: rem(976px);
+	height: rem(140px);
+	border-radius: rem(30px);
+	box-sizing: border-box;
+	overflow: hidden;
+	border: rem(4px) solid rgba(175, 213, 253, 1);
+	margin-bottom: rem(40px);
+
+	.img-ctn {
+		position: absolute;
+		left: 0;
+		top: 0;
+		height: 100%;
+		width: rem(132px);
+		// background-color: blue
+		background-repeat: no-repeat;
+		background-size: contain;
+		background-position: center;
+	}
+
+	.info-ctn {
+		height: 100%;
+		margin-left: rem(132px);
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding:0 rem(50px) 0 rem(32px);
+
+		.info-left-ctn {
+			
+			.line-one {
+				span:nth-child(1) {
+					padding:0 rem(12px);
+					height:rem(36px);
+					color:rgba(255,255,255,1);
+					background:rgba(0,174,199,1);
+					border-radius:6px;
+				}
+				span:nth-child(2) {
+					margin-left: rem(12px);
+					font-size:rem(24px);
+					font-family:PingFangSC-Semibold,PingFang SC;
+					font-weight:600;
+					color:rgba(175,213,253,1);
+					line-height:rem(24px);
+				}
+				margin-bottom: rem(20px);
+			}
+			.line-two {
+				font-size:rem(28px);
+				font-family:PingFangSC-Medium,PingFang SC;
+				font-weight:500;
+				color:rgba(255,255,255,1);
+				line-height:rem(28px);
+			}
 		}
 		
-		.info-ctn{
-			height: 100%;
-			margin-right:rem(132px);
-			
+		.info-right-ctn {
+			.price-ctn {
+				font-size:rem(32px);
+				font-family:SourceHanSansCN-Bold,SourceHanSansCN;
+				font-weight:bold;
+				color:rgba(255,255,255,1);
+				line-height:rem(32px);
+			}
+			.finish-ctn {
+				margin-left: rem(20px);
+				display: inline-block;
+				text-align: center;
+				line-height: rem(52px);
+				width:rem(140px);
+				height:rem(52px);
+				background:rgba(132,189,0,1);
+				border-radius:rem(36px);
+				
+				font-size:rem(24px);
+				font-family:PingFangSC-Semibold,PingFang SC;
+				font-weight:600;
+				color:rgba(255,255,255,1);
+			}
 		}
 	}
-	
-	
-		
+}
 </style>
-
