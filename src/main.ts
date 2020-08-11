@@ -11,7 +11,7 @@ import { Lazyload } from 'vant';
 //引入rem适配
 // import 'amfe-flexible/index.js';
 // import myCharts from './comm/js/myCharts.js';
-debugger;
+// debugger;
 
 filters.forEach((filter: any, index) => {
 	// debugger;
