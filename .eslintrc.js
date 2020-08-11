@@ -1,5 +1,4 @@
 module.exports = {
-  "document":"https://blog.csdn.net/ChenFan_158/article/details/105405781",
   root: true,
   env: {
     node: true
