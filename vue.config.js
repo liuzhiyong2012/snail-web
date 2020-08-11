@@ -24,7 +24,7 @@ module.exports = {
         devtool: 'source-map'
     },
     productionSourceMap: false,
-    publicPath: '/', //./
+    publicPath: './', //./
     devServer: {
         port: process.env.VUE_APP_PORT,
         proxy: {
