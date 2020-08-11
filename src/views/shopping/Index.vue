@@ -34,31 +34,42 @@
           :key="index"
         >
           <div class="filter">
-            <div v-if="isNewest" @click="clickIsNewest">
+            <div @click="clickShowFilter">
+              Sort by：{{filterInfo}}
+              <svg class="icon i-icon" aria-hidden="true">
+                <use xlink:href="#icon-select_1" />
+              </svg>
+            </div>
+            <!-- <div v-if="isNewest" @click="clickIsNewest">
               Sort by：Newest
               <svg class="icon i-icon" aria-hidden="true">
                 <use xlink:href="#icon-select_1" />
               </svg>
-            </div>
-            <div v-else @click="clickIsNewest">
+            </div>-->
+            <!-- <div v-else @click="clickIsNewest">
               Sort by：Oldest
               <svg class="icon i-icon" aria-hidden="true">
                 <use xlink:href="#icon-select_1" />
               </svg>
-            </div>
-            <div v-if="isFilter" @click="clickIsFilter">
+            </div>-->
+            <div  v-if="isFilter" @click="clickIsFilter">
               Filter
               <svg class="icon i-icon" aria-hidden="true">
                 <use xlink:href="#icon-select_1" />
               </svg>
             </div>
             <div v-else @click="clickIsFilter">
-              Filter1
-              <svg class="icon i-icon" aria-hidden="true">
+              Filter
+              <svg class="icon i-icon icon-up" aria-hidden="true">
                 <use xlink:href="#icon-select_1" />
               </svg>
             </div>
+            <div :class="[isShowFilter?'f-box active':'f-box']">
+              <van-cell value="Price" @click="changeVal" />
+              <van-cell value="CreatedAt" @click="changeVal" />
+            </div>
           </div>
+
           <div class="goods-box">
             <div class="goods-item" v-for="(item,i) in options1[index].data" :key="i">
               <div class="goods">
@@ -104,6 +115,10 @@ export default class ShoppingIndex extends Vue {
   private isShowMenu: boolean = false;
   private isNewest: boolean = false;
   private isFilter: boolean = false;
+  private isShowFilter: boolean = false;
+  private filterInfo: string = "Price";
+  private listDesc: string = "Desc";
+  private listAsc: string = "Asc";
 
   private created() {
     this.getShoppingRecommendedList();
@@ -128,50 +143,49 @@ export default class ShoppingIndex extends Vue {
       }
     });
   }
-  public clickIsNewest() {
-    this.isNewest = !this.isNewest;
-    if (this.isNewest) {
-      let data = {
-        orderName: "price",
-        orderFlag: "Desc",
-        category: this.tapIndex,
-      };
-      ShoppingService.getShoppingList(data).then((res: any) => {
-        Vue.set(this.options1[this.tapIndex - 1], "data", res.data.Dishes);
-      });
-    } else {
-      let data = {
-        orderName: "price",
-        orderFlag: "Asc",
-        category: this.tapIndex,
-      };
-      ShoppingService.getShoppingList(data).then((res: any) => {
-        Vue.set(this.options1[this.tapIndex - 1], "data", res.data.Dishes);
-      });
-    }
+  // 点击弹出筛选
+  public clickShowFilter() {
+    this.isShowFilter = !this.isShowFilter;
   }
+  // 点击筛选
+  public changeVal(e: any) {
+    this.isShowFilter = false;
+    this.filterInfo = e.target.innerText;
+    this.getShoppingListFilter()
+  }
+  // public clickIsNewest() {
+  //   this.isNewest = !this.isNewest;
+
+  // }
+  // 点击升降序
   public clickIsFilter() {
     this.isFilter = !this.isFilter;
+    this.getShoppingListFilter()
   }
 
   // 首次获取
   private getShoppingList() {
     var data = { category: "1" };
     ShoppingService.getShoppingList(data).then((res: any) => {
-      // console.log(data);
-      // console.log(res);
       Vue.set(this.options1[0], "data", res.data.Dishes);
     });
   }
-  // 点击获取
+  // 点击Tap切换获取
   private getGoodsList(name: any, title: any) {
     // console.log(name)
-    var data = { category: name };
     this.tapIndex = name;
+    this.getShoppingListFilter()
+  }
+  // 获取筛选后列表
+  public getShoppingListFilter(){
+    var data = { 
+      orderName: this.filterInfo,
+      orderFlag: this.isFilter ? this.listDesc : this.listAsc,
+      category: this.tapIndex,
+     };
+    
     ShoppingService.getShoppingList(data).then((res: any) => {
-      // console.log(res);
-      Vue.set(this.options1[name - 1], "data", res.data.Dishes);
-      //  console.log(this.options1)
+      Vue.set(this.options1[this.tapIndex - 1], "data", res.data.Dishes);
     });
   }
   // 点击跳转详情页
@@ -258,9 +272,6 @@ export default class ShoppingIndex extends Vue {
 }
 .shopping-box {
   width: 100%;
-  .f1 {
-    // flex: 1;
-  }
   .nav-menu {
     width: 1rem;
     height: 1rem;
@@ -271,14 +282,38 @@ export default class ShoppingIndex extends Vue {
   padding-right: 1rem;
 }
 .filter {
+  position: relative;
   padding: 0.3rem;
   display: flex;
   justify-content: space-between;
   color: #333;
+  box-sizing: border-box;
+  height: 1rem;
+  line-height: 0.4rem;
   .i-icon {
     width: 0.2rem;
     height: 0.2rem;
     padding: 0 0 0.05rem;
+    transition: all cubic-bezier(0.075, 0.82, 0.165, 1) .3s;
+  }
+  .icon-up{
+    transform: rotate(-180deg);
+    padding:  0.05rem 0 0;
+  }
+  .f-box {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 1rem;
+    width: 100%;
+    &.active {
+      display: block;
+    }
+  }
+  .van-cell {
+    padding: 0.2rem 0.3rem !important;
+    font-size: 0.3rem !important;
+    color: #666 !important;
   }
 }
 .goods-box {
@@ -346,7 +381,6 @@ export default class ShoppingIndex extends Vue {
 }
 .filter-box {
   font-size: 0.26rem;
-  font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: rgba(46, 46, 46, 1);
   line-height: 0.8rem;
