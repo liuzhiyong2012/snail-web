@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="abus-scroller-box">
+    <div class="abus-scroller-box" :style="{'backgroundColor': isHaveData?'#fff':'#f2f4f7'}">
       <scroller>
         <div slot="list" v-for="(item, index) of recomendList" :key="index" @click="stepToDetail(item)">
           <div class="s-box s-box-right" v-if="index+1 == recomendList.length">
@@ -36,6 +36,7 @@ export default {
   data() {
     return {
       recomendList: [],
+      isHaveData:false,
       dishData: [
         {
           img: require("../images/food.png"),
@@ -96,6 +97,7 @@ export default {
       DishService.getDishesRecommendedList({}).then(res => {
         // debugger;
         // console.log(res);
+        this.isHaveData = true
         this.recomendList = res.data.RecommendedDishes;
 
         this.recomendList.forEach((item, index) => {

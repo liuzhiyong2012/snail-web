@@ -1,5 +1,5 @@
 <template>
-  <div class="abus-scroller-box news-box">
+  <div class="abus-scroller-box news-box" :style="{'backgroundColor': isHaveData?'#fff':'#f2f4f7'}">
     <div
       v-for="(item, index) in newsList.slice(0, 2)"
       class="news-list"
@@ -34,6 +34,7 @@ declare function require(string:any): string;
 export default class HomeNews extends Vue {
   private musicData: Array<any> = [];
   private newsList: Array<any> = [];
+  private isHaveData: boolean = false
 
   private created() {
     this.getNewsRecommended();
@@ -55,6 +56,7 @@ export default class HomeNews extends Vue {
     NewsService.getNewsRecommended().then((res: any) => {
       // console.log(res);
       if (res.code == 200) {
+        this.isHaveData = true
         res.data.RecommendedNews.forEach((item:any) => {
           item.img = item.BannerImg;
           if (item.isLike) {

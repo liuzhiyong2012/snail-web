@@ -5,7 +5,7 @@
     </abus-title>
     <div calss="shopping-details">
       <!-- <banner :bannerData="bannerData" /> -->
-      <div class="dish-img" :style="{backgroundImage:`url(${shoppingInfo.BannerImgPath|addBaseUrl})`}"></div>
+      <div class="dish-img" :style="{backgroundImage:`url(${shoppingInfo.BannerImgPath})`}"></div>
     </div>
     <div class="m-box">
       <div class="title">{{shoppingInfo.Name || '--'}}</div>
@@ -216,7 +216,7 @@ export default class ShoppingDetail extends Vue {
 
   .cart-btn {
     border-radius: 0.4rem;
-    border: 0.02px solid rgba(0, 32, 91, 1);
+    border: 0.02rem solid rgba(0, 32, 91, 1);
     width: 3.3rem;
     height: 0.8rem;
     text-align: center;

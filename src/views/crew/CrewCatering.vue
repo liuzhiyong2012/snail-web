@@ -5,7 +5,7 @@
 			  <crew-search></crew-search>
 		 </section>
 		 <section class="item-ctn">
-			 <crew-catering-item v-for="(item,index) in dataList"></crew-catering-item>
+			 <!-- <crew-catering-item v-for="(item,index) in dataList"></crew-catering-item> -->
 		 </section>
 	</section>
 </template>
