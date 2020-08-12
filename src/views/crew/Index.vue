@@ -30,23 +30,28 @@ export default class CrewLayoutCtn extends Vue {
 	private tabList:Array<any> = [
 			{ 
 				name:'Catering',
-				value:'catering'
+				value:'catering',
+				routeName:'crewCatering'
 			},
 			{
 				name:'Data package',
-				value:'dataPackage'
+				value:'dataPackage',
+				routeName:'crewDataPackage'
 			},
 			{
 				name:'Goods',
-				value:'goods'
+				value:'goods',
+				routeName:'crewGoods'
 			},
 			{
 				name:'Income statistics',
-				value:'incomeStatistics'
+				value:'incomeStatistics',
+				routeName:'crewIncomeStatistics'
 			},
 			{
 				name:'Cabin layout',
-				value:'cabinLayout'
+				value:'cabinLayout',
+				routeName:'crewCabinLayout'
 			}
 		];
 		

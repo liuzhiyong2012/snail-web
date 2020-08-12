@@ -9,18 +9,28 @@
 				</span>
 			</div>
 			
-			<div class="class-bar-ctn">
-				<div v-for="(item,index) in tabList" class="bar-item" :key="index" :class="{active:active == item.value,hasNewMessage:true}" >
-					<span class="label">{{item.name}}</span>
-					<span class="message-ctn">3</span>
-				</div>
-			</div>
 		</div>
 		
+		
 		<div class="content-ctn">
-			<div class="flight-layout-ctn">
-				
+			<div class="content-ctt">
+				<div class="aside-ctn">
+					
+				</div>
+				<div class="main-ctn">  
+					<div class="message-ctn">
+						
+					</div>
+					<div class = "oper-ctn">
+						<input type="text"></input>
+						<div>
+							发送
+						</div>
+					</div>
+				</div>
 			</div>
+			
+			
 		</div>
 		
 	</section>
@@ -121,39 +131,7 @@ export default class CrewCatering extends Vue {
 					line-height:rem(40px);
 				}
 			}
-			.class-bar-ctn{
-				margin-left: rem(130px);
-				display: flex;
-				.bar-item{
-					position: relative;
-					
-					font-size:rem(40px);
-					font-family:PingFangSC-Medium,PingFang SC;
-					font-weight:500;
-					color:rgba(255,255,255,1);
-					line-height:rem(40px);
-					padding-bottom: rem(22px);
-					margin-right: rem(90px);
-					
-					&.active{
-						&:after{
-							position: absolute;
-							content:'';
-							height:rem(6px);
-							background:rgba(132,189,0,1);
-							left: 0;
-							bottom: 0;
-							width: 100%;
-						}
-					}
-					.label{
-						
-					}
-					.message-ctn{
-						
-					}
-				}
-			}
+	
 		}
 		
 		.content-ctn{
@@ -166,8 +144,37 @@ export default class CrewCatering extends Vue {
 			padding-top:rem(122px);
 			overflow: auto;
 			
-			.flight-layout-ctn{
+			.content-ctt{
+				position: relative;
+				width: 100%;
+				height: 100%;
 				
+				.aside-ctn{
+					position: absolute;
+					height: 100%;
+					width: rem(520px);
+					background: red;
+				}
+				
+				.main-ctn{
+					margin-left: rem(520px);
+					position: relative;
+					height: 100%;
+					
+					.message-ctn{
+						width: 100%;
+						height: 100%;
+						background: green;
+					}
+					.oper-ctn{
+						position: absolute;
+						bottom: 0;
+						height: rem(120px);
+						z-index: 100;
+						width: 100%;
+						background: blue;
+					}
+				}
 			}
 			
 			

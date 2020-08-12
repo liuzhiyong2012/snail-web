@@ -5,7 +5,7 @@
 				 
 			 </div>
 			 <p>
-				 食品
+				 {{title}}
 			 </p>
 		</div>
 		
@@ -22,7 +22,7 @@
 					</div>
 					
 					<div class="bottom-ctn">
-						<div class="progress-bar" :style="{width:item.percent + '%'}"></div>
+						<div class="progress-bar" :style="{width:item.percent + '%',backgroundColor:colorArr[index]}"></div>
 						<div class="percent">
 							{{item.percent + '%'}}
 						</div>
@@ -45,7 +45,29 @@
 		}
 	})
 	export default class CrewStatisticChart extends Vue{
+		@Prop({
+			default:()=>{
+				return '';
+			}
+		})
+		title:string;
+		
+		private colorArr:Array<any> = [
+			'#00AEC7',
+			'#FE5000',
+			'#84BD00',
+			'#A51890',
+			'#E1E000',
+			'#DA1884',
+			'#E4002B',
+			'#0081FF',
+			'#0C9254',
+			'#6500D4'
+		];
+		
 		private dataList:Array<any> = [];
+		
+		private chart:any = {};
 		
 		private mounted():void{
 			this.chart = echarts.init((this as any).$refs.pieCtn);
@@ -54,7 +76,7 @@
 		
 		public renderCharts(dataArr) {
 			let chartArr = [];
-			let total = 0;
+			let total:number = 0;
 			
 			/* BannerImgPath: "http://172.16.125.11:8010/937d7502-fb74-4966-af50-19d6c4e4c3ed"
 			Name: "三文鱼套餐"
@@ -68,13 +90,14 @@
 				total = total + item.getMoney;
 			});
 			
-			dataArr.forEach((item,index)=>{
+			dataArr.forEach((item:any,index:number)=>{
 				chartArr.push({
 					name:item.Name,
 					value:item.getMoney
 				});
+				
 				// debugger;
-				item.percent = (item.getMoney/total).toFixed(1) * 100;
+				item.percent = parseInt((item.getMoney/total) * 100);
 				item.SampleImgPath = UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(item.SampleImgPath));
 			});
 			
@@ -102,8 +125,8 @@
 			     		      		top: '40%',           
 			     		      		left: 'center',          
 			     		      		style: {
-			     		      		   text: '10000.00',      
-			     		      		   fill: '#333333',       
+			     		      		   text: total,      
+									   fill: '#A6A8B6',
 			     		      		   fontSize: 20,          
 			     		      		   fontWeight: 'normal'
 			     		      		}  		      		        
@@ -112,7 +135,7 @@
 			     		      		top: '53%',           
 			     		      		left: 'center',          
 			     		      		style: {
-			     		      		   text: '实发工资',      
+			     		      		   text: 'Total Revenuea',      
 			     		      		   fill: '#A6A8B6',       
 			     		      		   fontSize: 12,          
 			     		      		   fontWeight: 'normal'
@@ -120,7 +143,7 @@
 			     		      	},      
 			     		    ],
 			     		    //圆环的颜色
-			     		    color:['#48cda6','#fd87fb','#11abff','#ffdf6f','#968ade'],
+			     		    color:this.colorArr,
 			     		    // 图例
 			     		    legend: {
 			     		    	// 图例选择的模式，控制是否可以通过点击图例改变系列的显示状态。默认开启图例选择，可以设成 false 关闭。
@@ -147,7 +170,7 @@
 			     		           /*  animation: false, */ //是否禁用动画效果
 			     		            label: {
 			     		                normal: {
-			     		                    show: true,//是否显示标签
+			     		                    show: false,//是否显示标签
 			     		                    //// 标签的位置。'outside'饼图扇区外侧，通过视觉引导线连到相应的扇区。'inside','inner' 同 'inside',饼图扇区内部。'center'在饼图中心位置。
 			     		                    position: 'left',
 			     		                    //显示的标签的内容
@@ -157,7 +180,7 @@
 			     		                },
 			     		                emphasis: {
 			     		                	//鼠标放在圆环上显示的标签样式
-			     		                    show: true,
+			     		                    show: false,
 			     		                    textStyle: {
 			     		                        fontSize: '12',
 			     		                        fontWeight: 'bold'
@@ -166,7 +189,7 @@
 			     		            },
 			     		            labelLine: {
 			     		                normal: {
-			     		                    show: true,//是否显示引导线
+			     		                    show: false,//是否显示引导线
 			   	               		        length:10, //百分比引导线
 			   	               		        length2:20 //视觉引导项第二段的长度。
 			     		                }

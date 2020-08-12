@@ -319,10 +319,6 @@ export default class MusicFavourites extends Vue {
 		this.getList();
 	}
 	
-	private onRefresh(): void {
-		this.refreshing = true;
-		this.resetList();
-	}
 }
 </script>
 

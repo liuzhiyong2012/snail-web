@@ -7,6 +7,7 @@ import CrewDataPackage from '../../views/crew/CrewDataPackage.vue';
 import CrewGoods from '../../views/crew/CrewGoods.vue';
 import CrewIncomeStatistics from '../../views/crew/CrewIncomeStatistics.vue';
 import CrewCabinLayout from '../../views/crew/CrewCabinLayout.vue';
+import CrewChat from '../../views/crew/CrewChat.vue';
 
 
 
@@ -53,6 +54,11 @@ const routes: Array<RouteConfig> = [
 			path:'/crew/cabinlayout',
 			name:'crewCabinLayout',
 			component:CrewCabinLayout
+		},
+		{
+			path:'/crew/chat',
+			name:'crewChat',
+			component:CrewChat
 		}]
 	}
 ];

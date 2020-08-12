@@ -1,6 +1,6 @@
 <template>
 	<div class="crew-tab">
-		  <div class="tab-item" v-for="(item,index) in tabList" :class="{'active':item.value == active}" @click="switchPage(item)">
+		  <div class="tab-item" v-for="(item,index) in tabList" :class="{'active':item.routeName == $route.name}" @click="switchPage(item)">
 			  {{item.name}}
 		  </div>
 	</div>
@@ -28,21 +28,24 @@
 	export default class CrewTab extends Vue{
 		@Prop({
 			default:()=>{
-				return []
+				return [];
 			}
 		})
 		tabList:Array<any>;
 		
 		@Prop({
 			default:()=>{
-				return false
+				return false;
 			}
 		})
 		active:boolean;
 		
 		
 		public switchPage(item){
-			this.$emit('switchPage',item.value);
+			this.$router.push({
+				name:item.routeName
+			});
+			// this.$emit('switchPage',item.value);
 		}
 	}
 </script>

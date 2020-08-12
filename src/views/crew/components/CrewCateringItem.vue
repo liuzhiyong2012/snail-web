@@ -1,5 +1,5 @@
 <template>
-	<section class="crew-catering-item">
+	<section class="crew-catering-item" >
 		<div class="img-ctn" :style="{ backgroundImage: `url(${data.SampleImgPath})` }"></div>
 
 		<div class="info-ctn">
@@ -13,7 +13,7 @@
 
 			<div class="info-right-ctn">
 				<span class="price-ctn">{{ data.Price }}</span>
-				<span class="finish-ctn">Finish</span>
+				<span class="finish-ctn" v-if="data.status == '0'"  @click="finish">Finish</span>
 			</div>
 		</div>
 	</section>
@@ -41,6 +41,9 @@ export default class CrewCateringItem extends Vue {
 		id: "43b9d4e */
 	/* 下单时间
 		状态 */
+		private finish(){
+			this.$emit('finish',this.data);
+		}
 }
 </script>
 

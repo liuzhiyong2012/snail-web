@@ -1,21 +1,23 @@
 <template>
 	<section class="crew-income-statistics">
 		<div class="charts-statistic-ctn">
-			<crew-statistic-chart ref="dishStatisticChart"></crew-statistic-chart>
+			<crew-statistic-chart ref="dishStatisticChart"    title="Catering"></crew-statistic-chart>
 		</div>
 		<div class="charts-statistic-ctn">
-			<crew-statistic-chart ref="netFlowStatisticChart"></crew-statistic-chart>
+			<crew-statistic-chart ref="netFlowStatisticChart" title="Data package"></crew-statistic-chart>
 		</div>
 		<div class="charts-statistic-ctn">
-			<crew-statistic-chart ref="shoppingStatisticChart"></crew-statistic-chart>
+			<crew-statistic-chart ref="shoppingStatisticChart" title="Goods"></crew-statistic-chart>
 		</div>
 	</section>
 </template>
 
+
+
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import CrewStatisticChart from './components/CrewStatisticChart.vue';
-import IncomeStatisticsService from '../../service/crew/income-statistics.ts';
+import IncomeStatisticsService from '../../service/crew/income-statistics';
 
 @Component({
 	name: 'CrewCatering',
@@ -34,12 +36,11 @@ export default class CrewCatering extends Vue {
 		this.getAccountForNetFlow();
 		this.getAccountForShopping();
 	}
-	netFlowStatisticChart
-	shoppingStatisticChart
+	
 	private getAccountForDish():void{
 		IncomeStatisticsService.getAccountForDish({}).then((resData:any)=>{
 			if(resData.code == '200'){
-				this.$refs.dishStatisticChart.renderCharts(resData.data);
+				(this.$refs.dishStatisticChart as any).renderCharts(resData.data);
 			}else{
 				this.$toast('获取数据失败!');
 			}
@@ -49,7 +50,7 @@ export default class CrewCatering extends Vue {
 	private getAccountForNetFlow():void{
 		IncomeStatisticsService.getAccountForNetFlow({}).then((resData:any)=>{
 			if(resData.code == '200'){
-				this.$refs.netFlowStatisticChart.renderCharts(resData.data);
+				(this.$refs.netFlowStatisticChart as any).renderCharts(resData.data);
 			}else{
 				this.$toast('获取数据失败!');
 			}
@@ -59,7 +60,7 @@ export default class CrewCatering extends Vue {
 	private getAccountForShopping():void{
 		IncomeStatisticsService.getAccountForShopping({}).then((resData:any)=>{
 			if(resData.code == '200'){
-				this.$refs.shoppingStatisticChart.renderCharts(resData.data);
+				(this.$refs.shoppingStatisticChart as any).renderCharts(resData.data);
 			}else{
 				this.$toast('获取数据失败!');
 			}

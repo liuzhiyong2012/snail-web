@@ -38,7 +38,7 @@ export default class CateringService {
 	// Route::post(':version/api/Shopping/AccountForShopping', 'api/:version.app.Shopping/AccountForShopping');//商品报表
 	
     //餐品统计
-	static getAccountForDish(data: Object?={}) {
+	static getAccountForDish(data: Object={}) {
 		return request({
 			url: '/v1/api/Dishes/AccountForDish',
 			method: 'POST',
@@ -46,7 +46,7 @@ export default class CateringService {
 		});
 	}
 	
-	static getAccountForNetFlow(data: Object?={}) {
+	static getAccountForNetFlow(data: Object={}) {
 		return request({
 			url: '/v1/api/NetFlow/AccountForNetFlow',
 			method: 'POST',
@@ -54,7 +54,7 @@ export default class CateringService {
 		});
 	}
 	
-	static getAccountForShopping(data: Object?={}) {
+	static getAccountForShopping(data: Object={}) {
 		return request({
 			url: '/v1/api/Shopping/AccountForShopping',
 			method: 'POST',
