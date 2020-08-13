@@ -17,6 +17,17 @@ export default class CateringService {
 			data: data
 		});
 	}
-	//云端处理一下
+	
+	//完成菜品
+	static getSeatMessageInfo(data: Object={}) {
+		return request({
+			url: '/v1/api/Message/SeatMessageInfo',
+			method: 'POST',
+			data: data
+		});
+	}
+	
+	//获取最新的未读信息与用户的对应消息。
+	// /api/Message/SeatMessageInfo
 	
 }  

@@ -25,8 +25,9 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import CrewSelect from './components/CrewSelect.vue';
 import CrewSearch from './components/CrewSearch.vue';
 import CrewCateringItem from './components/CrewCateringItem.vue';
-import CateringService from '../../service/crew/catering.ts';
+import CateringService from '../../service/crew/catering';
 import UrlUtils from '../../utils/url-utils';
+
 
 @Component({
 	name: 'CrewCatering',

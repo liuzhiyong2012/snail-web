@@ -97,13 +97,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import MessageTitle from "./components/MessageTitle.vue";
-import MessageService from "../../service/message";
-import { localStore } from "../../utils/data-management";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import MessageTitle from './components/MessageTitle.vue';
+import MessageService from '../../service/message';
+import { localStore } from '../../utils/data-management';
 declare function io(selector: string): any;
 @Component({
-  name: "messageIndex",
+  name: 'messageIndex',
   components: {
     MessageTitle,
   },
@@ -128,7 +128,7 @@ export default class messageIndex extends Vue {
     // },
   ];
 
-  private wordContent: string = "";
+  private wordContent: string = '';
   private systemMsgList: Array<any> = [
     // {
     //   CreatedAt: "2020-07-31 09:17:21",
@@ -140,7 +140,7 @@ export default class messageIndex extends Vue {
   ]; //系统消息
 
   private created() {
-    this.uInfo = localStore.get("userInfo");
+    this.uInfo = localStore.get('userInfo');
     this.initWebSocket();
   }
   private mounted() {
@@ -150,7 +150,7 @@ export default class messageIndex extends Vue {
 
   private updated() {
     // 聊天定位到底部
-    let ele: any = document.getElementById("chat-inner");
+    let ele: any = document.getElementById('chat-inner');
     ele.scrollTop = ele.scrollHeight;
   }
 
@@ -168,10 +168,10 @@ export default class messageIndex extends Vue {
 
   // 切换聊天与系统消息
   public gotoChatMessage(type: string) {
-    if (type == "message") {
+    if (type == 'message') {
       this.showChat = true;
       this.showMessage = false;
-    } else if (type == "notice") {
+    } else if (type == 'notice') {
       this.showChat = false;
       this.showMessage = true;
 
@@ -189,7 +189,7 @@ export default class messageIndex extends Vue {
     this.showDelete = this.systemMsgList.every((item) => {
       return item.Read == 1;
     });
-    this.$store.dispatch("saveNoticeList", this.systemMsgList);
+    this.$store.dispatch('saveNoticeList', this.systemMsgList);
     this.changeNoticeStatus();
   }
 
@@ -197,47 +197,49 @@ export default class messageIndex extends Vue {
   public initWebSocket() {
     const _this = this;
     // 连接服务端，workerman.net:2120换成实际部署web-msg-sender服务的域名或者ip
-    _this.socket = io("http://172.16.8.69:2120");
+    _this.socket = io('http://172.16.8.69:2120');
     // uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
     let uid = _this.uInfo.id;
 
     // socket连接后以uid登录
-    _this.socket.on("connect", function () {
-      _this.socket.emit("login", uid);
+    _this.socket.on('connect', function () {
+      _this.socket.emit('login', uid);
     });
     // 后端推送来消息时
-    _this.socket.on("new_msg", (msg: any) => {
-      let midMsg = msg.replace(/&quot;/g, `"`);
+    _this.socket.on('new_msg', (msg: any) => {
+      let midMsg = msg.replace(/&quot;/g, '"');
       let endMsg = JSON.parse(midMsg);
       // {type: "message", content: "Your netFlow order has been completed", mark: "你的流量套餐订单已完成"}
-      if (endMsg.type == "system") {
+      if (endMsg.type == 'system') {
         // 系统通知
         _this.systemMsgList.unshift({
-          CreatedAt: "",
-          Id: "",
+          CreatedAt: '',
+          Id: '',
           Mark: endMsg.mark,
           Read: 0,
           Title: endMsg.content,
         });
-        _this.$store.dispatch("saveNoticeList", _this.systemMsgList);
-      } else if (endMsg.type == "message") {
+        _this.$store.dispatch('saveNoticeList', _this.systemMsgList);
+      } else if (endMsg.type == 'message') {
         // 聊天
         _this.chatList.push({
-          id: "", //消息id
-          from_user_id: "", //发送人id
-          to_user_id: "", //接收人id
+          id: '', //消息id
+          from_user_id: '', //发送人id
+          to_user_id: '', //接收人id
           content: endMsg.content, //发送的消息
-          created_time: "", // 发送时间
-          airbus_id: "", //航班id
+          created_time: '', // 发送时间
+          airbus_id: '', //航班id
           read: 0, // 已读  0未读 1已读
           type: 2, // 1 发送给空乘   2 发送给用户
         });
-        _this.$store.dispatch("saveChatList", _this.chatList);
+        _this.$store.dispatch('saveChatList', _this.chatList);
       }
     });
+	
+	
     // 后端推送来在线数据时
-    _this.socket.on("update_online_count", (online_stat: any) => {
-      console.log("后端推送来在线数据时", online_stat);
+    _this.socket.on('update_online_count', (online_stat: any) => {
+      console.log('后端推送来在线数据时', online_stat);
     });
   }
 
@@ -245,15 +247,15 @@ export default class messageIndex extends Vue {
   public getChatMessage() {
     const _this = this;
     let messageList: Array<any> = [];
-    if (localStore.get("chatList")) {
-      messageList = localStore.get("chatList");
+    if (localStore.get('chatList')) {
+      messageList = localStore.get('chatList');
     }
     MessageService.getUserMessage({ read: 0 }).then((res) => {
       if (res.code == 200) {
-        console.log("聊天记录", res);
+        console.log('聊天记录', res);
         res.data = res.data.reverse();
         _this.chatList = [...messageList, ...res.data];
-        _this.$store.dispatch("saveChatList", _this.chatList);
+        _this.$store.dispatch('saveChatList', _this.chatList);
       }
     });
   }
@@ -261,14 +263,14 @@ export default class messageIndex extends Vue {
   // 发送消息给空乘
   public sendMsgToManager() {
     const _this = this;
-    if (!this.wordContent) return this.$toast("请输入内容");
+    if (!this.wordContent) return this.$toast('请输入内容');
     let req = {
-      id: "", //消息id
+      id: '', //消息id
       from_user_id: this.uInfo.id, //发送人id
-      to_user_id: "", //接收人id
+      to_user_id: '', //接收人id
       content: this.wordContent, //发送的消息
-      created_time: "", // 发送时间
-      airbus_id: "", //航班id
+      created_time: '', // 发送时间
+      airbus_id: '', //航班id
       read: 0, // 已读  0未读 1已读
       type: 1, // 1 发送给空乘  2发送给用户
     };
@@ -278,11 +280,11 @@ export default class messageIndex extends Vue {
     MessageService.sendToManager(reqUser).then((res) => {
       if (res.code == 200) {
         _this.chatList.push(req);
-        _this.$store.dispatch("saveChatList", _this.chatList);
-        _this.wordContent = "";
+        _this.$store.dispatch('saveChatList', _this.chatList);
+        _this.wordContent = '';
       }
     });
-    this.wordContent = "";
+    this.wordContent = '';
   }
 
   // 获取系统消息 1已读 0未读
@@ -298,8 +300,8 @@ export default class messageIndex extends Vue {
         MessageService.getSystemNoticeList({ read: 0 }).then((res) => {
           if (res.code == 200) {
             unreadList = res.data.notice;
-            if (localStore.get("noticeList")) {
-              storeList = localStore.get("noticeList");
+            if (localStore.get('noticeList')) {
+              storeList = localStore.get('noticeList');
               _this.systemMsgList = [...unreadList, ...storeList];
             } else {
               _this.systemMsgList = [...unreadList, ...readList];
@@ -307,7 +309,7 @@ export default class messageIndex extends Vue {
             _this.showDelete = _this.systemMsgList.every((item) => {
               return item.Read == 1;
             });
-            _this.$store.dispatch("saveNoticeList", _this.systemMsgList);
+            _this.$store.dispatch('saveNoticeList', _this.systemMsgList);
           }
         });
       }
@@ -323,7 +325,7 @@ export default class messageIndex extends Vue {
 
   // 点击某条系统通知
   public changeReadStatus(item: any) {
-    console.log("某条系统通知", item);
+    console.log('某条系统通知', item);
   }
 }
 </script>

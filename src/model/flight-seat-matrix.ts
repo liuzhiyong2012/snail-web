@@ -1,4 +1,4 @@
-export default FlightSeatMatrix{
+export default class FlightSeatMatrix{
 	
 	private  layoutInfo:any ={};
 	
@@ -17,7 +17,5 @@ export default FlightSeatMatrix{
 			
 		}
 	}
-	
-	 
 	
 }
