@@ -74,16 +74,9 @@
 			// this.renderCharts();
 		}
 		
-		public renderCharts(dataArr) {
+		public renderCharts(dataArr:Array<any>) {
 			let chartArr = [];
 			let total:number = 0;
-			
-			/* BannerImgPath: "http://172.16.125.11:8010/937d7502-fb74-4966-af50-19d6c4e4c3ed"
-			Name: "三文鱼套餐"
-			Remark: null
-			SampleImgPath: "http://172.16.125.11:8010/3ad53e3d-ac8d-47dd-8e16-d0ba3a7ea486"
-			getMoney: "1958.00"
-			id: "009519b8-7723-e911-bd22-c4209d3e3b89", */
 			
 			dataArr.forEach((item,index)=>{
 				 item.getMoney = Number( item.getMoney);
@@ -97,7 +90,7 @@
 				});
 				
 				// debugger;
-				item.percent = parseInt((item.getMoney/total) * 100);
+				item.percent = item.getMoney/total * 100;
 				item.SampleImgPath = UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(item.SampleImgPath));
 			});
 			

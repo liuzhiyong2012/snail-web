@@ -84,8 +84,8 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
-import CabinLayoutService from '../../service/crew/cabin-layout.ts';
-import FlightSeatMatrix from './model/flight-seat-matrix.ts';
+import CabinLayoutService from '../../service/crew/cabin-layout';
+import FlightSeatMatrix from './model/flight-seat-matrix';
 import CrewChat from './CrewChat.vue';
 
 
@@ -115,7 +115,7 @@ export default class CrewCatering extends Vue {
 	//展示聊天弹窗
 	private showChatModal:boolean = false;
 	
-	private curUserId:string = false;
+	private curUserId:string = '';
 	
 	
 	
@@ -148,13 +148,14 @@ export default class CrewCatering extends Vue {
 	
 	private beforeDestroy(){
 		document.removeEventListener('click',this.docClickHandle);
-		// this.getFlightSeatInfo();
-		/* this.getFlightSeatInfo();
-		this.getSeatMessageInfo(); */
 	}
 	
 	private startWebScoket(){
-		this.socket = io('http://172.16.8.69:2120/');
+		
+		// var ele = document.getElementById('id');
+		// ele.scrollTop = ele.scrollHeight;
+		
+		this.socket = (window as any).io('http://172.16.8.69:2120/');
 		// uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
 		let uid = '4CFC4D33-2C1E-E911-BAD5-F44D307124C0';
 		
@@ -169,7 +170,6 @@ export default class CrewCatering extends Vue {
 			console.log('new_msg：');
 		    console.log('收到消息：'+msg);
 		});
-		//hello world
 		
 		// 后端推送来在线数据时
 		this.socket.on('saveNoticeList', function(online_stat){
@@ -181,10 +181,6 @@ export default class CrewCatering extends Vue {
 			console.log('saveChatList：');
 		    console.log(online_stat);
 		});
-		
-		/* new_msg
-		saveNoticeList
-		saveChatList */
 	}
 	
 	private clickSeatItem(seatItem){

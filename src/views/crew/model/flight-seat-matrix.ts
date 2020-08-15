@@ -47,41 +47,16 @@ export default class FlightSeatMatrix{
 			}
 			
 			seatMap[item.row][item.col].push(item);
-			/* if(item.row - lastRowIndex > 1){
-				sectionIndex 
-			} */
-			
-			
-			/* if(index == 0){
-				sectionIndex = 1
-			} */
-			
-			//如果是新的一行
-			/* if(row != item.row&&row != 0){
-				layout.push(section);
-				section = [];
-			}
-			
-			if(colIndex != item.col){
-				
-			} */
-			
-			
-		
-			//如果是最后一个元素
-			/* if(index == this.seatArr.length - 1){
-				layout.push(section);
-			} */
 		});
 		
 		//层级
 		let layout = [];
 		let rowKeys = Object.keys(seatMap);
 		let sectionArr = [];
-		let lastRowKey = '0';
+		let lastRowKey = '0'; 
 		
 		
-		rowKeys.forEach((rowKey,rowIndex)=>{
+		rowKeys.forEach((rowKey:any,rowIndex:number)=>{
 			rowKey = Number(rowKey);
 			if(Number(rowKey) - Number(lastRowKey) >1&&lastRowKey!='0'){
 				layout.push(sectionArr);

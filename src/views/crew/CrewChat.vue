@@ -11,19 +11,33 @@
 		<div class="content-ctn">
 			<div class="content-ctt">
 				<div class="aside-ctn">
-					<div class="user-item" v-for="(item, index) in userList" :key="index">
-						<div class="heade-img">{{ item.name }}</div>
-
+					<!-- NickName: "mizao"
+					SeatName: "6B"
+					UserId: "3a03a40ac79b4f0d6eef58fcd99271d7"
+					message: (3) [{…}, {…}, {…}]
+					total: 43 -->
+					<div class="user-item" v-for="(item, index) in userList" :key="index" :class="{active:activeUserId == item.from_user_id}">
+						<div class="heade-img">{{ item.NickName }}</div>
 						<div class="info-ctn">
 							<div class="info-top-ctn">
-								<span>{{ item.seatNumber }}</span>
-								<span>{{ item.time }}</span>
+								<span>{{ item.SeatName }}</span>
+								<span>{{ item.message[0].created_time }}</span>
 							</div>
-							<p class="info-bottom-ctm">{{ item.message }}</p>
+							<p class="info-bottom-ctm">{{ item.message[0].content }}</p>
 						</div>
 					</div>
+					
 				</div>
-
+				<!-- airbus_id: "4CFC4D33-2C1E-E911-BAD5-F44D307124C0"
+				content: "dsfsd"
+				created_time: "2020-08-14 01:47:28"
+				from_user_id: "3a03a40ac79b4f0d6eef58fcd99271d7"
+				id: "3d7923aead78bf1cf389f7bb455837b3"
+				read: 0
+				to_user_id: "4CFC4D33-2C1E-E911-BAD5-F44D307124C0"
+				type: 1 -->
+				<!-- pc -->
+				
 				<!-- messageList
 				{
 					usreId:'sdfsdf',
@@ -33,32 +47,45 @@
 					seatNumber:'23c',
 					message:'我的餐好了没有啊,怎么这么慢呀,我的餐好了没有啊,怎么这么慢呀,我的餐好了没有啊,怎么这么慢呀'
 				} -->
+				<!-- 
+				/* airbus_id: "4CFC4D33-2C1E-E911-BAD5-F44D307124C0"
+				content: "sdf"
+				created_time: "2020-08-14 01:47:58"
+				from_user_id: "3a03a40ac79b4f0d6eef58fcd99271d7"
+				id: "7e4a454001af2b212ea114479df0d5c8"
+				read: 0
+				to_user_id: "4CFC4D33-2C1E-E911-BAD5-F44D307124C0"
+				type: 1 */ -->
+				
 				<div class="main-ctn">
-					<div class="message-ctn">
+					<div ref="messageCtn" class="message-ctn">
 						<div class="message-item" v-for="(item, index) in messageList" :key="index" :class="{
-							left:!item.isMe,
-							right:item.isMe
+							left:item.type == 1,
+							right:item.type != 1
 						}">
-							<div class="heade-img">{{ item.name }}</div>
+							<div class="heade-img">{{ item.name||'未知' }}</div>
 							<div class="info-ctn">
 								<div class="info-top-ctn">
-									<span>{{ item.seatNumber }}</span>
-									<span>{{ item.time }}</span>
+									<span>{{ item.seatNumber||'未知座位号' }}</span>
+									<span>{{ item.created_time }}</span>
 								</div>
-								<p class="info-bottom-ctm">{{ item.message }}</p>
+								<p class="info-bottom-ctm">{{ item.content }}</p>
 							</div>
 						</div>
+						
 						<!-- private userList:Array<any> = [{
 							name:'刘志勇',
 							seatNumber:'23c',
 							
 							message:'我的餐好了没有啊,怎么这么慢呀'
 						}]; -->
+						
 					</div>
 					<div class="oper-ctn">
-						<div class="input-ctn"><textarea type="text"></textarea></div>
-
-						<div class="submit-ctn">发送</div>
+						<div class="input-ctn">
+							<textarea type="text" v-model="inputMessage"></textarea>
+						</div>
+						<div class="submit-ctn" @click="sendMessage()">发送</div>
 					</div>
 				</div>
 			</div>
@@ -68,10 +95,8 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-
-import CabinLayoutService from '../../service/crew/cabin-layout.ts';
+import CabinLayoutService from '../../service/crew/cabin-layout';
 import FlightSeatMatrix from './model/flight-seat-matrix';
-
 
 @Component({
 	name: 'CrewChat',
@@ -81,100 +106,158 @@ export default class CrewChat extends Vue {
 	@Prop()
 	curUserId:string;
 	
-	private userList: Array<any> = [
-		{
-			name: '刘志勇',
-			time: '10:23',
-			seatNumber: '23c',
-			message: '我的餐好了没有啊,怎么这么慢呀'
-		},
-		{
-			name: '刘志勇',
-			time: '10:23',
-			seatNumber: '23c',
-			message: '我的餐好了没有啊,怎么这么慢呀'
-		},
-		{
-			name: '刘志勇',
-			time: '10:23',
-			seatNumber: '23c',
-			message: '我的餐好了没有啊,怎么这么慢呀'
-		},
-		{
-			name: '刘志勇',
-			time: '10:23',
-			seatNumber: '23c',
-			message: '我的餐好了没有啊,怎么这么慢呀'
-		}
-	];
+	private activeUserId:string = '';
+	
+	
+	private userList: Array<any> = [];
 
-	private messageList: Array<any> = [
-		{
-			usreId: 'sdfsdf',
-			isMe: false,
-			name: '赖进文',
-			time: '10:23',
-			seatNumber: '23c',
-			message: '我的餐好了没有啊,怎么这么慢呀,我的餐好了没有啊,怎么这么慢呀,我的餐好了没有啊,怎么这么慢呀'
-		},
-		{
-			usreId: 'sdfsdf',
-			isMe: true,
-			name: '刘志勇',
-			time: '10:23',
-			seatNumber: '23c',
-			message: '我的餐好了没有啊,怎么这么慢呀,我的餐好了没有啊,怎么这么慢呀,我的餐好了没有啊,怎么这么慢呀'
-		},
-		{
-			usreId: 'sdfsdf',
-			isMe: false,
-			name: '赖进文',
-			time: '10:23',
-			seatNumber: '23c',
-			message: '我的餐好了没有啊,怎么这么慢呀,我的餐好了没有啊,怎么这么慢呀,我的餐好了没有啊,怎么这么慢呀'
-		},
-		{
-			usreId: 'sdfsdf',
-			isMe: true,
-			name: '刘志勇',
-			time: '10:23',
-			seatNumber: '23c',
-			message: '我的餐好了没有啊,怎么这么慢呀,我的餐好了没有啊,怎么这么慢呀,我的餐好了没有啊,怎么这么慢呀'
-		}
-	];
+	private messageList: Array<any> = [];
 
 	private layoutList: Array<any> = [];
 
 	private active: string = 'firstClass';
+	
+	private inputMessage:string = '';
+	private socket:any = null;
 
 
-	mounted() {
+	async mounted() {
+		this.activeUserId = this.curUserId;
 	    this.getSeatMessageInfo();
+		//拉取已读消息
+		await this.getAirBusMessage(this.activeUserId,1);
+		await this.getAirBusMessage(this.activeUserId,2);
+		
+		this.startWebScoket();
+		//拉取未读消息
+	}
+	
+	private sendMessage(){
+		// inputMessage;
+		// sendToUser
+		//param （to，content）
+		CabinLayoutService.sendToUser({
+			to:this.activeUserId,
+			content:this.inputMessage,
+		}).then((resData:any)=>{
+			if(resData.code == '200'){
+				// debugger;
+				// d
+			}
+		});
+		
+	}
+	
+	private startWebScoket(){
+		this.socket = (window as any).io('http://172.16.8.69:2120/');
+		// uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
+		let uid = '4CFC4D33-2C1E-E911-BAD5-F44D307124C0';
+		
+		// socket连接后以uid登录
+		this.socket.on('connect', ()=>{
+			console.log('connect');
+		    this.socket.emit('login', uid);
+		});
+		
+		// 后端推送来消息时
+		this.socket.on('new_msg', (msg)=>{
+			
+			let midMsg = msg.replace(/&quot;/g, '"');
+			let newMessageObj = JSON.parse(midMsg);
+			
+			console.log('new_msg：');
+			// debugger;
+			if(newMessageObj.userId == this.activeUserId){
+				this.messageList.push({
+					airbus_id: '',
+					content: newMessageObj.content,
+					created_time: newMessageObj.time,
+					from_user_id: newMessageObj.userId,
+					id: '',
+					read: 1,
+					to_user_id: '',
+					type: 1
+				});
+				this.scrollToBottom();
+				this.readAirBusMessage(newMessageObj.userId);
+				//调用消息已读取接口
+			}
+			
+		    // console.log('收到消息：'+JSON.stringify(endMsg));
+		});
+		
+		// 后端推送来在线数据时
+		this.socket.on('saveNoticeList', function(online_stat){
+			console.log('saveNoticeList：');
+		    console.log(online_stat);
+		});
+		
+		this.socket.on('saveChatList', function(online_stat){
+			console.log('saveChatList：');
+		    console.log(online_stat);
+		});
+	}
+	
+	private scrollToBottom(){
+		this.$nextTick(()=>{
+			(this.$refs.messageCtn as any).scrollTop = (this.$refs.messageCtn as any).scrollHeight;
+		});
+		
+	}
+	
+	
+	readAirBusMessage(userId){
+		CabinLayoutService.readAirBusMessage({userId:userId}).then((resData:any)=>{
+			if(resData.code == '200'){
+				this.$toast('消息读取成功!');
+			}
+		});
+	}
+	
+	
+	
+	getAirBusMessage(userId,read){
+		CabinLayoutService.getAirBusMessage({
+			userId:this.activeUserId,
+			read:1
+		}).then((resData:any)=>{
+			
+			if(resData.code == '200'){
+				//已读消息
+				// debugger;
+				if(read == 1){
+					this.messageList = this.messageList.concat(resData.data);
+					this.scrollToBottom();
+					
+				}else{
+					this.messageList.push(resData.data);
+					this.scrollToBottom();
+				}
+				
+			}
+			
+			/* airbus_id: "4CFC4D33-2C1E-E911-BAD5-F44D307124C0"
+			content: "sdf"
+			created_time: "2020-08-14 01:47:58"
+			from_user_id: "3a03a40ac79b4f0d6eef58fcd99271d7"
+			id: "7e4a454001af2b212ea114479df0d5c8"
+			read: 0
+			to_user_id: "4CFC4D33-2C1E-E911-BAD5-F44D307124C0"
+			type: 1 */
+			
+		});
 	}
 	
 	//获取未读消息与座位的映射关系
 	public getSeatMessageInfo():void{
-		debugger;
+		
 		CabinLayoutService.getSeatMessageInfo().then((resData:any)=>{
 			let seatMessageMap:any = {};
 			
+			//替换PC,刘志勇
 			if(resData.code == '200'){
-				debugger; //
-				// UserId: "3a03a40ac79b4f0d6eef58fcd99271d7"
-				// message: []
-				// total: 32,
+				this.userList = resData.data;
 				
-				/* airbus_id: "4CFC4D33-2C1E-E911-BAD5-F44D307124C0"
-				content: "xc"
-				created_time: "2020-08-11 06:22:22"
-				from_user_id: "3a03a40ac79b4f0d6eef58fcd99271d7"
-				id: "e3368d8e667065d9c769c901a1dabd8c"
-				read: 0
-				to_user_id: "4CFC4D33-2C1E-E911-BAD5-F44D307124C0"
-				type: 1 */
-				/* resData.data.forEach((item,index)=>{
-					seatMessageMap[item.UserId] = item;
-				}); */
 			}
 			
 			//this.seatMessageMap = seatMessageMap;
@@ -198,7 +281,7 @@ export default class CrewChat extends Vue {
 .crew-chat {
 	width: 100%;
 	// height: 100%;
-	background: #002566;
+	// background: #002566;
 	position: fixed;
 	top: 0;
 	bottom: 0;
@@ -256,6 +339,9 @@ export default class CrewChat extends Vue {
 
 				background: red;
 				box-sizing: border-box;
+				background:linear-gradient(180deg,rgba(0,38,106,1) 0%,rgba(0,66,133,1) 100%);
+				
+				
 				
 				.user-item {
 					display: flex;
@@ -263,6 +349,11 @@ export default class CrewChat extends Vue {
 					justify-content: space-between;
 					border-bottom: rem(2px) solid rgba(255, 255, 255, 0.08);
 					height: rem(176px);
+					
+					&.active{
+						//hello 
+						
+					}
 
 					.heade-img {
 						border-radius: 50%;
@@ -317,6 +408,7 @@ export default class CrewChat extends Vue {
 					padding:rem(80px);
 					box-sizing: border-box;
 					overflow: auto;
+					background:rgba(0,44,111,1);
 					
 					.message-item{
 						 clear: both;
@@ -406,7 +498,7 @@ export default class CrewChat extends Vue {
 					z-index: 100;
 					width: 100%;
 					box-sizing: border-box;
-					background: blue;
+					background:rgba(0,44,111,1);
 
 					.input-ctn {
 						width: rem(1400px);

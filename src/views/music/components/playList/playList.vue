@@ -18,7 +18,7 @@
         </div>
         <!-- 歌曲列表 -->
         <Scroll class="list-con" :data="sequenceList" ref="listContent">
-          <transition-group ref="list" name="list-li" tag="ul">
+          <!-- <transition-group ref="list" name="list-li" tag="ul"> -->
             <li ref="listItem" :class="{playing:getCurrentIcon(item)}" v-for="(item, index) in sequenceList" :key="index" @click="selectItem(item, index)">
               <div class="lihear-img-box">
 				  <span class="number-ctn">
@@ -36,7 +36,7 @@
                 <!-- <img @click.stop="deleteOne(item)" class="cha" src="./img/smldel.png" alt=""> -->
               </div>
             </li>
-          </transition-group>
+          <!-- </transition-group> -->
         </Scroll>
 		
 		<!-- <Scroll class="list-con" :data="sequenceList" ref="listContent">
