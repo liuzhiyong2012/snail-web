@@ -102,14 +102,23 @@ export default class CrewCatering extends Vue {
 		}).then((resData:any)=>{
 			
 			if (resData.code == '200') {
+				//无数据
+				if(resData.data.count == 0){
+				  this.finished = true;
+				}else if(this.pageNumber * this.pageSize > resData.data.count){//最后一页
+				  this.finished = true;
+				}else{//非最后一页
+				  this.finished = false;
+				}
 				
-				resData.data.forEach((item,index)=>{
+				resData.data.data.forEach((item,index)=>{
 					item.BannerImgPath = UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(item.BannerImgPath));
 				});
 						
-				this.dataList = this.dataList.concat(resData.data); 
+				this.dataList = this.dataList.concat(resData.data.data); 
 				this.loading = false;
 				this.refreshing = false;
+				
 			} else {
 				this.$toast('获取列表失败!');
 				this.loading = false;

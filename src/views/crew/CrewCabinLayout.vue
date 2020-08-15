@@ -13,14 +13,11 @@
 				<div v-for="(item,index) in tabList" class="bar-item" :key="index" :class="{active:active == item.value,hasNewMessage:true}" >
 					<span class="label">{{item.name}}</span>
 					<span class="message-count">23</span>
-					
-					
 				</div>
 			</div>
 		</div>
 		
 		<div class="content-ctn">
-			
 			<div class="flight-layout-ctn">
 				<section class="section-ctn" v-for="(rowItemArr,sectionIndex) in layoutList" :key="sectionIndex">
 					<div class="section-title">
@@ -37,19 +34,12 @@
 									<h6 @click.stop.prevent = "clickSeatItem(seatItem)" class="seat-ctn" v-for="(seatItem,seatIndex) in seatArr" :key="seatIndex" :class="{'hasNewMessage':(!!seatMessageMap[seatItem.UserId]),'disabled':(!seatItem.UserId)}">
 										<span>
 											{{seatItem.Name}}
-											<!-- {{seatItem.UserId}} -->
 										</span>
 										<i class="icon icon-seat"></i>
 										
 										<div class="seat-message-count" v-if="seatMessageMap[seatItem.UserId]">
 											{{seatMessageMap[seatItem.UserId].total}}
 										</div>
-										
-										<!-- seatMessageMap
-										UserId: "3a03a40ac79b4f0d6eef58fcd99271d7"
-										message: (3) [{…}, {…}, {…}]
-										total: 32 , -->
-										
 										<div class="message-tip" v-if="seatMessageMap[seatItem.UserId]&&(seatItem.UserId == showTipUserId)">
 											<div class="item-left">
 												{{seatItem.Name}}
@@ -69,13 +59,10 @@
 						  </section>
 					</div>
 				</section>
-				<!-- layoutList -->
 				
 			</div>
 		</div>
-		
 		<crew-chat v-if="curUserId" :curUserId="curUserId" @close="curUserId = ''"></crew-chat>
-		
 	</section>
 </template>
 
@@ -83,7 +70,6 @@
 	
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-
 import CabinLayoutService from '../../service/crew/cabin-layout';
 import FlightSeatMatrix from './model/flight-seat-matrix';
 import CrewChat from './CrewChat.vue';
@@ -148,13 +134,10 @@ export default class CrewCatering extends Vue {
 	
 	private beforeDestroy(){
 		document.removeEventListener('click',this.docClickHandle);
+		this.socket.close();
 	}
 	
 	private startWebScoket(){
-		
-		// var ele = document.getElementById('id');
-		// ele.scrollTop = ele.scrollHeight;
-		
 		this.socket = (window as any).io('http://172.16.8.69:2120/');
 		// uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
 		let uid = '4CFC4D33-2C1E-E911-BAD5-F44D307124C0';
@@ -167,24 +150,14 @@ export default class CrewCatering extends Vue {
 		
 		// 后端推送来消息时
 		this.socket.on('new_msg', function(msg){
-			console.log('new_msg：');
-		    console.log('收到消息：'+msg);
+			this.getSeatMessageInfo();
+			/* console.log('new_msg：');
+		    console.log('收到消息：'+msg); */
 		});
 		
-		// 后端推送来在线数据时
-		this.socket.on('saveNoticeList', function(online_stat){
-			console.log('saveNoticeList：');
-		    console.log(online_stat);
-		});
-		
-		this.socket.on('saveChatList', function(online_stat){
-			console.log('saveChatList：');
-		    console.log(online_stat);
-		});
 	}
 	
 	private clickSeatItem(seatItem){
-		
 		if(!seatItem.UserId){//座位上没有用户
 			this.showTipUserId = '';
 		}else if(!this.seatMessageMap[seatItem.UserId]){//有用户但是没有新消息
@@ -196,21 +169,6 @@ export default class CrewCatering extends Vue {
 		}else{
 			this.$toast('这是什么鬼!');
 		}
-		
-		
-		{
-			//有用户但是没有新消息
-			if(this.seatMessageMap[seatItem.UserId]){
-				
-			}
-			//有用户并且消息tip处于展示状态
-			//有用户并且消息tip处于关闭状态
-			
-		}
-		/* if(this.showTipUserId ==){
-			
-		} */
-		
 	}
 	
 	private goToChat(seatItem){
@@ -219,37 +177,20 @@ export default class CrewCatering extends Vue {
 	}
 	
 	
-	
 	//获得航班的座位布局信息
 	public getFlightSeatInfo():void{
 		CabinLayoutService.getFlightSeatInfo().then((resData:any)=>{
 			if(resData.code == '200'){
-				// debugger;
-				console.log('=============================断点开始================================');
 				let flightObj = new FlightSeatMatrix(resData.data);
 				this.layoutList = flightObj.getLayoutArr();
 			}
-			
-		/* debugger; */
-		/* Name: "1A"
-		UserId: "8f7288d9d6fe403f9ee2fad9f46285d7"
-		col: 1
-		col-number: 1
-		id: "1"
-		row: 1 */
-			
 		});
 		
 	}
 	
 	//获取未读消息与座位的映射关系
 	public getSeatMessageInfo():void{
-		// debugger;
 		CabinLayoutService.getSeatMessageInfo().then((resData:any)=>{
-			//debugger;
-			/* UserId: "3a03a40ac79b4f0d6eef58fcd99271d7"
-			message: (3) [{…}, {…}, {…}]
-			total: 32 */
 			let seatMessageMap:any = {};
 			if(resData.code == '200'){
 				resData.data.forEach((item,index)=>{

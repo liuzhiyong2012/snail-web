@@ -76,7 +76,6 @@
 						<!-- private userList:Array<any> = [{
 							name:'刘志勇',
 							seatNumber:'23c',
-							
 							message:'我的餐好了没有啊,怎么这么慢呀'
 						}]; -->
 						
@@ -127,22 +126,31 @@ export default class CrewChat extends Vue {
 		//拉取已读消息
 		await this.getAirBusMessage(this.activeUserId,1);
 		await this.getAirBusMessage(this.activeUserId,2);
-		
 		this.startWebScoket();
 		//拉取未读消息
 	}
 	
+	private beforeDestroy(){
+		this.socket&&this.socket.close(); 
+	}
+	
 	private sendMessage(){
-		// inputMessage;
-		// sendToUser
-		//param （to，content）
 		CabinLayoutService.sendToUser({
 			to:this.activeUserId,
 			content:this.inputMessage,
 		}).then((resData:any)=>{
 			if(resData.code == '200'){
+				this.messageList.push(resData.data);
+				this.scrollToBottom();
 				// debugger;
-				// d
+				/* airbus_id: "4CFC4D33-2C1E-E911-BAD5-F44D307124C0"
+				content: "sdfas"
+				created_time: "2020-08-15 03:28:00"
+				from_user_id: "4CFC4D33-2C1E-E911-BAD5-F44D307124C0"
+				id: "6ec50e86da99e1cb80e73a8e17739e29"
+				read: 0
+				to_user_id: "3a03a40ac79b4f0d6eef58fcd99271d7"
+				type: "message" */
 			}
 		});
 		
@@ -150,6 +158,7 @@ export default class CrewChat extends Vue {
 	
 	private startWebScoket(){
 		this.socket = (window as any).io('http://172.16.8.69:2120/');
+		
 		// uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
 		let uid = '4CFC4D33-2C1E-E911-BAD5-F44D307124C0';
 		
@@ -161,7 +170,6 @@ export default class CrewChat extends Vue {
 		
 		// 后端推送来消息时
 		this.socket.on('new_msg', (msg)=>{
-			
 			let midMsg = msg.replace(/&quot;/g, '"');
 			let newMessageObj = JSON.parse(midMsg);
 			
@@ -280,14 +288,13 @@ export default class CrewChat extends Vue {
 
 .crew-chat {
 	width: 100%;
-	// height: 100%;
-	// background: #002566;
 	position: fixed;
 	top: 0;
 	bottom: 0;
 	z-index: 1200;
 	box-sizing: border-box;
 	margin-bottom: 1.2rem;
+	background: #002566;
 
 	.top-ctn {
 		position: relative;
