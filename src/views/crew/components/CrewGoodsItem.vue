@@ -23,27 +23,16 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component({
-	name: 'CrewCateringItem',
+	name: 'CrewGoodsItem',
 	components: {}
 })
-export default class CrewCateringItem extends Vue {
+export default class CrewGoodsItem extends Vue {
 	@Prop()
 	data: Array<any>;
 
-	/* BannerImgPath: "FB709FE0-0D34-E911-B13C-96AF276FDDB7"
-		Name: "三文鱼套餐"
-		OrderId: "c535f07c04ffe4259b7b33b888ca046f"
-		Price: "89.00"
-		Quantity: 2
-		Remark: null
-		SampleImgPath: "47C591CA-0D34-E911-B13C-96AF276FDDB7"
-		Seat: "2B"
-		id: "43b9d4e */
-	/* 下单时间
-		状态 */
-		private finish(){
-			this.$emit('finish',this.data);
-		}
+	private finish(){
+		this.$emit('finish',this.data);
+	}
 }
 </script>
 

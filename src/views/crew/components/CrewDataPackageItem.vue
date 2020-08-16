@@ -1,6 +1,14 @@
-<template>
+2<template>
 	<section class="crew-catering-item" >
-		<div class="img-ctn" :style="{ backgroundImage: `url(${data.SampleImgPath})` }"></div>
+		<div v-if="data.Name == 'ALL-DAY Pass'" class="img-ctn" :style="{ backgroundImage: `url(${imageMap[data.Name]})` }">
+			{{data.Name}}
+		</div>
+		<div v-if="data.Name == '1GB'" class="img-ctn" :style="{ backgroundImage: `url(${imageMap[data.Name]})` }">
+			{{data.Name}}
+		</div>
+		<div v-if="data.Name != 'ALL-DAY Pass'&&data.Name != '1GB'" class="img-ctn" :style="{ backgroundImage: `url(${imageMap['50M']})` }">
+			{{data.Name}}
+		</div>
 
 		<div class="info-ctn">
 			<div class="info-left-ctn">
@@ -12,8 +20,9 @@
 			</div>
 
 			<div class="info-right-ctn">
-				<span class="price-ctn">￥:{{ data.Price }}</span>
-				<span class="finish-ctn" v-if="data.status == '0'"  @click="finish">Finish</span>
+				
+				<span class="price-ctn">￥{{ data.FinalPrice }}</span>
+				<!-- <span class="finish-ctn" v-if="data.status == '0'"  @click="finish">Finish</span> -->
 			</div>
 		</div>
 	</section>
@@ -23,24 +32,20 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component({
-	name: 'CrewCateringItem',
+	name: 'CrewDataPackageItem',
 	components: {}
 })
-export default class CrewCateringItem extends Vue {
+export default class CrewDataPackageItem extends Vue {
 	@Prop()
 	data: Array<any>;
+	
+	private imageMap:any = {
+		'ALL-DAY Pass':require('../images/data_package_1.png'),
+		'1GB':require('../images/data_package_2.png'),
+		'50M':require('../images/data_package_3.png')
+	};
 
-	/* BannerImgPath: "FB709FE0-0D34-E911-B13C-96AF276FDDB7"
-		Name: "三文鱼套餐"
-		OrderId: "c535f07c04ffe4259b7b33b888ca046f"
-		Price: "89.00"
-		Quantity: 2
-		Remark: null
-		SampleImgPath: "47C591CA-0D34-E911-B13C-96AF276FDDB7"
-		Seat: "2B"
-		id: "43b9d4e */
-	/* 下单时间
-		状态 */
+
 		private finish(){
 			this.$emit('finish',this.data);
 		}
@@ -72,6 +77,13 @@ export default class CrewCateringItem extends Vue {
 		background-repeat: no-repeat;
 		background-size: contain;
 		background-position: center;
+		
+		text-align: center;
+		font-size:rem(24px);
+		font-family:PingFangSC-Semibold,PingFang SC;
+		font-weight:600;
+		color:rgba(255,255,255,1);
+		line-height:rem(132px);
 	}
 
 	.info-ctn {

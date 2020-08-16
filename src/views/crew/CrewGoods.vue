@@ -1,7 +1,7 @@
 <template>
 	<section class="crew-catering">
 		 <section class="top-ctn">
-			  <crew-select :selectList= "selectList" :selectValue = "status"  @select="statusChange"></crew-select>
+			  <crew-select style="visibility: hidden;" :selectList= "selectList" :selectValue = "status"  @select="statusChange"></crew-select>
 			  <crew-search @search="search($event)"></crew-search>
 		 </section>
 		 
@@ -122,7 +122,6 @@ export default class CrewCatering extends Vue {
 					this.loading = false;
 					this.refreshing = false;
 				}
-			
 		});
 	}
 }
