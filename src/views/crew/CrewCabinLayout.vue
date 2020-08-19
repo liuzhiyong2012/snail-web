@@ -59,7 +59,6 @@
 						  </section>
 					</div>
 				</section>
-				
 			</div>
 		</div>
 		<crew-chat v-if="curUserId" :curUserId="curUserId" @close="curUserId = ''"></crew-chat>
@@ -67,11 +66,10 @@
 </template>
 
 
-	
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import CabinLayoutService from '../../service/crew/cabin-layout';
-import FlightSeatMatrix from './model/flight-seat-matrix';
+import FlightSeatMatrix from './model/flight-seat-matrix.ts';
 import CrewChat from './CrewChat.vue';
 
 
@@ -120,7 +118,6 @@ export default class CrewCatering extends Vue {
 		}
 	];
 	
-	
 	private mounted(){
 		this.docClickHandle = (e)=>{
 			this.showTipUserId = '';
@@ -149,7 +146,7 @@ export default class CrewCatering extends Vue {
 		});
 		
 		// 后端推送来消息时
-		this.socket.on('new_msg', function(msg){
+		this.socket.on('new_msg', (msg)=>{
 			this.getSeatMessageInfo();
 			/* console.log('new_msg：');
 		    console.log('收到消息：'+msg); */
@@ -182,7 +179,8 @@ export default class CrewCatering extends Vue {
 		CabinLayoutService.getFlightSeatInfo().then((resData:any)=>{
 			if(resData.code == '200'){
 				let flightObj = new FlightSeatMatrix(resData.data);
-				this.layoutList = flightObj.getLayoutArr();
+				this.layoutList = [];
+				//flightObj.getLayoutArr();
 			}
 		});
 		

@@ -11,11 +11,6 @@
 		<div class="content-ctn">
 			<div class="content-ctt">
 				<div class="aside-ctn">
-					<!-- NickName: "mizao"
-					SeatName: "6B"
-					UserId: "3a03a40ac79b4f0d6eef58fcd99271d7"
-					message: (3) [{…}, {…}, {…}]
-					total: 43 -->
 					<div class="user-item" v-for="(item, index) in userList" :key="index" :class="{active:activeUserId == item.from_user_id}">
 						<div class="heade-img">{{ item.NickName }}</div>
 						<div class="info-ctn">
@@ -28,34 +23,6 @@
 					</div>
 					
 				</div>
-				<!-- airbus_id: "4CFC4D33-2C1E-E911-BAD5-F44D307124C0"
-				content: "dsfsd"
-				created_time: "2020-08-14 01:47:28"
-				from_user_id: "3a03a40ac79b4f0d6eef58fcd99271d7"
-				id: "3d7923aead78bf1cf389f7bb455837b3"
-				read: 0
-				to_user_id: "4CFC4D33-2C1E-E911-BAD5-F44D307124C0"
-				type: 1 -->
-				<!-- pc -->
-				
-				<!-- messageList
-				{
-					usreId:'sdfsdf',
-					isMe:false,
-					name:'赖进文',
-					time:'10:23',
-					seatNumber:'23c',
-					message:'我的餐好了没有啊,怎么这么慢呀,我的餐好了没有啊,怎么这么慢呀,我的餐好了没有啊,怎么这么慢呀'
-				} -->
-				<!-- 
-				/* airbus_id: "4CFC4D33-2C1E-E911-BAD5-F44D307124C0"
-				content: "sdf"
-				created_time: "2020-08-14 01:47:58"
-				from_user_id: "3a03a40ac79b4f0d6eef58fcd99271d7"
-				id: "7e4a454001af2b212ea114479df0d5c8"
-				read: 0
-				to_user_id: "4CFC4D33-2C1E-E911-BAD5-F44D307124C0"
-				type: 1 */ -->
 				
 				<div class="main-ctn">
 					<div ref="messageCtn" class="message-ctn">
@@ -175,19 +142,19 @@ export default class CrewChat extends Vue {
 			
 			console.log('new_msg：');
 			// debugger;
-			if(newMessageObj.userId == this.activeUserId){
+			if(newMessageObj.from_user_id == this.activeUserId){
 				this.messageList.push({
 					airbus_id: '',
 					content: newMessageObj.content,
 					created_time: newMessageObj.time,
-					from_user_id: newMessageObj.userId,
+					from_user_id: newMessageObj.from_user_id,
 					id: '',
 					read: 1,
 					to_user_id: '',
 					type: 1
 				});
 				this.scrollToBottom();
-				this.readAirBusMessage(newMessageObj.userId);
+				this.readAirBusMessage(newMessageObj.from_user_id);
 				//调用消息已读取接口
 			}
 			

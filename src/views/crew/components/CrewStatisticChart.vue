@@ -118,7 +118,7 @@
 			     		      		top: '40%',           
 			     		      		left: 'center',          
 			     		      		style: {
-			     		      		   text: total,      
+			     		      		   text: total.toFixed(2),      
 									   fill: '#A6A8B6',
 			     		      		   fontSize: 20,          
 			     		      		   fontWeight: 'normal'
