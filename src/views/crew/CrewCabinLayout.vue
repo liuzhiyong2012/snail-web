@@ -2,13 +2,12 @@
 	<section class="crew-income-statistics">
 		<!-- crew-income-statistics -->
 		<div class="top-ctn">
-			<div class="back-ctn">
+			<div class="back-ctn" @click="$router.go(-1)">
 				<i class="icon icon-back"></i>
 				<span>
 					返回
 				</span>
 			</div>
-			
 			<div class="class-bar-ctn" v-if="layoutInfo">
 				<div v-for="(item,index) in tabList" class="bar-item" :key="index" :class="{active:active == item.value ,hasNewMessage:true}" @click="scrollToSection(item.value)" >
 					<span class="label">{{item.name}}</span>

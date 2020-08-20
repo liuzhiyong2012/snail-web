@@ -11,7 +11,7 @@
 		<div class="content-ctn">
 			<div class="content-ctt">
 				<div class="aside-ctn">
-					<div class="user-item" v-for="(item, index) in userList" :key="index" :class="{active:activeUserId == item.from_user_id}">
+					<div class="user-item" v-for="(item, index) in userList" :key="index" :class="{active:activeUserId == item.from_user_id}" @click="activeChat(item)">
 						<div class="heade-img">{{ item.NickName }}</div>
 						<div class="info-ctn">
 							<div class="info-top-ctn">
@@ -30,22 +30,15 @@
 							left:item.type == 1,
 							right:item.type != 1
 						}">
-							<div class="heade-img">{{ item.name||'未知' }}</div>
+							<div class="heade-img">{{ item.name||'刘志勇' }}</div>
 							<div class="info-ctn">
 								<div class="info-top-ctn">
-									<span>{{ item.seatNumber||'未知座位号' }}</span>
+									<span>{{ item.seatNumber||'23c' }}</span>
 									<span>{{ item.created_time }}</span>
 								</div>
 								<p class="info-bottom-ctm">{{ item.content }}</p>
 							</div>
 						</div>
-						
-						<!-- private userList:Array<any> = [{
-							name:'刘志勇',
-							seatNumber:'23c',
-							message:'我的餐好了没有啊,怎么这么慢呀'
-						}]; -->
-						
 					</div>
 					<div class="oper-ctn">
 						<div class="input-ctn">
@@ -89,22 +82,32 @@ export default class CrewChat extends Vue {
 	private messageArr = [];
 	
 	private messageMap = {
-		/* '1111122222':{
-			userInfo:{},
-			messageArr:[]
-		} */
+		
+		
 	};
 	
 
 
 	async mounted() {
 		this.activeUserId = this.curUserId;
+		console.log('activeUserId:' + this.activeUserId);
+		
 	    this.getSeatMessageInfo();
 		//拉取已读消息
 		await this.getAirBusMessage(this.activeUserId,1);
 		await this.getAirBusMessage(this.activeUserId,2);
 		this.startWebScoket();
 		//拉取未读消息
+	}
+	
+	
+	async activeChat(item){
+		// debugger;
+		this.activeUserId = item.UserId;
+		this.messageList = [];
+		//拉取已读消息
+		await this.getAirBusMessage(this.activeUserId,1);
+		await this.getAirBusMessage(this.activeUserId,2);
 	}
 	
 	private beforeDestroy(){
@@ -198,12 +201,9 @@ export default class CrewChat extends Vue {
 		}).then((resData:any)=>{
 			
 			if(resData.code == '200'){
-				//已读消息
-				// debugger;
 				if(read == 1){
 					this.messageList = this.messageList.concat(resData.data);
 					this.scrollToBottom();
-					
 				}else{
 					this.messageList.push(resData.data);
 					this.scrollToBottom();
@@ -232,7 +232,6 @@ export default class CrewChat extends Vue {
 			//替换PC,刘志勇
 			if(resData.code == '200'){
 				this.userList = resData.data;
-				
 			}
 			
 			//this.seatMessageMap = seatMessageMap;
@@ -338,7 +337,8 @@ export default class CrewChat extends Vue {
 						text-align: center;
 						overflow: hidden;
 						text-overflow: ellipsis;
-						background: yellow;
+						 color: #ffffff;;
+						background: #83abd9;
 					}
 					.info-ctn {
 						width: rem(340px);
@@ -422,8 +422,9 @@ export default class CrewChat extends Vue {
 								white-space: nowrap;
 								text-align: center;
 								overflow: hidden;
+								color: #ffffff;
 								text-overflow: ellipsis;
-								background: yellow;
+								background: #83abd9;
 							}
 							
 							.info-ctn {
