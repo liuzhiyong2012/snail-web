@@ -9,24 +9,19 @@
 				</span>
 			</div>
 			
-			<div class="class-bar-ctn">
-				<div v-for="(item,index) in tabList" class="bar-item" :key="index" :class="{active:active == item.value,hasNewMessage:true}" >
+			<div class="class-bar-ctn" v-if="layoutInfo">
+				<div v-for="(item,index) in tabList" class="bar-item" :key="index" :class="{active:active == item.value ,hasNewMessage:true}" @click="scrollToSection(item.value)" >
 					<span class="label">{{item.name}}</span>
-					<span class="message-count">23</span>
+					<span class="message-count" v-if="messageCount[item.value] > 0">{{messageCount[item.value]}}</span>
 				</div>
 			</div>
 		</div>
 		
-		<div class="content-ctn">
-			<div class="flight-layout-ctn">
-				<section class="section-ctn" v-for="(rowItemArr,sectionIndex) in layoutList" :key="sectionIndex">
+		<div class="content-ctn"  ref="contentCtn">
+			<div class="flight-layout-ctn" v-if="layoutInfo" :style="calcContentStyle(layoutInfo)">
+				<section class="section-ctn" v-for="(rowItemArr,sectionIndex) in layoutInfo.sectionArr" :key="sectionIndex" :ref="'section' + layoutInfo.seatType.valueArr[sectionIndex]">
 					<div class="section-title">
-						Economy class
-					</div>
-					<div class="section-number-laber">
-					    <div class="seat-head-label" v-for="(labelName,index) in seatHeadLabelArr" :key="index">
-							{{labelName}}
-						</div>
+						{{layoutInfo.seatType.valueToName[layoutInfo.seatType.valueArr[sectionIndex]]}}
 					</div>
 					<div class="section-content">
 						  <section class="row-ctn" v-for="(colArr,rowIndex) in rowItemArr" :key="rowIndex">
@@ -69,7 +64,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import CabinLayoutService from '../../service/crew/cabin-layout';
-import FlightSeatMatrix from './model/flight-seat-matrix.ts';
+import FlightSeatMatrix from './model/flight-seat-matrix';
 import CrewChat from './CrewChat.vue';
 
 
@@ -83,12 +78,11 @@ export default class CrewCatering extends Vue {
 	private layoutList:Array<any> = [];
 	
 	private active:string = 'firstClass';
+	private tabList:Array<any> = [];
 	
 	private seatHeadLabelArr:Array<any> = ['A','B','C','D','E','F','G'];
 	
-	private seatMessageMap:any = {
-		
-	};
+	private seatMessageMap:any = {};
 	
 	private socket:any = null;
 	
@@ -101,37 +95,42 @@ export default class CrewCatering extends Vue {
 	
 	private curUserId:string = '';
 	
+	private layoutInfo = null;
 	
+	private tabList:Array<any> = [];
 	
-	private tabList:Array<any> = [
-		{
-			name:'First class',
-			value:'firstClass'
-	    },
-		{
-			name:'Business class',
-			value:'businessClass'
-		},
-		{
-			name:'Economy class',
-			value:'economyClass'
-		}
-	];
+	//统计新消息数
+	/* private get messageCount():void{
+		
+	} */
 	
-	private mounted(){
+	private messageCount:any = {
+	
+	};
+	
+	async private mounted(){
 		this.docClickHandle = (e)=>{
 			this.showTipUserId = '';
 		};
 		document.addEventListener('click',this.docClickHandle);
 		this.startWebScoket();
-		this.getFlightSeatInfo();
-		this.getSeatMessageInfo();
+		await this.getFlightSeatInfo();
+		await this.getSeatMessageInfo();
 	}
 	
 	
 	private beforeDestroy(){
 		document.removeEventListener('click',this.docClickHandle);
 		this.socket.close();
+	}
+	
+	//计算座舱布局的宽度
+	private calcContentStyle(layoutInfo){
+		let unitWidth = 84 + 32;
+	
+		return {
+			width:(unitWidth * layoutInfo.maxSeatLen)/100 + 'rem'
+		};
 	}
 	
 	private startWebScoket(){
@@ -147,12 +146,22 @@ export default class CrewCatering extends Vue {
 		
 		// 后端推送来消息时
 		this.socket.on('new_msg', (msg)=>{
+			Object.keys(this.messageCount).forEach((seatType,index)=>{
+				this.messageCount[seatType] = 0;
+			});
 			this.getSeatMessageInfo();
-			/* console.log('new_msg：');
-		    console.log('收到消息：'+msg); */
 		});
 		
 	}
+	
+	private scrollToSection(seatType){
+		this.active = seatType;
+		this.$nextTick(()=>{
+			let scrollTop = this.$refs['section'+ seatType][0].offsetTop;
+			this.$refs.contentCtn.scrollTop = scrollTop;
+		});
+	}
+	
 	
 	private clickSeatItem(seatItem){
 		if(!seatItem.UserId){//座位上没有用户
@@ -179,8 +188,23 @@ export default class CrewCatering extends Vue {
 		CabinLayoutService.getFlightSeatInfo().then((resData:any)=>{
 			if(resData.code == '200'){
 				let flightObj = new FlightSeatMatrix(resData.data);
-				this.layoutList = [];
-				//flightObj.getLayoutArr();
+				let tabList = [];
+				this.layoutInfo = flightObj.getLayoutInfo();
+			
+				this.layoutInfo.seatType.valueArr.forEach((seatType,index)=>{
+					if(index == 0){
+						this.active = seatType;
+					}
+					tabList.push({
+						name:this.layoutInfo.seatType.valueToName[seatType],
+						value:seatType
+					});
+					
+					this.messageCount[seatType] = 0;
+					
+				});
+				
+				this.tabList = tabList;
 			}
 		});
 		
@@ -193,7 +217,12 @@ export default class CrewCatering extends Vue {
 			if(resData.code == '200'){
 				resData.data.forEach((item,index)=>{
 					seatMessageMap[item.UserId] = item;
+					// this.messageCount[seatType] = 0;
+					let seatType = this.layoutInfo.userSeatTypeMap[item.UserId];
+					// debugger;
+					this.messageCount[seatType] = this.messageCount[seatType] + item.total;
 				});
+				// debugger;
 			}
 			this.seatMessageMap = seatMessageMap;
 		});
@@ -220,9 +249,12 @@ export default class CrewCatering extends Vue {
 		margin-bottom: 1.20rem; 
 		
 		.top-ctn{
+			position: relative;
 			padding: rem(60px) rem(60px) 0 ;
 			display: flex;
 			align-items: center;
+			z-index: 1000;
+			background: #002566;
 			
 			.back-ctn{
 				.icon{
@@ -272,6 +304,22 @@ export default class CrewCatering extends Vue {
 						
 					}
 					
+					.message-count{
+						display: inline-block;
+						position: absolute;
+						top:rem(-20px);
+						right: rem(-30px);
+						width:rem(40px);
+						height:rem(40px);
+						text-align: center;
+						line-height: rem(40px);
+						font-size: rem(26px);
+						font-weight:400;
+						color:rgba(255,255,255,1);
+						background:rgba(254,80,0,1);
+						border-radius: 50%;
+					}
+					
 				
 					
 					
@@ -297,21 +345,24 @@ export default class CrewCatering extends Vue {
 			} */
 			
 			.flight-layout-ctn{
+				margin:auto;
 				display: flex;
 				justify-content: center;
 				flex-direction: column;
-				padding:0 rem(420px);
+				// padding:0 rem(420px);
 				
 				.section-ctn{
 					.section-title{
+						text-align: center;
 						font-size:rem(60px);
 						font-family:PingFangSC-Semibold,PingFang SC;
 						font-weight:600;
-						color:rgba(216,216,216,1);
+						color:#4d6998;
 						line-height:rem(60px);
 						-webkit-background-clip:text;
-						-webkit-text-fill-color:transparent;
-						margin-bottom: rem(60px);
+						// -webkit-text-fill-color:transparent;
+						margin-top: rem(120px);
+						margin-bottom: rem(54px);
 					}
 					
 					/* .section-number-laber{

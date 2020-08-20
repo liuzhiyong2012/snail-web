@@ -85,6 +85,16 @@ export default class CrewChat extends Vue {
 	
 	private inputMessage:string = '';
 	private socket:any = null;
+	
+	private messageArr = [];
+	
+	private messageMap = {
+		/* '1111122222':{
+			userInfo:{},
+			messageArr:[]
+		} */
+	};
+	
 
 
 	async mounted() {
@@ -109,18 +119,8 @@ export default class CrewChat extends Vue {
 			if(resData.code == '200'){
 				this.messageList.push(resData.data);
 				this.scrollToBottom();
-				// debugger;
-				/* airbus_id: "4CFC4D33-2C1E-E911-BAD5-F44D307124C0"
-				content: "sdfas"
-				created_time: "2020-08-15 03:28:00"
-				from_user_id: "4CFC4D33-2C1E-E911-BAD5-F44D307124C0"
-				id: "6ec50e86da99e1cb80e73a8e17739e29"
-				read: 0
-				to_user_id: "3a03a40ac79b4f0d6eef58fcd99271d7"
-				type: "message" */
 			}
 		});
-		
 	}
 	
 	private startWebScoket(){

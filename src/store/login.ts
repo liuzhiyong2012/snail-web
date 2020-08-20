@@ -41,16 +41,18 @@ export default {
     },
 
     setUserInfo(state:any, userInfo: any){
+		debugger;
       state.userInfo = userInfo
       localStore.set('userInfo', userInfo)
     }
   },
   actions: {
     setUserInfo(context: any, state: any){
+		debugger;
 		context.commit('setName', state.name)
       context.commit('setName', state.name)
       context.commit('setToken', state.token)
-      context.commit('setAirbusId', state.id)
+      context.commit('setAirbusId', state.airbusId)
       context.commit('setUserInfo', state)
     },
     setUserLoginInfo(context: any,state:any){

@@ -109,7 +109,6 @@ export default class HomeFlight extends Vue {
 			}
 			
 		});
-
 	}
 
 	

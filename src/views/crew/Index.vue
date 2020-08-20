@@ -19,6 +19,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import CrewTab from './components/CrewTab.vue';
 import CrewFooter from './components/CrewFooter.vue';
 
+
 @Component({
 	name: 'CrewLayoutCtn',
 	components: {
@@ -56,6 +57,10 @@ export default class CrewLayoutCtn extends Vue {
 		];
 		
 	private active:string = 'catering';
+	
+	private mounted(){
+		
+	}
 	
 	public switchPage(value):void{
 		this.active = value;

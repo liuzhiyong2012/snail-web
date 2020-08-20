@@ -140,9 +140,12 @@ export default class messageIndex extends Vue {
   ]; //系统消息
   
   private get userInfo(){
+	  // debugger;
 	  // this.$store.state.
 	  return this.$store.state.login.userInfo;
   }
+  
+ 
   
   private created() {
     this.uInfo = localStore.get('userInfo');
@@ -212,7 +215,6 @@ export default class messageIndex extends Vue {
     });
     // 后端推送来消息时
     _this.socket.on('new_msg', (msg: any) => {
-		debugger;
       let midMsg = msg.replace(/&quot;/g, '"');
       let endMsg = JSON.parse(midMsg);
       // {type: "message", content: "Your netFlow order has been completed", mark: "你的流量套餐订单已完成"}
