@@ -4,7 +4,7 @@
 			<crew-statistic-chart ref="dishStatisticChart"    title="Catering"></crew-statistic-chart>
 		</div>
 		<div class="charts-statistic-ctn">
-			<crew-statistic-chart ref="netFlowStatisticChart" title="Data package"></crew-statistic-chart>
+			<crew-statistic-chart ref="netFlowStatisticChart" title="Data package" type="dataPackage"></crew-statistic-chart>
 		</div>
 		<div class="charts-statistic-ctn">
 			<crew-statistic-chart ref="shoppingStatisticChart" title="Goods"></crew-statistic-chart>

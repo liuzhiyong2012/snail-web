@@ -130,7 +130,9 @@ export default class CrewCatering extends Vue {
 	private finishDish(item,index){
 		CateringService.finishDishes({id:item.id}).then((resData:any)=>{
 			if(resData.code == '200'){
-				this.selectList[index].status = '2';
+				// debugger;
+				this.$toast('操作成功！');
+				this.dataList[index].status = '2';
 			}
 		});
 	}

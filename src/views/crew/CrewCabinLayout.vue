@@ -96,7 +96,7 @@ export default class CrewCatering extends Vue {
 	
 	private layoutInfo = null;
 	
-	private tabList:Array<any> = [];
+	// private tabList:Array<any> = [];
 	
 	//统计新消息数
 	/* private get messageCount():void{
@@ -107,7 +107,7 @@ export default class CrewCatering extends Vue {
 	
 	};
 	
-	async private mounted(){
+	async mounted(){
 		this.docClickHandle = (e)=>{
 			this.showTipUserId = '';
 		};
@@ -157,7 +157,7 @@ export default class CrewCatering extends Vue {
 		this.active = seatType;
 		this.$nextTick(()=>{
 			let scrollTop = this.$refs['section'+ seatType][0].offsetTop;
-			this.$refs.contentCtn.scrollTop = scrollTop;
+			(this.$refs.contentCtn as any).scrollTop = scrollTop;
 		});
 	}
 	

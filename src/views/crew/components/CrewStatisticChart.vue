@@ -11,9 +11,15 @@
 		
 		<div class="statistic-detail-ctn">
 			<div class="detail-item" v-for="(item,index) in dataList" :key="index">
-				<div class="img-ctn" :style="{backgroundImage:`url(${item.SampleImgPath})`}">
+				
+				<div v-if="type=='dataPackage'" class="img-ctn" :style="{backgroundImage:`url(${imageMap[item.Name]})`}">
+					{{item.Name}}
+				</div>
+				
+				<div v-if="type!='dataPackage'" class="img-ctn" :style="{backgroundImage:`url(${item.SampleImgPath})`}">
 					
 				</div>
+				
 				<div class="progress-ctn">
 					<div class="top-ctn">
 						<span>{{item.Name}}</span>
@@ -51,6 +57,19 @@
 			}
 		})
 		title:string;
+		
+		@Prop({
+			default:()=>{
+				return '';
+			}
+		})
+		type:string;
+		
+		private imageMap:any = {
+			'ALL-DAY Pass':require('../images/data_package_1.png'),
+			'1GB':require('../images/data_package_2.png'),
+			'50MB':require('../images/data_package_3.png')
+		};
 		
 		private colorArr:Array<any> = [
 			'#00AEC7',
@@ -247,6 +266,12 @@
 				margin-bottom: rem(42px);
 				
 				.img-ctn{
+					white-space: nowrap;
+					overflow: hidden;
+					line-height: rem(102px);
+					font-size: rem(24px);
+					color:#ffffff;
+					text-align: center;
 					width:rem(98px);
 					height:rem(98px);
 					border-radius:rem(30px);
