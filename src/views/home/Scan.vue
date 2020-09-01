@@ -1,192 +1,209 @@
+<!--  -->
 <template>
-  <section>
-    <abus-title title="Scan" backRootName="home"></abus-title>
+  <div class="v-body">
+    <abus-title title="Scan" backRootName="home">
+      <div slot style="width:0.3rem"></div>
+    </abus-title>
+    <div id="code"></div>
 
-    <section class="scan-wrap">
-      <div id="support"></div>
-      <div id="contentHolder">
-        <video id="video" width="320" height="320" autoplay></video>
-        <canvas
-          style="display:none; background:rgba(0,0,0,0.63);"
-          id="canvas"
-          width="320"
-          height="320"
-        ></canvas>
-        <br />
-        <button id="snap" style="height:50px; width:120px; background:red">
-          开始扫描
-        </button>
+    <h1>{{ outputData }}</h1>
+    <div id="loadingMessage" v-if="!showCanvas">{{ loadingMessage }}</div>
+    <video src=""></video>
+    <canvas
+      :width="canvasWidth"
+      :height="canvasHeight"
+      id="canvas"
+      v-show="showCanvas"
+      ref="canvasElement"
+    ></canvas>
+    <div id="output" v-if="showCanvas">
+      <div v-if="!outputData">No QR code detected.</div>
+      <div v-else>
+        <b>Data:</b>
+        <span id="outputData">{{ outputData }}</span>
       </div>
-    </section>
-  </section>
+    </div>
+    <div @click="openScan">开启扫描</div>
+  </div>
 </template>
 
 <script>
+import adapter from "webrtc-adapter";
+// WebRTC适配器 只需要引入就ok
+import jsQR from "jsqr";
 import AbusTitle from "../../components/AbusTitle.vue";
+
 export default {
-  name: "",
   components: {
     AbusTitle,
   },
-
   data() {
     return {
-      canvas: null,
-      context: null,
-      video: null,
+      video: document.createElement("video"),
+      loadingMessage:
+        "Unable to access video stream (please make sure you have a webcam enabled)",
+      showCanvas: true,
+      canvas2d: undefined,
+      outputData: undefined,
+      canvasWidth: 320,
+      canvasHeight: 480,
     };
   },
+  created() {
+    console.log("sssssss", adapter);
+  },
   mounted() {
-    // this.startRecognize();
-    // this.startScan();
-    // this.isShow = true;
-    this.init();
+    let qrcode = new QRCode(document.getElementById("code"), {
+      width: 201,
+      height: 201,
+    });
+
+    let url = location.href;
+    qrcode.makeCode(url.replace("invitation", "main"));
   },
 
+  destroyed() {
+    this.closeCamera();
+  },
   methods: {
-    CatchCode() {
+    openScan() {
       const _this = this;
-      if (_this.canvas != null) {
-        //以下开始编 数据
-        let imgData = this.canvas.toDataURL();
-        //将图像转换为base64数据
-        let base64Data = imgData; //.substr(22); //在前端截取22位之后的字符串作为图像数据
-        //开始异步上
-        $.post(
-          "saveimg.php",
-          { img: base64Data },
-          function(result) {
-            printHtml("解析结果：" + result.data);
-            if (result.status == "success" && result.data != "") {
-              printHtml("解析结果成功！");
-            } else {
-              startPat(); //如果没有解析出来则重新抓拍解析
-            }
-          },
-          "json"
-        );
+      const videoParam = {
+        audio: false,
+        video: { facingMode: { exact: "environment" } },
+      };
+      console.log("shp", this.video);
+      navigator.getUserMedia =
+        navigator.mediaDevices.getUserMedia ||
+        navigator.mediaDevices.webkitGetUserMedia ||
+        navigator.mediaDevices.mozGetUserMedia ||
+        navigator.webkitGetUserMedia ||
+        navigator.getUserMedia ||
+        navigator.mozGetUserMedia;
+
+      adapter.browserShim
+        .shimGetUserMedia(videoParam)
+        .then((stream) => {
+          _this.video.srcObject = stream;
+          _this.video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
+          _this.video.play();
+          requestAnimationFrame(this.tick);
+        })
+        .catch((err) => {
+          console.log("+++++++++++", err);
+        });
+    },
+    // 关闭摄像头
+    closeCamera() {
+      if (this.video.srcObject) {
+        this.video.srcObject.getTracks().forEach(function(track) {
+          track.stop();
+        });
       }
     },
-
-    printHtml(content) {
-      $(window.document.body).append(content + "<br/>");
-    },
-    //开始拍照
-    startPat() {
-      const _this = this;
-      setTimeout(function() {
-        //防止调用过快
-        if (_this.context) {
-          _this.context.drawImage(_this.video, 0, 0, 320, 320);
-          CatchCode();
+    tick() {
+      this.loadingMessage = "Loading video...";
+      if (this.video.readyState === this.video.HAVE_ENOUGH_DATA) {
+        // this.showCanvas = true
+        this.canvasHeight = this.video.videoHeight;
+        this.canvasWidth = this.video.videoWidth;
+        !this.canvas2d &&
+          (this.canvas2d = this.$refs.canvasElement.getContext("2d"));
+        this.canvas2d.drawImage(
+          this.video,
+          0,
+          0,
+          this.canvasWidth,
+          this.canvasHeight
+        );
+        var imageData = this.canvas2d.getImageData(
+          0,
+          0,
+          this.canvasWidth,
+          this.canvasHeight
+        );
+        var code = jsQR(imageData.data, imageData.width, imageData.height, {
+          inversionAttempts: "dontInvert",
+        });
+        if (code) {
+          this.drawLine(
+            code.location.topLeftCorner,
+            code.location.topRightCorner,
+            "#FF3B58"
+          );
+          this.drawLine(
+            code.location.topRightCorner,
+            code.location.bottomRightCorner,
+            "#FF3B58"
+          );
+          this.drawLine(
+            code.location.bottomRightCorner,
+            code.location.bottomLeftCorner,
+            "#FF3B58"
+          );
+          this.drawLine(
+            code.location.bottomLeftCorner,
+            code.location.topLeftCorner,
+            "#FF3B58"
+          );
+          this.outputData = code.data;
+          console.log(code.data);
+          // this.closeCamera()
+          // return
+        } else {
+          this.outputData = undefined;
         }
-      }, 200);
+      }
+      requestAnimationFrame(this.tick);
     },
-
-    init() {
-      const _this = this;
-      window.addEventListener(
-        "DOMContentLoaded",
-        function() {
-          try {
-            _this.canvas = document.getElementById("canvas");
-            _this.context = canvas.getContext("2d");
-            _this.video = document.getElementById("video");
-
-            let videoObj = { video: true, audio: false };
-            let flag = true;
-            let MediaErr = function(error) {
-              flag = false;
-              if (error.PERMISSION_DENIED) {
-                alert("用户拒绝了浏览器请求媒体的权限", "提示");
-              } else if (error.NOT_SUPPORTED_ERROR) {
-                alert(
-                  "对不起，您的浏览器不支持拍照功能，请使用其他浏览器",
-                  "提示"
-                );
-              } else if (error.MANDATORY_UNSATISFIED_ERROR) {
-                alert("指定的媒体类型未接收到媒体流", "提示");
-              } else {
-                alert(
-                  "系统未能获取到摄像头，请确保摄像头已正确安装。或尝试刷新页面，重试",
-                  "提示"
-                );
-              }
-            };
-            //获取媒体的兼容代码，目前只支持（Firefox,Chrome,Opera）
-            if (navigator.getUserMedia) {
-              //qq浏览器不支持
-              if (navigator.userAgent.indexOf("MQQBrowser") > -1) {
-                alert(
-                  "对不起，您的浏览器不支持拍照功能，请使用其他浏览器",
-                  "提示"
-                );
-                return false;
-              }
-              navigator.getUserMedia(
-                videoObj,
-                function(stream) {
-                  _this.video.src = stream;
-                  _this.video.play();
-                },
-                MediaErr
-              );
-            } else if (navigator.webkitGetUserMedia) {
-              navigator.webkitGetUserMedia(
-                videoObj,
-                function(stream) {
-                  _this.video.src = window.webkitURL.createObjectURL(stream);
-                  _this.video.play();
-                },
-                MediaErr
-              );
-            } else if (navigator.mozGetUserMedia) {
-              navigator.mozGetUserMedia(
-                videoObj,
-                function(stream) {
-                  _this.video.src = window.URL.createObjectURL(stream);
-                  _this.video.play();
-                },
-                MediaErr
-              );
-            } else if (navigator.msGetUserMedia) {
-              navigator.msGetUserMedia(
-                videoObj,
-                function(stream) {
-                  $(document).scrollTop($(window).height());
-                  _this.video.src = window.URL.createObjectURL(stream);
-                  _this.video.play();
-                },
-                MediaErr
-              );
-            } else {
-              alert("对不起，您的浏览器不支持拍照功能，请使用其他浏览器");
-              return false;
-            }
-            if (flag) {
-              alert(
-                "为了获得更准确的测试结果，请尽量将二维码置于框中，然后进行拍摄、扫描。 请确保浏览器有权限使用摄像功能"
-              );
-            }
-            //这个是拍照按钮的事件，
-            $("#snap")
-              .click(function() {
-                startPat();
-              })
-              .show();
-          } catch (e) {
-            printHtml("浏览器不支持HTML5 CANVAS");
-          }
-        },
-        false
-      );
+    drawLine(begin, end, color) {
+      this.canvas2d.beginPath();
+      this.canvas2d.moveTo(begin.x, begin.y);
+      this.canvas2d.lineTo(end.x, end.y);
+      this.canvas2d.lineWidth = 4;
+      this.canvas2d.strokeStyle = color;
+      this.canvas2d.stroke();
     },
   },
 };
 </script>
-
-<style lang="scss">
-.scan-wrap {
-  background: rgba(76, 76, 76, 1);
+<style scoped>
+.v-body {
+  font-family: "Ropa Sans", sans-serif;
+  color: #333;
+  max-width: 640px;
+  margin: 0 auto;
+  position: relative;
+}
+#githubLink {
+  position: absolute;
+  right: 0;
+  top: 12px;
+  color: #2d99ff;
+}
+h1 {
+  margin: 10px 0;
+  font-size: 40px;
+}
+#loadingMessage {
+  text-align: center;
+  padding: 40px;
+  background-color: #eee;
+}
+#canvas {
+  width: 100%;
+}
+#output {
+  margin-top: 20px;
+  background: #eee;
+  padding: 10px;
+  padding-bottom: 0;
+}
+#output div {
+  padding-bottom: 10px;
+  word-wrap: break-word;
+}
+#noQRFound {
+  text-align: center;
 }
 </style>
