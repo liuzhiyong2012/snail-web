@@ -1,14 +1,14 @@
 <template>
-  <div class="abus-scroller-box">
+  <div class="abus-scroller-box" :style="{'backgroundColor': isHaveData?'#fff':'#f2f4f7'}">
     <scroller>
       <div slot="list" v-for="(item, index) of videoList" :key="index">
-        <div class="s-box s-box-right" v-if="index+1 == videoList.length">
+        <div class="s-box s-box-right" v-if="index+1 == videoList.length" @click="stepToVideoPlay(index)">
           <img :src="item.CoverImgPath|addBaseUrl" :alt="item.title" />
           <svg class="icon icon-p" aria-hidden="true">
             <use xlink:href="#icon-play-disable" />
           </svg>
         </div>
-        <div class="s-box" v-else>
+        <div class="s-box" v-else @click="stepToVideoPlay(index)">
           <img :src="item.CoverImgPath|addBaseUrl" :alt="item.title" />
           <svg class="icon icon-p" aria-hidden="true">
             <use xlink:href="#icon-play-disable" />
@@ -32,6 +32,7 @@ export default {
   data() {
     return {
       videoList: "",
+      isHaveData: false,
       dishData: [
         {
           img: require("../images/video.jpg"),
@@ -45,7 +46,10 @@ export default {
   },
   methods: {
     postVideoList() {
-      VideoService.postVideoList().then(res => {
+      // 固定列表
+      // VideoService.postVideoList().then(res => {
+        // 随机列表
+      VideoService.getVideoRecommended().then(res => {
         // console.log(res);
         // CommentCount: 1
         // CoverImgId: "75840a83-3425-e911-bd22-c4209d3e3b89"
@@ -61,6 +65,7 @@ export default {
         // Width: 720
         // title: "网红奶茶火锅吃过吗？帮你们省钱了，踩雷啦！！还不如喝奶茶吃正常火锅"
         if (res.code == 200) {
+          this.isHaveData = true
           this.videoList = res.data.Videos;
           this.$store.commit("setVideoList",this.videoList)
           // this.videoList.forEach((item, index) => {
@@ -69,7 +74,15 @@ export default {
           // });
         }
       });
-    }
+    },
+    stepToVideoPlay(index){
+    this.$router.push({
+      name: 'videoPlay',
+      params:{
+        index: index
+      }
+    })
+  }
   }
 };
 </script>

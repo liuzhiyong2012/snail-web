@@ -25,7 +25,10 @@ service.interceptors.request.use(
     const airbusId = localStore.get('airbusId')
     const timestamp = new Date().getTime() + ''
     const nonce = StringUtils.randomStr(32)
-    const ZCT_SECRET = '21fa6sd1f95w1133edsafas6'
+    const ZCT_SECRET = '21fa6sd1f95w1133edsafas6';
+	//hello world
+	//hello world?
+	//加班
     const encrptString = `${timestamp}.${ZCT_SECRET}.${nonce}`
     const sign = md5(encrptString)
     config.headers = {

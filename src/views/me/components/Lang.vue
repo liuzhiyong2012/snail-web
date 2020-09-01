@@ -1,6 +1,6 @@
 <template>
   <div class="abus-height">
-    <abus-title :title="$t('Language')" backRootName="meIndex"></abus-title>
+    <abus-title :title="$t('Language')" backRouteName="meIndex"></abus-title>
     <div class="lang-box">
       <van-radio-group v-model="radio" checked-color="#00205B">
         <van-radio name="0" class="lang-cell" @click="changeEn">

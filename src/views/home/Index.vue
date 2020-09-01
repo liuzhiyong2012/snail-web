@@ -12,13 +12,15 @@
     </van-sticky>-->
     <van-sticky :offset-top="0">
       <div class="home-title">
-        <home-title @stepTo="stepToPage($event)" :showRed='showRedPoint'></home-title>
+        <home-title @stepTo="stepToPage($event)" :showRed="showRedPoint"></home-title>
       </div>
     </van-sticky>
     <van-popup v-model="show">
       <div class="popup-toast">
         <div class="title">Connet To The Internet</div>
-        <div class="surplus"><span class="now">Now</span>0 GB</div>
+        <div class="surplus">
+          <span class="now">Now</span>0 GB
+        </div>
         <div class="cell-group">
           <div class="cell">
             <div class="cell-l">12323123</div>
@@ -50,19 +52,20 @@
           <span class="txt">privacy policy</span>
           to comply with the latest laws and regulations. The updated policy
           explains the mechanism of how we collect and treat your personal data.
-          <span class="txt">tems of service</span>
+          <span
+            class="txt"
+          >tems of service</span>
           You can learn more about the rights you have by reading our .Please
           read them carefully.By clicking AGREE,you indicate that you have read
           and agreed to our privacy policies.
         </div>
-        <div class="btn">Agree</div>
-        <div class="btn later">later</div>
+        <div class="btn" @click="clickShowService">Agree</div>
+        <div class="btn later" @click="clickShowService">later</div>
       </div>
     </van-popup>
     <van-tabs
       scrollspy
       sticky
-      offset-top="50"
       line-width="20"
       line-height="4"
       color="rgb(0,32,91)"
@@ -75,66 +78,42 @@
         :key="index"
       >
         <div v-if="item.title == 'Flight'" class="flight">
-          <home-components
-            :titleConfig="navTar[0]"
-            @stepTo="stepToPage($event)"
-          >
+          <home-components :titleConfig="navTar[0]" @stepTo="stepToPage($event)">
             <home-flight></home-flight>
           </home-components>
         </div>
         <div v-else-if="item.title == 'Dish'">
-          <home-components
-            :titleConfig="navTar[1]"
-            @stepTo="stepToPage($event)"
-          >
+          <home-components :titleConfig="navTar[1]" @stepTo="stepToPage($event)">
             <home-dish />
           </home-components>
         </div>
         <div v-else-if="item.title == 'Shopping'">
-          <home-components
-            :titleConfig="navTar[2]"
-            @stepTo="stepToPage($event)"
-          >
+          <home-components :titleConfig="navTar[2]" @stepTo="stepToPage($event)">
             <home-shopping />
           </home-components>
         </div>
         <div v-else-if="item.title == 'Music'">
-          <home-components
-            :titleConfig="navTar[3]"
-            @stepTo="stepToPage($event)"
-          >
+          <home-components :titleConfig="navTar[3]" @stepTo="stepToPage($event)">
             <home-music />
           </home-components>
         </div>
         <div v-else-if="item.title == 'Game'">
-          <home-components
-            :titleConfig="navTar[4]"
-            @stepTo="stepToPage($event)"
-          >
+          <home-components :titleConfig="navTar[4]" @stepTo="stepToPage($event)">
             <home-game />
           </home-components>
         </div>
         <div v-else-if="item.title == 'Video'">
-          <home-components
-            :titleConfig="navTar[5]"
-            @stepTo="stepToPage($event)"
-          >
+          <home-components :titleConfig="navTar[5]" @stepTo="stepToPage($event)">
             <home-video />
           </home-components>
         </div>
         <div v-else-if="item.title == 'News'">
-          <home-components
-            :titleConfig="navTar[6]"
-            @stepTo="stepToPage($event)"
-          >
+          <home-components :titleConfig="navTar[6]" @stepTo="stepToPage($event)">
             <home-news />
           </home-components>
         </div>
         <div v-else-if="item.title == 'About Us'">
-          <home-components
-            :titleConfig="navTar[7]"
-            @stepTo="stepToPage($event)"
-          >
+          <home-components :titleConfig="navTar[7]" @stepTo="stepToPage($event)">
             <home-about-us />
           </home-components>
         </div>
@@ -203,7 +182,7 @@ declare let io: any;
 })
 export default class Home extends Vue {
   private show: boolean = false;
-  private showService: boolean = true;
+  private showService: boolean = false;
   private navTar: Array<any> = [];
   private imagesData: Array<any> = [];
 
@@ -213,10 +192,12 @@ export default class Home extends Vue {
 
   private created() {
     clearTimeout();
-    setTimeout(() => {
-      this.showService = false;
-    }, 1000);
-	
+    // debugger
+    if (!localStore.get("homeAd")) {
+      localStore.set("homeAd", true);
+      this.showService = true;
+    } 
+
     this.navTar = [
       {
         title: "Flight",
@@ -249,7 +230,7 @@ export default class Home extends Vue {
       {
         title: "About Us",
         value: "aboutUs",
-      }
+      },
     ];
     this.imagesData = [
       {
@@ -272,12 +253,14 @@ export default class Home extends Vue {
     this.uInfo = localStore.get("userInfo");
   }
 
-  private mounted () {
+  private mounted() {
     this.initWebSocket();
-    this.getChatUnread({read: 0});
-    this.getNoticeUnread({read: 0});
+    this.getChatUnread({ read: 0 });
+    this.getNoticeUnread({ read: 0 });
   }
-
+  public clickShowService(){
+    this.showService = false
+  }
   public stepToPage(pageType: any) {
     let routeMap: any = {
       flight: "flightIndex",
@@ -307,53 +290,52 @@ export default class Home extends Vue {
     let uid = _this.uInfo.id;
 
     // socket连接后以uid登录
-    _this.socket.on("connect", function() {
+    _this.socket.on("connect", function () {
       _this.socket.emit("login", uid);
     });
     // 后端推送来消息时
-    _this.socket.on("new_msg", (msg:any)=> {
+    _this.socket.on("new_msg", (msg: any) => {
       let midMsg = msg.replace(/&quot;/g, `"`);
       let endMsg = JSON.parse(midMsg);
       if (endMsg.type == "system") {
         // 系统通知
-        _this.showRedPoint= true;
-        console.log('推送-系统通知', _this.showRedPoint);
+        _this.showRedPoint = true;
+        console.log("推送-系统通知", _this.showRedPoint);
       } else if (endMsg.type == "message") {
         // 聊天
-        _this.showRedPoint= true;
-        console.log('推送-聊天', _this.showRedPoint);
+        _this.showRedPoint = true;
+        console.log("推送-聊天", _this.showRedPoint);
       }
     });
     // 后端推送来在线数据时
-    _this.socket.on("update_online_count", (online_stat:any)=> {
+    _this.socket.on("update_online_count", (online_stat: any) => {
       console.log("后端推送来在线数据时", online_stat);
     });
   }
 
-  public getChatUnread(req: any){
+  public getChatUnread(req: any) {
     const _this = this;
     MessageService.getUserMessage(req).then((res) => {
       if (res.code == 200) {
-        if(res.data.length !=0){
+        if (res.data.length != 0) {
           _this.showRedPoint = true;
-          console.log('接口返回-聊天', _this.showRedPoint);
+          console.log("接口返回-聊天", _this.showRedPoint);
         }
       }
     });
   }
 
-  public getNoticeUnread(req: any){
+  public getNoticeUnread(req: any) {
     const _this = this;
     MessageService.getSystemNoticeList(req).then((res) => {
       if (res.code == 200) {
-        if(res.data.notice.length !=0){
+        if (res.data.notice.length != 0) {
           _this.showRedPoint = true;
-          console.log('接口返回-系统通知', _this.showRedPoint);
+          console.log("接口返回-系统通知", _this.showRedPoint);
         }
       }
     });
   }
-
 }
 </script>
 
@@ -366,6 +348,9 @@ export default class Home extends Vue {
 }
 .van-popup {
   background-color: rgba(255, 255, 255, 0);
+}
+.van-tab__text--ellipsis{
+  overflow: inherit !important;
 }
 .popup-toast {
   padding: 0 0 0.01rem;

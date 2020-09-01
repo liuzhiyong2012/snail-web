@@ -24,6 +24,7 @@ export default class LayoutIndex extends Vue {
   @Prop() private msg!: string;
   
   private created():void{
+	  
   }
   
 }

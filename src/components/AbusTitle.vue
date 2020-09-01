@@ -43,7 +43,7 @@
 			return {};
 		}})
 		private params?:object;
-		
+		// debugger
 		public back():void {
 			if(!this.backRouteName){
 				this.$router.go(-1);

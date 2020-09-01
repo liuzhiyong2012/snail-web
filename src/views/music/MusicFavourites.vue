@@ -104,6 +104,7 @@ export default class MusicFavourites extends Vue {
 	];
 	
     private allSongs: any[] = [];
+	
 	private refreshing: boolean = false;
 	private loading: boolean = false;
 	private finished: boolean = false;
@@ -317,6 +318,7 @@ export default class MusicFavourites extends Vue {
 		this.pageSize = 10;
 		this.getList();
 	}
+	
 }
 </script>
 

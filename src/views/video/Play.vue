@@ -12,31 +12,6 @@
       >
         <van-swipe-item v-for="(item, index) in videoListOne" class="product-swiper" :key="index">
           <div class="video-item">
-            <!--video属性
-                    webkit-playsinline ios 小窗播放，使视频不脱离文本流，安卓则无效
-                    微信内置x5内核，
-                    x5-video-player-type="h5-page" 启用H5播放器,是wechat安卓版特性，添加此属性，微信浏览器会自动将视频置为全屏
-                    x5-video-player-fullscreen="true" 全屏设置，设置为 true 是防止横屏
-                    x5-video-orientation 控制横竖屏 landscape 横屏，portrain竖屏； 默认portrain
-                    poster：封面
-                    src：播放地址
-                    muted 静音播放
-            -->
-            <!-- <video
-              class="video-box"
-              loop
-              webkit-playsinline="true"
-              x5-video-player-type="h5-page"
-              x5-video-player-fullscreen="true"
-              playsinline
-              preload="auto"
-              :poster="item.cover"
-              :src="item.url"
-              :playOrPause="playOrPause"
-              @click="pauseVideo"
-              @ended="onPlayerEnded($event)"
-            ></video>-->
-
             <svg
               @click="playVideo(index)"
               :class="[isPlay?'icon i-icon show': 'icon i-icon']"
@@ -69,7 +44,7 @@
               <svg @click="closePopup(index)" class="icon c-icon" aria-hidden="true">
                 <use xlink:href="#icon-close" />
               </svg>
-              <div class="comment-list" v-if="item.Comments">
+              <div class="comment-list" v-if="item.CommentCount != 0">
                 <div
                   class="list-cell"
                   v-for="(i,aIndex) in item.Comments.slice(0, 5)"
@@ -83,9 +58,13 @@
                     <div class="comment">{{i.Comment}}</div>
                   </div>
                 </div>
-                <div v-if="item.Comments.length > 5" class="more">显示更多...</div>
+                <div
+                  v-if="item.Comments.length > 5"
+                  class="more"
+                  @click="stepComment(index,item.Id)"
+                >显示更多...</div>
               </div>
-              <div v-else-if="item.Comments.length == 0" class="comment-list text-c">loading...</div>
+              <div v-else class="comment-list text-c">暂无评论</div>
               <div class="comment-init">
                 <input
                   v-model="Comment"
@@ -100,13 +79,13 @@
             </div>
             <!-- 下侧栏 -->
             <div class="bottom-box">
-              <div :class="[isShowAd? 'ad active': 'ad']">
-                <div class="img-box">
-                  <!-- <img src alt /> -->
+              <div :class="[isShowAd? 'ad active': 'ad']" @click="stepToDetail(adData)">
+                <div class="img-box1">
+                  <img class="img" :src="adData.BannerImgPath|addBaseUrl" alt />
                 </div>
                 <div class="r-box">
-                  <div class="r-name">广告广告广告广告广告</div>
-                  <div class="r-price">$23</div>
+                  <div class="r-name">{{adData.Name}}</div>
+                  <div class="r-price">${{adData.Price}}</div>
                 </div>
                 <svg @click="closeAd" class="icon close-icon" aria-hidden="true">
                   <use xlink:href="#icon-close" />
@@ -136,46 +115,50 @@ import VideoService from "../../service/video";
 export default class VideoPlay extends Vue {
   private videoListOne: Array<any> = [];
   private videoListTwo: Array<any> = [];
+  private adDataList: Array<any> = [];
+  private adData: any = "";
+  private adDataTime: number = 0
   private isGetVideo: boolean = true;
   private isPlay: boolean = false;
   private isShowAd: boolean = false;
-  private isCommentShow: boolean = false;
+  // private isCommentShow: boolean = false;
   private adShowTime: any = "";
   private current: any = 0;
   private videoListIndex: any = 0;
   private Comment: string = "";
+  
+
   private mounted() {
     this.videoListIndex = this.$route.params.index;
-    console.log(this.videoListIndex);
+    // console.log(this.videoListIndex);
     // this.postVideoList();
+    this.postAdvertList();
     this.videoListOne = this.$store.state.video.videoList;
     this.videoListOne.forEach((item: any, index: any) => {
       item.isCommentShow = false;
+      // item.isHaveComment = false;
       item.Comments = [];
     });
     clearTimeout(this.adShowTime);
     this.adShowTime = setTimeout(() => {
       this.isShowAd = true;
-    }, 10000);
+    }, 60000);
   }
-  public postVideoList() {
-    VideoService.postVideoList().then((res: any) => {
-      // console.log(res);
-      if (res.code == 200) {
-        this.videoListOne = res.data.Videos;
-        this.videoListOne.forEach((item: any, index: any) => {
-          item.isCommentShow = false;
-          item.Comments = [];
-          // 测试使用
-          // item.isLike = false;
-        });
-
-        // VideoService.getVideo(res.data.Videos[0].Id).then((res: any) => {
-        //   console.log(res);
-        // });
-      }
-    });
-  }
+  // public postVideoList() {
+  //   VideoService.postVideoList().then((res: any) => {
+  //     // console.log(res);
+  //     if (res.code == 200) {
+  //       this.videoListOne = res.data.Videos;
+  //       this.videoListOne.forEach((item: any, index: any) => {
+  //         item.isCommentShow = false;
+  //         item.isHaveComment = false
+  //         item.Comments = [];
+  //         // 测试使用
+  //         // item.isLike = false;
+  //       });
+  //     }
+  //   });
+  // }
   // 点击播放操作
   public playVideo(id: any) {
     this.isPlay = !this.isPlay;
@@ -207,8 +190,10 @@ export default class VideoPlay extends Vue {
         // console.log(res);
         if (res.code == 200) {
           this.videoListTwo = res.data.Videos;
+
           this.videoListTwo.forEach((item: any, index: any) => {
             item.isCommentShow = false;
+            // item.isHaveComment = false;
             item.Comments = [];
             // 测试使用
             // item.isLike = false;
@@ -218,6 +203,7 @@ export default class VideoPlay extends Vue {
     } else if (index == 0 && !this.isGetVideo) {
       this.isGetVideo = true;
       this.videoListOne = this.videoListTwo;
+      this.$store.commit("setVideoList", this.videoListTwo);
       this.isPlay = false;
     }
   }
@@ -225,12 +211,38 @@ export default class VideoPlay extends Vue {
   public getOneText(str: string) {
     return str.substring(0, 1);
   }
+  // 获取广告
+  public postAdvertList() {
+    VideoService.postAdvertList().then((res: any) => {
+      console.log(res);
+      if (res.code == 200) {
+        this.adDataList = res.data
+        this.adData = res.data[0];
+      }
+    });
+  }
+  // 点击跳转详情页
+  private stepToDetail(item:any){
+	  this.$router.push({
+		  name:'shoppingDetails',
+		  params:{
+			  shoppingInfo:item
+		  }
+	  });
+	  
+  }
   // 关闭广告
   public closeAd() {
+    this.adDataTime = this.adDataTime + 1
+    this.adData = this.adDataList[this.adDataTime]
     this.isShowAd = false;
+    clearTimeout(this.adShowTime);
+    this.adShowTime = setTimeout(() => {
+      this.isShowAd = true;
+    }, 60000);
   }
   // 喜欢
-  public clickLike(index: any,id:any) {
+  public clickLike(index: any, id: any) {
     // this.videoListOne[index].isLike = !this.videoListOne[index].isLike;
     // Vue.set(this.videoListOne, index, this.videoListOne[index]);
     if (this.videoListOne[index].isLike != null) {
@@ -244,16 +256,16 @@ export default class VideoPlay extends Vue {
         this.videoListOne[index].LikeCount + 1;
       Vue.set(this.videoListOne, index, this.videoListOne[index]);
       // 接口交互
-      VideoService.postVideoLike({id:id}).then((res: any)=>{
-        console.log(res)
-      })
+      VideoService.postVideoLike({ id: id }).then((res: any) => {
+        // console.log(res);
+      });
     } else {
       this.videoListOne[index].LikeCount =
         this.videoListOne[index].LikeCount - 1;
       Vue.set(this.videoListOne, index, this.videoListOne[index]);
-      VideoService.postVideoUnLike({id:id}).then((res: any)=>{
-        console.log(res)
-      })
+      VideoService.postVideoUnLike({ id: id }).then((res: any) => {
+        // console.log(res);
+      });
     }
   }
   // 发送评论
@@ -265,12 +277,16 @@ export default class VideoPlay extends Vue {
     VideoService.postVideoComments(data).then((res: any) => {
       // console.log(res);
       if (res.code == 200) {
+        this.Comment = "";
         VideoService.getVideoCommentsList({
           videoId: id,
         }).then((res: any) => {
           // console.log(res);
           if (res.code == 200) {
             this.videoListOne[index].Comments = res.data.Comments;
+            // if (res.data.Comments.length != 0) {
+            //   this.videoListOne[index].isHaveComment = true;
+            // }
             Vue.set(this.videoListOne, index, this.videoListOne[index]);
             this.videoListOne[index].CommentCount =
               this.videoListOne[index].CommentCount + 1;
@@ -288,9 +304,12 @@ export default class VideoPlay extends Vue {
     VideoService.getVideoCommentsList({
       videoId: id,
     }).then((res: any) => {
-      console.log(res);
+      // console.log(res);
       if (res.code == 200) {
         this.videoListOne[index].Comments = res.data.Comments;
+        // if (res.data.Comments.length != 0) {
+        //   this.videoListOne[index].isHaveComment = true;
+        // }
         Vue.set(this.videoListOne, index, this.videoListOne[index]);
       }
     });
@@ -322,8 +341,18 @@ export default class VideoPlay extends Vue {
     this.isPlay = false;
   }
   public stepToVideo() {
+    // this.$router.go(-1);
     this.$router.push({
       name: "video",
+    });
+  }
+  public stepComment(index: any, id: any) {
+    this.$router.push({
+      name: "Comment",
+      params: {
+        videoListIndex: index,
+        videoId: id,
+      },
     });
   }
 }
@@ -568,12 +597,18 @@ export default class VideoPlay extends Vue {
     &.active {
       display: flex;
     }
-    .img-box {
+    .img-box1 {
+      display: flex;
       margin: 0 0.1rem;
       width: 1rem;
       height: 1rem;
-      background-color: rgba(0, 0, 0, 1);
+      // background-color: rgba(0, 0, 0, 1);
       border-radius: 0.1rem;
+      justify-content: center;
+      align-items: center;
+      .img {
+        width: 100%;
+      }
     }
     .r-box {
       flex: 1;
@@ -582,6 +617,7 @@ export default class VideoPlay extends Vue {
       height: 100%;
       align-content: space-around;
       .r-name {
+        width: 100%;
         font-size: 0.3rem;
         color: #333;
         line-height: 0.3rem;
@@ -592,6 +628,7 @@ export default class VideoPlay extends Vue {
         -webkit-box-orient: vertical;
       }
       .r-price {
+        width: 100%;
         font-size: 0.25rem;
         color: #666;
         line-height: 0.25rem;

@@ -9,6 +9,7 @@
         <input
           v-model="nickname"
           class="main-item-con"
+          maxlength="20"
           type="text"
           :placeholder="$t('NameTips')"
         />
@@ -50,13 +51,14 @@
         <input
           v-model="phone"
           class="main-item-con"
-          type="text"
+          type="number"
+          maxlength="20"
           :placeholder="$t('PhoneTips')"
         />
       </div>
       <div class="main-item">
         <div class="title line-h">{{$t('IDCard')}}</div>
-        <input v-model="idCard" class="main-item-con" type="text" :placeholder="$t('IDCardTips')" />
+        <input v-model="idCard" maxlength="25" class="main-item-con" type="text" :placeholder="$t('IDCardTips')" />
       </div>
       <div class="main-item">
         <div class="title line-h">{{$t('Password')}}</div>
@@ -220,7 +222,7 @@ export default class Register extends Vue {
   private isReaded: boolean = false;
   // date
   private minDate: Date = new Date(1920, 1, 1);
-  private maxDate: Date = new Date();
+  private maxDate: Date = new Date(2020,7,1);
   private currentDate: Date = new Date(2000, 1, 15);
   private datetime: string = "";
   private columns: Array<any> = [
@@ -399,6 +401,9 @@ export default class Register extends Vue {
       }
     }
   }
+}
+.text-selected, .text-unselected{
+  font-size: .24rem !important;
 }
 .img-icon {
   width: 0.24rem;

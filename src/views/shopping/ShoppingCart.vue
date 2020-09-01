@@ -1,6 +1,6 @@
 <template>
   <div class="shopping-cart">
-    <abus-title title="Shopping Cart" backRootName="shopping">
+    <abus-title title="Shopping Cart" backRouteName="shopping">
       <!-- <cart-icon></cart-icon> -->
     </abus-title>
     <van-notice-bar

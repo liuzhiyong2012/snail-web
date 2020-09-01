@@ -1,6 +1,6 @@
 <template>
   <div class="abus-height">
-    <abus-title title="Shopping" backRootName="home"></abus-title>
+    <abus-title title="Shopping" backRouteName="home"></abus-title>
     <div class="banner">
       <van-swipe :autoplay="3000">
         <van-swipe-item
@@ -8,15 +8,12 @@
           v-for="(item, index) in recomendList"
           :key="index"
         >
-          <div
-            class="shopping-recomend-img"
-            :style="{backgroundImage:`url(${item.SampleImgPath|addBaseUrl})`}"
-          ></div>
+          <div class="shopping-recomend-img" :style="{backgroundImage:`url(${item.CoverImgUrl})`}"></div>
         </van-swipe-item>
       </van-swipe>
       <!-- <banner :bannerData="bannerData" /> -->
-      <div :class="[isActive? 'menu active': 'menu']">
-        <van-icon name="wap-nav" size="24" />
+      <div v-if="isShowMenu" :class="[isActive? 'menu active': 'menu']">
+        <van-icon class="wap-menu" name="wap-nav" size="24" />
       </div>
     </div>
     <div class="shopping-box">
@@ -28,7 +25,6 @@
         title-inactive-color="#B5B6B8"
         animated
         sticky
-        
         @click="getGoodsList"
       >
         <van-tab
@@ -38,20 +34,43 @@
           :key="index"
         >
           <div class="filter">
-            <div>
-              Sort by：Newest
+            <div @click="clickShowFilter">
+              Sort by：{{filterInfo}}
               <svg class="icon i-icon" aria-hidden="true">
                 <use xlink:href="#icon-select_1" />
               </svg>
             </div>
-            <div>
+            <!-- <div v-if="isNewest" @click="clickIsNewest">
+              Sort by：Newest
+              <svg class="icon i-icon" aria-hidden="true">
+                <use xlink:href="#icon-select_1" />
+              </svg>
+            </div>-->
+            <!-- <div v-else @click="clickIsNewest">
+              Sort by：Oldest
+              <svg class="icon i-icon" aria-hidden="true">
+                <use xlink:href="#icon-select_1" />
+              </svg>
+            </div>-->
+            <div  v-if="isFilter" @click="clickIsFilter">
               Filter
               <svg class="icon i-icon" aria-hidden="true">
                 <use xlink:href="#icon-select_1" />
               </svg>
             </div>
+            <div v-else @click="clickIsFilter">
+              Filter
+              <svg class="icon i-icon icon-up" aria-hidden="true">
+                <use xlink:href="#icon-select_1" />
+              </svg>
+            </div>
+            <div :class="[isShowFilter?'f-box active':'f-box']">
+              <van-cell value="Price" @click="changeVal" />
+              <van-cell value="CreatedAt" @click="changeVal" />
+            </div>
           </div>
-          <div class="goods-box" >
+
+          <div class="goods-box">
             <div class="goods-item" v-for="(item,i) in options1[index].data" :key="i">
               <div class="goods">
                 <div class="goods-img">
@@ -67,7 +86,7 @@
             </div>
           </div>
         </van-tab>
-        <van-tab disabled></van-tab>
+        <!-- <van-tab disabled></van-tab> -->
       </van-tabs>
       <div class="nav-menu"></div>
     </div>
@@ -79,33 +98,40 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import DishService from "../../service/shopping";
 import ShoppingService from "../../service/shopping";
 import AbusTitle from "../../components/AbusTitle.vue";
-
+import UrlUtils from "../../utils/url-utils";
 // import Banner from "@/components/banner";
 @Component({
   name: "Shopping",
   components: {
-    AbusTitle
+    AbusTitle,
   },
 })
 export default class ShoppingIndex extends Vue {
   private recomendList: Array<any> = [];
   private shoppingList: Array<any> = [];
   private options1: Array<any> = [];
+  private tapIndex: any = "1";
   private isActive: boolean = false;
+  private isShowMenu: boolean = false;
+  private isNewest: boolean = false;
+  private isFilter: boolean = false;
+  private isShowFilter: boolean = false;
+  private filterInfo: string = "Price";
+  private listDesc: string = "Desc";
+  private listAsc: string = "Asc";
 
   private created() {
     this.getShoppingRecommendedList();
     this.getShoppingCategory();
     this.getShoppingList();
-    
   }
   private mounted() {
     document.addEventListener("scroll", this.handleScroll);
     var object = document.getElementById("ibox");
   }
   private beforeDestroy() {
-      document.removeEventListener('scroll', this.handleScroll)
-    }
+    document.removeEventListener("scroll", this.handleScroll);
+  }
   private getShoppingCategory() {
     ShoppingService.getShoppingCategory().then((res: any) => {
       // console.log(res);
@@ -117,38 +143,71 @@ export default class ShoppingIndex extends Vue {
       }
     });
   }
+  // 点击弹出筛选
+  public clickShowFilter() {
+    this.isShowFilter = !this.isShowFilter;
+  }
+  // 点击筛选
+  public changeVal(e: any) {
+    this.isShowFilter = false;
+    this.filterInfo = e.target.innerText;
+    this.getShoppingListFilter()
+  }
+  // public clickIsNewest() {
+  //   this.isNewest = !this.isNewest;
+
+  // }
+  // 点击升降序
+  public clickIsFilter() {
+    this.isFilter = !this.isFilter;
+    this.getShoppingListFilter()
+  }
+
   // 首次获取
   private getShoppingList() {
     var data = { category: "1" };
     ShoppingService.getShoppingList(data).then((res: any) => {
-      // console.log(data);
-      // console.log(res);
-      Vue.set(this.options1[0],'data',res.data.Dishes)
+      Vue.set(this.options1[0], "data", res.data.Dishes);
     });
   }
-  // 点击获取
-  private getGoodsList(name: any,title:any) {
+  // 点击Tap切换获取
+  private getGoodsList(name: any, title: any) {
     // console.log(name)
-    var data = { category: name };
+    this.tapIndex = name;
+    this.getShoppingListFilter()
+  }
+  // 获取筛选后列表
+  public getShoppingListFilter(){
+    var data = { 
+      orderName: this.filterInfo,
+      orderFlag: this.isFilter ? this.listDesc : this.listAsc,
+      category: this.tapIndex,
+     };
+    
     ShoppingService.getShoppingList(data).then((res: any) => {
-      // console.log(res);
-       Vue.set(this.options1[name-1],'data',res.data.Dishes)
-      //  console.log(this.options1)
+      Vue.set(this.options1[this.tapIndex - 1], "data", res.data.Dishes);
     });
   }
   // 点击跳转详情页
-  private stepToDetail(item:any){
-	  this.$router.push({
-		  name:'shoppingDetails',
-		  params:{
-			  shoppingInfo:item
-		  }
-	  });
-	  
+  private stepToDetail(item: any) {
+    this.$router.push({
+      name: "shoppingDetails",
+      params: {
+        shoppingInfo: item,
+      },
+    });
   }
   private getShoppingRecommendedList() {
     ShoppingService.getShoppingRecommendedList({}).then((res: any) => {
-      this.recomendList = res.data.RecommendedShopping;
+      if (res.code == 200) {
+        // this.isShowMenu = true;
+        this.recomendList = res.data.RecommendedShopping;
+        this.recomendList.forEach((item: any, index: any) => {
+          item.CoverImgUrl = UrlUtils.addBaseUrl(
+            UrlUtils.delBaseUrl(item.BannerImgPath)
+          );
+        });
+      }
       // console.log(res);
     });
   }
@@ -190,12 +249,15 @@ export default class ShoppingIndex extends Vue {
   align-items: center;
   right: 0;
   width: 15%;
-  height: .88rem;
+  height: 0.88rem;
   background-color: #fff;
   z-index: 9999;
   box-shadow: -0.2rem 0 0.2rem rgba(0, 0, 0, 0.1);
   text-align: center;
   color: #1c1c1c;
+  .wap-menu {
+    font-size: 0.48rem !important;
+  }
 }
 .menu.active {
   position: fixed;
@@ -205,12 +267,11 @@ export default class ShoppingIndex extends Vue {
 .banner {
   position: relative;
   width: 100%;
+  min-height: 2.5rem;
+  background-color: #f2f4f7;
 }
 .shopping-box {
   width: 100%;
-  .f1 {
-    // flex: 1;
-  }
   .nav-menu {
     width: 1rem;
     height: 1rem;
@@ -221,14 +282,38 @@ export default class ShoppingIndex extends Vue {
   padding-right: 1rem;
 }
 .filter {
+  position: relative;
   padding: 0.3rem;
   display: flex;
   justify-content: space-between;
   color: #333;
+  box-sizing: border-box;
+  height: 1rem;
+  line-height: 0.4rem;
   .i-icon {
     width: 0.2rem;
     height: 0.2rem;
     padding: 0 0 0.05rem;
+    transition: all cubic-bezier(0.075, 0.82, 0.165, 1) .3s;
+  }
+  .icon-up{
+    transform: rotate(-180deg);
+    padding:  0.05rem 0 0;
+  }
+  .f-box {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 1rem;
+    width: 100%;
+    &.active {
+      display: block;
+    }
+  }
+  .van-cell {
+    padding: 0.2rem 0.3rem !important;
+    font-size: 0.3rem !important;
+    color: #666 !important;
   }
 }
 .goods-box {
@@ -272,7 +357,7 @@ export default class ShoppingIndex extends Vue {
       }
       .qty {
         padding: 0 0.2rem 0.3rem 0.2rem;
-        font-size: .24rem !important;
+        font-size: 0.24rem !important;
         color: #999;
         position: relative;
         .buy {
@@ -296,7 +381,6 @@ export default class ShoppingIndex extends Vue {
 }
 .filter-box {
   font-size: 0.26rem;
-  font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: rgba(46, 46, 46, 1);
   line-height: 0.8rem;

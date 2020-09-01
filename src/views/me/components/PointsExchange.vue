@@ -1,6 +1,6 @@
 <template>
 <div class="abus-height">
-  <abus-title title="Points exchange" backRootName="meIndex"></abus-title>
+  <abus-title title="Points exchange" backRouteName="meIndex"></abus-title>
   <div class="goods-box">
     <div class="goods-item" v-for="(item,index) in shoppingList" :key="index">
       <div class="goods"  @click="stepToDetail(item)">

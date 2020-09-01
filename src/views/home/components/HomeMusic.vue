@@ -1,6 +1,14 @@
 <template>
-  <div class="abus-scroller-box music-box">
-    <div v-for="(item,index) in musicList.slice(0,3)" class="music-list" :key="index" @click="stepToPage(item)">
+  <div
+    class="abus-scroller-box music-box"
+    :style="{'backgroundColor': isHaveData?'#fff':'#f2f4f7'}"
+  >
+    <div
+      v-for="(item,index) in musicList.slice(0,3)"
+      class="music-list"
+      :key="index"
+      @click="stepToPage(item)"
+    >
       <div class="music-l">
         <img :src="item.CoverImgUrl|addBaseUrl" :alt="item.Name" />
       </div>
@@ -8,79 +16,62 @@
         <div class="name">{{item.Name}}</div>
         <div class="author">播放量:{{item.PlayCount}}</div>
       </div>
-      <van-icon name="play-circle" color="rgb(229,232,228)" size="20" />
+      <!-- <van-icon name="play-circle" color="rgb(229,232,228)" size="20" /> -->
+      <svg class="icon icon-p" aria-hidden="true">
+        <use xlink:href="#icon-play-disable" />
+      </svg>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import {Component,Prop,Vue} from 'vue-property-decorator'
-import MusicService from '../../../service/music'
+import { Component, Prop, Vue } from "vue-property-decorator";
+import MusicService from "../../../service/music";
 
 @Component({
-  name: 'HomeMusic',
-  components:{
-
-  }
+  name: "HomeMusic",
+  components: {},
 })
-export default class HomeMusic extends Vue{
-  private musicData: Array<any> = [];
+export default class HomeMusic extends Vue {
   private musicList: Array<any> = [];
+  private isHaveData: boolean = false;
   private created() {
-    this.getMusicPlaylistHot()
-    this.musicData=[
-        {
-          img: require("../images/music.jpg"),
-          name: "Let Me Down Slowly",
-          author: "Alec Benjamin / Alessia Cara"
-        },
-        {
-          img: require("../images/music.jpg"),
-          name: "Let Me Down Slowly",
-          author: "Alec Benjamin / Alessia Cara"
-        },
-        {
-          img: require("../images/music.jpg"),
-          name: "Let Me Down Slowly",
-          author: "Alec Benjamin / Alessia Cara"
-        }
-      ]
+    this.getMusicPlaylistHot();
   }
-  public getMusicPlaylistHot_old(){
-    MusicService.getMusicFM().then((res:any) => {
-     
-      if(res.code == 200) {
-        this.musicList = res.data.Songs
+  public getMusicPlaylistHot_old() {
+    MusicService.getMusicFM().then((res: any) => {
+      if (res.code == 200) {
+        this.musicList = res.data.Songs;
       }
-    })
+    });
   }
-  
-  private getMusicPlaylistHot(){
-  			 MusicService.getMusicPlaylistHot({
-  				 take: 10,
-  				 skip:0
-  			 }).then((resData: any) => {
-				 // debugger;
-				 if(resData.code == 200) {
-				   this.musicList = resData.data.Playlists;
-				 }
-  			 })
+
+  private getMusicPlaylistHot() {
+    MusicService.getMusicPlaylistHot({
+      take: 10,
+      skip: 0,
+    }).then((resData: any) => {
+      // debugger;
+      if (resData.code == 200) {
+        this.isHaveData = true;
+        this.musicList = resData.data.Playlists;
+      }
+    });
   }
-  
-  private stepToPage(item:any):void{
-		 this.$router.push({
-			 name:'musicPlaylistDetail',
-			 query:{
-				 id:item.Id
-			 }
-		 });
+
+  private stepToPage(item: any): void {
+    this.$router.push({
+      name: "musicPlaylistDetail",
+      query: {
+        id: item.Id,
+      },
+    });
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
 .music-box {
-  background-color: #fff;
   padding: 0 0.28rem;
   margin: 0 0.28rem;
   background-color: #fff;

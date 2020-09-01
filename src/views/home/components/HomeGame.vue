@@ -1,5 +1,5 @@
 <template>
-  <div class="abus-scroller-box">
+  <div class="abus-scroller-box" :style="{'backgroundColor': isHaveData?'#fff':'#f2f4f7'}">
     <banner :bannerData="gameList" @stepTo='goToGame($event)' />
   </div>
 </template>
@@ -14,6 +14,7 @@ export default {
   data() {
     return {
       gameList: [],
+      isHaveData: false
     };
   },
   created() {
@@ -24,6 +25,7 @@ export default {
     getGameList() {
       GameService.getGameList().then((res) => {
         if (res.code == 200) {
+          this.isHaveData = true
           res.data.Games.forEach((item) => {
             item.img = item.CoverImgPath;
           });

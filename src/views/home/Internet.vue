@@ -1,6 +1,6 @@
 <template>
   <div class="internet">
-    <abus-title title="Internet" backRootName="home"></abus-title>
+    <abus-title title="Internet" backRouteName="home"></abus-title>
     <div class="padding">
       <div class="card" v-for="(item, index) in cardList" :key="index">
         <div class="header">

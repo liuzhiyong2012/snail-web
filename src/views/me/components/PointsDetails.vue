@@ -5,7 +5,7 @@
     </abus-title>
     <div calss="shopping-details">
       <!-- <banner :bannerData="bannerData" /> -->
-      <div class="dish-img" :style="{backgroundImage:`url(${pointsInfo.BannerImgPath|addBaseUrl})`}"></div>
+      <div class="dish-img" :style="{backgroundImage:`url(${pointsInfo.BannerImgPath})`}"></div>
     </div>
     <div class="m-box">
       <div class="title">{{pointsInfo.Name || '--'}}</div>
@@ -46,7 +46,7 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import AbusTitle from "../../../components/AbusTitle.vue";
 import CartIcon from "./PointsCartIcon.vue";
-
+import UrlUtils from '../../../utils/url-utils';
 @Component({
   name: "PointsDetail",
   components: {
@@ -71,6 +71,7 @@ export default class PointsDetail extends Vue {
   private mounted() {
     // this.$store.commit("setShoppingDetail", this.$route.params.shoppingInfo);
     this.pointsInfo = this.$route.params.pointsInfo;
+    this.pointsInfo.BannerImgPath = UrlUtils.addBaseUrl( UrlUtils.delBaseUrl(this.pointsInfo.BannerImgPath));
   }
   @Watch("stepper", { immediate: true })
   private watchStepper() {
@@ -217,7 +218,7 @@ export default class PointsDetail extends Vue {
 
   .cart-btn {
     border-radius: 0.4rem;
-    border: 0.02px solid rgba(0, 32, 91, 1);
+    border: 0.02rem solid rgba(0, 32, 91, 1);
     width: 3.3rem;
     height: 0.8rem;
     text-align: center;

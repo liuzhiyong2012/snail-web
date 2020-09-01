@@ -95,10 +95,45 @@ svg.icon {
 .nut-hor-scroll{
   touch-action: auto  !important;
 }
+.van-uploader__upload{
+  width: 1.8rem !important;
+  height: 1.8rem !important;
+}
+.van-picker-column{
+  font-size: .32rem !important;
+}
+.van-picker__toolbar{
+  font-size: .32rem !important;
+}
+.van-picker-column__item{
+  height: .88rem !important;
+}
+.van-uploader__upload-icon{
+  font-size: .4rem !important;
+}
+.van-picker__title{
+  font-size: .32rem !important;
+}
+.van-ellipsis{
+  overflow: inherit !important;
+}
+.van-picker__cancel, .van-picker__confirm{
+  font-size: .32rem !important;
+}
+.van-tabs__line{
+  width: .5rem !important;
+  height: .15rem !important;
+  border-radius: .08rem .08rem 0 0 !important;
+  bottom: .1rem !important ;
+}
+.van-tab__text--ellipsis{
+  font-size: .32rem !important;
+}
 .abus-scroller-box {
   margin: 0 0.28rem;
   padding: 0.28rem 0 0.2rem;
   background-color: #fff;
+  min-height: 2.4rem;
   border-radius: 0.1rem;
   box-shadow: 0 0 0.1rem #efefef;
 }

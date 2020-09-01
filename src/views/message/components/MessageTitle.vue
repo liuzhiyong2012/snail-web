@@ -1,7 +1,10 @@
 <template>
   <section class="message-title-ctn">
     <div class="title-left-ctn" @click="back()">
-      <i class="icon icon-back"></i>
+      <!-- <i class="icon icon-back"></i> -->
+      <svg class="icon icon-p" aria-hidden="true">
+        <use xlink:href="#icon-back" />
+      </svg>
     </div>
     <div class="title-center">
       <slot name="left"></slot>
@@ -41,7 +44,10 @@ export default class MessageTitle extends Vue {
   padding: 0.3rem;
   align-items: center;
   background: #ffffff;
-
+  .icon-p {
+    width: 0.3rem;
+    height: 0.3rem;
+  }
   .title-left-ctn {
     flex: 1;
     display: flex;
@@ -65,8 +71,7 @@ export default class MessageTitle extends Vue {
 
     .icon-user {
       font-size: 0.4rem;
-	}
-
+    }
   }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="me"> 
-    <abus-title :title="$t('Me')" backRootName="home"></abus-title>
+    <abus-title :title="$t('Me')" backRouteName="home"></abus-title>
     <div class="user-info">
       <div class="user">
         <div class="user-img">

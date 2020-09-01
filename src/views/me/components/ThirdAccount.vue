@@ -1,6 +1,6 @@
 <template>
   <div class="abus-height">
-    <abus-title title="Third Account Number" backRootName="meIndex"></abus-title>
+    <abus-title title="Third Account Number" backRouteName="meIndex"></abus-title>
     <div class="cell-group mt2">
       <van-radio-group
         v-model="radio"

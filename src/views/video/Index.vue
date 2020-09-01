@@ -1,6 +1,7 @@
 <template>
   <div class="home">
-    <abus-title title="Video" backRootName="home"></abus-title>
+    <abus-title title="Video" backRouteName="home"></abus-title>
+    <!-- backRouteName -->
     <van-tabs
       sticky
       line-width="20"

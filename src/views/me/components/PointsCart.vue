@@ -1,6 +1,6 @@
 <template>
   <div class="shopping-cart">
-    <abus-title title="Cart" backRootName="pointsExchange"></abus-title>
+    <abus-title title="Cart" backRouteName="pointsExchange"></abus-title>
     <van-notice-bar
       @click="stepToPage('address')"
       color="#2E2E2E"
@@ -153,6 +153,9 @@ export default class ShoppingCart extends Vue {
   position: absolute;
   right: 0;
   bottom: 0;
+}
+.van-card__title{
+  line-height: inherit !important;
 }
 .no-goods{
   display: flex;

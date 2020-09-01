@@ -22,8 +22,9 @@
         <input
           v-model="userPhone"
           class="form-input"
+          maxlength="20"
           :placeholder="$t('placeholderPhone')"
-          type="text"
+          type="number"
         />
       </div>
       <div class="user-details m40">
@@ -94,13 +95,13 @@
 	}
 </i18n>
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import AdModel from "./components/ADModel.vue";
-import LoginService from "../../service/login";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import AdModel from './components/ADModel.vue';
+import LoginService from '../../service/login';
 import { localStore } from '../../utils/data-management';
 
 @Component({
-  name: "Login",
+  name: 'Login',
   components: {
     AdModel
   }
@@ -109,8 +110,8 @@ export default class Login extends Vue {
   private isActive: boolean = true;
   private isShowLang: boolean = false;
   private lang: string = '';
-  private userPhone: string = "";
-  private userPassword: string = "";
+  private userPhone: string = '';
+  private userPassword: string = '';
   
   private created() {
     clearTimeout();
@@ -118,12 +119,12 @@ export default class Login extends Vue {
       this.isActive = false;
     }, 1000);
     if(localStorage.getItem('lang') == 'en'){
-      this.lang = 'English'
-      this.$i18n.locale = 'en'
+      this.lang = 'English';
+      this.$i18n.locale = 'en';
       localStorage.setItem('lang', 'en');
     }else{
-      this.lang = '简体中文'
-      this.$i18n.locale = 'zh'
+      this.lang = '简体中文';
+      this.$i18n.locale = 'zh';
       localStorage.setItem('lang', 'zh');
     }
   }
@@ -140,60 +141,63 @@ export default class Login extends Vue {
     this.isShowLang = !this.isShowLang;
   }
   public changeEn(){
-    this.lang = 'English'
-    this.$i18n.locale = 'en'
+    this.lang = 'English';
+    this.$i18n.locale = 'en';
     localStorage.setItem('lang', 'en');
   }
   public changeZh(){
-    this.lang = '简体中文'
-    this.$i18n.locale = 'zh'
+    this.lang = '简体中文';
+    this.$i18n.locale = 'zh';
     localStorage.setItem('lang', 'zh');
   }
   public postUserLogin() {
     // console.log(this.$store.state.login.name)
-    if (this.userPhone != "" && this.userPassword != "") {
+    if (this.userPhone != '' && this.userPassword != '') {
       var data = {
-        username: "86_" + this.userPhone, // 默认86
+        username: '86_' + this.userPhone, // 默认86
         password: this.userPassword
       };
       LoginService.postUserLogin(data)
         .then((res: any) => {
           console.log(res);
+		  debugger;
           if (res.code == 200) {
             // 写入成功后，判断是否有座位
-            this.$store.dispatch("setUserInfo", {
+            this.$store.dispatch('setUserInfo', {
               name: res.data.userName,
               token: res.data.access_token,
-              id: res.data.airbusId
+              id: res.data.id,
+			  airbusId:res.data.airbusId
             }).then((res:any)=>{
-              console.log('token:' + localStore.get('token'))
+				// debugger;
+              console.log('token:' + localStore.get('token'));
               LoginService.getUserMe().then((res: any)=>{
-              console.log(res)
+              console.log(res);
                 if (res.code == 200 && res.data.Seat == null) {
                       this.$router.push({
-                    name: "selectSeat"
+                    name: 'selectSeat'
                   });
                 } else if (res.code == 200 && res.data.Seat.Name){
-                  this.$store.commit('setSeatNumber',res.data.Seat.Name)
+                  this.$store.commit('setSeatNumber',res.data.Seat.Name);
                    this.$router.push({
-                    name: "home"
+                    name: 'home'
                   });
                 }else{
-                  this.$toast(res.message)
+                  this.$toast(res.message);
                 }
-              })
-            })
+              });
+            });
             
             // this.$router.push({
             //   name: "home"
             // });
           }else{
-            this.$toast(res.message)
+            this.$toast(res.message);
           }
         })
         .catch((error: any) => {
           console.log(error);
-          this.$toast("The user name or password is incorrect.");
+          this.$toast('The user name or password is incorrect.');
         });
     }
   }
