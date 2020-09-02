@@ -171,7 +171,7 @@ export default {
 .v-body {
   font-family: "Ropa Sans", sans-serif;
   color: #333;
-  max-width: 640px;
+  /* max-width: 640px; */
   margin: 0 auto;
   position: relative;
 }

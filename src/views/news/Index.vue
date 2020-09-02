@@ -26,11 +26,11 @@
     >
       <van-tab
         v-for="(val, index) in navTar"
-        :title="val.category"
+        :title="val.Name"
         title-active-color="#3056EF"
         :key="index"
       >
-        <div v-if="val.category == navTar[index].category" class="">
+        <div v-if="val.Name == navTar[index].Name" class="">
           <ul class="news-list">
             <news-list-item
               v-for="(item, index) in newsListBackup"
@@ -66,13 +66,19 @@ export default class NewsList extends Vue {
   private navTar: any = [
     {
       Id: "-1",
-      category: "所有",
+      Name: "所有",
       CreatedAt: false,
+      Description: null,
+      DisplayOrder: null,
+      EName: null,
     },
     {
       Id: "0",
-      category: "收藏",
+      Name: "收藏",
       CreatedAt: false,
+      Description: null,
+      DisplayOrder: null,
+      EName: null,
     },
   ];
   private newsList: any = [];
@@ -134,12 +140,12 @@ export default class NewsList extends Vue {
     } else {
       let i = "";
       this.navTar.forEach((item: any) => {
-        if (item.category == title) {
+        if (item.Name == title) {
           i = item.Id;
         }
       });
       this.newsList.forEach((item: any) => {
-        if (i == item.Category) {
+        if (i == item.CategoryId) {
           this.newsListBackup.push(item);
         }
       });

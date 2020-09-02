@@ -33,7 +33,7 @@
 			</div>
 
 			<div class="seat-ctn">
-				<span>S{{$t('seatNumber')}}</span>
+				<span>{{$t('seatNumber')}}</span>
 				<span>{{seatNumber}}</span>
 			</div>
 		</div>
@@ -254,7 +254,8 @@ export default class DishDetail extends Vue {
 
 		.cart-btn {
 			border-radius: 0.4rem;
-			border: 0.02px solid rgba(0, 32, 91, 1);
+			// border: 0.02px solid rgba(0, 32, 91, 1);
+			border: 1px solid rgba(0, 32, 91, 1);
 			width: 3.3rem;
 			height: 0.8rem;
 			text-align: center;

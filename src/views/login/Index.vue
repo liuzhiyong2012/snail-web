@@ -160,7 +160,7 @@ export default class Login extends Vue {
       LoginService.postUserLogin(data)
         .then((res: any) => {
           console.log(res);
-		  debugger;
+		  // debugger;
           if (res.code == 200) {
             // 写入成功后，判断是否有座位
             this.$store.dispatch('setUserInfo', {
