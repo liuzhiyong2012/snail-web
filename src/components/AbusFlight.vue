@@ -129,8 +129,8 @@ export default class HomeFlight extends Vue {
 			box-sizing: border-box;
 			.home-flight-t {
 				margin-bottom: 0.2rem;
-				font-size: 0.42rem;
-				font-weight: bold;
+				font-size: 0.38rem;
+				// font-weight: bold;
 				color: rgba(46, 46, 46, 1);
 				line-height: 0.42rem;
 				
@@ -222,7 +222,7 @@ export default class HomeFlight extends Vue {
 				display: flex;
 				justify-content: center;
 				height: 1.30rem;
-				background:rgba(242,244,247,1);
+				background:#FAFAFA;
 				border-radius:4px;
 				margin-bottom: 0.26rem;
 				padding-top:0.28rem;

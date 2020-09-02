@@ -8,7 +8,7 @@
           <div class="price">${{item.Price}}</div>
         </div>
         <div class="con">
-          <div class="con-l">{{item.details}}
+          <div class="con-l">{{item.Remark}}
             </div>
           <div class="pay" @click="routerInternetCard(item)">Pay</div>
         </div>
@@ -16,15 +16,15 @@
         <div class="bottom">
           <div class="f1">
             <img class="icon" src="./images/icon_01.png" alt="icon_01" />
-            <span class="time-t">{{item.text_time}}</span>
+            <span class="time-t">{{item.TextTime}}</span>
           </div>
           <div class="f1">
             <img class="icon" src="./images/icon_02.png" alt="icon_02" />
-            <span class="time-t">{{item.music_time}}</span>
+            <span class="time-t">{{item.MusicTime}}</span>
           </div>
           <div class="f1 f2">
             <img class="icon" src="./images/icon_03.png" alt="icon_03" />
-            <span class="time-t">{{item.video_time}}</span>
+            <span class="time-t">{{item.VideoTime}}</span>
           </div>
         </div>
       </div>

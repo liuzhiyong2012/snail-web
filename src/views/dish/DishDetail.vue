@@ -21,7 +21,7 @@
 					</div>
 
 					<div class="order-number-ctn">
-						<span class="price-ctn">{{dishInfo.Price}}</span>
+						<span class="price-ctn">${{dishInfo.Price}}</span>
 
 						<van-field class="field-ctn" name="stepper" label="">
 							<template #input>
@@ -205,7 +205,7 @@ export default class DishDetail extends Vue {
 					display: flex;
 					align-items: center;
 					.price-ctn {
-						font-size: 0.5rem;
+						font-size: 0.36rem;
 						font-weight: bold;
 						color: rgba(46, 46, 46, 1);
 						margin-right: 0.4rem;

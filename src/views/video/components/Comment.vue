@@ -112,6 +112,7 @@ export default class videoComment extends Vue{
     height: 100%;
     box-sizing: border-box;
     min-height: 3rem;
+    overflow-y: auto;
     &.text-c {
       display: flex;
       justify-content: center;

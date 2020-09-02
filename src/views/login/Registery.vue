@@ -188,7 +188,7 @@
 			"Security-issues":"Security issues",
       "Security-answer":"Security answer",
       "Agreement":"《Privacy policy》《Terms of service》",
-      "Registery": "Registery",
+      "Registery": "Sign up",
       "NameTips":"Please enter your name",
       "PhoneTips":"Please enter your phone number",
       "IDCardTips":"Please enter IDCard",

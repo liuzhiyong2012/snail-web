@@ -69,14 +69,16 @@
 			
 			.flow-ctn{
 				line-height: 0.40rem;
-				background: #001f5e;
+				// background: #001f5e;
 				border-radius: 0.04rem;
-				font-size:0.26rem;
+				font-size:0.28rem;
 				font-weight:normal;
-				color:rgba(255,255,255,1);
+				// color:rgba(255,255,255,1);
+				color:#001f5e;
 				line-height:0.40rem;
 				padding:0 0.20rem;
 				transform: skewX(-15deg);
+				font-weight: 600;
 			}
 			
 		}

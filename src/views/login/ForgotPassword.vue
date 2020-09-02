@@ -42,10 +42,12 @@
                 <div class="collapse-item-main">
                   <div class="title">{{$t('Phone')}}</div>
                   <div class="flex1 no-inp">{{phone}}</div>
+                  
                 </div>
                 <div class="collapse-item-main no-pad">
                   <div class="title">{{$t('VerificationCode')}}</div>
-                  <input class="flex1" :placeholder="$t('VerificationCodeTips')" type="text" />
+                  <input class="flex1 " :placeholder="$t('VerificationCodeTips')" type="text" />
+                  <div class="on-sms">获取验证码</div>
                 </div>
               </div>
             </li>
@@ -199,7 +201,7 @@ export default class ForgotPassword extends Vue {
       .catch((reason: any) => {
         console.log("=== Error ===");
         console.log(reason);
-        this.$toast(reason.error.message);
+        this.$toast(reason.message);
       });
   }
   public onClickTwo() {
@@ -432,6 +434,15 @@ export default class ForgotPassword extends Vue {
                   border: 0.02rem solid rgba(51, 51, 51, 0.1);
                   border-radius: 0.04rem;
                   background-color: #f3f2f9;
+                }
+                .on-sms{
+                  width: 1.5rem;
+                  height: 1rem;
+                  margin: 0 0 0 .15rem;
+                  background: #ccc;
+                  text-align: center;
+                  line-height: 1rem;
+                  color: #fff;
                 }
                 .flex1.no-inp {
                   padding: 0;

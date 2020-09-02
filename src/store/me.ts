@@ -3,7 +3,8 @@ export default {
     payType:"1",
     address:'',
     points: 0,
-    userData: {}
+    userData: {},
+    seatType: 2
   },
   mutations: {
     changePayType(state: any, payType: any) {
@@ -15,6 +16,7 @@ export default {
     setUserData(state: any, data: string){
       state.userData = data
       state.points = state.userData.points
+      state.seatType = state.userData.Seat.seatType
     },
   },
   actions: {
