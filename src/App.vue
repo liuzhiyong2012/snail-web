@@ -124,10 +124,14 @@ svg.icon {
   width: .5rem !important;
   height: .15rem !important;
   border-radius: .08rem .08rem 0 0 !important;
-  bottom: .1rem !important ;
+  bottom: .06rem !important ;
 }
 .van-tab__text--ellipsis{
   font-size: .32rem !important;
+}
+.van-toast--text{
+  padding: 0.2rem 0.22rem !important;
+  font-size:.24rem  !important;
 }
 .abus-scroller-box {
   margin: 0 0.28rem;

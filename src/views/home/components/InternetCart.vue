@@ -119,10 +119,12 @@ export default class InternetCart extends Vue {
   }
   public goHome() {
     // ['Seat','Remark','id']
+    console.log(this.$store.state.me.seatType)
     let data ={
       Seat: '36B',
       Remark: '',
-      id: this.getInternetData.Id
+      id: this.getInternetData.Id,
+      SeatType: this.$store.state.me.seatType
     }
     NetflowService.postNetFlowPlaceOrder(data).then((res: any)=> {
       console.log(res)

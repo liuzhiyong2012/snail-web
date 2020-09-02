@@ -17,12 +17,18 @@
 					</div>
 
 					<div class="name-ctn">{{ item.Name }}</div>
-					<div class="bottom-ctn">
+					<div class="bottom-ctn" v-if="item.Stocking">
 						<div class="qty-ctn">
 							<span>QTY</span>
-							<span>{{ item.Stocking }}</span>
+							<span>{{item.Stocking}}</span>
 						</div>
 						<div class="order-btn" @click="stepToDetail(item)">order</div>
+					</div>
+					<div v-else class="bottom-ctn">
+						<div class="qty-ctn">
+							<span>缺货</span>
+						</div>
+						<div class="order-btn" @click="showToast">order</div>
 					</div>
 				</div>
 			</div>
@@ -99,6 +105,9 @@ export default class DishIndex extends Vue {
 			}
 		});
 	}
+	private showToast(){
+		this.$toast('暂时缺货')
+	}
 }
 </script>
 
@@ -113,7 +122,8 @@ export default class DishIndex extends Vue {
 			height: 100%;
 			background-position: center center;
 			background-repeat: no-repeat;
-			background-size: cover;
+			background-size: 100%;
+			background-color: #fff;
 		}
 	}
 

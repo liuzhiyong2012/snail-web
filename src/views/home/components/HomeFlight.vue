@@ -130,13 +130,13 @@ export default class HomeFlight extends Vue {
 			border-radius: 0.12rem;
 			margin: 0 0.3rem;
 			padding: 0.32rem 0.3rem;
-			height: 5.34rem;
+			height: 5.64rem;
 			background: rgba(255, 255, 255, 1);
 			box-sizing: border-box;
 			.home-flight-t {
 				margin-bottom: 0.2rem;
-				font-size: 0.42rem;
-				font-weight: bold;
+				font-size: 0.38rem;
+				// font-weight: bold;
 				color: rgba(46, 46, 46, 1);
 				line-height: 0.42rem;
 				
@@ -242,7 +242,7 @@ export default class HomeFlight extends Vue {
 				// align-items: f;
 				justify-content: center;
 				height: 1.30rem;
-				background:rgba(242,244,247,1);
+				background:#FAFAFA;
 				border-radius:4px;
 				margin-bottom: 0.26rem;
 				padding-top:0.28rem;
@@ -322,7 +322,7 @@ export default class HomeFlight extends Vue {
 				
 			}
 			.map-box {
-				height:1.9rem;
+				height:2.2rem;
 				
 			}
 	}

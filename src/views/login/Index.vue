@@ -1,17 +1,18 @@
 <template>
   <div class="login">
     <ad-model v-if="isActive"></ad-model>
-    <div class="title">
-      {{$t('LOGIN')}}
-      <span class="lang" @click="showLang">
+    <!-- <div class="title">
+       {{$t('LOGIN')}} 
+       <span class="lang" @click="showLang">
         {{lang}}
         <i class="icon icon-selectwhite"></i>
         <div :class="[isShowLang?'lang-change active':'lang-change']">
           <div class="t" @click="changeEn">English</div>
           <div class="t" @click="changeZh">简体中文</div>
         </div>
-      </span>
-    </div>
+      </span> 
+    </div> -->
+    <div class="login-bg"></div>
     <div class="form">
       <div class="user-details">
         <div class="i-icon">
@@ -87,7 +88,7 @@
 		"en":{
 			  "LOGIN": "LOGIN",
         "Login": "Login",
-        "Registery": "Registery",
+        "Registery": "Sign up",
         "ForgotPassword": "Forgot Password",
         "placeholderPhone": "Your phone",
         "placeholderPassword": "Password"
@@ -214,6 +215,13 @@ export default class Login extends Vue {
   background-color: #00205b;
   width: 100%;
   height: 100vh;
+  .login-bg{
+    width: 100%;
+    height: 2.7rem;
+    background-image: url('./images/login_bg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
   .title {
     position: relative;
     padding: 0.3rem 0 0;
@@ -252,11 +260,11 @@ export default class Login extends Vue {
     }
   }
   .form {
-    margin: 1.72rem 0.3rem 0;
+    margin: 0 0.3rem 0;
     //   background-color: rgba(0, 32, 91, 0.8);
     .user-details {
       display: flex;
-      border: 1px solid #fff;
+      border: 0.02rem solid #fff;
       border-radius: 0.05rem;
       height: 1rem;
       .i-icon {

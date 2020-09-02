@@ -72,15 +72,26 @@
 
           <div class="goods-box">
             <div class="goods-item" v-for="(item,i) in options1[index].data" :key="i">
-              <div class="goods">
-                <div class="goods-img">
+              <div class="goods" v-if="item.QTY != 0">
+                <div class="goods-img" @click="stepToDetail(item)">
                   <img :src="item.SampleImgPath|addBaseUrl" :alt="item.Name" />
                 </div>
                 <div class="price">${{item.Price}}</div>
                 <div class="name">{{item.Name}}</div>
                 <div class="qty">
-                  QTY {{item.qty}}
+                  QTY {{item.QTY}}
                   <span class="buy" @click="stepToDetail(item)">Buy</span>
+                </div>
+              </div>
+              <div class="goods" v-else>
+                <div class="goods-img" @click="showToast">
+                  <img :src="item.SampleImgPath|addBaseUrl" :alt="item.Name" />
+                </div>
+                <div class="price">${{item.Price}}</div>
+                <div class="name">{{item.Name}}</div>
+                <div class="qty">
+                  缺货
+                  <span class="buy" @click="showToast">Buy</span>
                 </div>
               </div>
             </div>
@@ -132,6 +143,9 @@ export default class ShoppingIndex extends Vue {
   private beforeDestroy() {
     document.removeEventListener("scroll", this.handleScroll);
   }
+  private showToast(){
+		this.$toast('暂时缺货')
+	}
   private getShoppingCategory() {
     ShoppingService.getShoppingCategory().then((res: any) => {
       // console.log(res);
@@ -233,8 +247,8 @@ export default class ShoppingIndex extends Vue {
     width: 100%;
     height: 100%;
     background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    // background-repeat: no-repeat;
+    background-size: contain;
   }
 }
 .f1 {
