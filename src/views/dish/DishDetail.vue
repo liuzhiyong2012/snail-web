@@ -70,6 +70,8 @@ import AbusTitle from '../../components/AbusTitle.vue';
 import DishCartIcon from './components/DishCartIcon.vue';
 import DishService from '../../service/dish';
 
+import UrlUtils from '../../utils/url-utils';
+
 @Component({
 	name: 'DishDetail',
 	components: {
@@ -104,6 +106,8 @@ export default class DishDetail extends Vue {
 			if(res.code == '200'){
 				 this.dishInfo = res.data;
 				 this.dishInfo.orderNumber = 1;
+				 this.dishInfo.BannerImgPath = UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(this.dishInfo.BannerImgPath));
+				
 			}else{
 				
 			}

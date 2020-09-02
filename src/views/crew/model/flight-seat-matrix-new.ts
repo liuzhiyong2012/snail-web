@@ -1,12 +1,43 @@
 export default class FlightSeatMatrix{
 	
 	private  layoutInfo:any ={};
+	private  layoutArr:Array<any> = [];
+	
 	
 	constructor(seatArr:Array<any>){
 		this.calcSeatArr(seatArr);
 	}
 	
 	calcSeatArr(seatArr){
+		// let testArr = {
+		// 	Name: "1A",
+		// 	UserId: "8f7288d9d6fe403f9ee2fad9f46285d7",
+		// 	col: 1,
+		// 	col-number: 1,
+		// 	id: "1",
+		// 	row: 1,
+		// 	seatType: 2
+		// };
+		
+		/* let result = {
+			seatType:{
+				valueArr:[],
+				valueToName:{
+					
+				}
+			},
+		
+			sectionMap:{
+				[sectionIndex][rowId][col][col-number]:item
+			},
+			seatTypeMap:{
+				[typeId]:{
+					section:12
+					item:
+				}
+			}
+		} */
+		
 		let layoutInfo:any = {
 			seatType:{
 				valueArr:[],
@@ -23,29 +54,30 @@ export default class FlightSeatMatrix{
 			},
 			seatTypeMap:{
 				
-			},
-			userSeatTypeMap:{
-				
 			}
 			
 		}
 		
 		seatArr.forEach((item,index)=>{
-			if(item.UserId){
-				layoutInfo.userSeatTypeMap[item.UserId] = item.seatType;
-			}
-			
-			
 			if(!layoutInfo.seatType.valueToName[item.seatType]){
 				layoutInfo.seatType.valueToName[item.seatType] = '座位类型' + item.seatType;
 				layoutInfo.seatType.valueArr.push(item.seatType);
 				
 				layoutInfo.seatTypeMap[item.seatType] = {};
-				// layoutInfo.seatTypeUserMap[item.seatType] = {};
-				
-				layoutInfo.seatTypeRow[item.seatType] = [];
+				layoutInfo.seatTypeMap[item.seatType] = {};
+				layoutInfo.seatTypeRow[item.seatType] = {};
 			}
 			
+			
+			
+			
+			// Name: "1A",
+			// UserId: "8f7288d9d6fe403f9ee2fad9f46285d7",
+			// col: 1,
+			// col-number: 1,
+			// id: "1",
+			// row: 1,
+			// seatType: 2
 			if(!layoutInfo.sectionMap[item.seatType]){
 				layoutInfo.sectionMap[item.seatType] = {};
 			}
@@ -60,11 +92,13 @@ export default class FlightSeatMatrix{
 			}
 			
 			layoutInfo.seatTypeMap[item.seatType][item.id] = item;
-			// layoutInfo.seatTypeUserMap[item.seatType][item.UserId] = item;
 		});
-	
-		let sectionArr = [];
+		// debugger;
+		let sectionArr = {};
 		layoutInfo.seatType.valueArr.forEach((seatType,seatTypeIndex)=>{
+			if(sectionArr[seatType]){
+				sectionArr[seatType] = [];
+			}
 			let rowArr = [];
 			Object.keys(layoutInfo.sectionMap[seatType]).forEach((row,rowIndex)=>{
 				layoutInfo.seatTypeRow[seatType].push(row);
@@ -77,57 +111,11 @@ export default class FlightSeatMatrix{
 					rowItem.push(colItem);
 				});
 				
-				rowArr.push(rowItem);
+				sectionArr[seatType] = rowArr.push(rowItem);
 			});
-			sectionArr.push(rowArr);
+			sectionArr[seatType] = rowArr;
 		});
-		
-		layoutInfo.sectionArr = sectionArr;
-		layoutInfo.maxSeatLen = this.calcMaxSeatLen(layoutInfo);
 		// debugger;
-		
-		this.layoutInfo = layoutInfo;
-		
-	}
-	
-	//计算飞机座舱的最大宽度
-	calcMaxSeatLen(layoutInfo){
-		let seatTypeColumn = {
-			'1':1,
-			'2':1,
-			'3':1
-		};
-		let layoutSeatLen = 0;
-		layoutInfo.sectionArr.forEach((sectionItem,index)=>{
-		
-			let seactionSeatLen = 0;
-			let seatTypeColumnLen = seatTypeColumn[layoutInfo.seatType.valueArr[index]];
-			sectionItem.forEach((row,rowIndex)=>{
-				
-			    let seatCount = 0;
-				row.forEach((col,colIndex)=>{
-					seatCount = seatCount + col.length;
-				});
-				
-				let rowLen = seatCount + (row.length - 1) * seatTypeColumnLen;  //很重要
-				
-				if(rowLen > seactionSeatLen){
-					seactionSeatLen = rowLen;
-				}
-			});
-			
-			if(seactionSeatLen > layoutSeatLen ){
-				layoutSeatLen = seactionSeatLen
-			}
-			
-		});
-		return layoutSeatLen;
-		
-	}
-	
-	
-	public getLayoutInfo(){
-		return this.layoutInfo;
 	}
 	
 	

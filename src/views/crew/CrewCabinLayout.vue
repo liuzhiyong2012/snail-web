@@ -2,34 +2,25 @@
 	<section class="crew-income-statistics">
 		<!-- crew-income-statistics -->
 		<div class="top-ctn">
-			<div class="back-ctn">
+			<div class="back-ctn" @click="$router.go(-1)">
 				<i class="icon icon-back"></i>
 				<span>
 					返回
 				</span>
 			</div>
-			
-			<div class="class-bar-ctn">
-				<div v-for="(item,index) in tabList" class="bar-item" :key="index" :class="{active:active == item.value,hasNewMessage:true}" >
+			<div class="class-bar-ctn" v-if="layoutInfo">
+				<div v-for="(item,index) in tabList" class="bar-item" :key="index" :class="{active:active == item.value ,hasNewMessage:true}" @click="scrollToSection(item.value)" >
 					<span class="label">{{item.name}}</span>
-					<span class="message-count">23</span>
-					
-					
+					<span class="message-count" v-if="messageCount[item.value] > 0">{{messageCount[item.value]}}</span>
 				</div>
 			</div>
 		</div>
 		
-		<div class="content-ctn">
-			
-			<div class="flight-layout-ctn">
-				<section class="section-ctn" v-for="(rowItemArr,sectionIndex) in layoutList" :key="sectionIndex">
+		<div class="content-ctn"  ref="contentCtn">
+			<div class="flight-layout-ctn" v-if="layoutInfo" :style="calcContentStyle(layoutInfo)">
+				<section class="section-ctn" v-for="(rowItemArr,sectionIndex) in layoutInfo.sectionArr" :key="sectionIndex" :ref="'section' + layoutInfo.seatType.valueArr[sectionIndex]">
 					<div class="section-title">
-						Economy class
-					</div>
-					<div class="section-number-laber">
-					    <div class="seat-head-label" v-for="(labelName,index) in seatHeadLabelArr" :key="index">
-							{{labelName}}
-						</div>
+						{{layoutInfo.seatType.valueToName[layoutInfo.seatType.valueArr[sectionIndex]]}}
 					</div>
 					<div class="section-content">
 						  <section class="row-ctn" v-for="(colArr,rowIndex) in rowItemArr" :key="rowIndex">
@@ -37,19 +28,12 @@
 									<h6 @click.stop.prevent = "clickSeatItem(seatItem)" class="seat-ctn" v-for="(seatItem,seatIndex) in seatArr" :key="seatIndex" :class="{'hasNewMessage':(!!seatMessageMap[seatItem.UserId]),'disabled':(!seatItem.UserId)}">
 										<span>
 											{{seatItem.Name}}
-											<!-- {{seatItem.UserId}} -->
 										</span>
 										<i class="icon icon-seat"></i>
 										
 										<div class="seat-message-count" v-if="seatMessageMap[seatItem.UserId]">
 											{{seatMessageMap[seatItem.UserId].total}}
 										</div>
-										
-										<!-- seatMessageMap
-										UserId: "3a03a40ac79b4f0d6eef58fcd99271d7"
-										message: (3) [{…}, {…}, {…}]
-										total: 32 , -->
-										
 										<div class="message-tip" v-if="seatMessageMap[seatItem.UserId]&&(seatItem.UserId == showTipUserId)">
 											<div class="item-left">
 												{{seatItem.Name}}
@@ -69,21 +53,15 @@
 						  </section>
 					</div>
 				</section>
-				<!-- layoutList -->
-				
 			</div>
 		</div>
-		
 		<crew-chat v-if="curUserId" :curUserId="curUserId" @close="curUserId = ''"></crew-chat>
-		
 	</section>
 </template>
 
 
-	
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-
 import CabinLayoutService from '../../service/crew/cabin-layout';
 import FlightSeatMatrix from './model/flight-seat-matrix';
 import CrewChat from './CrewChat.vue';
@@ -99,12 +77,11 @@ export default class CrewCatering extends Vue {
 	private layoutList:Array<any> = [];
 	
 	private active:string = 'firstClass';
+	private tabList:Array<any> = [];
 	
 	private seatHeadLabelArr:Array<any> = ['A','B','C','D','E','F','G'];
 	
-	private seatMessageMap:any = {
-		
-	};
+	private seatMessageMap:any = {};
 	
 	private socket:any = null;
 	
@@ -117,44 +94,45 @@ export default class CrewCatering extends Vue {
 	
 	private curUserId:string = '';
 	
+	private layoutInfo = null;
 	
+	// private tabList:Array<any> = [];
 	
-	private tabList:Array<any> = [
-		{
-			name:'First class',
-			value:'firstClass'
-	    },
-		{
-			name:'Business class',
-			value:'businessClass'
-		},
-		{
-			name:'Economy class',
-			value:'economyClass'
-		}
-	];
+	//统计新消息数
+	/* private get messageCount():void{
+		
+	} */
 	
+	private messageCount:any = {
 	
-	private mounted(){
+	};
+	
+	async mounted(){
 		this.docClickHandle = (e)=>{
 			this.showTipUserId = '';
 		};
 		document.addEventListener('click',this.docClickHandle);
 		this.startWebScoket();
-		this.getFlightSeatInfo();
-		this.getSeatMessageInfo();
+		await this.getFlightSeatInfo();
+		await this.getSeatMessageInfo();
 	}
 	
 	
 	private beforeDestroy(){
 		document.removeEventListener('click',this.docClickHandle);
+		this.socket.close();
+	}
+	
+	//计算座舱布局的宽度
+	private calcContentStyle(layoutInfo){
+		let unitWidth = 84 + 32;
+	
+		return {
+			width:(unitWidth * layoutInfo.maxSeatLen)/100 + 'rem'
+		};
 	}
 	
 	private startWebScoket(){
-		
-		// var ele = document.getElementById('id');
-		// ele.scrollTop = ele.scrollHeight;
-		
 		this.socket = (window as any).io('http://172.16.8.69:2120/');
 		// uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
 		let uid = '4CFC4D33-2C1E-E911-BAD5-F44D307124C0';
@@ -166,25 +144,25 @@ export default class CrewCatering extends Vue {
 		});
 		
 		// 后端推送来消息时
-		this.socket.on('new_msg', function(msg){
-			console.log('new_msg：');
-		    console.log('收到消息：'+msg);
+		this.socket.on('new_msg', (msg)=>{
+			Object.keys(this.messageCount).forEach((seatType,index)=>{
+				this.messageCount[seatType] = 0;
+			});
+			this.getSeatMessageInfo();
 		});
 		
-		// 后端推送来在线数据时
-		this.socket.on('saveNoticeList', function(online_stat){
-			console.log('saveNoticeList：');
-		    console.log(online_stat);
-		});
-		
-		this.socket.on('saveChatList', function(online_stat){
-			console.log('saveChatList：');
-		    console.log(online_stat);
+	}
+	
+	private scrollToSection(seatType){
+		this.active = seatType;
+		this.$nextTick(()=>{
+			let scrollTop = this.$refs['section'+ seatType][0].offsetTop;
+			(this.$refs.contentCtn as any).scrollTop = scrollTop;
 		});
 	}
 	
+	
 	private clickSeatItem(seatItem){
-		
 		if(!seatItem.UserId){//座位上没有用户
 			this.showTipUserId = '';
 		}else if(!this.seatMessageMap[seatItem.UserId]){//有用户但是没有新消息
@@ -196,21 +174,6 @@ export default class CrewCatering extends Vue {
 		}else{
 			this.$toast('这是什么鬼!');
 		}
-		
-		
-		{
-			//有用户但是没有新消息
-			if(this.seatMessageMap[seatItem.UserId]){
-				
-			}
-			//有用户并且消息tip处于展示状态
-			//有用户并且消息tip处于关闭状态
-			
-		}
-		/* if(this.showTipUserId ==){
-			
-		} */
-		
 	}
 	
 	private goToChat(seatItem){
@@ -219,42 +182,46 @@ export default class CrewCatering extends Vue {
 	}
 	
 	
-	
 	//获得航班的座位布局信息
 	public getFlightSeatInfo():void{
 		CabinLayoutService.getFlightSeatInfo().then((resData:any)=>{
 			if(resData.code == '200'){
-				// debugger;
-				console.log('=============================断点开始================================');
 				let flightObj = new FlightSeatMatrix(resData.data);
-				this.layoutList = flightObj.getLayoutArr();
+				let tabList = [];
+				this.layoutInfo = flightObj.getLayoutInfo();
+			
+				this.layoutInfo.seatType.valueArr.forEach((seatType,index)=>{
+					if(index == 0){
+						this.active = seatType;
+					}
+					tabList.push({
+						name:this.layoutInfo.seatType.valueToName[seatType],
+						value:seatType
+					});
+					
+					this.messageCount[seatType] = 0;
+					
+				});
+				
+				this.tabList = tabList;
 			}
-			
-		/* debugger; */
-		/* Name: "1A"
-		UserId: "8f7288d9d6fe403f9ee2fad9f46285d7"
-		col: 1
-		col-number: 1
-		id: "1"
-		row: 1 */
-			
 		});
 		
 	}
 	
 	//获取未读消息与座位的映射关系
 	public getSeatMessageInfo():void{
-		// debugger;
 		CabinLayoutService.getSeatMessageInfo().then((resData:any)=>{
-			//debugger;
-			/* UserId: "3a03a40ac79b4f0d6eef58fcd99271d7"
-			message: (3) [{…}, {…}, {…}]
-			total: 32 */
 			let seatMessageMap:any = {};
 			if(resData.code == '200'){
 				resData.data.forEach((item,index)=>{
 					seatMessageMap[item.UserId] = item;
+					// this.messageCount[seatType] = 0;
+					let seatType = this.layoutInfo.userSeatTypeMap[item.UserId];
+					// debugger;
+					this.messageCount[seatType] = this.messageCount[seatType] + item.total;
 				});
+				// debugger;
 			}
 			this.seatMessageMap = seatMessageMap;
 		});
@@ -281,9 +248,12 @@ export default class CrewCatering extends Vue {
 		margin-bottom: 1.20rem; 
 		
 		.top-ctn{
+			position: relative;
 			padding: rem(60px) rem(60px) 0 ;
 			display: flex;
 			align-items: center;
+			z-index: 1000;
+			background: #002566;
 			
 			.back-ctn{
 				.icon{
@@ -333,6 +303,22 @@ export default class CrewCatering extends Vue {
 						
 					}
 					
+					.message-count{
+						display: inline-block;
+						position: absolute;
+						top:rem(-20px);
+						right: rem(-30px);
+						width:rem(40px);
+						height:rem(40px);
+						text-align: center;
+						line-height: rem(40px);
+						font-size: rem(26px);
+						font-weight:400;
+						color:rgba(255,255,255,1);
+						background:rgba(254,80,0,1);
+						border-radius: 50%;
+					}
+					
 				
 					
 					
@@ -358,21 +344,24 @@ export default class CrewCatering extends Vue {
 			} */
 			
 			.flight-layout-ctn{
+				margin:auto;
 				display: flex;
 				justify-content: center;
 				flex-direction: column;
-				padding:0 rem(420px);
+				// padding:0 rem(420px);
 				
 				.section-ctn{
 					.section-title{
+						text-align: center;
 						font-size:rem(60px);
 						font-family:PingFangSC-Semibold,PingFang SC;
 						font-weight:600;
-						color:rgba(216,216,216,1);
+						color:#4d6998;
 						line-height:rem(60px);
 						-webkit-background-clip:text;
-						-webkit-text-fill-color:transparent;
-						margin-bottom: rem(60px);
+						// -webkit-text-fill-color:transparent;
+						margin-top: rem(120px);
+						margin-bottom: rem(54px);
 					}
 					
 					/* .section-number-laber{

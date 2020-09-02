@@ -1,32 +1,34 @@
 <template>
-	<div class="crew-footer">
+	<div class="crew-footer" v-if="flightResData">
 		  <div class="info-ctn first">
 			  <i class="icon icon-crew-flight"></i>
 			  <span class="seat-number">
-				  C21312
+				  {{flightResData.Flight.Airplane.AirplaneModels}}
 			  </span>
 		  </div>
 		  <div class="info-ctn second">
 			  <i class="icon icon-location"></i>
-			  <span class="start-position">上海</span>
+			  <span class="start-position"> {{flightResData.Flight.BaseInfo.Departure}}</span>
 			  <span>-</span>
 			  <i class="icon icon-flight-horizatal"></i>
 			  <span>-</span>
-			  <span class="end-position">南京</span>
+			  <span class="end-position"> {{flightResData.Flight.BaseInfo.Arrival}}</span>
 		  </div>
 		  
 		  <div class="info-ctn third">
 			  <i class="icon icon-time"></i>
-			  <span class="start-time">06:00</span>
+			  <span class="start-time">{{flightResData.Flight.BaseInfo.DeparturePlanTimestamp| dateFormate('hh:mm')}}</span>
 			  <div class="progress-ctn">
 				  <div class="progress"></div>
 			  </div>
-			  <span class="end-time">09:40</span>
+			  <span class="end-time">{{flightResData.Flight.BaseInfo.ArrivalPlanTimestamp| dateFormate('hh:mm')}}</span>
 		  </div>
 		  
 		  <div class="info-ctn fourth">
 			  <i class="icon icon-weather"></i>
-			  <span class="temperature-ctn">18'c</span>
+			  <span class="temperature-ctn">
+			  {{flightResData.Weather.Desc}} {{flightResData.Weather.Temper}}
+			  </span>  
 		  </div>
 	</div>
 </template>
@@ -45,6 +47,7 @@
 
 <script lang = "ts">
 	import {Vue,Component,Prop} from 'vue-property-decorator';
+	import FlightService from '../../../service/flight';
 	
 	@Component({
 		name:'crew-footer',
@@ -54,18 +57,32 @@
 	export default class CrewFooter extends Vue{
 		@Prop({
 			default:()=>{
-				return []
+				return [];
 			}
 		})
 		tabList:Array<any>;
 		
 		@Prop({
 			default:()=>{
-				return false
+				return false;
 			}
 		})
 		active:boolean;
 		
+		private flightResData:any = null;
+		
+		private mounted(){
+			this.getFlightInfo();
+		}
+		
+		
+		public getFlightInfo(): void {
+			FlightService.getFlightInfo().then((res: any) => {
+				if(res.code == 200){
+					this.flightResData = res.data;
+				}
+			});
+		}
 		
 		public switchPage(item){
 			this.$emit('switchPage',item.value);

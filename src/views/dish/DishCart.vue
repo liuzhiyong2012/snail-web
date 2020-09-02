@@ -33,7 +33,7 @@
 		
 		<div class="pay-info-ctn">
 			<div class="seat-ctn" >
-				<span>$t('seatNumber')</span>
+				<span>{{$t('seatNumber')}}</span>
 				<span>{{seatNumber}}</span>
 			</div>
 			
@@ -53,7 +53,7 @@
 				</div>
 			</div>
 			<div class="total-money" >
-				<span>$t('totalAmount')</span>
+				<span>{{$t('totalAmount')}}</span>
 				<span>${{orderAmount}}</span>
 			</div>
 		</div>
@@ -92,6 +92,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import AbusTitle from '../../components/AbusTitle.vue';
 import DishCartIcon from './components/DishCartIcon.vue';
 import DishService from '../../service/dish';
+import UrlUtils from '../../utils/url-utils';
 
 			
 @Component({
@@ -125,7 +126,7 @@ export default class DishCart extends Vue {
 	   return amount;
 	}
 	clickaaa(){
-		console.log('213')
+		console.log('213');
 	}
 	private selectPayType(){
 		this.$router.push({

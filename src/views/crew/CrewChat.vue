@@ -11,12 +11,7 @@
 		<div class="content-ctn">
 			<div class="content-ctt">
 				<div class="aside-ctn">
-					<!-- NickName: "mizao"
-					SeatName: "6B"
-					UserId: "3a03a40ac79b4f0d6eef58fcd99271d7"
-					message: (3) [{…}, {…}, {…}]
-					total: 43 -->
-					<div class="user-item" v-for="(item, index) in userList" :key="index" :class="{active:activeUserId == item.from_user_id}">
+					<div class="user-item" v-for="(item, index) in userList" :key="index" :class="{active:activeUserId == item.from_user_id}" @click="activeChat(item)">
 						<div class="heade-img">{{ item.NickName }}</div>
 						<div class="info-ctn">
 							<div class="info-top-ctn">
@@ -28,34 +23,6 @@
 					</div>
 					
 				</div>
-				<!-- airbus_id: "4CFC4D33-2C1E-E911-BAD5-F44D307124C0"
-				content: "dsfsd"
-				created_time: "2020-08-14 01:47:28"
-				from_user_id: "3a03a40ac79b4f0d6eef58fcd99271d7"
-				id: "3d7923aead78bf1cf389f7bb455837b3"
-				read: 0
-				to_user_id: "4CFC4D33-2C1E-E911-BAD5-F44D307124C0"
-				type: 1 -->
-				<!-- pc -->
-				
-				<!-- messageList
-				{
-					usreId:'sdfsdf',
-					isMe:false,
-					name:'赖进文',
-					time:'10:23',
-					seatNumber:'23c',
-					message:'我的餐好了没有啊,怎么这么慢呀,我的餐好了没有啊,怎么这么慢呀,我的餐好了没有啊,怎么这么慢呀'
-				} -->
-				<!-- 
-				/* airbus_id: "4CFC4D33-2C1E-E911-BAD5-F44D307124C0"
-				content: "sdf"
-				created_time: "2020-08-14 01:47:58"
-				from_user_id: "3a03a40ac79b4f0d6eef58fcd99271d7"
-				id: "7e4a454001af2b212ea114479df0d5c8"
-				read: 0
-				to_user_id: "4CFC4D33-2C1E-E911-BAD5-F44D307124C0"
-				type: 1 */ -->
 				
 				<div class="main-ctn">
 					<div ref="messageCtn" class="message-ctn">
@@ -63,23 +30,15 @@
 							left:item.type == 1,
 							right:item.type != 1
 						}">
-							<div class="heade-img">{{ item.name||'未知' }}</div>
+							<div class="heade-img">{{ item.name||'刘志勇' }}</div>
 							<div class="info-ctn">
 								<div class="info-top-ctn">
-									<span>{{ item.seatNumber||'未知座位号' }}</span>
+									<span>{{ item.seatNumber||'23c' }}</span>
 									<span>{{ item.created_time }}</span>
 								</div>
 								<p class="info-bottom-ctm">{{ item.content }}</p>
 							</div>
 						</div>
-						
-						<!-- private userList:Array<any> = [{
-							name:'刘志勇',
-							seatNumber:'23c',
-							
-							message:'我的餐好了没有啊,怎么这么慢呀'
-						}]; -->
-						
 					</div>
 					<div class="oper-ctn">
 						<div class="input-ctn">
@@ -119,37 +78,57 @@ export default class CrewChat extends Vue {
 	
 	private inputMessage:string = '';
 	private socket:any = null;
+	
+	private messageArr = [];
+	
+	private messageMap = {
+		
+		
+	};
+	
 
 
 	async mounted() {
 		this.activeUserId = this.curUserId;
+		console.log('activeUserId:' + this.activeUserId);
+		
 	    this.getSeatMessageInfo();
 		//拉取已读消息
 		await this.getAirBusMessage(this.activeUserId,1);
 		await this.getAirBusMessage(this.activeUserId,2);
-		
 		this.startWebScoket();
 		//拉取未读消息
 	}
 	
+	
+	async activeChat(item){
+		// debugger;
+		this.activeUserId = item.UserId;
+		this.messageList = [];
+		//拉取已读消息
+		await this.getAirBusMessage(this.activeUserId,1);
+		await this.getAirBusMessage(this.activeUserId,2);
+	}
+	
+	private beforeDestroy(){
+		this.socket&&this.socket.close(); 
+	}
+	
 	private sendMessage(){
-		// inputMessage;
-		// sendToUser
-		//param （to，content）
 		CabinLayoutService.sendToUser({
 			to:this.activeUserId,
 			content:this.inputMessage,
 		}).then((resData:any)=>{
 			if(resData.code == '200'){
-				// debugger;
-				// d
+				this.messageList.push(resData.data);
+				this.scrollToBottom();
 			}
 		});
-		
 	}
 	
 	private startWebScoket(){
 		this.socket = (window as any).io('http://172.16.8.69:2120/');
+		
 		// uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
 		let uid = '4CFC4D33-2C1E-E911-BAD5-F44D307124C0';
 		
@@ -161,25 +140,24 @@ export default class CrewChat extends Vue {
 		
 		// 后端推送来消息时
 		this.socket.on('new_msg', (msg)=>{
-			
 			let midMsg = msg.replace(/&quot;/g, '"');
 			let newMessageObj = JSON.parse(midMsg);
 			
 			console.log('new_msg：');
 			// debugger;
-			if(newMessageObj.userId == this.activeUserId){
+			if(newMessageObj.from_user_id == this.activeUserId){
 				this.messageList.push({
 					airbus_id: '',
 					content: newMessageObj.content,
 					created_time: newMessageObj.time,
-					from_user_id: newMessageObj.userId,
+					from_user_id: newMessageObj.from_user_id,
 					id: '',
 					read: 1,
 					to_user_id: '',
 					type: 1
 				});
 				this.scrollToBottom();
-				this.readAirBusMessage(newMessageObj.userId);
+				this.readAirBusMessage(newMessageObj.from_user_id);
 				//调用消息已读取接口
 			}
 			
@@ -223,12 +201,9 @@ export default class CrewChat extends Vue {
 		}).then((resData:any)=>{
 			
 			if(resData.code == '200'){
-				//已读消息
-				// debugger;
 				if(read == 1){
 					this.messageList = this.messageList.concat(resData.data);
 					this.scrollToBottom();
-					
 				}else{
 					this.messageList.push(resData.data);
 					this.scrollToBottom();
@@ -257,7 +232,6 @@ export default class CrewChat extends Vue {
 			//替换PC,刘志勇
 			if(resData.code == '200'){
 				this.userList = resData.data;
-				
 			}
 			
 			//this.seatMessageMap = seatMessageMap;
@@ -280,14 +254,13 @@ export default class CrewChat extends Vue {
 
 .crew-chat {
 	width: 100%;
-	// height: 100%;
-	// background: #002566;
 	position: fixed;
 	top: 0;
 	bottom: 0;
 	z-index: 1200;
 	box-sizing: border-box;
 	margin-bottom: 1.2rem;
+	background: #002566;
 
 	.top-ctn {
 		position: relative;
@@ -364,7 +337,8 @@ export default class CrewChat extends Vue {
 						text-align: center;
 						overflow: hidden;
 						text-overflow: ellipsis;
-						background: yellow;
+						 color: #ffffff;;
+						background: #83abd9;
 					}
 					.info-ctn {
 						width: rem(340px);
@@ -448,8 +422,9 @@ export default class CrewChat extends Vue {
 								white-space: nowrap;
 								text-align: center;
 								overflow: hidden;
+								color: #ffffff;
 								text-overflow: ellipsis;
-								background: yellow;
+								background: #83abd9;
 							}
 							
 							.info-ctn {

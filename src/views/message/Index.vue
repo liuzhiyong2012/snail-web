@@ -138,7 +138,15 @@ export default class messageIndex extends Vue {
     //   Title: "",
     // },
   ]; //系统消息
-
+  
+  private get userInfo(){
+	  // debugger;
+	  // this.$store.state.
+	  return this.$store.state.login.userInfo;
+  }
+  
+ 
+  
   private created() {
     this.uInfo = localStore.get('userInfo');
     this.initWebSocket();
@@ -221,18 +229,23 @@ export default class messageIndex extends Vue {
         });
         _this.$store.dispatch('saveNoticeList', _this.systemMsgList);
       } else if (endMsg.type == 'message') {
+		  
         // 聊天
-        _this.chatList.push({
-          id: '', //消息id
-          from_user_id: '', //发送人id
-          to_user_id: '', //接收人id
-          content: endMsg.content, //发送的消息
-          created_time: '', // 发送时间
-          airbus_id: '', //航班id
-          read: 0, // 已读  0未读 1已读
-          type: 2, // 1 发送给空乘   2 发送给用户
-        });
-        _this.$store.dispatch('saveChatList', _this.chatList);
+		if(this.userInfo.id != endMsg.from_user_id){
+			_this.chatList.push({
+			  id: '', //消息id
+			  from_user_id: '', //发送人id
+			  to_user_id: '', //接收人id
+			  content: endMsg.content, //发送的消息
+			  created_time: '', // 发送时间
+			  airbus_id: '', //航班id
+			  read: 0, // 已读  0未读 1已读
+			  type: 2, // 1 发送给空乘   2 发送给用户
+			});
+			_this.$store.dispatch('saveChatList', _this.chatList);
+		}
+		
+       
       }
     });
 	

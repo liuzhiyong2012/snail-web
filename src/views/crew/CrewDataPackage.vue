@@ -1,7 +1,7 @@
 <template>
 	<section class="crew-catering">
 		 <section class="top-ctn">
-			  <crew-select :selectList= "selectList" :selectValue = "status"  @select="statusChange"></crew-select>
+			  <crew-select style="visibility: hidden;" :selectList= "selectList" :selectValue = "status"  @select="statusChange"></crew-select>
 			  <crew-search @search="search($event)"></crew-search>
 		 </section>
 		 
@@ -10,7 +10,8 @@
 				 <van-pull-refresh v-model="refreshing" @refresh="refreshList">
 				 	 <van-list  v-model="loading" :finished="finished" finished-text="没有更多了" @load="loadList" :offset="100" :immediate-check="false" ref="mylist">
 				 		<div class="catering-item-ctn">
-				 			<crew-catering-item v-for="(item,index) in dataList" :key="index" :data="item"></crew-catering-item>
+							<crew-data-package-item v-for="(item,index) in dataList" :key="index" :data="item"></crew-data-package-item>
+				 			<!-- <crew-catering-item v-for="(item,index) in dataList" :key="index" :data="item"></crew-catering-item> -->
 				 		</div>
 				 	 </van-list>
 				 </van-pull-refresh>
@@ -23,7 +24,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import CrewSelect from './components/CrewSelect.vue';
 import CrewSearch from './components/CrewSearch.vue';
-import CrewCateringItem from './components/CrewCateringItem.vue';
+import CrewDataPackageItem from './components/CrewDataPackageItem.vue';
 import DataPackageService from '../../service/crew/data-package';
 import UrlUtils from '../../utils/url-utils';
 
@@ -32,7 +33,7 @@ import UrlUtils from '../../utils/url-utils';
 	components: {
 		CrewSelect,
 		CrewSearch,
-		CrewCateringItem
+		CrewDataPackageItem
 	}
 })
 export default class CrewCatering extends Vue {
@@ -95,24 +96,33 @@ export default class CrewCatering extends Vue {
 		DataPackageService.getNetFlowOrderList({
 			take: this.pageSize,
 			skip: (this.pageNumber - 1) * this.pageSize,
-			status:this.status,
-			seat:this.seat
+			status:this.status = '3',
 		}).then((resData:any)=>{
-			
-			if (resData.code == '200') {
 				
-				resData.data.forEach((item,index)=>{
-					item.BannerImgPath = UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(item.BannerImgPath));
-				});
-						
-				this.dataList = this.dataList.concat(resData.data); 
-				this.loading = false;
-				this.refreshing = false;
-			} else {
-				this.$toast('获取列表失败!');
-				this.loading = false;
-				this.refreshing = false;
-			}
+				if (resData.code == '200') {
+					//无数据
+					if(resData.data.count == 0){
+					  this.finished = true;
+					}else if(this.pageNumber * this.pageSize > resData.data.count){//最后一页
+					  this.finished = true;
+					}else{//非最后一页
+					  this.finished = false;
+					}
+					
+					resData.data.data.forEach((item,index)=>{
+						item.BannerImgPath = UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(item.BannerImgPath));
+					});
+							
+					this.dataList = this.dataList.concat(resData.data.data); 
+					this.loading = false;
+					this.refreshing = false;
+					
+				} else {
+					this.$toast('获取列表失败!');
+					this.loading = false;
+					this.refreshing = false;
+				}
+			
 		});
 	}
 }
