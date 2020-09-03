@@ -17,8 +17,9 @@
       ref="canvasElement"
     ></canvas>
     <div id="output" v-if="showCanvas">
-      <div v-if="!outputData">No QR code detected.</div>
-      <div v-else>
+      <!-- <div v-if="!outputData">No QR code detected.</div> -->
+      <!-- <div v-else> -->
+      <div>
         <b>Data:</b>
         <span id="outputData">{{ outputData }}</span>
       </div>
