@@ -123,6 +123,7 @@
 		private refreshing: boolean = false;
 		private loading: boolean = false;
 		private finished: boolean = false;
+		private msgListener: any = null;
 
 		async mounted() {
 
@@ -148,7 +149,7 @@
 		}
 
 		private handleUserList(): void {
-			let messageUserList = localStore.get('messageUserList') || [];
+			let cacheUserList = localStore.get('cacheUserList') || [];
 			let beforeIndex = 10;
 
 			CabinLayoutService.getSeatMessageInfo().then((resData: any) => {
@@ -157,27 +158,27 @@
 					//let activeInListUser = false;
 					resData.data.reverse().forEach((item, index) => {
 						//放在最前面
-						let indexInArray = messageUserList.indexOf(item.UserId);
+						let indexInArray = cacheUserList.indexOf(item.UserId);
 						if(indexInArray > -1) {
-							messageUserList.splice(indexInArray, 1);
-							messageUserList.unshift(item.UserId);
+							cacheUserList.splice(indexInArray, 1);
+							cacheUserList.unshift(item.UserId);
 						} else {
-							messageUserList.unshift(item.UserId);
+							cacheUserList.unshift(item.UserId);
 						}
 
 					});
 
 					//将当前用户放置在最前面
-					let activeUserIndex = messageUserList.indexOf(this.activeUserId);
+					let activeUserIndex = cacheUserList.indexOf(this.activeUserId);
 
 					if(activeUserIndex > -1) {
-						messageUserList.splice(activeUserIndex, 1);
-						messageUserList.unshift(this.activeUserId);
+						cacheUserList.splice(activeUserIndex, 1);
+						cacheUserList.unshift(this.activeUserId);
 					} else {
-						messageUserList.unshift(this.activeUserId);
+						cacheUserList.unshift(this.activeUserId);
 					}
 					CabinLayoutService.getUserMessageByUserIdArr({
-						messageUserList: messageUserList
+						messageUserList: cacheUserList
 					}).then((resData: any) => {
 						if(resData.code == 200) {
 							this.messageUserList = resData.data;
@@ -188,7 +189,7 @@
 
 					});
 
-					localStore.set('messageUserList', messageUserList);
+					localStore.set('cacheUserList', cacheUserList);
 
 				}
 			});
@@ -237,7 +238,7 @@
 		}
 
 		private beforeDestroy() {
-			this.socket && this.socket.close();
+			this.$globalEvent.$off('new_msg',this.msgListener);
 		}
 
 		private sendMessage() {
@@ -253,23 +254,11 @@
 			});
 		}
 
+
 		private startWebScoket() {
-			this.socket = (window as any).io('http://localhost:2120/');
-
-			// uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
-			let uid = '4CFC4D33-2C1E-E911-BAD5-F44D307124C0';
-
-			// socket连接后以uid登录
-			this.socket.on('connect', () => {
-				this.socket.emit('login', uid);
-			});
-
-			// 后端推送来消息时
-			this.socket.on('new_msg', (msg) => {
+			this.msgListener = (newMessageObj)=>{
+				
 				console.log('收到消息：chat');
-				let midMsg = msg.replace(/&quot;/g, '"');
-				let newMessageObj = JSON.parse(midMsg);
-               
 				//肥系统消息
 				if(newMessageObj.type == 'message') {
 					if(newMessageObj.from_user_id == this.activeUserId) {
@@ -281,21 +270,61 @@
 						this.newMsgCount[newMessageObj.from_user_id] = (this.newMsgCount[newMessageObj.from_user_id] || 0) + 1;
 						this.$forceUpdate();
 					}
+					
+					
+					//更新左侧消息的内容和事件,如果消息不在列表增到列表,如果在信息列表,如果不在前5条则把记录移动到顶部
+					let cacheUserList = localStore.get('cacheUserList');
+					let userId = newMessageObj.sendType == 1?newMessageObj.from_user_id:newMessageObj.to_user_id;
+					let NickName = newMessageObj.sendType == 1?newMessageObj.fromNickName:newMessageObj.toNickName;
+					let retIndex = cacheUserList.indexOf(userId);
+					
+					if(retIndex < 0){
+						cacheUserList.unshift(userId);
+						this.messageUserList.unshift({
+							Id:userId,
+							NickName:NickName,
+							SeatNumber:newMessageObj.seatNumber,
+							created_time:newMessageObj.created_time,
+							content:newMessageObj.content
+						});
+					}else if(retIndex >= 1) {
+						cacheUserList.splice(retIndex,1);
+						cacheUserList.unshift(userId);
+						this.messageUserList.splice(retIndex,1);
+						this.messageUserList.unshift({
+							Id:userId,
+							NickName:NickName,
+							SeatNumber:newMessageObj.seatNumber,
+							created_time:newMessageObj.created_time,
+							content:newMessageObj.content
+						});
+					}else{
+						this.messageUserList[retIndex].created_time = newMessageObj.created_time;
+						this.messageUserList[retIndex].content = newMessageObj.content;
+					}
+					this.$forceUpdate();
+					localStore.set('cacheUserList',cacheUserList);
+					/*airbus_id: "4CFC4D33-2C1E-E911-BAD5-F44D307124C0"
+					content: "哈哈"
+					created_time: "2020-09-06 14:02:57"
+					fromNickName: "mizao"
+					from_user_id: "3a03a40ac79b4f0d6eef58fcd99271d7"
+					id: "1bd93b2435219ed8a3681381881d1517"
+					read: 0
+					seatNumber: "6B"
+					sendType: 1
+					toNickName: null
+					to_user_id: "4CFC4D33-2C1E-E911-BAD5-F44D307124C0"
+					type: "message"*/
+
 				}
 
-			});
-
-			// 后端推送来在线数据时
-			this.socket.on('saveNoticeList', function(online_stat) {
-				console.log('saveNoticeList：');
-				console.log(online_stat);
-			});
-
-			this.socket.on('saveChatList', function(online_stat) {
-				console.log('saveChatList：');
-				console.log(online_stat);
-			});
+			
+				console.log('chat:msg');
+			}
+			this.$globalEvent.$on('new_msg',this.msgListener);
 		}
+		
 
 		private scrollToBottom() {
 			this.$nextTick(() => {
@@ -310,7 +339,8 @@
 			}).then((resData: any) => {
 				if(resData.code == '200') {
 					this.newMsgCount[userId] = 0;
-					this.$toast('消息读取成功!');
+					this.$forceUpdate();
+					//this.$toast('消息读取成功!');
 				}
 			});
 		}

@@ -2,7 +2,7 @@
 	<section class="crew-income-statistics">
 		<!-- crew-income-statistics -->
 		<div class="top-ctn">
-			<div class="back-ctn" @click="$router.go(-1)">
+			<div class="back-ctn" @click="stepBack()">
 				<i class="icon icon-back"></i>
 				<span>
 					返回
@@ -83,7 +83,6 @@ export default class CrewCatering extends Vue {
 	
 	private seatMessageMap:any = {};
 	
-	private socket:any = null;
 	
 	private showTipUserId = '';
 	
@@ -98,6 +97,8 @@ export default class CrewCatering extends Vue {
 	
 	private pageSize:number = 10;
 	private pageNumber:number = 10;
+	
+	private msgListener: any = null;
 	
 	//历史信息
 	
@@ -125,7 +126,7 @@ export default class CrewCatering extends Vue {
 	
 	private beforeDestroy(){
 		document.removeEventListener('click',this.docClickHandle);
-		this.socket&&this.socket.close();
+		this.$globalEvent.$off('new_msg',this.msgListener);
 	}
 	
 	//计算座舱布局的宽度
@@ -137,26 +138,24 @@ export default class CrewCatering extends Vue {
 		};
 	}
 	
-	private startWebScoket(){
-		this.socket = (window as any).io('http://localhost:2120/');
-		// uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
-		let uid = '4CFC4D33-2C1E-E911-BAD5-F44D307124C0';
-		
-		// socket连接后以uid登录
-		this.socket.on('connect', ()=>{
-		    this.socket.emit('login', uid);
+	
+	private stepBack() {
+		this.$router.push({
+			name:'crewCatering'
 		});
-		
-		// 后端推送来消息时
-		this.socket.on('new_msg', (msg)=>{
-			console.log('收到消息：index');
-			Object.keys(this.messageCount).forEach((seatType,index)=>{
+	}
+	
+	private startWebScoket() {
+			this.msgListener = (msg)=>{
+				console.log('layout:msg');
+				Object.keys(this.messageCount).forEach((seatType,index)=>{
 				this.messageCount[seatType] = 0;
 			});
 			this.getSeatMessageInfo();
-		});
-		
-	}
+			}
+			this.$globalEvent.$on('new_msg',this.msgListener);
+		}
+	
 	
 	private scrollToSection(seatType){
 		this.active = seatType;

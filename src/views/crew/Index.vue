@@ -59,8 +59,41 @@ export default class CrewLayoutCtn extends Vue {
 	private active:string = 'catering';
 	
 	private mounted(){
-		
+		this.startWebScoket();
 	}
+	
+	private beforeDestroy(){
+		this.socket&&this.socket.close();
+	}
+	
+	private startWebScoket() {
+			this.socket = (window as any).io('http://localhost:2120/');
+
+			// uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
+			let uid = '4CFC4D33-2C1E-E911-BAD5-F44D307124C0';
+
+			// socket连接后以uid登录
+			this.socket.on('connect', () => {
+				this.socket.emit('login', uid);
+			});
+
+			// 后端推送来消息时
+			this.socket.on('new_msg', (msg) => {
+				let midMsg = msg.replace(/&quot;/g, '"');
+				let newMessageObj = JSON.parse(midMsg);
+				 this.$globalEvent.$emit('new_msg',newMessageObj);
+			});
+
+			// 后端推送来在线数据时
+			this.socket.on('saveNoticeList', function(online_stat) {
+				
+			});
+
+			this.socket.on('saveChatList', function(online_stat) {
+				
+			});
+		}
+	
 	
 	public switchPage(value):void{
 		this.active = value;
