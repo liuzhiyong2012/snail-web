@@ -60,8 +60,28 @@ export default class CateringService {
 		});
 	}
 	
+	//根据用户id获取用户的
+	static getUserMessageByUserIdArr(data: Object={}) {
+		return request({
+			url: '/v1/api/Message/getUserMessageByUserIdArr',
+			method: 'POST',
+			data: data
+		});
+	}
+	
+	
+	
+	
 	
 	//获取最新的未读信息与用户的对应消息。
 	// /api/Message/SeatMessageInfo
 	
 }  
+
+//
+//SendToManager
+//SendToUser
+//getUserMessage
+//ReadMessage
+///notice/List
+//ReadNotice

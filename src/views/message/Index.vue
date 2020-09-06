@@ -205,16 +205,18 @@ export default class messageIndex extends Vue {
   public initWebSocket() {
     const _this = this;
     // 连接服务端，workerman.net:2120换成实际部署web-msg-sender服务的域名或者ip
-    _this.socket = io('http://172.16.8.69:2120');
+    _this.socket = io('http://localhost:2120');
     // uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
     let uid = _this.uInfo.id;
-
+    //debugger;
+    return;
     // socket连接后以uid登录
     _this.socket.on('connect', function () {
       _this.socket.emit('login', uid);
     });
     // 后端推送来消息时
     _this.socket.on('new_msg', (msg: any) => {
+    	console.log('收到消息：index');
       let midMsg = msg.replace(/&quot;/g, '"');
       let endMsg = JSON.parse(midMsg);
       // {type: "message", content: "Your netFlow order has been completed", mark: "你的流量套餐订单已完成"}

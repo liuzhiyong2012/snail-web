@@ -96,6 +96,11 @@ export default class CrewCatering extends Vue {
 	
 	private layoutInfo = null;
 	
+	private pageSize:number = 10;
+	private pageNumber:number = 10;
+	
+	//历史信息
+	
 	// private tabList:Array<any> = [];
 	
 	//统计新消息数
@@ -120,7 +125,7 @@ export default class CrewCatering extends Vue {
 	
 	private beforeDestroy(){
 		document.removeEventListener('click',this.docClickHandle);
-		this.socket.close();
+		this.socket&&this.socket.close();
 	}
 	
 	//计算座舱布局的宽度
@@ -133,18 +138,18 @@ export default class CrewCatering extends Vue {
 	}
 	
 	private startWebScoket(){
-		this.socket = (window as any).io('http://172.16.8.69:2120/');
+		this.socket = (window as any).io('http://localhost:2120/');
 		// uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
 		let uid = '4CFC4D33-2C1E-E911-BAD5-F44D307124C0';
 		
 		// socket连接后以uid登录
 		this.socket.on('connect', ()=>{
-			console.log('connect');
 		    this.socket.emit('login', uid);
 		});
 		
 		// 后端推送来消息时
 		this.socket.on('new_msg', (msg)=>{
+			console.log('收到消息：index');
 			Object.keys(this.messageCount).forEach((seatType,index)=>{
 				this.messageCount[seatType] = 0;
 			});
