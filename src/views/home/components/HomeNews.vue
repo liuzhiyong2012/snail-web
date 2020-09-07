@@ -80,6 +80,9 @@ export default class HomeNews extends Vue {
     //进入新闻详情
     this.$router.push({
       name: "newsDetail",
+      query:{
+        Id: item.Id
+      }
     });
   }
 }

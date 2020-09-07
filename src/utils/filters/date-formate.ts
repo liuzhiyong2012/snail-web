@@ -22,6 +22,8 @@ let filter = {
 		}else if(formate == 'hh:mm')
 		{
 			return h +':'+ minute;  
+		}else if(formate == 'hh:mm:ss'){
+			return h +':'+ minute + ':' + second;  
 		}
 		else
 		{

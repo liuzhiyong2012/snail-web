@@ -54,6 +54,7 @@ export default class NewsDetailPage extends Vue {
     _this.newsDetail = localStore.get("newsDetails");
     _this.bannerData.push(_this.newsDetail);
     _this.newsDetail.CreatedAt = DateUtils.formate(_this.newsDetail.CreatedAt);
+    _this.getNewsDetail()
   }
   private mounted() {
     if (localStorage.getItem("lang") == "en") {
@@ -70,6 +71,17 @@ export default class NewsDetailPage extends Vue {
 
   public changeCollect(Id: string): void {
     this.postNewsIsLike(Id);
+  }
+
+  public getNewsDetail() {
+    const _this = this;
+    NewsService.getNewsDetail({
+      Id: this.$route.query.Id,
+    }).then((res) => {
+      if (res.code == 200) {
+        _this.$set(_this.newsDetail, 'FullDescription', res.data.FullDescription);
+      }
+    });
   }
 
   // 是否已收藏

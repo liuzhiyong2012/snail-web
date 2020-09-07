@@ -23,6 +23,16 @@ export default class NewsService {
 			data: data
 		});
 	}
+
+	// 新闻详情
+	static getNewsDetail(data?: Object) {   
+		return request({
+			url: '/v1/api/News/Read',
+			method: 'GET',
+			params: data
+		});
+	}
+
 	// 新闻种类
 	static getNewsCategory(data?: Object){
 		return request({

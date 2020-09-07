@@ -226,17 +226,18 @@ export default class FlightIndex extends Vue {
 
 		const optionData = {
 			grid: {
-				left: '10%',
-				right: '10%',
-				top: '9.6%',
+				left: '15%',
+				right: '5%',
+				// top: '9.6%',
+				top: '20%',
 				bottom: '20%'
 			},
 			legend: {
 				orient: 'horizontal',
 				x: 'center',
-				y: 'bottom',
+				y: 'top',
 				// padding:
-				padding: [0, 20, 15, 20],
+				padding: [5, 20, 15, 20],
 				data: ['Altitude m', 'Speed km/h']
 			},
 			tooltip: {
@@ -452,7 +453,7 @@ export default class FlightIndex extends Vue {
 				.top-ctn {
 					width: 100%;
 					height: 3.4rem;
-					margin-bottom: 0.3rem;
+					margin-bottom: 0.4rem;
 				}
 				.bottom-ctn {
 					.chart-ctn {

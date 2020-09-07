@@ -1,6 +1,10 @@
 <template>
 	<section class="music-main-ctn">
+<<<<<<< HEAD
 		<abus-title :title="$t('title')" backRouteName="home"  class="title-ctn"></abus-title>
+=======
+		<abus-title  backRouteName="home" :title="$t('title')" class="title-ctn"><div slot style="width:0.3rem"></div></abus-title>
+>>>>>>> development
 		<section class="content-ctn">
 			<div class="content-top-ctn">
 				<van-swipe :autoplay="3000" class="music-recomend-ctn">

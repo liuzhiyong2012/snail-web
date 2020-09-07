@@ -20,6 +20,8 @@ export default class MessageService {
       data: data,
     });
   }
+  
+  
   // 用户当前航班的消息 传参 read 0未读  1已读 
   static getUserMessage(data?: Object) {
     return request({
