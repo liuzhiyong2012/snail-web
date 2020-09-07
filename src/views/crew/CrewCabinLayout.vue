@@ -126,7 +126,7 @@ export default class CrewCatering extends Vue {
 	
 	private beforeDestroy(){
 		document.removeEventListener('click',this.docClickHandle);
-		this.$globalEvent.$off('new_msg',this.msgListener);
+		(this as any).$globalEvent.$off('new_msg',this.msgListener);
 	}
 	
 	//计算座舱布局的宽度
@@ -152,8 +152,8 @@ export default class CrewCatering extends Vue {
 				this.messageCount[seatType] = 0;
 			});
 			this.getSeatMessageInfo();
-			}
-			this.$globalEvent.$on('new_msg',this.msgListener);
+			};
+			(this as any).$globalEvent.$on('new_msg',this.msgListener);
 		}
 	
 	

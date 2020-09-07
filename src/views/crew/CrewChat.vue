@@ -238,7 +238,7 @@
 		}
 
 		private beforeDestroy() {
-			this.$globalEvent.$off('new_msg',this.msgListener);
+			(this as any).$globalEvent.$off('new_msg',this.msgListener);
 		}
 
 		private sendMessage() {
@@ -322,7 +322,7 @@
 			
 				console.log('chat:msg');
 			}
-			this.$globalEvent.$on('new_msg',this.msgListener);
+			(this as any).$globalEvent.$on('new_msg',this.msgListener);
 		}
 		
 
