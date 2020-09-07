@@ -23,13 +23,22 @@
           placeholder="Leave your wonderful comments"
         />
         <div class="btn-box">
-          <div class="btn" @click="sendComment(videoId)">Send</div>
+          <div class="btn" @click="sendComment(videoId)">{{$t('Send')}}</div>
         </div>
       </div>
     </div>
   </div>
 </template>
-
+<i18n>
+	{
+		"zh":{
+      "Send": "发送"
+		},
+		"en":{
+      "Send":"Send"
+		}
+	}
+</i18n>
 <script lang="ts">
 import {Component,Prop,Vue} from 'vue-property-decorator'
 import VideoService from '../../../service/video'
@@ -48,6 +57,11 @@ export default class videoComment extends Vue{
     private params: Object = {}
     
     private mounted() {
+      if (localStorage.getItem("lang") == "en") {
+        this.$i18n.locale = "en";
+      } else {
+        this.$i18n.locale = "zh";
+      }
         // this.videoListIndex = this.$route.params.videoListIndex
         this.videoId = this.$route.params.videoId
         this.getVideoCommentsList(this.$route.params.videoId)

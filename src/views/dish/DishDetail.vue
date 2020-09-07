@@ -33,7 +33,7 @@
 			</div>
 
 			<div class="seat-ctn">
-				<span>S{{$t('seatNumber')}}</span>
+				<span>{{$t('seatNumber')}}</span>
 				<span>{{seatNumber}}</span>
 			</div>
 		</div>

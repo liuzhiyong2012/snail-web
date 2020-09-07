@@ -1,6 +1,6 @@
 <template>
   <div class="abus-height">
-    <abus-title title="Shopping" backRouteName="home"></abus-title>
+    <abus-title :title="$t('title')" backRouteName="home"></abus-title>
     <div class="banner">
       <van-swipe :autoplay="3000">
         <van-swipe-item
@@ -79,8 +79,8 @@
                 <div class="price">${{item.Price}}</div>
                 <div class="name">{{item.Name}}</div>
                 <div class="qty">
-                  QTY {{item.QTY}}
-                  <span class="buy" @click="stepToDetail(item)">Buy</span>
+                  {{$t('QTY')}} {{item.QTY}}
+                  <span class="buy" @click="stepToDetail(item)">{{$t('Buy')}}</span>
                 </div>
               </div>
               <div class="goods" v-else>
@@ -90,8 +90,8 @@
                 <div class="price">${{item.Price}}</div>
                 <div class="name">{{item.Name}}</div>
                 <div class="qty">
-                  缺货
-                  <span class="buy" @click="showToast">Buy</span>
+                  {{$t('OutOfStock')}}
+                  <span class="buy" @click="showToast">{{$t('Buy')}}</span>
                 </div>
               </div>
             </div>
@@ -103,7 +103,22 @@
     </div>
   </div>
 </template>
-
+<i18n>
+	{
+		"zh":{
+			"title":"机上购物",
+      "Buy":"购买",
+      "OutOfStock":"缺货",
+      "QTY":"剩余量"
+		},
+		"en":{
+			"title":"Shopping",
+      "Buy":"Buy",
+      "OutOfStock":"Out of stock",
+      "QTY":"QTY"
+		}
+	}
+</i18n>
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import DishService from "../../service/shopping";
@@ -137,6 +152,11 @@ export default class ShoppingIndex extends Vue {
     this.getShoppingList();
   }
   private mounted() {
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+    } else {
+      this.$i18n.locale = "zh";
+    }
     document.addEventListener("scroll", this.handleScroll);
     var object = document.getElementById("ibox");
   }

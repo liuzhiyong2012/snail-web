@@ -1,12 +1,15 @@
 export default {
     state: {
-      videoList:[]
+      videoList:[],
+      myLikeList:[]
     },
     mutations: {
       setVideoList(state: any, list: any) {
         state.videoList = list;
       },
-      
+      setMyLikeList(state: any, list: any) {
+        state.myLikeList = list;
+      },
     },
     actions: {
       setAddressData(context: any, state: any){

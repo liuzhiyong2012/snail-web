@@ -25,12 +25,7 @@
           <div class="main-box">
             <div class="title">{{$t('Phone')}}</div>
             <!-- @change="getPhoneNum($event)" -->
-            <input
-              class="flex1"
-              :placeholder="$t('PhoneTips')"
-              v-model="phone"
-              type="number"
-            />
+            <input class="flex1" :placeholder="$t('PhoneTips')" v-model="phone" type="number" />
           </div>
           <div class="next" @click="postCheckPhone">{{$t('Next')}}</div>
         </div>
@@ -42,12 +37,12 @@
                 <div class="collapse-item-main">
                   <div class="title">{{$t('Phone')}}</div>
                   <div class="flex1 no-inp">{{phone}}</div>
-                  
                 </div>
-                <div class="collapse-item-main no-pad">
+                <div class="collapse-item-main no-pad on-sms">
                   <div class="title">{{$t('VerificationCode')}}</div>
-                  <input class="flex1 " :placeholder="$t('VerificationCodeTips')" type="text" />
-                  <div class="on-sms">获取验证码</div>
+                  <input class="flex1" :placeholder="$t('VerificationCodeTips')" type="text" />
+                  <!-- <div class="on-sms">获取验证码</div> -->
+                  <div v-if="isShowCode" class="sms-code" @click="getVerificationCode">获取验证码</div>
                 </div>
               </div>
             </li>
@@ -150,14 +145,15 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import LoginService from "../../service/login";
-import AbusTitle from '../../components/AbusTitle.vue'
+import AbusTitle from "../../components/AbusTitle.vue";
 @Component({
   name: "ForgotPassword",
-  components: {AbusTitle},
+  components: { AbusTitle },
 })
 export default class ForgotPassword extends Vue {
   private isActiveTwo: boolean = false;
   private isActiveThr: boolean = false;
+  private isShowCode: boolean = true;
   private isShowSMS: boolean = false;
   private isshowSecurityProblem: boolean = false;
   private fullWidth: number = 750;
@@ -174,12 +170,10 @@ export default class ForgotPassword extends Vue {
     this.fullWidth = document.documentElement.clientWidth;
   }
   private mounted() {
-    if (localStorage.getItem("lang") == "en") {
+   if (localStorage.getItem("lang") == "en") {
       this.$i18n.locale = "en";
-      localStorage.setItem("lang", "en");
     } else {
       this.$i18n.locale = "zh";
-      localStorage.setItem("lang", "zh");
     }
   }
   public postCheckPhone() {
@@ -224,6 +218,7 @@ export default class ForgotPassword extends Vue {
         .catch((reason: any) => {
           console.log("=== Error ===");
           console.log(reason);
+          this.$toast(reason.message);
         });
     } else if (this.isShowSMS) {
       this.aLeft = -(this.fullWidth * 2);
@@ -231,6 +226,10 @@ export default class ForgotPassword extends Vue {
     } else {
       this.$toast("Please select an item from the list");
     }
+  }
+  public getVerificationCode() {
+    // 验证码请求接口位置
+
   }
   public onClickConfirm() {
     if (this.newPassword != "" && this.newPassword == this.confirmPassword) {
@@ -280,7 +279,7 @@ export default class ForgotPassword extends Vue {
     box-sizing: border-box;
     display: flex;
     align-items: baseline;
-    padding: 0.4rem 1rem  0;
+    padding: 0.4rem 1rem 0;
     height: 1rem;
     .place {
       position: relative;
@@ -330,15 +329,15 @@ export default class ForgotPassword extends Vue {
       transition: all ease-out 0.3s;
     }
   }
-  .tab-flex{
+  .tab-flex {
     display: flex;
     text-align: center;
-    padding: 0 0 .3rem 0;
-    .text1{
+    padding: 0 0 0.3rem 0;
+    .text1 {
       flex: 1;
       font-size: 0.24rem;
-        color: rgba(51, 51, 51, 1);
-        line-height: 0.24rem;
+      color: rgba(51, 51, 51, 1);
+      line-height: 0.24rem;
     }
   }
   .tab-con {
@@ -369,7 +368,7 @@ export default class ForgotPassword extends Vue {
           }
           .title.pad {
             display: flex;
-                  align-items: center;
+            align-items: center;
           }
           .flex1 {
             flex: 1;
@@ -407,6 +406,20 @@ export default class ForgotPassword extends Vue {
               color: #333;
               background: #fff;
             }
+            .on-sms {
+              position: relative;
+            }
+            .sms-code {
+              position: absolute;
+              right: .35rem;
+              top: .05rem;
+              padding: 0.2rem;
+              font-size: 0.2rem;
+              color: #fff;
+              background: rgba(0, 32, 91, 1);
+              line-height: 0.5rem;
+              border-radius: 0.1rem;
+            }
             .collapse-item-con {
               height: 0;
               background: #f3f2f9;
@@ -435,15 +448,7 @@ export default class ForgotPassword extends Vue {
                   border-radius: 0.04rem;
                   background-color: #f3f2f9;
                 }
-                .on-sms{
-                  width: 1.5rem;
-                  height: 1rem;
-                  margin: 0 0 0 .15rem;
-                  background: #ccc;
-                  text-align: center;
-                  line-height: 1rem;
-                  color: #fff;
-                }
+
                 .flex1.no-inp {
                   padding: 0;
                   line-height: 0.5rem;

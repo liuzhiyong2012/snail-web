@@ -31,7 +31,34 @@
     </div>
   </div>
 </template>
-
+<i18n>
+	{
+		"zh":{
+			  "Me":"我的",
+			  "Language":"语言",
+			  "ChineseAndEnglish":"简体中文",
+			  "exchange":"积分",
+			  "MyOrder":"我的订单",
+			  "ShoppingAddress":"收货地址",
+			  "PaymentMethod":"支付方式",
+			  "OtherAccountNumber":"第三方授权",
+			  "PrivacyPolicy":"隐私政策",
+			  "TermsOfService":"服务条款"
+		},
+		"en":{
+			  "Internet":"Internet",
+			  "Pay":"Pay",
+			  "ChineseAndEnglish":"English",
+			  "exchange":"exchange",
+			  "MyOrder":"My order",
+			  "ShoppingAddress":"Shopping address",
+			  "PaymentMethod":"Payment method",
+			  "OtherAccountNumber":"Other account number",
+			  "PrivacyPolicy":"Privacy policy",
+			  "TermsOfService":"Terms of service"
+		}
+	}
+</i18n>
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator'
 import NetflowService from '../../service/netflow';
@@ -47,6 +74,11 @@ export default class InternetIndex extends Vue{
 
   private created() {
     this.postNetFlowList()
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+    } else {
+      this.$i18n.locale = "zh";
+    }
   }
 
   public routerInternetCard(data:any){

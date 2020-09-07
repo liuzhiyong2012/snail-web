@@ -1,6 +1,6 @@
 <template>
   <div>
-    <abus-title title="Shopping Detail" backRouteName="shopping">
+    <abus-title :title="$t('title')" backRouteName="shopping">
       <cart-icon></cart-icon>
     </abus-title>
     <div calss="shopping-details">
@@ -10,7 +10,7 @@
     <div class="m-box">
       <div class="title">{{shoppingInfo.Name || '--'}}</div>
       <div class="info-box">
-        <div class="qty">QTY {{shoppingInfo.Stocking || '--'}}</div>
+        <div class="qty">{{$t('QTY')}} {{shoppingInfo.Stocking || '--'}}</div>
         <div class="f1">
           <div>${{shoppingInfo.Price || 0}}</div>
           <van-field class="field-ctn" name="stepper" label>
@@ -28,20 +28,39 @@
     </div>
 
     <div class="details-box">
-      <div class="top">Product Details</div>
-      <div class="details">{{shoppingInfo.Remark||'暂无介绍'}}</div>
+      <div class="top">{{$t('ProductDetails')}}</div>
+      <div class="details">{{shoppingInfo.Remark|| $t('NoIntroduction')}}</div>
     </div>
 
     <div class="footer-ctn">
-      <div class="cart-btn primary" @click="addToCart()">Add To Cart</div>
-      <div class="cart-btn normal" @click="buyNow()">Buy Now</div>
+      <div class="cart-btn primary" @click="addToCart()">{{$t('AddToCart')}}</div>
+      <div class="cart-btn normal" @click="buyNow()">{{$t('BuyNow')}}</div>
     </div>
     <!-- <div class="button-box">
       <div class="button">Buy Now</div>
     </div>-->
   </div>
 </template>
-
+<i18n>
+	{
+		"zh":{
+			"title":"详情",
+      "ProductDetails":"产品详细信息",
+      "AddToCart":"添加到购物车",
+      "BuyNow": "立即购买",
+      "NoIntroduction":"暂无介绍",
+      "QTY":"剩余量"
+		},
+		"en":{
+			"title":"Shopping Detail",
+      "ProductDetails":"ProductDetails",
+      "AddToCart":"Add To Cart",
+      "BuyNow": "Buy Now",
+      "NoIntroduction":"No introduction",
+      "QTY":"QTY"
+		}
+	}
+</i18n>
 <script lang="ts">
 import { Component, Prop, Vue, Watch} from "vue-property-decorator";
 import AbusTitle from "../../components/AbusTitle.vue";
@@ -69,6 +88,11 @@ export default class ShoppingDetail extends Vue {
     // this.shoppingDetail()
   }
   private mounted() {
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+    } else {
+      this.$i18n.locale = "zh";
+    }
     // this.$store.commit("setShoppingDetail", this.$route.params.shoppingInfo);
     this.shoppingInfo = this.$route.params.shoppingInfo;
     this.shoppingInfo.BannerImgPath = UrlUtils.addBaseUrl( UrlUtils.delBaseUrl(this.shoppingInfo.BannerImgPath));

@@ -102,7 +102,7 @@
 <i18n>
 	{
 		"zh":{
-			  "Me":"我的",
+			  "Me":"简介",
 			  "Language":"语言",
 			  "ChineseAndEnglish":"简体中文",
 			  "exchange":"积分",
@@ -114,7 +114,7 @@
 			  "TermsOfService":"服务条款"
 		},
 		"en":{
-			  "Me":"Me",
+			  "Me":"Profile",
 			  "Language":"Language",
 			  "ChineseAndEnglish":"English",
 			  "exchange":"exchange",

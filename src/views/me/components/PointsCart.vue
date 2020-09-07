@@ -1,18 +1,18 @@
 <template>
   <div class="shopping-cart">
-    <abus-title title="Cart" backRouteName="pointsExchange"></abus-title>
+    <abus-title :title="$t('title')" backRouteName="pointsExchange"></abus-title>
     <van-notice-bar
       @click="stepToPage('address')"
       color="#2E2E2E"
       background="#E5E8EE"
       left-icon="location"
       mode="link"
-    >{{this.address || '暂无地址'}}</van-notice-bar>
+    >{{this.address || $t('noAdress')}}</van-notice-bar>
     <div v-if="pointsCartList.length > 0">
       <van-swipe-cell v-for="(item,index) in pointsCartList" :key="index">
       <van-card :title="item.Name" :thumb="item.BannerImgPath|addBaseUrl" class="goods-card" />
       <template #right>
-        <van-button @click="delGoods(index)" square text="删除" type="danger" class="delete-button" />
+        <van-button @click="delGoods(index)" square :text="$t('del')" type="danger" class="delete-button" />
       </template>
       <div class="price">{{item.Price}}</div>
       <van-field class="field-ctn" name="stepper" label>
@@ -23,25 +23,52 @@
     </van-swipe-cell>
     </div>
     <div v-else class="no-goods" @click="stepToPage('pointsExchange')">
-      No goods, please go shopping ^_^
+      {{$t('noGoods')}}
     </div>
     <div class="cell-group">
       <div class="cell">
-        <div class="cell-l">Required points</div>
+        <div class="cell-l">{{$t('RequiredPoints')}}</div>
         <div class="cell-r">{{orderAmount}}</div>
       </div>
 
       <div class="cell">
-        <div class="cell-l t-bold">My points</div>
+        <div class="cell-l t-bold">{{$t('MyPoints')}}</div>
         <div class="cell-r t-bold">{{userPoints}}</div>
       </div>
     </div>
     <div class="button-box">
-      <div class="button" @click="postShoppingPlaceOrder">Pay</div>
+      <div class="button" @click="postShoppingPlaceOrder">{{$t('Pay')}}</div>
     </div>
   </div>
 </template>
-
+<i18n>
+	{
+		"zh":{
+			"title":"购物车",
+      "noGoods":"没有商品，请重新购买 ^_^",
+      "PaymentMethod":"支付方式",
+      "del": "删除",
+      "Pay": "支付",
+      "TotalAmount": "总金额",
+      "RequiredPoints": "所需积分",
+      "MyPoints": "我的积分",
+      "noAdress": "暂无地址",
+      "Buy":"购买"
+		},
+		"en":{
+			"title":"Cart",
+      "noGoods":"No goods, please go shopping ^_^",
+      "PaymentMethod":"Payment method",
+      "del": "del",
+      "Pay": "Pay",
+      "TotalAmount": "Total amount",
+      "RequiredPoints": "Required points",
+      "MyPoints": "My points",
+      "noAdress": "No address",
+      "Buy":"Buy"
+		}
+	}
+</i18n>
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import AbusTitle from "../../../components/AbusTitle.vue";
@@ -60,6 +87,11 @@ export default class ShoppingCart extends Vue {
     this.postAddress();
   }
   private mounted() {
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+    } else {
+      this.$i18n.locale = "zh";
+    }
     this.chengeStepper();
   }
   private get pointsCartList(): number {

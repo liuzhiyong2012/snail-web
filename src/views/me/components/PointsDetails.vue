@@ -1,6 +1,6 @@
 <template>
   <div>
-    <abus-title title="Detail" backRouteName="pointsExchange">
+    <abus-title :title="$t('title')" backRouteName="pointsExchange">
       <cart-icon></cart-icon>
     </abus-title>
     <div calss="shopping-details">
@@ -28,20 +28,39 @@
     </div>
 
     <div class="details-box">
-      <div class="top">Product Details</div>
-      <div class="details">{{pointsInfo.Remark||'暂无介绍'}}</div>
+      <div class="top">{{$t('ProductDetails')}}</div>
+      <div class="details">{{pointsInfo.Remark||$t('NoIntroduction')}}</div>
     </div>
 
     <div class="footer-ctn">
-      <div class="cart-btn primary" @click="addToCart()">Add To Cart</div>
-      <div class="cart-btn normal" @click="buyNow()">Buy Now</div>
+      <div class="cart-btn primary" @click="addToCart()">{{$t('AddToCart')}}</div>
+      <div class="cart-btn normal" @click="buyNow()">{{$t('BuyNow')}}</div>
     </div>
     <!-- <div class="button-box">
       <div class="button">Buy Now</div>
     </div>-->
   </div>
 </template>
-
+<i18n>
+	{
+		"zh":{
+			"title":"详情",
+      "ProductDetails":"产品详细信息",
+      "AddToCart":"添加到购物车",
+      "BuyNow": "立即购买",
+      "NoIntroduction":"暂无介绍",
+      "QTY":"剩余量"
+		},
+		"en":{
+			"title":"Detail",
+      "ProductDetails":"ProductDetails",
+      "AddToCart":"Add To Cart",
+      "BuyNow": "Buy Now",
+      "NoIntroduction":"No introduction",
+      "QTY":"QTY"
+		}
+	}
+</i18n>
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import AbusTitle from "../../../components/AbusTitle.vue";
@@ -69,6 +88,11 @@ export default class PointsDetail extends Vue {
     // this.shoppingDetail()
   }
   private mounted() {
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+    } else {
+      this.$i18n.locale = "zh";
+    }
     // this.$store.commit("setShoppingDetail", this.$route.params.shoppingInfo);
     this.pointsInfo = this.$route.params.pointsInfo;
     this.pointsInfo.BannerImgPath = UrlUtils.addBaseUrl( UrlUtils.delBaseUrl(this.pointsInfo.BannerImgPath));

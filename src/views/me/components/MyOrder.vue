@@ -1,6 +1,6 @@
 <template>
   <div class="abus-height">
-      <abus-title title="My order" backRouteName="meIndex"></abus-title>
+      <abus-title :title="$t('title')" backRouteName="meIndex"></abus-title>
     <van-tabs
       line-width="20"
       line-height="4"
@@ -8,7 +8,7 @@
       title-active-color="rgb(0,32,91)"
       sticky
     >
-      <van-tab v-for="(item,index) in tabData" :title="item" :key="index">
+      <van-tab v-for="(item,index) in tabData" :title="$t(item)" :key="index">
         <div v-if="item == 'Dish'" class>
             <my-dish-order></my-dish-order>
         </div>
@@ -18,7 +18,22 @@
     </van-tabs>
   </div>
 </template>
-
+<i18n>
+	{
+		"zh":{
+      "title":"我的订单",
+      "Dish": "餐品",
+      "Shopping": "机上购物",
+      "Internet": "网络"
+		},
+		"en":{
+      "title":"My order",
+      "Dish": "Dish",
+      "Shopping": "Shopping",
+      "Internet": "Internet"
+		}
+	}
+</i18n>
 <script>
 import MyDishOrder from "./MyDishOrder";
 import MyShoppingOrder from "./MyShoppingOrder";
@@ -35,6 +50,13 @@ export default {
     return {
       tabData: ["Dish", "Shopping", "Internet"],
     };
+  },
+  mounted() {
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+    } else {
+      this.$i18n.locale = "zh";
+    }
   },
 };
 </script>

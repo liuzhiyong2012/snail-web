@@ -4,12 +4,12 @@
       <div class="header">
         <div class="top">
           <div class="title">Airspace Explorer {{item.FlightNumber}}</div>
-          <div class="status" v-if="item.Status == 0">待定</div>
-          <div class="status" v-else-if="item.Status == 1 && item.Type == 1">制作中</div>
-          <div class="status" v-else-if="item.Status == 1 && item.Type == 2">打包中</div>
-          <div class="status" v-else-if="item.Status == 2">派送</div>
-          <div class="status" v-else-if="item.Status == 3">完成</div>
-          <div class="status" v-else-if="item.Status == 4">取消</div>
+          <div class="status" v-if="item.Status == 0">{{$t('Undetermined')}}</div>
+          <div class="status" v-else-if="item.Status == 1 && item.Type == 1">{{$t('Making')}}</div>
+          <div class="status" v-else-if="item.Status == 1 && item.Type == 2">{{$t('Packing')}}</div>
+          <div class="status" v-else-if="item.Status == 2">{{$t('Delivery')}}</div>
+          <div class="status" v-else-if="item.Status == 3">{{$t('Complete')}}</div>
+          <div class="status" v-else-if="item.Status == 4">{{$t('Cancel')}}</div>
         </div>
         <div class="con">
           <div class="text">{{item.Departure}}</div>
@@ -45,13 +45,36 @@
       </div>
       <div class="footer">
         <div class="time">{{getTime(item.CreatedAt)}}</div>
-        <div class="money" v-if="item.Type == 1">Total amount ${{item.FinalPrice}}</div>
-        <div class="money" v-if="item.Type == 2">Total amount {{pointNum(item.FinalPrice)}}</div>
+        <div class="money" v-if="item.Type == 1">{{$t('TotalAmount')}} ${{item.FinalPrice}}</div>
+        <div class="money" v-if="item.Type == 2">{{$t('TotalPoints')}} {{pointNum(item.FinalPrice)}}</div>
       </div>
     </div>
   </div>
 </template>
-
+<i18n>
+	{
+		"zh":{
+      "TotalAmount":"总金额",
+      "TotalPoints":"总积分",
+      "Undetermined":"待定",
+      "Making":"制作中",
+      "Packing":"打包中",
+      "Delivery":"派送",
+      "Complete":"完成",
+      "Cancel":"取消"
+		},
+		"en":{
+      "TotalAmount":"Total amount",
+      "TotalPoints":"Total points",
+      "Undetermined":"Undetermined",
+      "Making":"Making",
+      "Packing":"packing",
+      "Delivery":"Delivery",
+      "Complete":"Complete",
+      "Cancel":"Cancel"
+		}
+	}
+</i18n>
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import MeService from "../../../service/me";
@@ -62,6 +85,11 @@ import DateUtils from '../../../utils/date-utils';
 export default class MyShoppingOrder extends Vue {
   private orderList: Array<any>=[]
   private created() {
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+    } else {
+      this.$i18n.locale = "zh";
+    }
     this.getShoppingOrder();
   }
   public getShoppingOrder() {

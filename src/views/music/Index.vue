@@ -1,6 +1,6 @@
 <template>
 	<section class="music-main-ctn">
-		<abus-title title="Music" backRouteName="home" :title="$t('title')" class="title-ctn"></abus-title>
+		<abus-title :title="$t('title')" backRouteName="home"  class="title-ctn"></abus-title>
 		<section class="content-ctn">
 			<div class="content-top-ctn">
 				<van-swipe :autoplay="3000" class="music-recomend-ctn">
@@ -120,6 +120,11 @@
 		 private mounted(){
 			 this.getMusicBanners();
 			 this.getPlayList();
+			if (localStorage.getItem("lang") == "en") {
+			this.$i18n.locale = "en";
+			} else {
+			this.$i18n.locale = "zh";
+			}
 		 }
 		 
 		 private getMusicBanners(){
