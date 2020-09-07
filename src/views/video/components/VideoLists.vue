@@ -1,10 +1,10 @@
 <template>
   <div class="abus-height">
-    <div class="cell-group" v-if="videoList.length % 3 == 1">
+    <div class="cell-group">
       <van-list
         v-model="loading"
         :finished="finished"
-        finished-text="没有更多了"
+        finished-text="没有更222多了"
         @load="onLoad"
         :offset="100"
         :immediate-check="false"
@@ -17,31 +17,12 @@
             </svg>
           </div>
         </div>
+        <div class="cell-item" v-if="videoList.length % 3 == 1"></div>
+        <div class="cell-item" v-if="videoList.length % 3 == 1"></div>
+        <div class="cell-item" v-if="videoList.length % 3 == 2"></div>
       </van-list>
-      <div class="cell-item"></div>
-      <div class="cell-item"></div>
     </div>
-    <div class="cell-group" v-else-if="videoList.length % 3 == 2">
-      <div class="cell-item" v-for="(item, index) in videoList" :key="index">
-        <div class="video-box" @click="stepToVideoPlay(index)">
-          <img :src="item.CoverImgPath|addBaseUrl" :alt="item.title" />
-          <svg class="icon icon-p" aria-hidden="true">
-            <use xlink:href="#icon-play-disable" />
-          </svg>
-        </div>
-      </div>
-      <div class="cell-item"></div>
-    </div>
-    <div class="cell-group" v-else>
-      <div class="cell-item" v-for="(item, index) in videoList" :key="index">
-        <div class="video-box" @click="stepToVideoPlay(index)">
-          <img :src="item.CoverImgPath|addBaseUrl" :alt="item.title" />
-          <svg class="icon icon-p" aria-hidden="true">
-            <use xlink:href="#icon-play-disable" />
-          </svg>
-        </div>
-      </div>
-    </div>
+    
   </div>
 </template>
 
@@ -77,7 +58,10 @@ export default class VideoList extends Vue {
         }
         this.videoList = this.videoList.concat(res.data.Videos);
         this.$store.commit("setVideoList", this.videoList);
+      } else {
+        this.$toast(res.massege);
       }
+      this.loading = false;
     });
   }
   public onLoad() {
@@ -97,7 +81,8 @@ export default class VideoList extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.cell-group {
+.cell-group,
+.van-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
