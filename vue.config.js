@@ -21,7 +21,7 @@ module.exports = {
 	      }
 	 },
     configureWebpack: {
-        devtool: 'source-map'
+		devtool: 'source-map'
     },
     productionSourceMap: false,
     publicPath: '/', //开发
