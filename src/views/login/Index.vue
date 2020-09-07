@@ -26,6 +26,7 @@
           maxlength="20"
           :placeholder="$t('placeholderPhone')"
           type="number"
+          @keyup="getUserPhone"
         />
       </div>
       <div class="user-details m40">
@@ -83,7 +84,9 @@
         "Registery": "注册",
         "ForgotPassword": "忘记密码",
         "placeholderPhone": "你的手机号码",
-        "placeholderPassword": "请输入密码"
+        "placeholderPassword": "请输入密码",
+        "showError":"手机号码有误，请重填",
+        "showLengthError": "手机号码不可以超出11位"
 		},
 		"en":{
 			  "LOGIN": "LOGIN",
@@ -91,7 +94,8 @@
         "Registery": "Sign up",
         "ForgotPassword": "Forgot Password",
         "placeholderPhone": "Your phone",
-        "placeholderPassword": "Password"
+        "placeholderPassword": "Password",
+        "showError":"Wrong mobile number, please fill in again"
 		}
 	}
 </i18n>
@@ -119,25 +123,37 @@ export default class Login extends Vue {
     setTimeout(() => {
       this.isActive = false;
     }, 1000);
-    if(localStorage.getItem('lang') == 'en'){
-      this.lang = 'English';
-      this.$i18n.locale = 'en';
-      localStorage.setItem('lang', 'en');
-    }else{
+    // console.log(navigator.language)
+    if(navigator.language == 'zh-CN'){
       this.lang = '简体中文';
       this.$i18n.locale = 'zh';
       localStorage.setItem('lang', 'zh');
+    }else{
+      this.lang = 'English';
+      this.$i18n.locale = 'en';
+      localStorage.setItem('lang', 'en');
     }
+    // if(localStorage.getItem('lang') == 'en'){
+    //   this.lang = 'English';
+    //   this.$i18n.locale = 'en';
+    //   localStorage.setItem('lang', 'en');
+    // }else{
+    //   this.lang = '简体中文';
+    //   this.$i18n.locale = 'zh';
+    //   localStorage.setItem('lang', 'zh');
+    // }
   }
   private get seatNumber(): string {
     return this.$store.state.login.voyageInfo.seatNumber;
   }
   public getUserPhone(e: any) {
-    this.userPhone = e.target.value;
+    if(e.target.value.length > 11){
+      this.$toast('数字不可以超出11位')
+    }
   }
-  public getUserPassword(e: any) {
-    this.userPassword = e.target.value;
-  }
+  // public getUserPassword(e: any) {
+  //   this.userPassword = e.target.value;
+  // }
   public showLang() {
     this.isShowLang = !this.isShowLang;
   }
@@ -153,7 +169,10 @@ export default class Login extends Vue {
   }
   public postUserLogin() {
     // console.log(this.$store.state.login.name)
-    if (this.userPhone != '' && this.userPassword != '') {
+    if(!(/^1[3456789]\d{9}$/.test(this.userPhone))){ 
+        this.$toast("手机号码有误，请重填");  
+        return false; 
+    } else if (this.userPhone != '' && this.userPassword != '') {
       var data = {
         username: '86_' + this.userPhone, // 默认86
         password: this.userPassword

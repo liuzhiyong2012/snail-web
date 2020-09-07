@@ -1,6 +1,6 @@
 <template>
   <div class="shopping-cart">
-    <abus-title title="Shopping Cart" backRouteName="shopping">
+    <abus-title :title="$t('title')" backRouteName="shopping">
       <!-- <cart-icon></cart-icon> -->
     </abus-title>
     <van-notice-bar
@@ -9,12 +9,12 @@
       background="#E5E8EE"
       left-icon="location"
       mode="link"
-    >{{this.address || '暂无地址'}}</van-notice-bar>
+    >{{this.address || $t('noAdress')}}</van-notice-bar>
     <div v-if="cartList.length > 0">
       <van-swipe-cell v-for="(item,index) in cartList" :key="index">
       <van-card :title="item.Name" :thumb="item.BannerImgPath|addBaseUrl" class="goods-card" />
       <template #right>
-        <van-button @click="delGoods(index)" square text="删除" type="danger" class="delete-button" />
+        <van-button @click="delGoods(index)" square :text="$t('del')" type="danger" class="delete-button" />
       </template>
       <div class="price">${{item.Price}}</div>
       <van-field class="field-ctn" name="stepper" label>
@@ -25,11 +25,11 @@
     </van-swipe-cell>
     </div>
     <div v-else class="no-goods" @click="stepToPage('shopping')">
-      No goods, please go shopping ^_^
+      {{$t('noGoods')}}
     </div>
     <div class="cell-group-two">
       <div class="cell-item" @click="stepToPage('payment')">
-        <div class="title">Payment method</div>
+        <div class="title">{{$t('PaymentMethod')}}</div>
         <div class="f1">
           <svg class="icon icon-right-1" aria-hidden="true">
             <use v-if="payType == '1'" xlink:href="#icon-wechat-pay" />
@@ -46,15 +46,38 @@
     </div>
     <div class="cell-group">
       <div class="cell">
-        <div class="cell-r t-bold">Total amount ${{orderAmount}}</div>
+        <div class="cell-r t-bold">{{$t("TotalAmount")}} ${{orderAmount}}</div>
       </div>
     </div>
     <div class="button-box">
-      <div class="button" @click="postShoppingPlaceOrder">Pay</div>
+      <div class="button" @click="postShoppingPlaceOrder">{{$t('Pay')}}</div>
     </div>
   </div>
 </template>
-
+<i18n>
+	{
+		"zh":{
+			"title":"购物车",
+      "noGoods":"没有商品，请重新购买 ^_^",
+      "PaymentMethod":"支付方式",
+      "del": "删除",
+      "Pay": "支付",
+      "TotalAmount": "总金额",
+      "noAdress": "暂无地址",
+      "Buy":"购买"
+		},
+		"en":{
+			"title":"Shopping Cart",
+      "noGoods":"No goods, please go shopping ^_^",
+      "PaymentMethod":"Payment method",
+      "del": "del",
+      "Pay": "Pay",
+      "TotalAmount": "Total amount",
+      "noAdress": "No address",
+      "Buy":"Buy"
+		}
+	}
+</i18n>
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import AbusTitle from "../../components/AbusTitle.vue";
@@ -74,6 +97,11 @@ export default class ShoppingCart extends Vue {
     this.postAddress();
   }
   private mounted() {
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+    } else {
+      this.$i18n.locale = "zh";
+    }
     this.chengeStepper();
   }
   private get payType(): any {

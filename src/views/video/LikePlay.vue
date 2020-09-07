@@ -8,7 +8,6 @@
         @change="onChange"
         :initial-swipe="videoListIndex"
         :show-indicators="false"
-        :loop="false"
         vertical
       >
         <van-swipe-item v-for="(item, index) in videoListOne" class="product-swiper" :key="index">
@@ -20,7 +19,6 @@
             >
               <use xlink:href="#icon-play-disable" />
             </svg>
-            <!-- :src="item.FilePath" -->
             <video
               preload="auto"
               @click="playVideo(index)"
@@ -143,10 +141,6 @@ export default class VideoPlay extends Vue {
   private adShowTime: any = "";
   private current: any = 0;
   private videoListIndex: any = 0;
-  private pageNumber: any = 1;
-  private pageSize: any = 10;
-  private getDataNum: any = 2;  // 列表最后三个视频都可，且只触发一次
-  private finished: boolean = false
   private Comment: string = "";
   
 
@@ -157,11 +151,10 @@ export default class VideoPlay extends Vue {
       this.$i18n.locale = "zh";
     }
     this.videoListIndex = this.$route.params.index;
-    this.pageNumber = this.$route.params.number
     // console.log(this.videoListIndex);
     // this.postVideoList();
     this.postAdvertList();
-    this.videoListOne = this.$store.state.video.videoList;
+    this.videoListOne = this.$store.state.video.myLikeList;
     this.videoListOne.forEach((item: any, index: any) => {
       item.isCommentShow = false;
       // item.isHaveComment = false;
@@ -204,59 +197,36 @@ export default class VideoPlay extends Vue {
   }
   // 切换操作
   public onChange(index: any) {
-    console.log(index)
     let video = document.querySelectorAll("video")[this.current];
     video.currentTime = 0;
     video.pause();
     this.playVideoSwipe(index);
-    
-    if(!this.finished && this.videoListOne.length - index <= this.getDataNum){
-      setTimeout(()=>{
-        this.videoListIndex = index
-        this.pageNumber = this.pageNumber + 1
-      // console.log(this.pageNumber)
-        this.getPlayList()
-      },200)
-    }
-    // 这段逻辑要改
     // if (index == Math.round(this.videoListOne.length / 2) && this.isGetVideo) {
     //   this.isGetVideo = false;
-    //   this.getPlayList()
-      
+    //   //['skip'=>0,'take'=>10]
+    //   VideoService.getVideoRecommended({
+    //     skip: 0,
+    //     take: 15,
+    //   }).then((res: any) => {
+    //     // console.log(res);
+    //     if (res.code == 200) {
+    //       this.videoListTwo = res.data.Videos;
+
+    //       this.videoListTwo.forEach((item: any, index: any) => {
+    //         item.isCommentShow = false;
+    //         // item.isHaveComment = false;
+    //         item.Comments = [];
+    //         // 测试使用
+    //         // item.isLike = false;
+    //       });
+    //     }
+    //   });
     // } else if (index == 0 && !this.isGetVideo) {
     //   this.isGetVideo = true;
     //   this.videoListOne = this.videoListTwo;
     //   this.$store.commit("setVideoList", this.videoListTwo);
     //   this.isPlay = false;
     // }
-  }
-  // 获取播放列表
-  public getPlayList(){
-    VideoService.postVideoList({
-        skip: (this.pageNumber-1) * this.pageSize,
-        take: this.pageSize,
-      }).then((res: any) => {
-        // console.log(res);
-        if (res.code == 200) {
-          if (res.data.EOF) {
-			 			this.finished = true;
-			 		}
-          this.videoListTwo = res.data.Videos;
-          
-          this.videoListTwo.forEach((item: any, index: any) => {
-            item.isCommentShow = false;
-            // item.isHaveComment = false;
-            item.Comments = [];
-            // 测试使用
-            // item.isLike = false;
-          });
-          console.log(this.videoListOne)
-          this.videoListOne = this.videoListOne.concat(this.videoListTwo)
-          console.log(this.videoListOne)
-        } else {
-          this.$toast('获取列表失败');
-        }
-      });
   }
   // 取首字母
   public getOneText(str: string) {

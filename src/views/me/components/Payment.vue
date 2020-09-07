@@ -1,7 +1,7 @@
 <template>
   <div class="abus-height">
 
-    <abus-title title="Payment" ></abus-title>
+    <abus-title :title="$t('title')" ></abus-title>
 
 
     <div class="lang-box">
@@ -16,7 +16,7 @@
               <use xlink:href="#icon-wechat-pay" />
             </svg>
 
-            <span :class="[props.checked ? 'text-selected': 'text-unselected']">Wechat Pay</span>
+            <span :class="[props.checked ? 'text-selected': 'text-unselected']">{{$t('WechatPay')}}</span>
           </template>
         </van-radio>
         <van-radio name="2" class="lang-cell">
@@ -28,7 +28,7 @@
             <svg class="icon i-icon" aria-hidden="true">
               <use xlink:href="#icon-ali-pay" />
             </svg>
-            <span :class="[props.checked ? 'text-selected': 'text-unselected']">Alipay</span>
+            <span :class="[props.checked ? 'text-selected': 'text-unselected']">{{$t('Alipay')}}</span>
           </template>
         </van-radio>
         <van-radio name="3" class="lang-cell">
@@ -40,7 +40,7 @@
             <svg class="icon i-icon" aria-hidden="true">
               <use xlink:href="#icon-credit-card" />
             </svg>
-            <span :class="[props.checked ? 'text-selected': 'text-unselected']">International Credit Card</span>
+            <span :class="[props.checked ? 'text-selected': 'text-unselected']">{{$t('InternationalCreditCard')}}</span>
           </template>
         </van-radio>
         <van-radio name="4" class="lang-cell">
@@ -52,7 +52,7 @@
             <svg class="icon i-icon" aria-hidden="true">
               <use xlink:href="#icon-cash" />
             </svg>
-            <span :class="[props.checked ? 'text-selected': 'text-unselected']">Cash</span>
+            <span :class="[props.checked ? 'text-selected': 'text-unselected']">{{$t('Cash')}}</span>
           </template>
         </van-radio>
       </van-radio-group>
@@ -60,7 +60,24 @@
   </div>
 </template>
 
-
+<i18n>
+	{
+		"zh":{
+			"title":"支付方式",
+      "WechatPay":"微信支付",
+      "Alipay":"支付宝",
+      "InternationalCreditCard":"国际信用卡",
+      "Cash":"现金"
+		},
+		"en":{
+			"title":"Payment",
+      "WechatPay":"Wechat Pay",
+      "Alipay":"Alipay",
+      "InternationalCreditCard":"International Credit Card",
+      "Cash":"Cash"
+		}
+	}
+</i18n>
 <script lang="ts">
 import {Vue,Prop,Component,Watch} from "vue-property-decorator"; 
 import AbusTitle from '../../../components/AbusTitle.vue';
@@ -78,7 +95,13 @@ export default class PayMent extends Vue{
 	private changePayType(){
 		this.$store.commit('changePayType',this.radio);
 	}
-	
+	public mounted() {
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+    } else {
+      this.$i18n.locale = "zh";
+    }
+  }
 	
 }
 </script>

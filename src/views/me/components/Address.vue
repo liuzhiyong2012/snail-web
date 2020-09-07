@@ -1,6 +1,6 @@
 <template>
   <div class="abus-height">
-    <abus-title title="Shopping address"></abus-title>
+    <abus-title :title="$t('title')"></abus-title>
     <div class="enter-box">
       <van-field
         v-model="address"
@@ -12,11 +12,22 @@
       />
     </div>
     <div class="abus-button-box">
-      <div class="abus-button" @click="postUpdateAddress">Sure</div>
+      <div class="abus-button" @click="postUpdateAddress">{{$t('Sure')}}</div>
     </div>
   </div>
 </template>
-
+<i18n>
+	{
+		"zh":{
+			"title":"收货地址",
+      "Sure":"确定"
+		},
+		"en":{
+			"title":"Shopping address",
+      "Sure":"Sure"
+		}
+	}
+</i18n>
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import AbusTitle from "../../../components/AbusTitle.vue";
@@ -31,6 +42,11 @@ export default class ShoppingAddress extends Vue {
   private address: string = "";
 
   private created() {
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+    } else {
+      this.$i18n.locale = "zh";
+    }
    this.postAddress() 
   }
   private mounted() {

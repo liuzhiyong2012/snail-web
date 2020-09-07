@@ -57,6 +57,11 @@ export default class NewsDetailPage extends Vue {
     _this.getNewsDetail()
   }
   private mounted() {
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+    } else {
+      this.$i18n.locale = "zh";
+    }
     window.scrollTo(0,0);
   }
 

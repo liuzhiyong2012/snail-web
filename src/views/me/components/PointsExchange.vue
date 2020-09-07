@@ -1,6 +1,6 @@
 <template>
 <div class="abus-height">
-  <abus-title title="Points exchange" backRouteName="meIndex"></abus-title>
+  <abus-title :title="$t('title')" backRouteName="meIndex"></abus-title>
   <div class="goods-box">
     <div class="goods-item" v-for="(item,index) in shoppingList" :key="index">
       <div class="goods"  @click="stepToDetail(item)">
@@ -10,9 +10,9 @@
         <!-- <div class="price">${{item.Price}}</div> -->
         <div class="name">{{item.Name}}</div>
         <div class="qty">
-          QTY {{item.Stocking}}
+          {{$t('QTY')}} {{item.Stocking}}
           <span class="buy">
-            Point
+            {{$t('Point')}}
             <i class="point">{{item.Price}}</i>
           </span>
         </div>
@@ -21,7 +21,20 @@
   </div>
 </div>
 </template>
-
+<i18n>
+	{
+		"zh":{
+			"title":"积分兑换",
+      "QTY":"剩余量",
+      "Point":"积分"
+		},
+		"en":{
+			"title":"Points exchange",
+      "QTY":"QTY",
+      "Point":"Point"
+		}
+	}
+</i18n>
 <script lang="ts">
 import AbusTitle from "../../../components/AbusTitle.vue";
 import { Component, Prop, Vue } from "vue-property-decorator";
@@ -39,6 +52,11 @@ export default class ShoppingIndex extends Vue {
   private options1: Array<any> = [];
 
   private created() {
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+    } else {
+      this.$i18n.locale = "zh";
+    }
     // this.getShoppingRecommendedList();
     this.getShoppingList();
     this.options1 = [

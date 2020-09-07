@@ -245,10 +245,8 @@ export default class Register extends Vue {
   private mounted() {
     if (localStorage.getItem("lang") == "en") {
       this.$i18n.locale = "en";
-      localStorage.setItem("lang", "en");
     } else {
       this.$i18n.locale = "zh";
-      localStorage.setItem("lang", "zh");
     }
   }
 

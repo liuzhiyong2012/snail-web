@@ -2,8 +2,8 @@
   <div class="abus-height" v-if="!isNoVideo">
     <div class="cell-group" v-if="videoList.length % 3 == 1">
       <div class="cell-item" v-for="(item, index) in videoList" :key="index">
-        <div class="video-box" @click="stepToVideoPlay(item.Id)">
-          <img :src="item.CoverImgPath|addBaseUrl" :alt="item.title" />
+        <div class="video-box" @click="stepToVideoPlay(index)">
+          <img :src="item.CoverImgId|addBaseUrl" :alt="item.title" />
           <svg class="icon icon-p" aria-hidden="true">
             <use xlink:href="#icon-play-disable" />
           </svg>
@@ -13,11 +13,25 @@
       <div class="cell-item"></div>
     </div>
     <div class="cell-group" v-else-if="videoList.length % 3 == 2">
-      <div class="cell-item" v-for="(item, index) in videoList" :key="index">123123</div>
+      <div class="cell-item" v-for="(item, index) in videoList" :key="index">
+        <div class="video-box" @click="stepToVideoPlay(index)">
+          <img :src="item.CoverImgId|addBaseUrl" :alt="item.title" />
+          <svg class="icon icon-p" aria-hidden="true">
+            <use xlink:href="#icon-play-disable" />
+          </svg>
+        </div>
+      </div>
       <div class="cell-item"></div>
     </div>
     <div class="cell-group" v-else>
-      <div class="cell-item" v-for="(item, index) in videoList" :key="index">123123</div>
+      <div class="cell-item" v-for="(item, index) in videoList" :key="index">
+        <div class="video-box" @click="stepToVideoPlay(index)">
+          <img :src="item.CoverImgId|addBaseUrl" :alt="item.title" />
+          <svg class="icon icon-p" aria-hidden="true">
+            <use xlink:href="#icon-play-disable" />
+          </svg>
+        </div>
+      </div>
     </div>
   </div>
   <div v-else class="no-video">
@@ -43,14 +57,21 @@ export default class VideoList extends Vue {
       console.log(res);
       if (res.code == 200) {
         this.videoList = res.data.video;
+        this.$store.commit("setMyLikeList",this.videoList)
         if(res.data.video.length == 0){
           this.isNoVideo = true
         }
       }
     });
   }
-  public stepToVideoPlay(index:any,id:any){
-    
+  public stepToVideoPlay(index:any){
+    console.log(index)
+    this.$router.push({
+      name: 'likePlay',
+      params:{
+        index: index
+      }
+    })
   }
 }
 </script>

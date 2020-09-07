@@ -1,38 +1,28 @@
 <template>
   <div class="abus-height">
-    <div class="cell-group" v-if="videoList.length % 3 == 1">
-      <div class="cell-item" v-for="(item, index) in videoList" :key="index">
-        <div class="video-box" @click="stepToVideoPlay(index)">
-          <img :src="item.CoverImgPath|addBaseUrl" :alt="item.title" />
-          <svg class="icon icon-p" aria-hidden="true">
-            <use xlink:href="#icon-play-disable" />
-          </svg>
+    <div class="cell-group">
+      <van-list
+        v-model="loading"
+        :finished="finished"
+        finished-text="没有更222多了"
+        @load="onLoad"
+        :offset="100"
+        :immediate-check="false"
+      >
+        <div class="cell-item" v-for="(item, index) in videoList" :key="index">
+          <div class="video-box" @click="stepToVideoPlay(index)">
+            <img :src="item.CoverImgPath|addBaseUrl" :alt="item.title" />
+            <svg class="icon icon-p" aria-hidden="true">
+              <use xlink:href="#icon-play-disable" />
+            </svg>
+          </div>
         </div>
-      </div>
-      <div class="cell-item"></div>
-      <div class="cell-item"></div>
+        <div class="cell-item" v-if="videoList.length % 3 == 1"></div>
+        <div class="cell-item" v-if="videoList.length % 3 == 1"></div>
+        <div class="cell-item" v-if="videoList.length % 3 == 2"></div>
+      </van-list>
     </div>
-    <div class="cell-group" v-else-if="videoList.length % 3 == 2">
-      <div class="cell-item" v-for="(item, index) in videoList" :key="index">
-        <div class="video-box" @click="stepToVideoPlay(index)">
-          <img :src="item.CoverImgPath|addBaseUrl" :alt="item.title" />
-          <svg class="icon icon-p" aria-hidden="true">
-            <use xlink:href="#icon-play-disable" />
-          </svg>
-        </div>
-      </div>
-      <div class="cell-item"></div>
-    </div>
-    <div class="cell-group" v-else>
-      <div class="cell-item" v-for="(item, index) in videoList" :key="index">
-        <div class="video-box" @click="stepToVideoPlay(index)">
-          <img :src="item.CoverImgPath|addBaseUrl" :alt="item.title" />
-          <svg class="icon icon-p" aria-hidden="true">
-            <use xlink:href="#icon-play-disable" />
-          </svg>
-        </div>
-      </div>
-    </div>
+    
   </div>
 </template>
 
@@ -46,32 +36,53 @@ import VideoService from "../../../service/video";
 export default class VideoList extends Vue {
   private arrLength: number = 13;
   private videoList: Array<any> = [];
+  private pageNumber: any = 1;
+  private pageSize: any = 10;
+  private loading: boolean = false;
+  private finished: boolean = false;
+
   private created() {
-    // this.getVideoList();
-    this.videoList = this.$store.state.video.videoList
-    console.log(this.videoList)
+    this.postVideoList();
+    // this.videoList = this.$store.state.video.videoList
+    // console.log(this.videoList)
   }
   public postVideoList() {
-    VideoService.postVideoList().then((res: any) => {
+    VideoService.postVideoList({
+      skip: (this.pageNumber - 1) * this.pageSize,
+      take: this.pageSize,
+    }).then((res: any) => {
       console.log(res);
       if (res.code == 200) {
-        this.videoList = res.data.Videos;
+        if (res.data.EOF) {
+          this.finished = true;
+        }
+        this.videoList = this.videoList.concat(res.data.Videos);
+        this.$store.commit("setVideoList", this.videoList);
+      } else {
+        this.$toast(res.massege);
       }
+      this.loading = false;
     });
   }
-  public stepToVideoPlay(index:any){
+  public onLoad() {
+    this.pageNumber = this.pageNumber + 1;
+    this.postVideoList();
+  }
+  public stepToVideoPlay(index: any) {
     this.$router.push({
-      name: 'videoPlay',
-      params:{
-        index: index
-      }
-    })
+      name: "videoPlay",
+      params: {
+        index: index,
+        number: this.pageNumber,
+      },
+    });
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.cell-group {
+.cell-group,
+.van-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;

@@ -89,7 +89,13 @@ export default class NewsList extends Vue {
     this.getNewsList(); //获取新闻列表
     // this.postNewsMyLike(); //收藏列表
   }
-  private mounted() {}
+  private mounted() {
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+    } else {
+      this.$i18n.locale = "zh";
+    }
+  }
   private destroyed() {}
 
   public goBack(): void {

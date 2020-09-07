@@ -37,12 +37,23 @@
       </div>
       <div class="footer">
         <div class="time">{{item.CreatedAt}}</div>
-        <div class="money">Total amount ${{item.FinalPrice}}</div>
+        <div class="money">{{$t('TotalAmount')}} ${{item.FinalPrice}}</div>
       </div>
     </div>
   </div>
 </template>
-
+<i18n>
+	{
+		"zh":{
+			"title":"机上购物",
+      "TotalAmount":"总金额"
+		},
+		"en":{
+			"title":"Shopping",
+      "TotalAmount":"Total amount"
+		}
+	}
+</i18n>
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import MeService from "../../../service/me";
@@ -54,6 +65,11 @@ import DateUtils from "../../../utils/date-utils";
 export default class MyInternetOrder extends Vue {
   private orderList: Array<any>=[]
   private created() {
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+    } else {
+      this.$i18n.locale = "zh";
+    }
     this.postNetFlowOrder();
   }
   public postNetFlowOrder() {

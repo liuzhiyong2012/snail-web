@@ -1,6 +1,6 @@
 <template>
   <div class="abus-height">
-    <abus-title title="Third Account Number" backRouteName="meIndex"></abus-title>
+    <abus-title :title="$t('title')" backRouteName="meIndex"></abus-title>
     <div class="cell-group mt2">
       <van-radio-group
         v-model="radio"
@@ -56,7 +56,20 @@
     </div>
   </div>
 </template>
-
+<i18n>
+	{
+		"zh":{
+			"title":"第三方账户",
+      "QTY":"剩余量",
+      "Point":"积分"
+		},
+		"en":{
+			"title":"Third Party Account",
+      "QTY":"QTY",
+      "Point":"Point"
+		}
+	}
+</i18n>
 <script>
 import AbusTitle from "../../../components/AbusTitle.vue";
 export default {
@@ -67,7 +80,14 @@ export default {
     return {
       radio: "0"
     };
-  }
+  },
+  mounted() {
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+    } else {
+      this.$i18n.locale = "zh";
+    }
+  },
 };
 </script>
 

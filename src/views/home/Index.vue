@@ -300,16 +300,16 @@ export default class Home extends Vue {
       if (endMsg.type == "system") {
         // 系统通知
         _this.showRedPoint = true;
-        console.log("推送-系统通知", _this.showRedPoint);
+        // console.log("推送-系统通知", _this.showRedPoint);
       } else if (endMsg.type == "message") {
         // 聊天
         _this.showRedPoint = true;
-        console.log("推送-聊天", _this.showRedPoint);
+        // console.log("推送-聊天", _this.showRedPoint);
       }
     });
     // 后端推送来在线数据时
     _this.socket.on("update_online_count", (online_stat: any) => {
-      console.log("后端推送来在线数据时", online_stat);
+      // console.log("后端推送来在线数据时", online_stat);
     });
   }
 
