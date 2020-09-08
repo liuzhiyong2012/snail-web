@@ -39,7 +39,25 @@ const mutations = {
   },
   [types.SET_FAVORITE_LIST](state, list) {
     state.favoriteList = list;
+  },
+  setLikeSet(state,list){
+	  state.likeSet = {};
+	  
+	  list.forEach((item,index)=>{
+		  if(item.isLike){
+			   state.likeSet[item.id] = true;
+		  }else{
+			  state.likeSet[item.id] = false;
+		  }
+	  });
+  },
+  likeSong(state,songId){
+	  state.likeSet[songId] = true;
+  },
+  disLikeSong(state,songId){
+  	  state.likeSet[songId] = false;
   }
+  
 };
 
 export default mutations;

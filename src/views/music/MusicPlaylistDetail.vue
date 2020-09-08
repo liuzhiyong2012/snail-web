@@ -147,6 +147,7 @@ export default class MusicPlaylistDetail extends Vue {
 	}
 
 	private playSong(index) {
+		debugger;
 		this.$store.dispatch('selectPlay', {
 			list: this.allSong,
 			index: index
