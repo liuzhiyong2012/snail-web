@@ -11,7 +11,7 @@
 					<span>{{total}}</span>
 				</div>
 
-				<div class="title-right" v-if="activePage == 'song'" @click="playSong(0)">
+				<div class="title-right" v-if="activePage == 'song'" @click111="playSong(0)">
 					<i class="icon icon-play"></i>
 					<span class="play-btn">Play all</span>
 				</div>
@@ -21,7 +21,7 @@
 				<van-pull-refresh v-model="refreshing" @refresh="onRefresh">
 					<van-list  v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :offset="100" :immediate-check="false" ref="mylist">
 						<div  v-if="activePage == 'song'" refs="aaa" class="collect-list-ctn song">
-							<van-swipe-cell v-for="(item, index) in resultList" :key="index" class="mysong-swipe-item" @click="playSong(index)" >
+							<van-swipe-cell v-for="(item, index) in resultList" :key="index" class="mysong-swipe-item" @hello="playSong(index)" >
 								<template #right>
 									<div class="delete-btn" >
 										<i class="icon icon-trash" @click="unSubscribeSong(index,item)"></i>

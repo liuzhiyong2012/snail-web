@@ -11,60 +11,72 @@
 		<div class="content-ctn">
 			<div class="content-ctt">
 				<div class="aside-ctn">
-					<div class="user-item" v-for="(item, index) in messageUserList" :key="index" :class="{active:activeUserId == item.Id}" @click="activeChat(item.Id)">
-						<div class="heade-img">{{ item.NickName }}</div>
-						<div class="info-ctn">
-							<div class="info-top-ctn">
-								<span>{{ item.SeatNumber }}</span>
-								<span>{{ item.created_time }}</span>
+					
+					<van-swipe-cell v-for="(item, index) in messageUserList" :key="index" class="mysong-swipe-item" @hello="playSong(index)" >
+							<template #right>
+								<div class="delete-btn" >
+									<i class="icon icon-trash" @click="deleteUser(index,item)"></i>
+								</div>
+							</template>
+							<div class="user-item"  :class="{active:activeUserId == item.Id}" @click="activeChat(item.Id)">
+								<div class="heade-img">{{ item.NickName }}</div>
+								<div class="info-ctn">
+									<div class="info-top-ctn">
+										<span>{{ item.SeatNumber }}</span>
+										<span>{{ item.created_time }}</span>
+									</div>
+									<p class="info-bottom-ctm">{{ item.content }}</p>
+								</div>
+								<div class="message-count" v-if="newMsgCount[item.Id]&&(newMsgCount[item.Id] > 0)">
+									{{newMsgCount[item.Id]}}
+								</div>
 							</div>
-							<p class="info-bottom-ctm">{{ item.content }}</p>
-						</div>
-						<div class="message-count" v-if="newMsgCount[item.Id]&&(newMsgCount[item.Id] > 0)">
-							{{newMsgCount[item.Id]}}
-						</div>
-					</div>
+					</van-swipe-cell>
 
+					
 				</div>
 
 				<div class="main-ctn">
 					<div ref="messageCtn" class="message-ctn">
-						<van-pull-refresh v-model="refreshing" @refresh="loadReadData">
-							<!--<van-list  v-model="loading" :finished="finished" finished-text="没有更多了" @load="loadUnreadData()" :offset="100" :immediate-check="false" ref="mylist">-->
-							<div class="inner-ctn">
-								<div class="message-item" v-for="(item, index) in messageList" :key="index" :class="{
+						<!--<van-list  v-model="loading" :finished="finished" finished-text="没有更多了" @load="loadUnreadData()" :offset="100" :immediate-check="false" ref="mylist">-->
+						<div class="inner-ctn">
+							<van-pull-refresh v-model="refreshing" @refresh="loadReadData">
+								<div class="message-item-ctn" v-for="(item, index) in messageList" :key="index">
+									<div class="message-item" :class="{
 										left:item.sendType == 1,
 										right:item.sendType != 1
 									}">
-									<div v-if="item.sendType == 1">
-										<div class="heade-img">
-											{{ item.fromNickName}}
-										</div>
-										<div class="info-ctn">
-											<div class="info-top-ctn">
-												<span>{{ item.seatNumber}}</span>
-												<span>{{ item.created_time|dateFormate('hh:mm:ss') }}</span>
+										<div v-if="item.sendType == 1">
+											<div class="heade-img">
+												{{ item.fromNickName}}
 											</div>
-											<p class="info-bottom-ctm">{{ item.content }}</p>
+											<div class="info-ctn">
+												<div class="info-top-ctn">
+													<span>{{ item.seatNumber}}</span>
+													<span>{{ item.created_time|dateFormate('hh:mm:ss') }}</span>
+												</div>
+												<p class="info-bottom-ctm">{{ item.content }}</p>
+											</div>
 										</div>
-									</div>
-									<div v-if="item.sendType == 2">
-										<div class="heade-img">
-											我
-										</div>
-										<div class="info-ctn">
-											<div class="info-top-ctn">
-												<span>{{ item.created_time|dateFormate('hh:mm:ss') }}</span>
-												<span></span>
+										<div v-if="item.sendType == 2">
+											<div class="heade-img">
+												我
+											</div>
+											<div class="info-ctn">
+												<div class="info-top-ctn">
+													<span>{{ item.created_time|dateFormate('hh:mm:ss') }}</span>
+													<span></span>
 
+												</div>
+												<p class="info-bottom-ctm">{{ item.content }}</p>
 											</div>
-											<p class="info-bottom-ctm">{{ item.content }}</p>
 										</div>
 									</div>
 								</div>
-							</div>
-							<!--</van-list>-->
-						</van-pull-refresh>
+
+							</van-pull-refresh>
+						</div>
+						<!--</van-list>-->
 
 					</div>
 
@@ -129,7 +141,6 @@
 
 			this.getSeatMessageInfo();
 			//拉取已读消息
-			//await this.getReadedAirBusMessage(this.activeUserId);
 			this.activeChat(this.curUserId);
 			this.startWebScoket();
 			this.handleUserList();
@@ -147,6 +158,19 @@
 			localStorage.getItem('lang') == 'en'
 			//messageUserIdArr
 		}
+		
+		//doing
+		private deleteUser(index,item){
+			this.readAirBusMessage(item.Id,()=>{
+				let cacheUserList = localStore.get('cacheUserList') || [];
+				this.messageUserList.splice(index,1);
+				cacheUserList.splice(index,1);
+				localStore.set('cacheUserList',cacheUserList);
+				this.$forceUpdate();
+			
+			});
+			
+		}
 
 		private handleUserList(): void {
 			let cacheUserList = localStore.get('cacheUserList') || [];
@@ -154,8 +178,6 @@
 
 			CabinLayoutService.getSeatMessageInfo().then((resData: any) => {
 				if(resData.code == '200') {
-					//当前激活用户是否在列表里面
-					//let activeInListUser = false;
 					resData.data.reverse().forEach((item, index) => {
 						//放在最前面
 						let indexInArray = cacheUserList.indexOf(item.UserId);
@@ -208,6 +230,7 @@
 			this.pageSize = 10;
 			this.pageNumber = 1;
 			this.messageList = [];
+			this.beforeTime = new Date().getTime();
 			this.getReadedAirBusMessage(true);
 		}
 
@@ -225,8 +248,8 @@
 					}
 
 					resData.data = resData.data.reverse();
-					this.messageList = this.messageList.concat(resData.data);
-					this.scrollToBottom();
+					this.messageList = resData.data.concat(this.messageList);
+					this.scrollToTop();
 					this.loading = false;
 					this.refreshing = false;
 				} else {
@@ -238,7 +261,7 @@
 		}
 
 		private beforeDestroy() {
-			(this as any).$globalEvent.$off('new_msg',this.msgListener);
+			(this as any).$globalEvent.$off('new_msg', this.msgListener);
 		}
 
 		private sendMessage() {
@@ -254,77 +277,73 @@
 			});
 		}
 
-
 		private startWebScoket() {
-			this.msgListener = (newMessageObj)=>{
-				
-				console.log('收到消息：chat');
-				//肥系统消息
-				if(newMessageObj.type == 'message') {
-					if(newMessageObj.from_user_id == this.activeUserId) {
-						this.messageList.push(newMessageObj);
-						this.scrollToBottom();
-						this.readAirBusMessage(newMessageObj.from_user_id);
-						//调用消息已读取接口
-					} else {
-						this.newMsgCount[newMessageObj.from_user_id] = (this.newMsgCount[newMessageObj.from_user_id] || 0) + 1;
+			this.msgListener = (newMessageObj) => {
+
+					console.log('收到消息：chat');
+					//肥系统消息
+					if(newMessageObj.type == 'message') {
+						if(newMessageObj.from_user_id == this.activeUserId) {
+							this.messageList.push(newMessageObj);
+							this.scrollToBottom();
+							this.readAirBusMessage(newMessageObj.from_user_id);
+							//调用消息已读取接口
+						} else {
+							this.newMsgCount[newMessageObj.from_user_id] = (this.newMsgCount[newMessageObj.from_user_id] || 0) + 1;
+							this.$forceUpdate();
+						}
+
+						//更新左侧消息的内容和事件,如果消息不在列表增到列表,如果在信息列表,如果不在前5条则把记录移动到顶部
+						let cacheUserList = localStore.get('cacheUserList');
+						let userId = newMessageObj.sendType == 1 ? newMessageObj.from_user_id : newMessageObj.to_user_id;
+						let NickName = newMessageObj.sendType == 1 ? newMessageObj.fromNickName : newMessageObj.toNickName;
+						let retIndex = cacheUserList.indexOf(userId);
+
+						if(retIndex < 0) {
+							cacheUserList.unshift(userId);
+							this.messageUserList.unshift({
+								Id: userId,
+								NickName: NickName,
+								SeatNumber: newMessageObj.seatNumber,
+								created_time: newMessageObj.created_time,
+								content: newMessageObj.content
+							});
+						} else if(retIndex >= 1) {
+							cacheUserList.splice(retIndex, 1);
+							cacheUserList.unshift(userId);
+							this.messageUserList.splice(retIndex, 1);
+							this.messageUserList.unshift({
+								Id: userId,
+								NickName: NickName,
+								SeatNumber: newMessageObj.seatNumber,
+								created_time: newMessageObj.created_time,
+								content: newMessageObj.content
+							});
+						} else {
+							this.messageUserList[retIndex].created_time = newMessageObj.created_time;
+							this.messageUserList[retIndex].content = newMessageObj.content;
+						}
 						this.$forceUpdate();
-					}
-					
-					
-					//更新左侧消息的内容和事件,如果消息不在列表增到列表,如果在信息列表,如果不在前5条则把记录移动到顶部
-					let cacheUserList = localStore.get('cacheUserList');
-					let userId = newMessageObj.sendType == 1?newMessageObj.from_user_id:newMessageObj.to_user_id;
-					let NickName = newMessageObj.sendType == 1?newMessageObj.fromNickName:newMessageObj.toNickName;
-					let retIndex = cacheUserList.indexOf(userId);
-					
-					if(retIndex < 0){
-						cacheUserList.unshift(userId);
-						this.messageUserList.unshift({
-							Id:userId,
-							NickName:NickName,
-							SeatNumber:newMessageObj.seatNumber,
-							created_time:newMessageObj.created_time,
-							content:newMessageObj.content
-						});
-					}else if(retIndex >= 1) {
-						cacheUserList.splice(retIndex,1);
-						cacheUserList.unshift(userId);
-						this.messageUserList.splice(retIndex,1);
-						this.messageUserList.unshift({
-							Id:userId,
-							NickName:NickName,
-							SeatNumber:newMessageObj.seatNumber,
-							created_time:newMessageObj.created_time,
-							content:newMessageObj.content
-						});
-					}else{
-						this.messageUserList[retIndex].created_time = newMessageObj.created_time;
-						this.messageUserList[retIndex].content = newMessageObj.content;
-					}
-					this.$forceUpdate();
-					localStore.set('cacheUserList',cacheUserList);
-					/*airbus_id: "4CFC4D33-2C1E-E911-BAD5-F44D307124C0"
-					content: "哈哈"
-					created_time: "2020-09-06 14:02:57"
-					fromNickName: "mizao"
-					from_user_id: "3a03a40ac79b4f0d6eef58fcd99271d7"
-					id: "1bd93b2435219ed8a3681381881d1517"
-					read: 0
-					seatNumber: "6B"
-					sendType: 1
-					toNickName: null
-					to_user_id: "4CFC4D33-2C1E-E911-BAD5-F44D307124C0"
-					type: "message"*/
+						localStore.set('cacheUserList', cacheUserList);
+						/*airbus_id: "4CFC4D33-2C1E-E911-BAD5-F44D307124C0"
+						content: "哈哈"
+						created_time: "2020-09-06 14:02:57"
+						fromNickName: "mizao"
+						from_user_id: "3a03a40ac79b4f0d6eef58fcd99271d7"
+						id: "1bd93b2435219ed8a3681381881d1517"
+						read: 0
+						seatNumber: "6B"
+						sendType: 1
+						toNickName: null
+						to_user_id: "4CFC4D33-2C1E-E911-BAD5-F44D307124C0"
+						type: "message"*/
 
+					}
+
+					console.log('chat:msg');
 				}
-
-			
-				console.log('chat:msg');
-			}
-			(this as any).$globalEvent.$on('new_msg',this.msgListener);
+				(this as any).$globalEvent.$on('new_msg', this.msgListener);
 		}
-		
 
 		private scrollToBottom() {
 			this.$nextTick(() => {
@@ -333,14 +352,21 @@
 
 		}
 
-		readAirBusMessage(userId) {
+		private scrollToTop() {
+			this.$nextTick(() => {
+				(this.$refs.messageCtn as any).scrollTop = 0;
+			});
+
+		}
+
+		readAirBusMessage(userId,callback?) {
 			CabinLayoutService.readAirBusMessage({
 				userId: userId
 			}).then((resData: any) => {
 				if(resData.code == '200') {
 					this.newMsgCount[userId] = 0;
 					this.$forceUpdate();
-					//this.$toast('消息读取成功!');
+					callback&&callback();
 				}
 			});
 		}
@@ -424,6 +450,20 @@
 					background: red;
 					box-sizing: border-box;
 					background: linear-gradient(180deg, rgba(0, 38, 106, 1) 0%, rgba(0, 66, 133, 1) 100%);
+					
+					.delete-btn {
+							width: rem(178px);
+							height: rem(178px);
+							text-align: center;
+							line-height: rem(178px);
+							background: rgba(228, 0, 43, 1);
+							>.icon{
+								color:#ffffff;
+								font-size: rem(32px);
+								line-height: rem(112px);
+							}
+						}
+						
 					.user-item {
 						position: relative;
 						display: flex;
@@ -435,6 +475,9 @@
 						&.active {
 							background: #0242a2;
 						}
+						
+						
+						
 						.message-count {
 							display: inline-block;
 							position: absolute;
@@ -494,6 +537,12 @@
 					margin-left: rem(520px);
 					position: relative;
 					height: 100%;
+					&:after {
+						height: 1;
+						width: 100%;
+						content: '';
+						clear: both;
+					}
 					.message-ctn {
 						position: absolute;
 						left: 0;
@@ -501,78 +550,79 @@
 						width: 100%;
 						height: 100%;
 						background: green;
-						/*padding:rem(80px);*/
-						padding: rem(80px);
 						box-sizing: border-box;
 						overflow: auto;
 						background: rgba(0, 44, 111, 1);
 						.inner-ctn {
-							position: relative;
-						}
-						.message-item {
-							clear: both;
-							&.left {
-								float: left;
-							}
-							&.right {
-								float: right;
-							}
-							position: relative;
-							// border-bottom: rem(2px) solid rgba(255, 255, 255, 0.08);
-							// height: rem(176px);
-							min-width: rem(332px);
-							max-width: 90%;
-							min-height: rem(124px);
-							margin-bottom: rem(40px);
-							border-radius:rem(60px);
+							min-height: 100%;
 							box-sizing: border-box;
-							border:rem(4px) solid rgba(175, 213, 253, 1);
-							/* width:467px;
-							height:124px;
-							border-radius:61px;
-							border:4px solid rgba(175,213,253,1); */
-							.heade-img {
-								position: absolute;
-								top: rem(10px);
-								left: rem(10px);
-								border-radius: 50%;
-								width: rem(96px);
-								height: rem(96px);
-								line-height: rem(96px);
-								white-space: nowrap;
-								text-align: center;
-								overflow: hidden;
-								color: #ffffff;
-								text-overflow: ellipsis;
-								background: #83abd9;
+							position: relative;
+							padding: rem(80px);
+						}
+						.message-item-ctn {
+							overflow: hidden;
+							&::after {
+								content: '';
+								width: 100%;
+								clear: both;
 							}
-							.info-ctn {
-								margin-left: rem(140px);
-								margin-right: rem(20px);
-								margin-bottom: rem(20px);
-								// width: rem(340px);
-								.info-top-ctn {
-									display: flex;
-									justify-content: space-between;
-									margin-top: rem(20px);
-									margin-bottom: rem(10px);
-									>span {
-										font-size: rem(26px);
+							.message-item {
+								clear: both;
+								&.left {
+									float: left;
+								}
+								&.right {
+									float: right;
+								}
+								position: relative;
+								min-width: rem(332px);
+								max-width: 90%;
+								min-height: rem(124px);
+								margin-bottom: rem(40px);
+								border-radius:rem(60px);
+								box-sizing: border-box;
+								border:rem(4px) solid rgba(175, 213, 253, 1);
+								
+								.heade-img {
+									position: absolute;
+									top: rem(10px);
+									left: rem(10px);
+									border-radius: 50%;
+									width: rem(96px);
+									height: rem(96px);
+									line-height: rem(96px);
+									white-space: nowrap;
+									text-align: center;
+									overflow: hidden;
+									color: #ffffff;
+									text-overflow: ellipsis;
+									background: #83abd9;
+								}
+								.info-ctn {
+									margin-left: rem(140px);
+									margin-right: rem(20px);
+									margin-bottom: rem(20px);
+									
+									.info-top-ctn {
+										display: flex;
+										justify-content: space-between;
+										margin-top: rem(20px);
+										margin-bottom: rem(10px);
+										>span {
+											font-size: rem(26px);
+											font-family: PingFangSC-Regular, PingFang SC;
+											font-weight: 400;
+											color: rgba(175, 213, 253, 1);
+											line-height: rem(26px);
+										}
+									}
+									.info-bottom-ctm {
+										font-size: rem(36px);
 										font-family: PingFangSC-Regular, PingFang SC;
 										font-weight: 400;
-										color: rgba(175, 213, 253, 1);
-										line-height: rem(26px);
+										color: rgba(255, 255, 255, 1);
+										line-height: rem(40px);
 									}
-								}
-								.info-bottom-ctm {
-									// white-space: nowrap;
-									font-size: rem(36px);
-									font-family: PingFangSC-Regular, PingFang SC;
-									font-weight: 400;
-									color: rgba(255, 255, 255, 1);
-									line-height: rem(40px);
-									// overflow: hidden;
-									// text-overflow: ellipsis;
 								}
 							}
 						}
