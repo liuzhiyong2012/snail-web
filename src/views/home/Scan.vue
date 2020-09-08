@@ -3,7 +3,7 @@
     <abus-title title="Scan" backRootName="home">
       <div slot style="width:0.3rem"></div>
     </abus-title>
-    <iframe
+    <!-- <iframe
       ref="iframe"
       name="child"
       id="child"
@@ -11,7 +11,7 @@
       width="100%"
       frameborder="0"
       scrolling="no"
-    ></iframe>
+    ></iframe> -->
   </div>
 </template>
 
@@ -27,13 +27,16 @@ export default {
     };
   },
   created() {
-    this.qrCodeUrl = `https://qrcodescan.in/`
-    // window.location.href = `https://qrcodescan.in/`;
+    // this.qrCodeUrl = ` https://qrcodescan.in/`
+    window.location.href = `https://qrcodescan.in/`;
+
+    // this.qrCodeUrl = `http://kf.vpclub.cn/scan/`
+    // window.location.href = `http://kf.vpclub.cn/scan/`;
   },
   mounted() {
     const oIframe = document.getElementById("child");
     const deviceHeight = document.documentElement.clientHeight;
-    oIframe.style.height = Number(deviceHeight)-52 + "px"; //数字是页面布局高度差
+    oIframe.style.height = Number(deviceHeight) - 48 + "px"; //数字是页面布局高度差
   },
 
   destroyed() {},
