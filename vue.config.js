@@ -21,11 +21,11 @@ module.exports = {
 	      }
 	 },
     configureWebpack: {
-        devtool: 'source-map'
+		devtool: 'source-map'
     },
     productionSourceMap: false,
-    publicPath: '/', //开发
-	//publicPath: './', //打包
+    //publicPath: '/', //开发
+	publicPath: '/airbus/', //打包
     devServer: {
         port: process.env.VUE_APP_PORT,
         proxy: {

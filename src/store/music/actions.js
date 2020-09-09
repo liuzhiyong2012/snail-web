@@ -23,6 +23,10 @@ export const selectPlay = function ({
   list,
   index
 }) {
+ 
+  
+  commit("setLikeSet", list);
+  
   commit(types.SET_SEQUENCE_LIST, list);
   // if (state.mode === playMode.random) {
   //   let randomList = shuffle(list)
