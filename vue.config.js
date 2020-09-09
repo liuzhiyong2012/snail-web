@@ -26,7 +26,6 @@ module.exports = {
     productionSourceMap: false,
     // publicPath: '/', //开发
 	publicPath: '/airbus/', //打包
-	// publicPath: '/airbus', //打包
     devServer: {
         port: process.env.VUE_APP_PORT,
         proxy: {
