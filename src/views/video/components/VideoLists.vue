@@ -4,7 +4,7 @@
       <van-list
         v-model="loading"
         :finished="finished"
-        finished-text="没有更222多了"
+        finished-text="没有更多了"
         @load="onLoad"
         :offset="100"
         :immediate-check="false"
@@ -112,5 +112,9 @@ export default class VideoList extends Vue {
       }
     }
   }
+}
+.van-list__finished-text{
+  width: 100% !important;
+  font-size: .24rem !important;
 }
 </style>

@@ -10,7 +10,9 @@
       @click="stepToPage(item)"
     >
       <div class="music-l">
-        <img :src="item.CoverImgUrl|addBaseUrl" :alt="item.Name" />
+        <div class="img">
+          <img :src="item.CoverImgUrl|addBaseUrl" :alt="item.Name" width="100%" />
+        </div>
       </div>
       <div class="f1">
         <div class="name">{{item.Name}}</div>
@@ -25,11 +27,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import MusicService from "../../../service/music";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import MusicService from '../../../service/music';
 
 @Component({
-  name: "HomeMusic",
+  name: 'HomeMusic',
   components: {},
 })
 export default class HomeMusic extends Vue {
@@ -42,7 +44,9 @@ export default class HomeMusic extends Vue {
     MusicService.getMusicFM().then((res: any) => {
       if (res.code == 200) {
         this.musicList = res.data.Songs;
-      }
+      }else{
+		  
+	  }
     });
   }
 
@@ -51,7 +55,6 @@ export default class HomeMusic extends Vue {
       take: 10,
       skip: 0,
     }).then((resData: any) => {
-      // debugger;
       if (resData.code == 200) {
         this.isHaveData = true;
         this.musicList = resData.data.Playlists;
@@ -61,7 +64,7 @@ export default class HomeMusic extends Vue {
 
   private stepToPage(item: any): void {
     this.$router.push({
-      name: "musicPlaylistDetail",
+      name: 'musicPlaylistDetail',
       query: {
         id: item.Id,
       },
@@ -93,7 +96,7 @@ export default class HomeMusic extends Vue {
     border-radius: 0.12rem;
     background-color: #2d2d2d;
     align-items: center;
-    img {
+    .img {
       width: 100%;
     }
   }

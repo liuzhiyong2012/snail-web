@@ -11,7 +11,7 @@
 					<span>{{total}}</span>
 				</div>
 
-				<div class="title-right" v-if="activePage == 'song'" @click111="playSong(0)">
+				<div class="title-right" v-if="activePage == 'song'" @click="playSong(0)">
 					<i class="icon icon-play"></i>
 					<span class="play-btn">Play all</span>
 				</div>
@@ -21,14 +21,14 @@
 				<van-pull-refresh v-model="refreshing" @refresh="onRefresh">
 					<van-list  v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :offset="100" :immediate-check="false" ref="mylist">
 						<div  v-if="activePage == 'song'" refs="aaa" class="collect-list-ctn song">
-							<van-swipe-cell v-for="(item, index) in resultList" :key="index" class="mysong-swipe-item" @hello="playSong(index)" >
+							<van-swipe-cell v-for="(item, index) in resultList" :key="index" class="mysong-swipe-item">
 								<template #right>
 									<div class="delete-btn" >
 										<i class="icon icon-trash" @click="unSubscribeSong(index,item)"></i>
 									</div>
 								</template>
 
-								<div class="mysong-item" @click="playSingleSong(item)">
+								<div class="mysong-item" @click="playSong(index)">
 									<div class="song-info">
 										<div>{{ item.Name }}</div>
 										<div>{{ computeAuthorName(item) }}</div>
@@ -42,13 +42,13 @@
 						</div>
 						
 						<div  v-if="activePage == 'playList'" class="collect-list-ctn play-list"  >
-							<van-swipe-cell v-for="(item, index) in resultList" :key="index" class="mysong-swipe-item" @click="stepToPage(item)">
+							<van-swipe-cell v-for="(item, index) in resultList" :key="index" class="mysong-swipe-item">
 								<template #right>
 									<div class="delete-btn">
 										<i class="icon icon-trash" @click="unSubscribePlaylist(index,item)"></i>
 									</div>
 								</template>
-								<div class="mysong-item">
+								<div class="mysong-item"  @click="stepToPage(item)">
 									<div class="mysong-img" :style="{backgroundImage:`url(${item.CoverImgUrl})`}">
 																		 
 									</div>
@@ -86,7 +86,7 @@ import UrlUtils from '../../utils/url-utils';
 })
 export default class MusicFavourites extends Vue {
 	private recomendList: Array<any> = [];
-	private activePage = 'playList';
+	private activePage = 'song';
 
 	private get currentSong() {
 		return this.$store.getters.currentSong;

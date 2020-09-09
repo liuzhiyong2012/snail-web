@@ -17,7 +17,7 @@
           </h1> -->
         </div>
         <!-- 歌曲列表 -->
-        <Scroll class="list-con" :data="sequenceList" ref="listContent">
+        <Scroll class="list-con-ctn" :data="sequenceList" ref="listContent">
           <!-- <transition-group ref="list" name="list-li" tag="ul"> -->
             <li ref="listItem" :class="{playing:getCurrentIcon(item)}" v-for="(item, index) in sequenceList" :key="index" @click="selectItem(item, index)">
               <div class="lihear-img-box">
@@ -272,13 +272,13 @@ $screen-width: 37.5;
 .del {
   float: right;
 }
-.list-con {
+.list-con-ctn {
   width: 100%;
   max-height: 61.8vh;
   overflow: hidden;
   
    li{
-	   
+	   font-size: 0;
 	   &.playing{
 		   .lihear-img-box{
 			   .number-ctn{
@@ -289,6 +289,9 @@ $screen-width: 37.5;
 			   }
 		   }
 		   .list2-con{
+			   overflow: hidden;
+			   text-overflow: ellipsis;
+			   white-space: nowrap;
 			   font-weight:bold;
 		   }
 		   
@@ -331,6 +334,10 @@ $screen-width: 37.5;
 		font-family:Helvetica-Bold,Helvetica;
 		color:rgba(255,255,255,1);
 		line-height:0.40rem;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		font-weight:bold;
 	  }
 	  
 	  .list-end {

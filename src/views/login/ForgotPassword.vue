@@ -40,9 +40,15 @@
                 </div>
                 <div class="collapse-item-main no-pad on-sms">
                   <div class="title">{{$t('VerificationCode')}}</div>
-                  <input class="flex1" :placeholder="$t('VerificationCodeTips')" type="text" />
+                  <input
+                    class="flex1"
+                    v-model="code"
+                    :placeholder="$t('VerificationCodeTips')"
+                    type="text"
+                  />
                   <!-- <div class="on-sms">获取验证码</div> -->
                   <div v-if="isShowCode" class="sms-code" @click="getVerificationCode">获取验证码</div>
+                  <div v-else class="sms-code">{{countdown}}s</div>
                 </div>
               </div>
             </li>
@@ -93,54 +99,51 @@
         </div>
       </div>
     </div>
-    <!-- <router-view>
-
-    </router-view>-->
   </div>
 </template>
 <i18n>
-{
-  "zh":{
-    "ForgotPassword": "忘记密码",
-    "PhoneNumber":"你的手机号",
-    "IdentityVerification": "身份验证",
-    "NewPassword":"新密码",
-    "Phone":"手机号",
-    "PhoneTips":"请输入手机号码",
-    "Next":"下一步",
-    "SMSVerification":"短信验证",
-    "VerificationCode":"验证码",
-    "VerificationCodeTips":"请输入验证码",
-    "SecurityProblem":"安全问题验证",
-    "SecurityIssues":"安全问题",
-    "SecurityAnswer":"问题答案",
-    "SecurityAnswerTips":"请输入你的答案",
-    "NewPasswordTips":"请输入新密码",
-    "ConfirmPassword":"确认密码",
-    "ConfirmPasswordTips":"请再次输入密码",
-    "Confirm":"确认"
-  },
-  "en":{
-    "ForgotPassword": "Forgot Password",
-    "PhoneNumber":"Your phone number",
-    "IdentityVerification": "Identity verification",
-    "NewPassword":"New password",
-    "Phone":"Phone",
-    "PhoneTips":"Enter your phone number",
-    "Next":"Next",
-    "SMSVerification":"SMS verification",
-    "VerificationCode":"Verification Code",
-    "VerificationCodeTips":"Enter Verification Code",
-    "SecurityProblem":"Security problem verification",
-    "SecurityIssues":"Security issues",
-    "SecurityAnswer":"Security answer",
-    "SecurityAnswerTips":"Please enter your answer",
-    "NewPasswordTips":"Please set new password",
-    "ConfirmPassword":"Confirm password",
-    "ConfirmPasswordTips":"Please Confirm password",
-    "Confirm":"Confirm"
+  {
+    "zh":{
+      "ForgotPassword": "忘记密码",
+      "PhoneNumber":"你的手机号",
+      "IdentityVerification": "身份验证",
+      "NewPassword":"新密码",
+      "Phone":"手机号",
+      "PhoneTips":"请输入手机号码",
+      "Next":"下一步",
+      "SMSVerification":"短信验证",
+      "VerificationCode":"验证码",
+      "VerificationCodeTips":"请输入验证码",
+      "SecurityProblem":"安全问题验证",
+      "SecurityIssues":"安全问题",
+      "SecurityAnswer":"问题答案",
+      "SecurityAnswerTips":"请输入你的答案",
+      "NewPasswordTips":"请输入新密码",
+      "ConfirmPassword":"确认密码",
+      "ConfirmPasswordTips":"请再次输入密码",
+      "Confirm":"确认"
+    },
+    "en":{
+      "ForgotPassword": "Forgot Password",
+      "PhoneNumber":"Your phone number",
+      "IdentityVerification": "Identity verification",
+      "NewPassword":"New password",
+      "Phone":"Phone",
+      "PhoneTips":"Enter your phone number",
+      "Next":"Next",
+      "SMSVerification":"SMS verification",
+      "VerificationCode":"Verification Code",
+      "VerificationCodeTips":"Enter Verification Code",
+      "SecurityProblem":"Security problem verification",
+      "SecurityIssues":"Security issues",
+      "SecurityAnswer":"Security answer",
+      "SecurityAnswerTips":"Please enter your answer",
+      "NewPasswordTips":"Please set new password",
+      "ConfirmPassword":"Confirm password",
+      "ConfirmPasswordTips":"Please Confirm password",
+      "Confirm":"Confirm"
+    }
   }
-}
 </i18n>
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
@@ -157,8 +160,10 @@ export default class ForgotPassword extends Vue {
   private isShowSMS: boolean = false;
   private isshowSecurityProblem: boolean = false;
   private fullWidth: number = 750;
+  private countdown: number = 60;
   private aLeft: number = 0;
   private phone: string = "";
+  private code: string = "";
   private question: string = "";
   private answer: string = "";
   private password: string = "";
@@ -170,12 +175,13 @@ export default class ForgotPassword extends Vue {
     this.fullWidth = document.documentElement.clientWidth;
   }
   private mounted() {
-   if (localStorage.getItem("lang") == "en") {
+    if (localStorage.getItem("lang") == "en") {
       this.$i18n.locale = "en";
     } else {
       this.$i18n.locale = "zh";
     }
   }
+  // 验证手机号是否注册
   public postCheckPhone() {
     var data = {
       phone: this.phone,
@@ -195,6 +201,35 @@ export default class ForgotPassword extends Vue {
       .catch((reason: any) => {
         console.log("=== Error ===");
         console.log(reason);
+        this.$toast(reason.message);
+      });
+  }
+  // 验证码请求接口
+  public getVerificationCode() {
+    let data = {
+      phone: this.phone,
+    };
+    // 验证码请求接口位置
+    LoginService.postSendCode(data)
+      .then((res: any) => {
+        console.log(res);
+        if (res.code == 200) {
+          clearInterval(intervalId);
+          this.isShowCode = false;
+          var intervalId = setInterval(() => {
+            this.countdown = this.countdown - 1;
+            if (this.countdown == 0) {
+              clearInterval(intervalId);
+              this.countdown = 60;
+              this.isShowCode = true;
+            }
+          }, 1000);
+        } else {
+          this.$toast(res.message);
+        }
+      })
+      .catch((reason: any) => {
+        console.log("=== Error ===");
         this.$toast(reason.message);
       });
   }
@@ -221,16 +256,25 @@ export default class ForgotPassword extends Vue {
           this.$toast(reason.message);
         });
     } else if (this.isShowSMS) {
-      this.aLeft = -(this.fullWidth * 2);
-      this.isActiveThr = true;
+      var aData = {
+        phone: this.phone,
+        code: this.code,
+      };
+      // 验证码验证
+      LoginService.postCheckCode(aData).then((res: any) => {
+        console.log(res)
+        if (res.code == 200) {
+          this.aLeft = -(this.fullWidth * 2);
+          this.isActiveThr = true;
+        } else {
+          this.$toast(res.message);
+        }
+      });
     } else {
       this.$toast("Please select an item from the list");
     }
   }
-  public getVerificationCode() {
-    // 验证码请求接口位置
-
-  }
+  
   public onClickConfirm() {
     if (this.newPassword != "" && this.newPassword == this.confirmPassword) {
       var data = {
@@ -411,14 +455,16 @@ export default class ForgotPassword extends Vue {
             }
             .sms-code {
               position: absolute;
-              right: .35rem;
-              top: .05rem;
+              right: 0.35rem;
+              top: 0.05rem;
               padding: 0.2rem;
-              font-size: 0.2rem;
+              font-size: 0.24rem;
+              min-width: 1rem;
               color: #fff;
               background: rgba(0, 32, 91, 1);
               line-height: 0.5rem;
               border-radius: 0.1rem;
+              text-align: center;
             }
             .collapse-item-con {
               height: 0;

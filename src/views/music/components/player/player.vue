@@ -62,8 +62,8 @@
 				</div>
 				
 				<div class="icon-ctn">
-					<i v-if="!currentSong.isLike" class="icon icon-collect-undo" @click="collectSong(currentSong)"></i>
-					<i v-if="currentSong.isLike" class="icon icon-collect" @click="unCollectSong(currentSong)"></i>
+					<i v-if="!likeSet[currentSong.id]" class="icon icon-collect-undo" @click="collectSong(currentSong)"></i>
+					<i v-if="likeSet[currentSong.id]" class="icon icon-collect" @click="unCollectSong(currentSong)"></i>
 				</div>
 				
 				<div class="icon-ctn play-ctn" @click="togglePlaying">
@@ -183,6 +183,7 @@ export default {
       'playlist',
       'currentSong',
       'vkey',
+	  'likeSet',
       'playing',
       'currentIndex',
       'mode',
@@ -234,7 +235,9 @@ export default {
 				id:song.id
 		  }).then((res)=>{
 			  if(res.code== '200'){
-				   this.$toast('收藏歌曲成功!');
+				  debugger;
+				this.disLikeSong(song.id);
+				this.$toast('收藏歌曲成功!');
 			  }else{
 				  this.$toast(res.message);
 			  }
@@ -246,6 +249,7 @@ export default {
 				id:song.id
 		  }).then((res)=>{
 			  if(res.code== '200'){
+				  this.disLikeSong(song.id);
 				   this.$toast('取消收藏歌曲成功!');
 			  }else{
 				  this.$toast(res.message);
@@ -497,6 +501,8 @@ export default {
       }
     },
     ...mapMutations({ 
+	  'likeSong':'likeSong',
+		disLikeSong:'disLikeSong',
       setFullScreen: 'SET_FULL_SCREEN', // 设置播放页显示
       setPlayingState: 'SET_PLAYING_STATE', // 设置播放状态
       setCurrentIndex: 'SET_CURRENT_INDEX', // 设置索引，引起当前播放歌曲变化

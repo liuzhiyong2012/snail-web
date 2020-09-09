@@ -12,8 +12,8 @@
           <div class="game-img">
             <img class="game-img-up" :src="item.CoverImgPath |addBaseUrl" alt="" />
             <div class="game-img-down">
-              <img :src="item.CoverImgPath |addBaseUrl" alt="" />
-              <img :src="item.CoverImgPath |addBaseUrl" alt="" />
+              <img class="img" :src="item.CoverImgPath |addBaseUrl" alt="" />
+              <img class="img" :src="item.CoverImgPath |addBaseUrl" alt="" />
             </div>
           </div>
           <div style="height:1.1rem">
@@ -152,7 +152,7 @@ export default class GameIndex extends Vue {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          img {
+          .img {
             width: 49.5%;
           }
           :nth-child(even) {
