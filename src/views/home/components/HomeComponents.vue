@@ -63,7 +63,8 @@ export default class HomeComponents extends Vue{
 
 <style lang="scss" scoped>
 .block-title-background {
-  background-color: #fafafa00;
+//   background-color: #fafafa00;
+  background: transparent;
 }
 .van-cell {
   font-size: 0.36rem;

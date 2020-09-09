@@ -20,6 +20,8 @@
       <van-tabs
         id="ibox"
         class="f1"
+        line-width="20"
+        line-height="4"
         color="rgba(0,0,0,0)"
         title-active-color="#2E2E2E"
         title-inactive-color="#B5B6B8"
@@ -273,6 +275,9 @@ export default class ShoppingIndex extends Vue {
 }
 .f1 {
   position: relative;
+  /deep/ .van-tab {
+    line-height: 0.4rem;
+  }
 }
 .menu {
   box-sizing: border-box;

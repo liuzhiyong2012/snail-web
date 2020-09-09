@@ -29,7 +29,7 @@
 					</div>
 				</div>
 				<div class="camera-video-ctn">
-					<video muted  autoplay loop class="camera-video" v-if="cameraUrl[activeCamera]"  :src="cameraUrl[activeCamera]|addBaseUrl"  alt="" controls="controls" x5-playsinline="" playsinline="" webkit-playsinline=""></video>
+					<video muted autoplay loop class="camera-video" v-if="cameraUrl[activeCamera] && active=='camera'" :src="cameraUrl[activeCamera]|addBaseUrl"  alt=""  x5-playsinline="" playsinline="" webkit-playsinline="" x5-video-player-type="h5"></video>
 				</div>
 			</section>
 			
@@ -157,7 +157,7 @@ export default class FlightIndex extends Vue {
 
 	public getFlightInfo(): void {
 		FlightService.getFlightInfo({}).then((res: any) => {
-			if (res.code == '200') {
+			if (res.code == 200) {
 				this.flightInfo = res.data;
 				
 				this.cameraUrl = {
@@ -207,6 +207,9 @@ export default class FlightIndex extends Vue {
 
 	public switchPageTo(page: string): void {
 		this.active = page;
+		if(page=='camera'){
+			this.toggleCameraTo('frontCamera')
+		}
 	}
 
 	public renderCharts() {
@@ -382,7 +385,8 @@ export default class FlightIndex extends Vue {
 			}
 			
 			.camera-video-ctn{
-				z-index: 10;
+				// z-index: 10;
+				z-index: -100;
 				width: 100%;
 				height: 100%;
 				

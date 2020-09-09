@@ -278,6 +278,9 @@ div.olControlZoom {
 	width: 0.36rem;
 	height: 0.36rem;
 	background: #00205b;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	text-align: center;
 	> .icon {
 		color: #ffffff;

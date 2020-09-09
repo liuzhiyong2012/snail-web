@@ -26,9 +26,9 @@ Vue.use(Lazyload, {
 });
 Vue.use(VueI18n);
 
-//  import Vconsole from 'vconsole'
-//  const vConsole: any = new Vconsole();
-//  Vue.use(vConsole)
+ import Vconsole from 'vconsole'
+ const vConsole: any = new Vconsole();
+ Vue.use(vConsole)
 
 let locale = localStorage.getItem('lang') || 'en';
 let i18n = new VueI18n({

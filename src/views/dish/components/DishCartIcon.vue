@@ -53,12 +53,14 @@
 				bottom: 0;
 				width: 0.16rem;
 				height: 0.16rem;
-				line-height: 0.16rem;
 				font-size: 0.14rem;
 				color:#ffffff;
-				text-align: center;
 				border-radius: 50%;
 				background:#d40132;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				padding: 0.01rem;
 				
 			}
 			

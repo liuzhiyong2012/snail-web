@@ -2,7 +2,7 @@
 	<section class="homeflight-main-ctn">
 		<div class="home-flight-box">
 			<div class="home-flight-t">
-				<span classs="flight-model">{{ airplane.AirplaneModels }}</span>
+				<span classs="flight-model">{{ airplane.AirplaneModels }} </span>
 				<span classs="flight-number">{{ baseInfo.FlightNumber }}</span>
 			</div>
 
@@ -16,7 +16,7 @@
 					<span>Remaining:</span>
 					<span>2hours 10min</span>
 				</span>
-				<span class="home-flight-c">{{ weather.Temper }}</span>
+				<span class="home-flight-c">{{ weather.Temper+' '+weather.Desc}}</span>
 			</div>
 
 			<div class="home-flight-place">
@@ -70,6 +70,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 // import HomeMap from './HomeMap.vue';
 import FlightService from '../service/flight';
+import { localStore } from "../utils/data-management";
 
 @Component({
 	name: 'HomeFlight',
@@ -85,11 +86,17 @@ export default class HomeFlight extends Vue {
 	public weather: any = {};
 
 	private get seatNumber(): string {
-		return this.$store.state.login.voyageInfo.seatNumber;
+		return localStore.get("seatNumber") || this.$store.state.login.voyageInfo.seatNumber;
 	}
 	
 	private get seatClass(): string {
-		return this.$store.state.login.voyageInfo.seatClass;
+		if(localStore.get("seatType")==1){
+			return 'F'
+		}else if(localStore.get("seatType")==2){
+			return 'Y'
+		}else if(localStore.get("seatType")==3){
+			return 'C'
+		}
 	}
 
 	created() {
@@ -134,14 +141,15 @@ export default class HomeFlight extends Vue {
 				color: rgba(46, 46, 46, 1);
 				line-height: 0.42rem;
 				
-				.flight-model{  
-					margin-right: 0.16rem;
-				}
+				// .flight-model{  
+				// 	margin-right: 0.16rem;
+				// }
 			}
 			
 			.home-flight-info {
 				display: flex;
 				align-items: center;
+				justify-content: space-between;
 				margin-bottom: 0.26rem;
 			
 				.home-flight-seat {

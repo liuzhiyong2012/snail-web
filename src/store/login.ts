@@ -3,7 +3,8 @@ export default {
   state: {
     voyageInfo: {
       seatNumber: 'A34',
-      seatClass:'G'
+      seatClass:'Y',
+      seatType: 2,
     },
     userInfo: {
 		
@@ -38,6 +39,10 @@ export default {
     setSeatNumber(state:any,seat:string){
       state.voyageInfo.seatNumber = seat
       localStore.set('seatNumber',seat)
+    },
+    setSeatType(state:any,seat:string){
+      state.voyageInfo.seatType = seat
+      localStore.set('seatType',seat)
     },
 
     setUserInfo(state:any, userInfo: any){
