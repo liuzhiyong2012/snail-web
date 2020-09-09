@@ -30,7 +30,24 @@ export default class LoginService {
 			method: 'POST',
 			data: data
 		});
-	}
+    }
+    // 发送验证码
+	static postSendCode(data?: Object) {   
+		return request({
+			url: '/v1/SendCode',
+			method: 'POST',
+			data: data
+		});
+    }
+    // 校验验证码
+	static postCheckCode(data?: Object) {   
+		return request({
+			url: '/v1/CheckCode',
+			method: 'POST',
+			data: data
+		});
+    }
+    
     // 校验问题答案
     static postCheckAnswer(data?: object) {
         return request({

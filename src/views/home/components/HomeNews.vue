@@ -7,7 +7,9 @@
       @click="goToDetail(item)"
     >
       <div class="news-l">
-        <img :src="item.BannerImg |addBaseUrl" :alt="item.Title" />
+        <div class="img">
+          <img :src="item.BannerImg |addBaseUrl" :alt="item.Title" width="100%" height="100%"/>
+        </div>
       </div>
       <div class="f1">
         <div class="name">
@@ -108,7 +110,7 @@ export default class HomeNews extends Vue {
     height: 1.38rem;
     border-radius: 0.12rem;
     overflow: hidden;
-    img {
+    .img {
       width: 100%;
       height: 100%;
     }
