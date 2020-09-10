@@ -2,6 +2,7 @@
   <div class="abus-height">
       <abus-title :title="$t('title')" backRouteName="meIndex"></abus-title>
     <van-tabs
+      class="f1"
       line-width="20"
       line-height="4"
       color="rgb(0,32,91)"
@@ -62,4 +63,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.f1{
+  /deep/ .van-tab{
+    line-height: 0.4rem;
+  }
+}
 </style>

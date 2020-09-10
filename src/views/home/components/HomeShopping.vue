@@ -8,7 +8,10 @@
           v-if="index+1 == shoppingList.length"
         >
           <div class="img-box">
-            <img :src="item.SampleImgPath|addBaseUrl" :alt="item.Name" />
+            <div class="img">
+              <img  :src="item.SampleImgPath|addBaseUrl" :alt="item.Name" width="100%"/>
+            </div>
+            
           </div>
           <div class="name">{{item.Name}}</div>
           <div class="price">
@@ -18,7 +21,10 @@
         </div>
         <div @click="stepToDetail(item)" class="s-box" v-else>
           <div class="img-box">
-            <img :src="item.SampleImgPath|addBaseUrl" :alt="item.Name" />
+            <div class="img">
+              <img  :src="item.SampleImgPath|addBaseUrl" :alt="item.Name" width="100%"/>
+            </div>
+            
           </div>
           <div class="name">{{item.Name}}</div>
           <div class="price">
@@ -88,7 +94,7 @@ export default {
     height: 1.6rem;
     text-align: center;
     box-shadow: 0 0 0.08rem #efefef;
-    img {
+    .img {
       width: 100%;
       border-radius: 0.1rem;
     }

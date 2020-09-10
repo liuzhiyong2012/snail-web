@@ -2,17 +2,26 @@
   <div>
     <div class="abus-scroller-box" :style="{'backgroundColor': isHaveData?'#fff':'#f2f4f7'}">
       <scroller>
-        <div slot="list" v-for="(item, index) of recomendList" :key="index" @click="stepToDetail(item)">
+        <div
+          slot="list"
+          v-for="(item, index) of recomendList"
+          :key="index"
+          @click="stepToDetail(item)"
+        >
           <div class="s-box s-box-right" v-if="index+1 == recomendList.length">
             <div class="img-box">
-              <img :src="item.SampleImgPath|addBaseUrl" :alt="item.Name" />
+              <div class="img">
+                <img :src="item.SampleImgPath|addBaseUrl" :alt="item.Name" width="100%" />
+              </div>
             </div>
             <div class="name">{{item.Name}}</div>
             <div class="price">${{item.Price}}</div>
           </div>
           <div class="s-box" v-else>
             <div class="img-box">
-              <img :src="item.SampleImgPath|addBaseUrl" :alt="item.Name" />
+              <div class="img">
+                <img :src="item.SampleImgPath|addBaseUrl" :alt="item.Name" width="100%" />
+              </div>
             </div>
             <div class="name">{{item.Name}}</div>
             <div class="price">${{item.Price}}</div>
@@ -31,73 +40,73 @@ import DishService from "../../../service/dish";
 Scroller.install(Vue);
 export default {
   components: {
-    Scroller
+    Scroller,
   },
   data() {
     return {
       recomendList: [],
-      isHaveData:false,
+      isHaveData: false,
       dishData: [
         {
           img: require("../images/food.png"),
           name: "Pock rice",
-          price: "10"
+          price: "10",
         },
         {
           img: require("../images/shopping.jpg"),
           name: "Pock rice",
-          price: "14"
+          price: "14",
         },
         {
           img: require("../images/food.png"),
           name: "Pock ricePock ricePock rice",
-          price: "10"
+          price: "10",
         },
         {
           img: require("../images/shopping.jpg"),
           name: "Pock rice",
-          price: "14"
+          price: "14",
         },
         {
           img: require("../images/food.png"),
           name: "Pock rice",
-          price: "10"
+          price: "10",
         },
         {
           img: require("../images/shopping.jpg"),
           name: "Pock rice",
-          price: "14"
+          price: "14",
         },
         {
           img: require("../images/food.png"),
           name: "Pock rice",
-          price: "10"
+          price: "10",
         },
         {
           img: require("../images/shopping.jpg"),
           name: "Pock rice",
-          price: "14"
-        }
-      ]
+          price: "14",
+        },
+      ],
     };
   },
   created() {
     this.getDishesRecommendedList();
   },
   methods: {
-	 stepToDetail(item){
-		 this.$router.push({
-		 	name: 'dishDetail',
-		 	query: {
-		 		id: item.Id
-		 	}
-		 });
-	 },
+    stepToDetail(item) {
+      this.$router.push({
+        name: "dishDetail",
+        query: {
+          id: item.Id,
+        },
+      });
+    },
     getDishesRecommendedList() {
-      DishService.getDishesRecommendedList({}).then(res => {
+      DishService.getDishesRecommendedList({}).then((res) => {
         // debugger;
         // console.log(res);
-        this.isHaveData = true
+        this.isHaveData = true;
         this.recomendList = res.data.RecommendedDishes;
 
         this.recomendList.forEach((item, index) => {
@@ -116,8 +125,8 @@ export default {
 		  Stocking: 0 */
         // http://172.16.125.11:8010/50.jpg
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -135,10 +144,9 @@ export default {
     height: 1.6rem;
     text-align: center;
     box-shadow: 0 0 0.08rem #efefef;
-    img {
+    .img {
       width: 100%;
       border-radius: 0.1rem;
-      
     }
   }
 

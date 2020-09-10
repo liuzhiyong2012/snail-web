@@ -33,10 +33,17 @@
       <div class="game-item" v-for="(item, index) in gameList" :key="index">
         <div class="game">
           <div class="game-img">
-            <img class="game-img-up" :src="item.imgUp" alt="" />
+            <div class="game-img-up">
+              <img  :src="item.imgUp" alt="" width="100%" />
+            </div>
             <div class="game-img-down">
-              <img :src="item.imgLeft" alt="" />
-              <img :src="item.imgRight" alt="" />
+              <div class="img">
+                <img  :src="item.imgLeft" alt="" width="100%"/>
+              </div>
+              <div class="img">
+                <img  :src="item.imgRight" alt=""  width="100%"/>
+              </div>
+              
             </div>
           </div>
           <div class="game-name game-word">{{ item.name }}</div>
@@ -212,7 +219,7 @@ export default {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          img {
+          .img {
             width: 49.5%;
           }
           :nth-child(even) {

@@ -13,7 +13,9 @@
         <div slot="list" v-for="(item, index) of gameData" :key="index">
           <div class="s-box s-box-right" v-if="index + 1 == gameData.length">
             <div class="s-imgbox">
-              <img :src="item.img" :alt="item.name" />
+              <div class="img">
+                <img :src="item.img" :alt="item.name" width="100%"/>
+              </div>
               <div class="cover"></div>
               <p class="s-name">{{ item.name }}</p>
               <p class="s-tips">{{ item.tips }}</p>
@@ -21,7 +23,9 @@
           </div>
           <div class="s-box" v-else>
             <div class="s-imgbox">
-              <img :src="item.img" :alt="item.name" />
+              <div class="img">
+                <img :src="item.img" :alt="item.name" width="100%"/>
+              </div>
               <div class="cover"></div>
               <p class="s-name">{{ item.name }}</p>
               <p class="s-tips">{{ item.tips }}</p>
@@ -96,7 +100,7 @@ export default {
   border-radius: 0.08rem;
   width: 5.6rem;
 
-  img {
+  .img {
     width: 100%;
     border-radius: 0.1rem;
     box-shadow: 0 0 0.08rem #efefef;

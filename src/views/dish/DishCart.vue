@@ -8,7 +8,7 @@
 		<div class="cart-ctn">
 			<van-swipe-cell class="cart-item-ctn" v-for="(item,index) in cartList"  :key="index">
 				<template #right>
-					<van-button square text="删除" type="danger" class="delete-button" />
+					<van-button square text="删除" type="danger" class="delete-button"  @click="deleteCartItem(item,index)" />
 				</template>
 				
 				<div class="cart-item">
@@ -21,7 +21,7 @@
 							<span class="price-ctn">${{item.Price}}</span>
 							<van-field class="field-ctn" name="stepper" label="">
 								<template #input>
-									<van-stepper v-model="item.orderNumber" />
+									<van-stepper v-model="item.orderNumber" @change="chengeStepper" />
 								</template>
 							</van-field>
 						</div>
@@ -93,6 +93,7 @@ import AbusTitle from '../../components/AbusTitle.vue';
 import DishCartIcon from './components/DishCartIcon.vue';
 import DishService from '../../service/dish';
 import UrlUtils from '../../utils/url-utils';
+import { localStore } from "../../utils/data-management";
 
 			
 @Component({
@@ -103,31 +104,53 @@ import UrlUtils from '../../utils/url-utils';
 	}
 })
 export default class DishCart extends Vue {
+	private orderAmount: number = 0;
+
+	private mounted() {
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+    } else {
+      this.$i18n.locale = "zh";
+    }
+    this.chengeStepper();
+  }
+
 	private get payType():number{
 		return this.$store.state.me.payType;
 	}
 	
 	private get seatNumber():number{
-		return this.$store.state.login.voyageInfo.seatNumber;
+		return localStore.get("seatNumber") || this.$store.state.login.voyageInfo.seatNumber;
 	}
 	
 	private get cartList():Array<any>{
 		return this.$store.state.dish.cartList;
 	}
 	
-	private get orderAmount():number{
-	   let cartList = this.$store.state.dish.cartList;
-	   let amount = 0;
-	   
-	   cartList.forEach((item:any,index:number)=>{ 
-		   amount = amount + item.Price * item.orderNumber;
-	   });
-	   
-	   return amount;
+	public chengeStepper() {
+		let cartList = this.$store.state.dish.cartList;
+		let amount = 0;
+
+		cartList.forEach((item: any, index: any) => {
+		amount = amount + item.Price * item.orderNumber;
+		});
+		return (this.orderAmount = amount);
 	}
-	clickaaa(){
-		console.log('213');
+	// private get orderAmount():number{
+	//    let cartList = this.$store.state.dish.cartList;
+	//    let amount = 0;
+	   
+	//    cartList.forEach((item:any,index:number)=>{ 
+	// 	   amount = amount + item.Price * item.orderNumber;
+	//    });
+	   
+	//    return amount;
+	// }
+	private deleteCartItem(item:any, index: number){
+		this.$store.commit('delCartItem', index);
+		this.chengeStepper();
 	}
+
 	private selectPayType(){
 		this.$router.push({
 			name:'payment'
@@ -152,6 +175,13 @@ export default class DishCart extends Vue {
 		}); */
 		let orderItems:Array<any> = [];
 		
+		if(this.cartList.length==0){
+			if (localStorage.getItem("lang") == "en") {
+				return this.$toast('No Dish, please go Dish ^_^');
+			} else {
+				return this.$toast('请先选择餐品!');
+			}
+		}
 		this.cartList.forEach((item:any,index:number)=>{
 			orderItems.push({
 				Quantity:item.orderNumber,
@@ -207,6 +237,10 @@ export default class DishCart extends Vue {
 		.cart-item-ctn{
 			height: 2.40rem;
 			background:#ffffff;
+
+			.delete-button{
+				height: 2.4rem;
+			}
 			
 			.cart-item{
 				height: 100%;

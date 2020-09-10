@@ -14,10 +14,10 @@
           :placeholder="$t('NameTips')"
         />
       </div>
-      <div class="main-item">
+      <!-- <div class="main-item">
         <div class="title line-h">{{$t('Portrait')}}</div>
         <van-uploader v-model="fileList" multiple :max-count="1" />
-      </div>
+      </div> -->
       <div class="main-item">
         <div class="title line-h">{{$t('Gender')}}</div>
         <van-radio-group

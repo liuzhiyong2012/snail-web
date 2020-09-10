@@ -101,7 +101,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import MessageTitle from './components/MessageTitle.vue';
 import MessageService from '../../service/message';
 import { localStore } from '../../utils/data-management';
-declare function io(selector: string): any;
+declare function io(selector: object): any;
 @Component({
   name: 'messageIndex',
   components: {
@@ -205,7 +205,12 @@ export default class messageIndex extends Vue {
   public initWebSocket() {
     const _this = this;
     // 连接服务端，workerman.net:2120换成实际部署web-msg-sender服务的域名或者ip
-    _this.socket = io('http://172.16.8.69:2120');
+    // _this.socket = io('http://172.16.8.69:2120');
+    const opt = {
+      // path:'http://kf.vpclub.cn/airbus/websocket/'
+      path: process.env.VUE_APP_PROXY + 'websocket/'
+    };
+    _this.socket = io(opt);
     // uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
     let uid = _this.uInfo.id;
    

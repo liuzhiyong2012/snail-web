@@ -1,5 +1,5 @@
 const path = require('path');
-console.log(process.env.VUE_APP_PROXY);
+console.log('hahahahah',process.env.VUE_APP_PROXY);
 
 const autoprefixer = require('autoprefixer');
 const pxtorem = require('postcss-pxtorem');
@@ -24,7 +24,7 @@ module.exports = {
 		devtool: 'source-map'
     },
     productionSourceMap: false,
-    //publicPath: '/', //开发
+    // publicPath: '/', //开发
 	publicPath: '/airbus/', //打包
     devServer: {
         port: process.env.VUE_APP_PORT,

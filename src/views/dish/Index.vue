@@ -8,7 +8,7 @@
 		</van-swipe>
 
 		<section class="dishes-list">
-			<div v-for="(item, index) in dishesList" class="dishes-item" :key="index">
+			<div v-for="(item, index) in dishesList" class="dishes-item" :key="index" @click="stepToDetail(item)">
 				<div class="img-ctn" :style="{ backgroundImage: `url(${item.BannerImgPath})` }"></div>
 				<div class="dish-info">
 					<div class="price-ctn" :class="{ 'is-discount': false }">

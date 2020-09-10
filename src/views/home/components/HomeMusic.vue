@@ -10,7 +10,9 @@
       @click="stepToPage(item)"
     >
       <div class="music-l">
-        <img :src="item.CoverImgUrl|addBaseUrl" :alt="item.Name" />
+        <div class="img">
+          <img :src="item.CoverImgUrl|addBaseUrl" :alt="item.Name" width="100%" />
+        </div>
       </div>
       <div class="f1">
         <div class="name">{{item.Name}}</div>
@@ -94,7 +96,7 @@ export default class HomeMusic extends Vue {
     border-radius: 0.12rem;
     background-color: #2d2d2d;
     align-items: center;
-    img {
+    .img {
       width: 100%;
     }
   }
