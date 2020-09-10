@@ -235,7 +235,7 @@ export default {
 				id:song.id
 		  }).then((res)=>{
 			  if(res.code== '200'){
-				  debugger;
+				  // debugger;
 				this.disLikeSong(song.id);
 				this.$toast('收藏歌曲成功!');
 			  }else{

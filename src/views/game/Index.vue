@@ -73,9 +73,11 @@ export default class GameIndex extends Vue {
     });
   }
 
-  public goToDetail(id: any) {
+  public goToDetail(item: any) {
     //进入游戏详情
-    console.log("ingame", id);
+    console.log("ingame", item);
+    // window.location.href();
+    window.open(item.GameUrl); 
     // this.$router.push({
     //   name: "gameDetail",
     //   query: {
