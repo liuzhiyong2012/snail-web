@@ -1,149 +1,155 @@
 <template>
-<div>
-  <abus-title :title="$t('Registery')" />
-  <div class="registery">
-
-    <div class="con">
-      <div class="main-item">
-        <div class="title line-h">{{$t('Name')}}</div>
-        <input
-          v-model="nickname"
-          class="main-item-con"
-          maxlength="20"
-          type="text"
-          :placeholder="$t('NameTips')"
-        />
-      </div>
-      <!-- <div class="main-item">
+  <div>
+    <abus-title :title="$t('Registery')" />
+    <div class="registery">
+      <div class="con">
+        <div class="main-item">
+          <div class="title line-h">{{$t('Name')}}</div>
+          <input
+            v-model="nickname"
+            class="main-item-con"
+            maxlength="20"
+            type="text"
+            :placeholder="$t('NameTips')"
+          />
+        </div>
+        <!-- <div class="main-item">
         <div class="title line-h">{{$t('Portrait')}}</div>
         <van-uploader v-model="fileList" multiple :max-count="1" />
-      </div> -->
-      <div class="main-item">
-        <div class="title line-h">{{$t('Gender')}}</div>
-        <van-radio-group
-          v-model="radio"
-          direction="horizontal"
-          checked-color="#00205B"
-          icon-size="12px"
-        >
-          <van-radio name="0">
-            <template #icon="props">
-              <svg class="icon icon-text" aria-hidden="true">
-                <use v-if="props.checked" xlink:href="#icon-selected" />
-                <use v-else xlink:href="#icon-unselected" />
-              </svg>
-              <span :class="[props.checked ? 'text-selected': 'text-unselected']">{{$t('Female')}}</span>
-            </template>
-          </van-radio>
-          <van-radio name="1">
-            <template #icon="props">
-              <svg class="icon icon-text" aria-hidden="true">
-                <use v-if="props.checked" xlink:href="#icon-selected" />
-                <use v-else xlink:href="#icon-unselected" />
-              </svg>
-              <span :class="[props.checked ? 'text-selected': 'text-unselected']">{{$t('Male')}}</span>
-            </template>
-          </van-radio>
-        </van-radio-group>
-      </div>
-      <div class="main-item">
-        <div class="title line-h">{{$t('Phone')}}</div>
-        <input
-          v-model="phone"
-          class="main-item-con"
-          type="number"
-          maxlength="20"
-          :placeholder="$t('PhoneTips')"
-        />
-      </div>
-      <div class="main-item">
-        <div class="title line-h">{{$t('IDCard')}}</div>
-        <input v-model="idCard" maxlength="25" class="main-item-con" type="text" :placeholder="$t('IDCardTips')" />
-      </div>
-      <div class="main-item">
-        <div class="title line-h">{{$t('Password')}}</div>
-        <input
-          v-model="password"
-          class="main-item-con"
-          type="password"
-          :placeholder="$t('PasswordTips')"
-        />
-      </div>
-      <div class="main-item">
-        <div class="title">{{$t('Confirm-password')}}</div>
-        <input
-          v-model="confirmPassword"
-          @blur="checkPassword"
-          class="main-item-con"
-          type="password"
-          :placeholder="$t('ConfirmPasswordTips')"
-        />
-      </div>
-      <div class="main-item">
-        <div class="title line-h">{{$t('Date')}}</div>
-        <input
-          class="main-item-con"
-          @click="showPopup"
-          :value="datetime"
-          type="text"
-          :placeholder="$t('DateTips')"
-        />
-        <van-popup v-model="show" position="bottom" :style="{ height: '40%' }">
-          <van-datetime-picker
-            v-model="currentDate"
-            type="date"
-            :title="$t('Date')"
-            :min-date="minDate"
-            :max-date="maxDate"
-            @confirm="getConfirmData"
-            :cancel-button-text="$t('Cancel')"
-            :confirm-button-text="$t('Determine')"
+        </div>-->
+        <div class="main-item">
+          <div class="title line-h">{{$t('Gender')}}</div>
+          <van-radio-group
+            v-model="radio"
+            direction="horizontal"
+            checked-color="#00205B"
+            icon-size="12px"
+          >
+            <van-radio name="0">
+              <template #icon="props">
+                <svg class="icon icon-text" aria-hidden="true">
+                  <use v-if="props.checked" xlink:href="#icon-selected" />
+                  <use v-else xlink:href="#icon-unselected" />
+                </svg>
+                <span :class="[props.checked ? 'text-selected': 'text-unselected']">{{$t('Female')}}</span>
+              </template>
+            </van-radio>
+            <van-radio name="1">
+              <template #icon="props">
+                <svg class="icon icon-text" aria-hidden="true">
+                  <use v-if="props.checked" xlink:href="#icon-selected" />
+                  <use v-else xlink:href="#icon-unselected" />
+                </svg>
+                <span :class="[props.checked ? 'text-selected': 'text-unselected']">{{$t('Male')}}</span>
+              </template>
+            </van-radio>
+          </van-radio-group>
+        </div>
+        <div class="main-item">
+          <div class="title line-h">{{$t('Phone')}}</div>
+          <input
+            v-model="phone"
+            class="main-item-con"
+            type="number"
+            maxlength="20"
+            :placeholder="$t('PhoneTips')"
           />
-        </van-popup>
-      </div>
-      <div class="main-item">
-        <div class="title">{{$t('Security-issues')}}</div>
-        <input
-          @click="showQuestion"
-          class="main-item-con"
-          type="text"
-          :value="question"
-          :placeholder="$t('IssuesTips')"
-        />
-        <van-popup v-model="showIssues" position="bottom" :style="{ height: '30%' }">
-          <van-picker
-            show-toolbar
-            :columns="columns"
-            @cancel="showIssues = false"
-            @confirm="onConfirm"
-            :default-index="1"
-            :cancel-button-text="$t('Cancel')"
-            :confirm-button-text="$t('Determine')"
+        </div>
+        <div class="main-item">
+          <div class="title line-h">{{$t('IDCard')}}</div>
+          <input
+            v-model="idCard"
+            maxlength="25"
+            class="main-item-con"
+            type="text"
+            :placeholder="$t('IDCardTips')"
           />
-        </van-popup>
+        </div>
+        <div class="main-item">
+          <div class="title line-h">{{$t('Password')}}</div>
+          <input
+            v-model="password"
+            class="main-item-con"
+            type="password"
+            :placeholder="$t('PasswordTips')"
+            @blur="checkUserPassword"
+          />
+        </div>
+        <div class="main-item">
+          <div class="title">{{$t('Confirm-password')}}</div>
+          <input
+            v-model="confirmPassword"
+            @blur="checkPassword"
+            class="main-item-con"
+            type="password"
+            :placeholder="$t('ConfirmPasswordTips')"
+          />
+        </div>
+        <div class="main-item location">
+          <div class="title line-h">{{$t('Date')}}</div>
+          <input
+            class="main-item-con"
+            @click="showPopup"
+            :value="datetime"
+            type="text"
+            :placeholder="$t('DateTips')"
+          />
+          <div class="data-icon">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-date" />
+            </svg>
+          </div>
+          <van-popup v-model="show" position="bottom" :style="{ height: '40%' }">
+            <van-datetime-picker
+              v-model="currentDate"
+              type="date"
+              :title="$t('Date')"
+              :min-date="minDate"
+              :max-date="maxDate"
+              @confirm="getConfirmData"
+              :cancel-button-text="$t('Cancel')"
+              :confirm-button-text="$t('Determine')"
+            />
+          </van-popup>
+        </div>
+        <div class="main-item">
+          <div class="title">{{$t('Security-issues')}}</div>
+          <input
+            @click="showQuestion"
+            class="main-item-con"
+            type="text"
+            :value="question"
+            :placeholder="$t('IssuesTips')"
+          />
+          <van-popup v-model="showIssues" position="bottom" :style="{ height: '30%' }">
+            <van-picker
+              show-toolbar
+              :columns="columns"
+              @cancel="showIssues = false"
+              @confirm="onConfirm"
+              :default-index="1"
+              :cancel-button-text="$t('Cancel')"
+              :confirm-button-text="$t('Determine')"
+            />
+          </van-popup>
+        </div>
+        <div class="main-item">
+          <div class="title">{{$t('Security-answer')}}</div>
+          <input v-model="answer" class="main-item-con" type="text" :placeholder="$t('AnswerTips')" />
+        </div>
       </div>
-      <div class="main-item">
-        <div class="title">{{$t('Security-answer')}}</div>
-        <input
-          v-model="answer"
-          class="main-item-con"
-          type="text"
-          :placeholder="$t('AnswerTips')"
-        />
+      <p class="policy">
+        <svg class="icon icon-read" aria-hidden="true" @click="onClickRead">
+          <use v-if="isReaded" xlink:href="#icon-readed_1" />
+          <use v-else xlink:href="#icon-unread" />
+        </svg>
+        {{$t('Agreement')}}
+      </p>
+      <div class="button-box">
+        <div class="button" @click="onClickRegistery">{{$t('Registery')}}</div>
       </div>
-    </div>
-    <p class="policy">
-      <svg class="icon icon-read" aria-hidden="true" @click="onClickRead">
-        <use v-if="isReaded" xlink:href="#icon-readed_1" />
-        <use v-else xlink:href="#icon-unread" />
-      </svg>
-      {{$t('Agreement')}}
-    </p>
-    <div class="button-box">
-      <div class="button" @click="onClickRegistery">{{$t('Registery')}}</div>
     </div>
   </div>
-</div>
 </template>
 <i18n>
 	{
@@ -199,6 +205,9 @@
       "AnswerTips":"Please enter Security answer",
       "Cancel":"Cancel",
       "Determine":"Determine",
+      "toast1":"Determine",
+      "toast2":"Determine",
+      "toast3":"Determine",
       "Date":"Date"
 		}
 	}
@@ -206,12 +215,12 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import LoginService from "../../service/login";
-import AbusTitle from '../../components/AbusTitle.vue'
+import AbusTitle from "../../components/AbusTitle.vue";
 
 @Component({
   name: "Registery",
   components: {
-    AbusTitle
+    AbusTitle,
   },
 })
 export default class Register extends Vue {
@@ -222,7 +231,7 @@ export default class Register extends Vue {
   private isReaded: boolean = false;
   // date
   private minDate: Date = new Date(1920, 1, 1);
-  private maxDate: Date = new Date(2020,7,1);
+  private maxDate: Date = new Date(2020, 7, 1);
   private currentDate: Date = new Date(2000, 1, 15);
   private datetime: string = "";
   private columns: Array<any> = [
@@ -247,12 +256,20 @@ export default class Register extends Vue {
       this.$i18n.locale = "en";
     } else {
       this.$i18n.locale = "zh";
+      this.columns = [
+        "我爸爸的名字?",
+        "我妈妈的名字?",
+        "我最喜欢的歌手?",
+        "我最喜欢的动物?",
+      ];
     }
   }
 
   public showPopup() {
     if (this.isCheckPassword) {
       this.show = true;
+    }else{
+      this.$toast('请先正确填写密码')
     }
   }
   public showQuestion() {
@@ -279,6 +296,11 @@ export default class Register extends Vue {
       ":" +
       val.getSeconds();
     return val;
+  }
+  public checkUserPassword(e: any) {
+    if (e.target.value.length < 6) {
+      this.$toast("密码不能少于6位");
+    }
   }
   public checkPassword() {
     if (this.password != this.confirmPassword) {
@@ -317,37 +339,37 @@ export default class Register extends Vue {
             .dispatch("setUserInfo", {
               name: res.data.userName,
               token: res.data.access_token,
-              id: res.data.airbusId
+              id: res.data.airbusId,
             })
             .then((res: any) => {
               LoginService.getUserMe().then((res: any) => {
-// AvatarPath: ""
-// DisplayName: "mizao"
-// Email: null
-// Flow: {flow: -1}
-// Id: "3a03a40ac79b4f0d6eef58fcd99271d7"
-// IsWeChatBinded: false
-// NickName: "mizao"
-// PhoneNumber: "13570492375"
-// Seat:{
-// Id: "1"
-// Name: "1A"
-// col: 1
-// col-number: 1
-// row: 1
-// }
-// __proto__: Object
-// UserName: "86_13570492375"
-// WeChatId: null
-// points: "2000"
+                // AvatarPath: ""
+                // DisplayName: "mizao"
+                // Email: null
+                // Flow: {flow: -1}
+                // Id: "3a03a40ac79b4f0d6eef58fcd99271d7"
+                // IsWeChatBinded: false
+                // NickName: "mizao"
+                // PhoneNumber: "13570492375"
+                // Seat:{
+                // Id: "1"
+                // Name: "1A"
+                // col: 1
+                // col-number: 1
+                // row: 1
+                // }
+                // __proto__: Object
+                // UserName: "86_13570492375"
+                // WeChatId: null
+                // points: "2000"
                 if (res.code == 200 && res.data.Seat == null) {
-                      this.$router.push({
-                    name: "selectSeat"
+                  this.$router.push({
+                    name: "selectSeat",
                   });
-                } else if (res.code == 200 && res.data.Seat.Name){
-                  this.$store.commit('setSeatNumber',res.data.Seat.Name)
-                   this.$router.push({
-                    name: "home"
+                } else if (res.code == 200 && res.data.Seat.Name) {
+                  this.$store.commit("setSeatNumber", res.data.Seat.Name);
+                  this.$router.push({
+                    name: "home",
                   });
                 }
               });
@@ -359,6 +381,8 @@ export default class Register extends Vue {
       // .catch((reason: any) => {
       //   this.$toast("The current mobile number is registered");
       // });
+    } else if (!this.isCheckPassword) {
+      this.$toast("Password inconsistency");
     } else if (!this.isReaded) {
       this.$toast("Have you read the 《Privacy policy》《Terms of service》");
     } else {
@@ -398,10 +422,21 @@ export default class Register extends Vue {
         line-height: 0.8rem;
       }
     }
+    .location {
+      position: relative;
+      .data-icon {
+        position: absolute;
+        right: 0.2rem;
+        top: 0.2rem;
+        width: 0.32rem;
+        height: 0.32rem;
+      }
+    }
   }
 }
-.text-selected, .text-unselected{
-  font-size: .24rem !important;
+.text-selected,
+.text-unselected {
+  font-size: 0.24rem !important;
 }
 .img-icon {
   width: 0.24rem;
