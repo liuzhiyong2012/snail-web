@@ -196,7 +196,6 @@ export default {
 		}else{
 			return require('../../images/default_cover.png');
 		}
-	
 	},
     percent() {
       return this.currentTime / this.currentSong.duration;
