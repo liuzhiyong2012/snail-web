@@ -8,7 +8,8 @@
           v-for="(item, index) in recomendList"
           :key="index"
         >
-          <div class="shopping-recomend-img" :style="{backgroundImage:`url(${item.CoverImgUrl})`}"></div>
+          <!-- <div class="shopping-recomend-img" :style="{backgroundImage:`url(${item.CoverImgUrl})`}"></div> -->
+          <img class="shopping-recomend-img" v-lazy="item.CoverImgUrl" />
         </van-swipe-item>
       </van-swipe>
       <!-- <banner :bannerData="bannerData" /> -->
@@ -34,6 +35,7 @@
           :title="item.category"
           :name="item.Id"
           :key="index"
+          class="vant-tab"
         >
           <div class="filter">
             <div @click="clickShowFilter">
@@ -81,7 +83,7 @@
                 <div class="price">${{item.Price}}</div>
                 <div class="name">{{item.Name}}</div>
                 <div class="qty">
-                  {{$t('QTY')}} {{item.QTY}}
+                  <!-- {{$t('QTY')}} {{item.QTY}} -->
                   <span class="buy" @click="stepToDetail(item)">{{$t('Buy')}}</span>
                 </div>
               </div>
@@ -264,13 +266,15 @@ export default class ShoppingIndex extends Vue {
 .shopping-recomend-item {
   position: relative;
   width: 100%;
-  height: 2.5rem;
+  height: 4rem;
   .shopping-recomend-img {
     width: 100%;
     height: 100%;
-    background-position: center center;
-    // background-repeat: no-repeat;
     background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-color: #fff;
   }
 }
 .f1 {
@@ -278,6 +282,10 @@ export default class ShoppingIndex extends Vue {
   /deep/ .van-tab {
     line-height: 0.4rem;
   }
+  /deep/ .van-tab__text--ellipsis{
+    font-size: .28rem !important;
+  }
+  
 }
 .menu {
   box-sizing: border-box;

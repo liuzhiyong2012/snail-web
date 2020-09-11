@@ -229,18 +229,19 @@ export default class FlightIndex extends Vue {
 
 		const optionData = {
 			grid: {
-				left: '15%',
-				right: '5%',
-				// top: '9.6%',
-				top: '20%',
-				bottom: '20%'
+				left: '13.5%',
+				right: '12%',
+				top: '18%',
+				bottom: '25%'
 			},
 			legend: {
 				orient: 'horizontal',
+				backgroundColor:'#ccc',
+				borderRadius:5,
 				x: 'center',
-				y: 'top',
-				// padding:
-				padding: [5, 20, 15, 20],
+				y: 'bottom',
+				// padding: [5, 20, 15, 20],
+				padding: [2, 20, 2, 20],
 				data: ['Altitude m', 'Speed km/h']
 			},
 			tooltip: {
@@ -255,28 +256,35 @@ export default class FlightIndex extends Vue {
 			},
 			yAxis: [
 				{
-					name: '',
+					name: 'Altitude',
+					nameTextStyle: {
+						padding: [0, 0, -7, -40]    // 四个数字分别为上右下左与原位置距离
+					},
 					type: 'value',
+					max: 12000,
 					axisLine: {
 						show: false
 					},
 					axisTick: {
 						show: false
 					},
-					axisLabel: {
-						show: true
+					axisLabel : {
+						show:true
 					}
 				},
 				{
-					name: '',
+					name: 'Speed',
+					nameTextStyle: {
+						padding: [0, 0, -7, 40]    // 四个数字分别为上右下左与原位置距离
+					},
 					type: 'value',
+					max: 1200,
 					axisLine: {
 						show: false
 					},
 					axisLabel: {
 						interval:'auto',
 						show: true,
-						formatter:'{value}%'
 					},
 					axisTick: {
 						show: false
@@ -302,6 +310,7 @@ export default class FlightIndex extends Vue {
 					name: 'Speed km/h',
 					data: speedsData,
 					type: 'line',
+					yAxisIndex: 1,
 					smooth: true,
 					itemStyle: {
 						normal: {

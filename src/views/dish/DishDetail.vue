@@ -6,7 +6,9 @@
 			</abus-title>
 		</div>
 		<div class="order-ctn">
-			<div class="dish-img" :style="{backgroundImage:`url(${dishInfo.BannerImgPath})`}">
+			<!-- <div class="dish-img" :style="{backgroundImage:`url(${dishInfo.BannerImgPath})`}"> -->
+			<div class="dish-img" >
+				<img :src="dishInfo.BannerImgPath|addBaseUrl" alt="">
 			</div>
 			<div class="order-info">
 				<h6 class="dish-name">{{dishInfo.Name}}</h6>
@@ -158,11 +160,14 @@ export default class DishDetail extends Vue {
 	}
 	.order-ctn {
 		.dish-img {
-			height: 6.3rem;
+			// height: 6.3rem;
 			background-position: center;
 			background-size:cover ;
 			background-repeat: no-repeat;
-			background-color:#7B98BC ;
+			// background-color:#7B98BC ;
+			img{
+				width: 100%;
+			}
 		}
 
 		.order-info {
@@ -209,12 +214,14 @@ export default class DishDetail extends Vue {
 					display: flex;
 					align-items: center;
 					.price-ctn {
-						font-size: 0.36rem;
+						// font-size: 0.36rem;
+						font-size: 0.28rem;
 						font-weight: bold;
 						color: rgba(46, 46, 46, 1);
 						margin-right: 0.4rem;
 					}
 					.field-ctn {
+						margin-right: -0.12rem;
 					}
 				}
 			}
@@ -238,6 +245,7 @@ export default class DishDetail extends Vue {
 					font-size: 0.32rem;
 					font-weight: bold;
 					color: rgba(0, 32, 91, 1);
+					margin-right: 0.2rem;
 				}
 			}
 		}

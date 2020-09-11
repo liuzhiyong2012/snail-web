@@ -2,9 +2,10 @@ import {localStore} from '../utils/data-management'
 export default {
   state: {
     voyageInfo: {
-      seatNumber: 'A34',
+      seatNumber: '12',
       seatClass:'Y',
       seatType: 2,
+      seatName:'3D',  
     },
     userInfo: {
 		
@@ -39,6 +40,10 @@ export default {
     setSeatNumber(state:any,seat:string){
       state.voyageInfo.seatNumber = seat
       localStore.set('seatNumber',seat)
+    },
+    setSeatName(state:any,seat:string){
+      state.voyageInfo.seatName = seat
+      localStore.set('seatName',seat)
     },
     setSeatType(state:any,seat:string){
       state.voyageInfo.seatType = seat

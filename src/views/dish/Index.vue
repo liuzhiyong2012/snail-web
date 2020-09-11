@@ -3,13 +3,14 @@
 		<abus-title :title="$t('title')" backRouteName="home"></abus-title>
 		<van-swipe :autoplay="3000">
 			<van-swipe-item class="dish-recomend-item" v-for="(item, index) in recomendList" :key="index" @click="stepToDetail(item)">
-				<div class="dish-recomend-img" :style="{ backgroundImage: `url(${item.BannerImgPath})` }"></div>
+				<!-- <div class="dish-recomend-img" :style="{ backgroundImage: `url(${item.BannerImgPath})` }"></div> -->
+				<img class="dish-recomend-img" v-lazy="item.BannerImgPath" />
 			</van-swipe-item>
 		</van-swipe>
 
 		<section class="dishes-list">
 			<div v-for="(item, index) in dishesList" class="dishes-item" :key="index" @click="stepToDetail(item)">
-				<div class="img-ctn" :style="{ backgroundImage: `url(${item.BannerImgPath})` }"></div>
+				<div class="img-ctn" :style="{ backgroundImage: `url(${item.BannerImgPath})` }" ></div>
 				<div class="dish-info">
 					<div class="price-ctn" :class="{ 'is-discount': false }">
 						<span>${{ item.Price }}</span>
@@ -19,14 +20,15 @@
 					<div class="name-ctn">{{ item.Name }}</div>
 					<div class="bottom-ctn" v-if="item.Stocking">
 						<div class="qty-ctn">
-							<span>QTY</span>
-							<span>{{item.Stocking}}</span>
+							<!-- <span>QTY</span>
+							<span>{{item.Stocking}}</span> -->
 						</div>
 						<div class="order-btn" @click="stepToDetail(item)">order</div>
 					</div>
 					<div v-else class="bottom-ctn">
 						<div class="qty-ctn">
-							<span>缺货</span>
+							<span v-if="lang=='zh'">缺货</span>
+							<span v-if="lang=='en'">Out of stock</span>
 						</div>
 						<div class="order-btn" @click="showToast">order</div>
 					</div>
@@ -52,7 +54,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import AbusTitle from '../../components/AbusTitle.vue';
 import DishService from '../../service/dish';
-
+import { localStore } from "../../utils/data-management";
 import UrlUtils from '../../utils/url-utils';
 
 @Component({
@@ -65,11 +67,20 @@ export default class DishIndex extends Vue {
 	// @Prop() private msg!: string;
 	private recomendList: Array<any> = [];
 	private dishesList: Array<any> = [];
+	private lang: String = ''
 
 	private created() {
 		this.getDishesRecommendedList();
 		this.getDishesList();
 	}
+	private mounted() {
+		if (localStorage.getItem("lang") == "en") {
+		this.lang = "en";
+		} else {
+		this.lang = "zh";
+		}
+	}
+
 
 	private getDishesRecommendedList() {
 		DishService.getDishesRecommendedList({}).then((res: any) => {
@@ -97,16 +108,30 @@ export default class DishIndex extends Vue {
 	}
 
 	private stepToDetail(item: any) {
-		
-		this.$router.push({
-			name: 'dishDetail',
-			query: {
-				id: item.Id
+		if(item.Stocking==0){
+			if (localStorage.getItem("lang") == "en") {
+				this.$toast('Out of stock!')
+			} else {
+				this.$toast('暂时缺货')
 			}
-		});
+			return
+		}else{
+			this.$router.push({
+				name: 'dishDetail',
+				query: {
+					id: item.Id
+				}
+			});
+		}
 	}
 	private showToast(){
+		if (localStorage.getItem("lang") == "en") {
+		
+		this.$toast('Stockout!')
+
+		} else {
 		this.$toast('暂时缺货')
+		}
 	}
 }
 </script>
@@ -116,7 +141,7 @@ export default class DishIndex extends Vue {
 	.dish-recomend-item {
 		position: relative;
 		width: 100%;
-		height: 2.5rem;
+		height: 4rem;
 		.dish-recomend-img {
 			width: 100%;
 			height: 100%;

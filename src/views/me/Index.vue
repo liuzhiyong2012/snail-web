@@ -121,7 +121,7 @@
 			  "MyOrder":"My order",
 			  "ShoppingAddress":"Shopping address",
 			  "PaymentMethod":"Payment method",
-			  "OtherAccountNumber":"Other account number",
+			  "OtherAccountNumber":"Third party account",
 			  "PrivacyPolicy":"Privacy policy",
 			  "TermsOfService":"Terms of service"
 		}

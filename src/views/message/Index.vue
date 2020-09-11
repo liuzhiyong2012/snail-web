@@ -101,7 +101,8 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import MessageTitle from './components/MessageTitle.vue';
 import MessageService from '../../service/message';
 import { localStore } from '../../utils/data-management';
-declare function io(selector: object): any;
+// declare function io(selector: object): any;
+declare let io: any;
 @Component({
   name: 'messageIndex',
   components: {
@@ -145,8 +146,6 @@ export default class messageIndex extends Vue {
 	  return this.$store.state.login.userInfo;
   }
   
- 
-  
   private created() {
     this.uInfo = localStore.get('userInfo');
     this.initWebSocket();
@@ -167,6 +166,7 @@ export default class messageIndex extends Vue {
     //   this.socket.close();
     //   this.socket = null;
     // }
+    // this.socket&&this.socket.close();
     this.changeNoticeStatus();
   }
 
@@ -205,15 +205,17 @@ export default class messageIndex extends Vue {
   public initWebSocket() {
     const _this = this;
     // 连接服务端，workerman.net:2120换成实际部署web-msg-sender服务的域名或者ip
-    // _this.socket = io('http://172.16.8.69:2120');
-    const opt = {
-      // path:'http://kf.vpclub.cn/airbus/websocket/'
-      path: process.env.VUE_APP_PROXY + 'websocket/'
-    };
-    _this.socket = io(opt);
+    // _this.socket =  (window as any).io('http://172.16.8.69:2120');
+    _this.socket =  (window as any).io('http://kf.vpclub.cn/airbus/websocket');
+    // const opt = {
+    //   // path:'http://kf.vpclub.cn/airbus/websocket/'
+    //   path: process.env.VUE_APP_PROXY + 'websocket/'
+    // };
+    // _this.socket = io(opt);
+
     // uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
     let uid = _this.uInfo.id;
-   
+
     // socket连接后以uid登录
     _this.socket.on('connect', function () {
       _this.socket.emit('login', uid);
@@ -235,23 +237,20 @@ export default class messageIndex extends Vue {
         });
         _this.$store.dispatch('saveNoticeList', _this.systemMsgList);
       } else if (endMsg.type == 'message') {
-		  
         // 聊天
-		if(this.userInfo.id != endMsg.from_user_id){
-			_this.chatList.push({
-			  id: '', //消息id
-			  from_user_id: '', //发送人id
-			  to_user_id: '', //接收人id
-			  content: endMsg.content, //发送的消息
-			  created_time: '', // 发送时间
-			  airbus_id: '', //航班id
-			  read: 0, // 已读  0未读 1已读
-			  type: 2, // 1 发送给空乘   2 发送给用户
-			});
-			_this.$store.dispatch('saveChatList', _this.chatList);
-		}
-		
-       
+        if(this.userInfo.id != endMsg.from_user_id){
+          _this.chatList.push({
+            id: '', //消息id
+            from_user_id: '', //发送人id
+            to_user_id: '', //接收人id
+            content: endMsg.content, //发送的消息
+            created_time: '', // 发送时间
+            airbus_id: '', //航班id
+            read: 0, // 已读  0未读 1已读
+            type: 2, // 1 发送给空乘   2 发送给用户
+          });
+          _this.$store.dispatch('saveChatList', _this.chatList);
+        }
       }
     });
 	

@@ -68,6 +68,9 @@ export default {
   .video-top{
     margin: .3rem 0 0;
   }
+  /deep/ .van-tab{
+    line-height: 0.4rem;
+  }
 }
 .van-tab--active {
   font-weight: 600;

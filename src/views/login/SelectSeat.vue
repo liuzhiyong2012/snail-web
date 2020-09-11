@@ -110,13 +110,14 @@ export default class SelectSeat extends Vue {
   public getCrmSelectSeat() {
     this.columns.forEach((item: any, index: any) => {
       if (item.Name == this.seat) {
-        this.seatId = item.id;
+        this.seatId = item.Id;
         return;
       }
     });
     if (this.seatId != "") {
       LoginServer.getCrmSelectSeat(this.seatId).then((res: any) => {
         this.$store.commit('setSeatNumber',this.seatId)
+        this.$store.commit('setSeatName',this.seat)
         console.log(res);
         if (res.code == 200) {
           this.$toast(res.data)

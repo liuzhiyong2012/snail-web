@@ -5,14 +5,17 @@
     </abus-title>
     <div calss="shopping-details">
       <!-- <banner :bannerData="bannerData" /> -->
-      <div class="dish-img" :style="{backgroundImage:`url(${shoppingInfo.BannerImgPath})`}"></div>
+      <!-- <div class="dish-img" :style="{backgroundImage:`url(${shoppingInfo.BannerImgPath})`}"></div> -->
+      <div class="dish-img" >
+        <img :src="shoppingInfo.BannerImgPath|addBaseUrl" alt="">
+      </div>
     </div>
     <div class="m-box">
       <div class="title">{{shoppingInfo.Name || '--'}}</div>
       <div class="info-box">
         <div class="qty">{{$t('QTY')}} {{shoppingInfo.Stocking || '--'}}</div>
         <div class="f1">
-          <div>${{shoppingInfo.Price || 0}}</div>
+          <div class="price">${{shoppingInfo.Price || 0}}</div>
           <van-field class="field-ctn" name="stepper" label>
             <template #input>
               <van-stepper v-model="stepper" />
@@ -138,11 +141,15 @@ export default class ShoppingDetail extends Vue {
   width: 100%;
 }
 .dish-img {
-  height: 6.3rem;
+  // height: 6.3rem;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  background-color: #7b98bc;
+  // background-color: #7b98bc;
+  img{
+    width: 100%;
+    height: 100%;
+  }
 }
 .m-box {
   margin: 0 0 0.2rem 0;
@@ -179,6 +186,9 @@ export default class ShoppingDetail extends Vue {
       font-weight: bold;
       color: rgba(46, 46, 46, 1);
       line-height: 0.58rem;
+      .price{
+        font-size: 0.28rem;
+      }
     }
     .van-cell {
       width: auto;
