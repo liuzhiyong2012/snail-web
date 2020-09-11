@@ -69,7 +69,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import AbusTitle from '../../components/AbusTitle.vue';
 import DishCartIcon from './components/DishCartIcon.vue';
 import DishService from '../../service/dish';
-
+import { localStore } from "../../utils/data-management";
 import UrlUtils from '../../utils/url-utils';
 
 @Component({
@@ -88,7 +88,7 @@ export default class DishDetail extends Vue {
 	private id: any = {};
 	
 	private get seatNumber():string{
-		return this.$store.state.login.voyageInfo.seatNumber;
+		return localStore.get("seatNumber") || this.$store.state.login.voyageInfo.seatNumber;
 	}
 
 	private mounted() {
@@ -267,7 +267,7 @@ export default class DishDetail extends Vue {
 
 			&.primary {
 				color: rgba(0, 32, 91, 1);
-				border-color: rgba(0, 32, 91, 1);
+				border: 2px solid rgba(0, 32, 91, 1);
 				background: #f8f6f9;
 			}
 

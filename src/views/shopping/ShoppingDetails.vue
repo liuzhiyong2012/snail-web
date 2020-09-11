@@ -1,7 +1,7 @@
 <template>
   <div>
     <abus-title :title="$t('title')" backRouteName="shopping">
-      <cart-icon></cart-icon>
+      <cart-icon @toCart="stepToCart()"></cart-icon>
     </abus-title>
     <div calss="shopping-details">
       <!-- <banner :bannerData="bannerData" /> -->
@@ -123,6 +123,13 @@ export default class ShoppingDetail extends Vue {
       name: "shoppingCart",
     });
   }
+
+  public stepToCart():void{
+		// debugger;
+		this.$router.push({
+			name:'shoppingCart'
+		});
+	}
 }
 </script>
 

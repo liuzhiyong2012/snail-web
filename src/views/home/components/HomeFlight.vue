@@ -2,22 +2,22 @@
 	<section class="homeflight-main-ctn" >
 		<div class="abus-scroller-box home-flight-box">
 			<div class="home-flight-t">
-				<span classs="flight-model">{{ airplane.AirplaneModels }}</span>
+				<span classs="flight-model">{{ airplane.AirplaneModels }} </span>
 				<span classs="flight-number">{{ baseInfo.FlightNumber }}</span>
 				<!-- <i class="icon  icon-search"></i> -->
 			</div>
 
 			<div class="home-flight-info">
 				<span class="home-flight-seat">
-					<span>Seat No:</span>
+					<span>Seat No：</span>
 					<span>{{ seatNumber }}</span>
-					<i class="home-flight-g">{{seatClass}}</i>
+					<span class="home-flight-g">{{seatClass}}</span>
 				</span>
 				<span class="flight-duration-time">
 					<span>Remaining:</span>
 					<span>2hours 10min</span>
 				</span>
-				<span class="home-flight-c">{{ weather.Temper }}</span>
+				<span class="home-flight-c">{{weather.Temper +' '+ weather.Desc}} </span>
 			</div>
 
 			<div class="home-flight-place">
@@ -71,6 +71,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import HomeMap from './HomeMap.vue';
 import AbusMap from '../../../components/AbusMap.vue';
 import FlightService from '../../../service/flight';
+import { localStore } from "../../../utils/data-management";
 
 @Component({
 	name: 'HomeFlight',
@@ -87,11 +88,17 @@ export default class HomeFlight extends Vue {
 	public weather: any = {};
 
 	private get seatNumber(): string {
-		return this.$store.state.login.voyageInfo.seatNumber;
+		return localStore.get("seatNumber") || this.$store.state.login.voyageInfo.seatNumber;
 	}
 	
 	private get seatClass(): string {
-		return this.$store.state.login.voyageInfo.seatClass;
+		if(localStore.get("seatType")==1){
+			return 'F'
+		}else if(localStore.get("seatType")==2){
+			return 'Y'
+		}else if(localStore.get("seatType")==3){
+			return 'C'
+		}
 	}
 
 	private created() {
@@ -140,20 +147,20 @@ export default class HomeFlight extends Vue {
 				color: rgba(46, 46, 46, 1);
 				line-height: 0.42rem;
 				
-				.flight-model{  
-					margin-right: 0.16rem;
-				}
+				// .flight-model{  
+				// 	margin-right: 0.16rem;
+				// }
 			}
 			
 			.home-flight-info {
 				display: flex;
 				align-items: center;
+				justify-content: space-between;
 				margin-bottom: 0.26rem;
 			
 				.home-flight-seat {
 					display: flex;
 					align-items: center;
-					// padding:
 					padding:0 0.04rem 0 0.10rem;
 					line-height: 0.32rem;
 					background:rgba(0,32,91,1);
@@ -174,10 +181,10 @@ export default class HomeFlight extends Vue {
 			
 					.home-flight-g {
 						margin-left: 0.12rem;
+						margin-top: 0.01rem;
 						font-size:0.20rem;
 						font-weight:bold;
 						color:rgba(0,32,91,1);
-						
 						border-radius: 50%;
 						line-height: 0.24rem;
 						text-align: center;
@@ -221,7 +228,7 @@ export default class HomeFlight extends Vue {
 			
 				.home-flight-c {
 					border-radius:0.16rem;
-					border:1px solid rgba(0,174,199,1);
+					border:2px solid rgba(0,174,199,1);
 					height: 0.30rem;
 					text-align: center;
 					padding:0 0.16rem;

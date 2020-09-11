@@ -27,13 +27,16 @@ export default {
     };
   },
   created() {
-    this.qrCodeUrl = `https://qrcodescan.in/`
+    // this.qrCodeUrl = ` https://qrcodescan.in/`
     // window.location.href = `https://qrcodescan.in/`;
+
+    this.qrCodeUrl = `http://kf.vpclub.cn/scan/`
+    // window.location.href = `http://kf.vpclub.cn/scan/`;
   },
   mounted() {
     const oIframe = document.getElementById("child");
     const deviceHeight = document.documentElement.clientHeight;
-    oIframe.style.height = Number(deviceHeight)-52 + "px"; //数字是页面布局高度差
+    oIframe.style.height = Number(deviceHeight) - 48 + "px"; //数字是页面布局高度差
   },
 
   destroyed() {},
