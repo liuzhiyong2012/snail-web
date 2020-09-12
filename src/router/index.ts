@@ -16,6 +16,7 @@ import GameRouter from "./game/router";
 import MessageRouter from "./message/router";
 import MusicRouter from "./music/router";
 import Me from "./me/router";
+import AboutUs from "../views/home/AboutUs.vue";
 import {localStore} from '../utils/data-management';
 
 Vue.use(VueRouter);
@@ -60,6 +61,11 @@ const routes: Array<RouteConfig> = [
         path: "/about",
         name: "about",
         component: About,
+      },
+      {
+        path: "/aboutUs",
+        name: "aboutUs",
+        component: AboutUs,
       },
     ],
   },

@@ -132,7 +132,6 @@ export default class CrewCatering extends Vue {
 	//计算座舱布局的宽度
 	private calcContentStyle(layoutInfo){
 		let unitWidth = 84 + 32;
-	
 		return {
 			width:(unitWidth * layoutInfo.maxSeatLen)/100 + 'rem'
 		};
@@ -193,7 +192,6 @@ export default class CrewCatering extends Vue {
 				let flightObj = new FlightSeatMatrix(resData.data);
 				let tabList = [];
 				this.layoutInfo = flightObj.getLayoutInfo();
-			
 				this.layoutInfo.seatType.valueArr.forEach((seatType,index)=>{
 					if(index == 0){
 						this.active = seatType;
