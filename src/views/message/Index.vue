@@ -148,7 +148,7 @@ export default class messageIndex extends Vue {
   
   private created() {
     this.uInfo = localStore.get('userInfo');
-    this.initWebSocket();
+    // this.initWebSocket();
   }
   private mounted() {
     this.getChatMessage(); // 获取聊天记录

@@ -52,10 +52,12 @@ export default class CrewCatering extends Vue {
 	
 	private selectList:Array<any> = [
 		{
-			name:'未完成',
+			// name:'未完成',
+			name:'pending',
 			value:'0'
 		},{
-			name:'已完成',
+			// name:'已完成',
+			name:'finished',
 			value:'1'
 		}
 	];

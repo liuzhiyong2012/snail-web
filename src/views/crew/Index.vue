@@ -82,7 +82,7 @@ export default class CrewLayoutCtn extends Vue {
 	private show: boolean = false;
 	
 	private mounted(){
-		this.startWebScoket();
+		// this.startWebScoket();
 	}
 	
 	private beforeDestroy(){
