@@ -6,8 +6,11 @@
 			<svg aira-hidden="true" class="icon"  @click="stepTo('scan')">
 				<use xlink:href="#icon-scan"></use>
 			</svg>
-			<span class="flow-ctn" @click="stepTo('internet')">
-				0GB
+			<span v-if="!isVip" class="flow-ctn" @click="stepTo('internet')">
+				{{userData.Flow.Flow}}
+			</span>
+			<span v-else class="flow-ctn" @click="stepTo('internet')">
+				VIP
 			</span>
 			<!-- <i class="icon"></i> -->
 			
@@ -28,7 +31,7 @@
 
 <script lang="ts">
 	import {Vue,Prop,Component, Watch} from 'vue-property-decorator';
-    
+    import LoginService from '../../../service/login';
 	@Component({
 		name:'HomeTitle',
 		components:{
@@ -36,6 +39,8 @@
 		}
 	})
 	export default class HomeTitle extends Vue{
+		private userData: any = {}
+		private isVip: boolean = false
 		@Prop() private showRed!: boolean;
 		@Watch("showRed", { immediate: true })
 		showRedWatch(newVal: boolean, oldVal: boolean) {
@@ -44,7 +49,22 @@
 		public stepTo(page:any):void{
 			this.$emit('stepTo',page);
 		}
-		
+		public created() {
+			this.getUserMe()
+		}
+		public getUserMe(){
+			LoginService.getUserMe().then((res:any) => {
+				console.log(res)
+				if(res.code == 200){
+					this.userData = res.data
+					if(res.data.Flow.Flow == -1){
+						this.isVip = true
+					}
+				}else{
+					this.$toast(res.message)
+				}
+			})
+		}
 	}
 </script>
 

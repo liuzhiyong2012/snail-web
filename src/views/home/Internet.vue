@@ -1,6 +1,6 @@
 <template>
   <div class="internet">
-    <abus-title title="Internet" backRouteName="home"></abus-title>
+    <abus-title :title="$t('Internet')" backRouteName="home"></abus-title>
     <div class="padding">
       <div class="card" v-for="(item, index) in cardList" :key="index">
         <div class="header">
@@ -10,9 +10,9 @@
         <div class="con">
           <div class="con-l">{{item.Remark}}
             </div>
-          <div class="pay" @click="routerInternetCard(item)">Pay</div>
+          <div class="pay" @click="routerInternetCard(item)">{{$t('Pay')}}</div>
         </div>
-        <p class="text">Estimated use</p>
+        <p class="text">{{$t('EstimatedUse')}}</p>
         <div class="bottom">
           <div class="f1">
             <img class="icon" src="./images/icon_01.png" alt="icon_01" />
@@ -34,28 +34,14 @@
 <i18n>
 	{
 		"zh":{
-			  "Me":"我的",
-			  "Language":"语言",
-			  "ChineseAndEnglish":"简体中文",
-			  "exchange":"积分",
-			  "MyOrder":"我的订单",
-			  "ShoppingAddress":"收货地址",
-			  "PaymentMethod":"支付方式",
-			  "OtherAccountNumber":"第三方授权",
-			  "PrivacyPolicy":"隐私政策",
-			  "TermsOfService":"服务条款"
+			  "Internet":"网络套餐",
+			  "Pay":"购买",
+			  "EstimatedUse":"预估使用"
 		},
 		"en":{
 			  "Internet":"Internet",
 			  "Pay":"Pay",
-			  "ChineseAndEnglish":"English",
-			  "exchange":"exchange",
-			  "MyOrder":"My order",
-			  "ShoppingAddress":"Shopping address",
-			  "PaymentMethod":"Payment method",
-			  "OtherAccountNumber":"Other account number",
-			  "PrivacyPolicy":"Privacy policy",
-			  "TermsOfService":"Terms of service"
+			  "EstimatedUse":"Estimated use"
 		}
 	}
 </i18n>

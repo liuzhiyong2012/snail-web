@@ -23,14 +23,14 @@
 							<!-- <span>QTY</span>
 							<span>{{item.Stocking}}</span> -->
 						</div>
-						<div class="order-btn" @click="stepToDetail(item)">order</div>
+						<div class="order-btn" @click="stepToDetail(item)">{{$t("order")}}</div>
 					</div>
 					<div v-else class="bottom-ctn">
 						<div class="qty-ctn">
 							<span v-if="lang=='zh'">缺货</span>
 							<span v-if="lang=='en'">Out of stock</span>
 						</div>
-						<div class="order-btn" @click="showToast">order</div>
+						<div class="order-btn" @click="showToast">{{$t("order")}}</div>
 					</div>
 				</div>
 			</div>
@@ -42,10 +42,12 @@
 <i18n>
 	{
 		"zh":{
-			"title":"餐品列表"
+			"title":"餐品列表",
+			"order": "下单"
 		},
 		"en":{
-			"title":"Dish"
+			"title":"Dish",
+			"order": "order"
 		}
 	}
 </i18n>

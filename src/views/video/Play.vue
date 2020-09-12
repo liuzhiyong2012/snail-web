@@ -112,12 +112,14 @@
 			"title":"机上购物",
       "NoComments":"暂无评论",
       "more":"显示更多",
+      "fail": "获取列表失败！",
       "Send": "发送"
 		},
 		"en":{
 			"title":"Shopping",
       "NoComments":"No comments",
       "more":"more",
+      "fail": "Failed to get list!",
       "Send":"Send"
 		}
 	}
@@ -254,7 +256,7 @@ export default class VideoPlay extends Vue {
           this.videoListOne = this.videoListOne.concat(this.videoListTwo)
           console.log(this.videoListOne)
         } else {
-          this.$toast('获取列表失败');
+          this.$toast(this.$i18n.t('fail'));
         }
       });
   }

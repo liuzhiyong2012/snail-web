@@ -5,7 +5,16 @@
 		</div>
 	</section>
 </template>
-
+<i18n>
+	{
+		"zh":{
+			
+		},
+		"en":{
+			
+		}
+	}
+</i18n>
 <script lang="ts">
 	import {Vue,Prop,Component} from 'vue-property-decorator';
 	

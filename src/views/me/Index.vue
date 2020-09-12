@@ -131,6 +131,7 @@
 import AbusTitle from "../../components/AbusTitle.vue";
 import { Vue, Prop, Component } from "vue-property-decorator";
 import MeServer from '../../service/me'
+import { mapState } from 'vuex';
 
 @Component({
   name: "meIndex",
@@ -151,6 +152,7 @@ export default class meIndex extends Vue {
     } else {
       this.$i18n.locale = "zh";
     }
+    
   }
   private get payType():number{
 		return this.$store.state.me.payType;

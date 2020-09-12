@@ -43,7 +43,16 @@
     </van-tabs>
   </div>
 </template>
-
+<i18n>
+	{
+		"zh":{
+			
+		},
+		"en":{
+			
+		}
+	}
+</i18n>
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import Banner from "../../components/banner.vue";

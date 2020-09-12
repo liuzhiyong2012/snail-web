@@ -1,6 +1,6 @@
 <template>
   <div class="abus-height">
-      <abus-title title="Comments" backRouteName="videoPlay" :params="params"></abus-title>
+      <abus-title :title="$t('Comments')" backRouteName="videoPlay" :params="params"></abus-title>
     <div class="comment-mask">
       
       <div class="comment-list">
@@ -32,10 +32,12 @@
 <i18n>
 	{
 		"zh":{
-      "Send": "发送"
+      "Send": "发送",
+      "Comments":"评论"
 		},
 		"en":{
-      "Send":"Send"
+      "Send":"Send",
+      "Comments": "Comments"
 		}
 	}
 </i18n>

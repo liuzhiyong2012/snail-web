@@ -19,6 +19,11 @@ export default {
   },
   created() {
     this.getGameList();
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+    } else {
+      this.$i18n.locale = "zh";
+    }
   },
   methods: {
     // 获取游戏列表

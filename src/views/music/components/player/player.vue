@@ -154,7 +154,16 @@
     <playList ref="playList"></playList>
   </div>
 </template>
-
+<i18n>
+	{
+		"zh":{
+			
+		},
+		"en":{
+			
+		}
+	}
+</i18n>
 <script>
 import MusicPlayer from '../MusicPlayer.vue';
 import { mapGetters, mapMutations, mapActions } from 'vuex';

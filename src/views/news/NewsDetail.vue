@@ -1,7 +1,7 @@
 <template>
   <section class="news-detail">
     <van-sticky>
-      <abus-title title="News">
+      <abus-title :title="$t('News')">
         <div slot style="width:0.3rem"></div>
       </abus-title>
     </van-sticky>
@@ -24,6 +24,16 @@
     <div class="news-info" v-html="newsDetail.FullDescription"></div>
   </section>
 </template>
+<i18n>
+	{
+		"zh":{
+			"News":"新闻"
+		},
+		"en":{
+			"News":"News"
+		}
+	}
+</i18n>
 <script lang="ts">
 import { Component, Prop, Vue, Watch, Emit } from "vue-property-decorator";
 import { localStore } from "../../utils/data-management";
