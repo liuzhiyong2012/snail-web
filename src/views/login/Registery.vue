@@ -143,7 +143,8 @@
           <use v-if="isReaded" xlink:href="#icon-readed_1" />
           <use v-else xlink:href="#icon-unread" />
         </svg>
-        {{$t('Agreement')}}
+        <span @click="gotoPrivacy">{{$t('Privacy')}}</span>
+        <span @click="gotoTerms">{{$t('Terms')}}</span>
       </p>
       <div class="button-box">
         <div class="button" @click="onClickRegistery">{{$t('Registery')}}</div>
@@ -166,7 +167,8 @@
 			"Date":"出生日期",
 			"Security-issues":"密保问题",
       "Security-answer":"密保答案",
-      "Agreement":"《隐私政策》《服务条款》",
+      "Privacy":"《隐私政策》",
+      "Terms":"《服务条款》",
       "Registery": "注册",
       "NameTips":"请输入你的名字",
       "PhoneTips":"请输入你的手机号码",
@@ -193,7 +195,8 @@
 			"Date":"Date",
 			"Security-issues":"Security issues",
       "Security-answer":"Security answer",
-      "Agreement":"《Privacy policy》《Terms of service》",
+      "Privacy":"《Privacy policy》",
+      "Terms":"《Terms of service》",
       "Registery": "Sign up",
       "NameTips":"Please enter your name",
       "PhoneTips":"Please enter your phone number",
@@ -388,6 +391,18 @@ export default class Register extends Vue {
     } else {
       this.$toast("Please complete the information");
     }
+  }
+
+  public gotoPrivacy(){
+    this.$router.push({
+      name:'privacyPolicy'
+    })
+  }
+
+  public gotoTerms(){
+    this.$router.push({
+      name:'termsOfService'
+    })
   }
 }
 </script>
