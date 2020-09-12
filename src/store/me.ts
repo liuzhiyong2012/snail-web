@@ -4,7 +4,8 @@ export default {
     address:'',
     points: 0,
     userData: {},
-    seatType: 2
+    seatType: 2,
+    language: ''
   },
   mutations: {
     changePayType(state: any, payType: any) {
@@ -17,6 +18,9 @@ export default {
       state.userData = data
       state.points = state.userData.points
       state.seatType = state.userData.Seat.seatType
+    },
+    changeLanguage(state:any,data:string){
+      state.language = data
     },
   },
   actions: {

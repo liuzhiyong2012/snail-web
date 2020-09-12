@@ -52,6 +52,7 @@
             class="main-item-con"
             type="number"
             maxlength="20"
+            @keydown="getUserPhoneLength"
             :placeholder="$t('PhoneTips')"
           />
         </div>
@@ -265,6 +266,12 @@ export default class Register extends Vue {
     }
   }
 
+  public getUserPhoneLength(e:any){
+    if(e.target.value.length >= 11 && e.keyCode != 8){
+      this.$toast('数字不可以超出11位')
+      this.phone = e.target.value.substring(0,10)
+    }
+  }
   public showPopup() {
     if (this.isCheckPassword) {
       this.show = true;

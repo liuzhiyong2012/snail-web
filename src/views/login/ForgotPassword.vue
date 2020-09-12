@@ -25,7 +25,12 @@
           <div class="main-box">
             <div class="title">{{$t('Phone')}}</div>
             <!-- @change="getPhoneNum($event)" -->
-            <input class="flex1" :placeholder="$t('PhoneTips')" v-model="phone" type="number" />
+            <input 
+            class="flex1" 
+            :placeholder="$t('PhoneTips')" 
+            @keydown="getUserPhoneLength"
+            v-model="phone" 
+            type="number" />
           </div>
           <div class="next" @click="postCheckPhone">{{$t('Next')}}</div>
         </div>
@@ -179,6 +184,12 @@ export default class ForgotPassword extends Vue {
       this.$i18n.locale = "en";
     } else {
       this.$i18n.locale = "zh";
+    }
+  }
+  public getUserPhoneLength(e:any){
+    if(e.target.value.length >= 11 && e.keyCode != 8){
+      this.$toast('数字不可以超出11位')
+      this.phone = e.target.value.substring(0,10)
     }
   }
   // 验证手机号是否注册

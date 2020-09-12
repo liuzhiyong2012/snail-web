@@ -35,6 +35,16 @@
     </div>
   </li>
 </template>
+<i18n>
+	{
+		"zh":{
+			
+		},
+		"en":{
+			
+		}
+	}
+</i18n>
 <script lang="ts">
 import { Component, Prop, Vue, Watch, Emit } from "vue-property-decorator";
 import { localStore } from "../../../utils/data-management";

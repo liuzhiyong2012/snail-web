@@ -1,19 +1,19 @@
 <template>
 	<section class="music-main-ctn">
-		<abus-title title="Favourites"></abus-title>
+		<abus-title :title="$t('title')"></abus-title>
 
 		<music-tab :active="activePage" :tabList="tabList" @switch="switchPage($event)" class="music-tab-ctn"></music-tab>
 
 		<section class="content-ctn">
 			<div class="title-top">
 				<div class="title-left">
-					<span>Total song:</span>
+					<span>{{$t('TotalSong')}}:</span>
 					<span>{{total}}</span>
 				</div>
 
 				<div class="title-right" v-if="activePage == 'song'" @click="playSong(0)">
 					<i class="icon icon-play"></i>
-					<span class="play-btn">Play all</span>
+					<span class="play-btn">{{$t('PlayAll')}}</span>
 				</div>
 			</div>
 
@@ -54,7 +54,7 @@
 									</div>
 									<div class="song-info">
 										<div>{{ item.Name }}</div>
-										<div>Total Songs:{{item.TrackCount}}</div>
+										<div>{{$t('TotalSong')}}:{{item.TrackCount}}</div>
 									</div>
 								</div>
 							</van-swipe-cell>
@@ -65,7 +65,24 @@
 		</section>
 	</section>
 </template>
-
+<i18n>
+	{
+		"zh":{
+			"title":"最喜欢的",
+			"TotalSong":"全部",
+			"PlayAll":"播放全部",
+			"CancelledSuccessfully":"取消收藏歌单成功",
+			"fail":"获取列表失败!"
+		},
+		"en":{
+			"title":"Favourites",
+			"TotalSong":"Total song",
+			"PlayAll":"Play all",
+			"CancelledSuccessfully":"Collection of song list cancelled successfully",
+			"fail":"Failed to get list!"
+		}
+	}
+</i18n>
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import AbusTitle from '../../components/AbusTitle.vue';
@@ -119,6 +136,11 @@ export default class MusicFavourites extends Vue {
 	private mounted() {
 		this.resetList();
 		this.getAllSong();
+		if (localStorage.getItem("lang") == "en") {
+			this.$i18n.locale = "en";
+			} else {
+			this.$i18n.locale = "zh";
+			}
 	}
 
 
@@ -142,7 +164,7 @@ export default class MusicFavourites extends Vue {
 				this.total = this.total - 1;
 				this.resultList.splice(index,1);
 				
-				this.$toast('取消收藏歌单成功!');
+				this.$toast(this.$i18n.t('CancelledSuccessfully'));
 			}
 		 }); 
 	}
@@ -154,7 +176,7 @@ export default class MusicFavourites extends Vue {
 			if(res.code == '200'){
 				this.total = this.total - 1;
 				this.resultList.splice(index,1);
-				this.$toast('取消收藏歌曲成功!');
+				this.$toast(this.$i18n.t('CancelledSuccessfully'));
 			}
 		 }); 
 		 
@@ -206,7 +228,7 @@ export default class MusicFavourites extends Vue {
 					this.resultList = this.resultList.concat(resData.data.palyList);
 					this.total = resData.data.count;
 				} else {
-					this.$toast('获取列表失败!');
+					this.$toast(this.$i18n.t('fail'));
 				}
 				
 				this.loading = false;
@@ -235,7 +257,7 @@ export default class MusicFavourites extends Vue {
 				this.loading = false;
 				this.refreshing = false;
 			} else {
-				this.$toast('获取列表失败!');
+				this.$toast(this.$i18n.t('fail'));
 				this.loading = false;
 				this.refreshing = false;
 			}
@@ -306,7 +328,7 @@ export default class MusicFavourites extends Vue {
 					this.allSongs = songs;
 					
 				} else {
-					this.$toast('获取列表失败!');
+					this.$toast(this.$i18n.t('fail'));
 				}
 			})
 			.catch((e?: any) => {

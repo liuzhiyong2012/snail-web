@@ -20,13 +20,14 @@
             <use xlink:href="#icon-phone" />
           </svg>
         </div>
+        <!-- @keyup="getUserPhone" -->
         <input
           v-model="userPhone"
           class="form-input"
           maxlength="20"
           :placeholder="$t('placeholderPhone')"
           type="number"
-          @keyup="getUserPhone"
+          @keydown="getUserPhoneLength"
         />
       </div>
       <div class="user-details m40">
@@ -128,10 +129,12 @@ export default class Login extends Vue {
       this.lang = '简体中文';
       this.$i18n.locale = 'zh';
       localStorage.setItem('lang', 'zh');
+      this.$store.commit('changeLanguage', 'zh')
     }else{
       this.lang = 'English';
       this.$i18n.locale = 'en';
       localStorage.setItem('lang', 'en');
+      this.$store.commit('changeLanguage', 'en')
     }
     // if(localStorage.getItem('lang') == 'en'){
     //   this.lang = 'English';
@@ -146,9 +149,16 @@ export default class Login extends Vue {
   private get seatNumber(): string {
     return this.$store.state.login.voyageInfo.seatNumber;
   }
-  public getUserPhone(e: any) {
-    if(e.target.value.length > 11){
+  // public getUserPhone(e: any) {
+  //   console.log(e)
+  //   if(e.target.value.length > 11){
+  //     this.$toast('数字不可以超出11位')
+  //   }
+  // }
+  public getUserPhoneLength(e:any){
+    if(e.target.value.length >= 11 && e.keyCode != 8){
       this.$toast('数字不可以超出11位')
+      this.userPhone = e.target.value.substring(0,10)
     }
   }
   // public getUserPassword(e: any) {
@@ -192,7 +202,7 @@ export default class Login extends Vue {
 				// debugger;
               console.log('token:' + localStore.get('token'));
               LoginService.getUserMe().then((res: any)=>{
-              console.log(res);
+                console.log(res);
                 if (res.code == 200 && res.data.Seat == null) {
                       this.$router.push({
                     name: 'selectSeat'

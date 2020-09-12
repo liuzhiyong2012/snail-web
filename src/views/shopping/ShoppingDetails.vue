@@ -52,6 +52,7 @@
       "AddToCart":"添加到购物车",
       "BuyNow": "立即购买",
       "NoIntroduction":"暂无介绍",
+      "success": "加入购物车成功!",
       "QTY":"剩余量"
 		},
 		"en":{
@@ -60,6 +61,7 @@
       "AddToCart":"Add To Cart",
       "BuyNow": "Buy Now",
       "NoIntroduction":"No introduction",
+      "success": "Successfully added to shopping cart!",
       "QTY":"QTY"
 		}
 	}
@@ -116,7 +118,7 @@ export default class ShoppingDetail extends Vue {
 
   public addToCart(): void {
     this.$store.commit("addShoppingCartItem", this.shoppingInfo);
-    this.$toast("成功加入购物车!");
+    this.$toast(this.$i18n.t('success'));
   }
 
   public buyNow(): void {

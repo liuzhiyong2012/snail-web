@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <abus-title title="Video" backRouteName="home"></abus-title>
+    <abus-title :title="$t('title')" backRouteName="home"></abus-title>
     <!-- backRouteName -->
     <van-tabs
       sticky
@@ -20,7 +20,22 @@
     </van-tabs>
   </div>
 </template>
-
+<i18n>
+	{
+		"zh":{
+			"title":"视频",
+      "Buy":"购买",
+      "OutOfStock":"缺货",
+      "QTY":"剩余量"
+		},
+		"en":{
+			"title":"Video",
+      "Buy":"Buy",
+      "OutOfStock":"Out of stock",
+      "QTY":"QTY"
+		}
+	}
+</i18n>
 <script>
 // @ is an alias to /src
 

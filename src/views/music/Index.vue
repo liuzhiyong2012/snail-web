@@ -78,6 +78,7 @@
 			"favourites":"我的收藏",
 			"airFm":"机上FM",
 			"topRanks":"排名置顶",
+			"fail":"获取列表失败!",
 			"popAlbum":"流行专辑"
 		},
 		"en":{
@@ -85,6 +86,7 @@
 			"favourites":"Favourites",
 			"airFm":"Air Fm",
 			"topRanks":"Top ranks",
+			"fail":"Failed to get list!",
 			"popAlbum":"Pop Album"
 		}
 	}
@@ -161,7 +163,7 @@
 					
 			 		this.playList = this.playList.concat(resData.data.Playlists);
 			 	} else {
-			 		this.$toast('获取列表失败!');
+			 		this.$toast(this.$i18n.t('fail'));
 			 	}
 			 	this.loading = false;
 			 	this.refreshing = false;

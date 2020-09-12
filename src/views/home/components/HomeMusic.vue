@@ -39,6 +39,11 @@ export default class HomeMusic extends Vue {
   private isHaveData: boolean = false;
   private created() {
     this.getMusicPlaylistHot();
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+    } else {
+      this.$i18n.locale = "zh";
+    }
   }
   public getMusicPlaylistHot_old() {
     MusicService.getMusicFM().then((res: any) => {

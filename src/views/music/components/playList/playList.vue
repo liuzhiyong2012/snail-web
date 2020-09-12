@@ -80,6 +80,16 @@
     </div>
   </transition>
 </template>
+<i18n>
+	{
+		"zh":{
+			
+		},
+		"en":{
+			
+		}
+	}
+</i18n>
 <script type="text/ecmascript-6">
 import { mapGetters, mapMutations, mapActions } from 'vuex';
 import { playMode } from '../../js/config';

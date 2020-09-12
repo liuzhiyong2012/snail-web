@@ -58,10 +58,12 @@ export default class Lang extends Vue {
   public changeEn() {
     this.$i18n.locale = "en";
     localStorage.setItem("lang", "en");
+    this.$store.commit('changeLanguage', 'en')
   }
   public changeZh() {
     this.$i18n.locale = "zh";
     localStorage.setItem("lang", "zh");
+    this.$store.commit('changeLanguage', 'zh')
   }
 }
 </script>

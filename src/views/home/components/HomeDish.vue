@@ -92,6 +92,11 @@ export default {
   },
   created() {
     this.getDishesRecommendedList();
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+    } else {
+      this.$i18n.locale = "zh";
+    }
   },
   methods: {
     stepToDetail(item) {

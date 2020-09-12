@@ -1,6 +1,6 @@
 <template>
   <div class="internet-cart">
-    <abus-title title="Internet Cart" backRouteName="internet"></abus-title>
+    <abus-title :title="$t('title')" backRouteName="internet"></abus-title>
     <div class="cart">
       <div class="name-bg" v-if="getInternetData.DisplayOrder == 1">ALL DAY</div>
       <div class="name-bg text-two" v-else-if="getInternetData.DisplayOrder == 2">1 G</div>
@@ -25,7 +25,7 @@
     </div>
     <div class="cell-group-two">
       <div class="cell-item" @click="stepToPage('payment')">
-        <div class="title">Payment method</div>
+        <div class="title">{{$t('PaymentMethod')}}</div>
         <div class="f1">
           <svg class="icon icon-right-1" aria-hidden="true">
             <use v-if="payType == '1'" xlink:href="#icon-wechat-pay" />
@@ -52,15 +52,42 @@
 
       <div class="cell">
         <!-- <div class="cell-l t-bold">12323123</div> -->
-        <div class="cell-r t-bold">Total amount ${{internetCartTotal}}</div>
+        <div class="cell-r t-bold">{{$t('TotalAmount')}} ${{internetCartTotal}}</div>
       </div>
     </div>
     <div class="button-box">
-      <div class="button" @click="goHome">Pay</div>
+      <div class="button" @click="goHome">{{$t('Pay')}}</div>
     </div>
   </div>
 </template>
-
+<i18n>
+	{
+		"zh":{
+			"title":"购物车",
+      "noGoods":"没有商品，请重新购买 ^_^",
+      "PaymentMethod":"支付方式",
+      "del": "删除",
+      "Pay": "支付",
+      "TotalAmount": "总金额",
+      "RequiredPoints": "所需积分",
+      "MyPoints": "我的积分",
+      "noAdress": "暂无地址",
+      "Buy":"购买"
+		},
+		"en":{
+			"title":"Internet Cart",
+      "noGoods":"No goods, please go shopping ^_^",
+      "PaymentMethod":"Payment method",
+      "del": "del",
+      "Pay": "Pay",
+      "TotalAmount": "Total amount",
+      "RequiredPoints": "Required points",
+      "MyPoints": "My points",
+      "noAdress": "No address",
+      "Buy":"Buy"
+		}
+	}
+</i18n>
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 // import HomeMap from './HomeMap.vue';
@@ -82,7 +109,12 @@ export default class InternetCart extends Vue {
     // console.log(this.$route.params.key)
   }
   private mounted() {
-		this.stepper = this.$store.state.home.internetCartNum;
+    this.stepper = this.$store.state.home.internetCartNum;
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+    } else {
+      this.$i18n.locale = "zh";
+    }
 	}
   @Watch("stepper", { immediate: true })
   private changeInternetStepper() {

@@ -53,6 +53,11 @@ export default class HomeNews extends Vue {
         details: "Alec Benjamin / Alessia CaraAlec Benjamin / Alessia Cara",
       },
     ];
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+    } else {
+      this.$i18n.locale = "zh";
+    }
   }
   private getNewsRecommended() {
     NewsService.getNewsRecommended().then((res: any) => {
