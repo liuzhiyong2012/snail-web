@@ -164,7 +164,7 @@ export default class ShoppingCart extends Vue {
         Seat: this.seatName || "3D",
         Remark: "",
         Items: CartItems,
-        type: this.seatType || 1,
+        type: 1,
         Address: this.address,
       };
       ShoppingServer.postShoppingPlaceOrder(data).then((res: any) => {
