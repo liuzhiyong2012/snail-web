@@ -138,7 +138,7 @@ export default class AbusMap extends Vue {
 			target: 'homeMap',
 			layers: [
 				new Tile({
-					source: new OSM({ url: process.env.VUE_APP_MAP_URL + '{z}/{x}/{y}.png' })
+					source: new OSM({ url: process.env.VUE_APP_MAP_URL + '/{z}/{x}/{y}.png' })
 				}),
 				flightTrackLayer,
 				aircfaftLayer

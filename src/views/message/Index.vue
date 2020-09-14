@@ -148,7 +148,7 @@ export default class messageIndex extends Vue {
   
   private created() {
     this.uInfo = localStore.get('userInfo');
-    // this.initWebSocket();
+    this.initWebSocket();
   }
   private mounted() {
     this.getChatMessage(); // 获取聊天记录
@@ -166,7 +166,7 @@ export default class messageIndex extends Vue {
     //   this.socket.close();
     //   this.socket = null;
     // }
-    // this.socket&&this.socket.close();
+     this.socket&&this.socket.close();
     this.changeNoticeStatus();
   }
 
@@ -203,6 +203,7 @@ export default class messageIndex extends Vue {
 
   // 初始化websocket
   public initWebSocket() {
+	  debugger;
     const _this = this;
     // 连接服务端，workerman.net:2120换成实际部署web-msg-sender服务的域名或者ip
     // _this.socket =  (window as any).io('http://172.16.8.69:2120');
@@ -219,6 +220,7 @@ export default class messageIndex extends Vue {
 
     // socket连接后以uid登录
     _this.socket.on('connect', function () {
+		debugger;
       _this.socket.emit('login', uid);
     });
     // 后端推送来消息时

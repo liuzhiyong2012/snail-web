@@ -1,5 +1,5 @@
 const path = require('path');
-console.log('hahahahah',process.env.VUE_API_URL);
+// console.log('hahahahah',process.env.VUE_API_URL);
 
 const autoprefixer = require('autoprefixer');
 const pxtorem = require('postcss-pxtorem');
