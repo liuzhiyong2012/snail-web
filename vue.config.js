@@ -1,10 +1,11 @@
 const path = require('path');
-console.log('hahahahah',process.env.VUE_APP_PROXY);
+console.log('hahahahah',process.env.VUE_API_URL);
 
 const autoprefixer = require('autoprefixer');
 const pxtorem = require('postcss-pxtorem');
   
 const baseUrl = '/';
+
 module.exports = {
 	pages: {//配置多页面入口        
 	      crew: {          
@@ -25,13 +26,13 @@ module.exports = {
     },
     productionSourceMap: false,
     // publicPath: '/', //开发
-	publicPath: '/airbus/', //打包
+	publicPath: process.env.VUE_APP_PUBLIC_PATH, //打包
     devServer: {
         port: process.env.VUE_APP_PORT,
         proxy: {
 			//项目图片映射  
             '/abusimg': {
-              target: process.env.VUE_IMAGE_SERVER,//后端接口地址
+              target: process.env.VUE_APP_STATIC_URL,//后端接口地址
               changeOrigin: true,//是否允许跨越
               pathRewrite: {
                 '^/abusimg': '',//重写,
@@ -39,7 +40,7 @@ module.exports = {
             },
 			//地图图片映射
             '/mapimg': {
-                target: process.env.VUE_MAP_SERVER,
+                target: process.env.VUE_APP_MAP_URL,
                 changeOrigin: true,
                 secure: false,
 				pathRewrite: {
@@ -48,19 +49,15 @@ module.exports = {
             },
 			//接口请求地址映射
             '/': {
-                target: process.env.VUE_APP_PROXY,
+                target: process.env.VUE_APP_BASE_URL,
                 changeOrigin: true,
                 secure: false,
             },
         },
         before(app) {
-            /* app.post('/goform/**', (req, res) => {
-                res.redirect(req.originalUrl);
-            }); */
 			const base = baseUrl.replace(/\/+$/, ''); // 移除尾部斜杠          
 					app.get(`${base}/:page/*`, function(req, res, next) {            
 					if (['crew', 'index'].includes(req.params.page)) {
-					// 把 /<base>/<page>/* 重定向到 /<base>/<page>/              
 					req.url = `${base}/${req.params.page}/`;              
 					next('route');            
 					} else {
@@ -74,20 +71,9 @@ module.exports = {
         'style-resources-loader': {
             preProcessor: 'scss',
             patterns: [
-                // path.resolve(__dirname, 'src/assets/style/variables.scss'),
-                // path.resolve(__dirname, 'src/assets/style/_mixins.scss')
             ]
         }
     },
-    // css: {
-    //     loaderOptions: {
-    //         sass: {
-    //             data: `
-    //                 @import "~@/variables.scss"
-    //             `
-    //         }
-    //     }
-    // },
 	css: {
 	    loaderOptions: {
 	      postcss: {

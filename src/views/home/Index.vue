@@ -149,24 +149,24 @@
 
 <script lang="ts">
 // @ is an alias to /src
-import { Component, Prop, Vue } from "vue-property-decorator";
-import HomeTitle from "./components/HomeTitle.vue";
-import HomeComponents from "./components/HomeComponents.vue";
-import HomeFlight from "./components/HomeFlight.vue";
-import HomeDish from "./components/HomeDish.vue";
-import HomeShopping from "./components/HomeShopping.vue";
-import HomeMusic from "./components/HomeMusic.vue";
-import HomeGame from "./components/HomeGame.vue";
-import HomeVideo from "./components/HomeVideo.vue";
-import HomeNews from "./components/HomeNews.vue";
-import HomeAboutUs from "./components/HomeAboutUs.vue";
-import { localStore } from "../../utils/data-management";
-import MessageService from "../../service/message";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import HomeTitle from './components/HomeTitle.vue';
+import HomeComponents from './components/HomeComponents.vue';
+import HomeFlight from './components/HomeFlight.vue';
+import HomeDish from './components/HomeDish.vue';
+import HomeShopping from './components/HomeShopping.vue';
+import HomeMusic from './components/HomeMusic.vue';
+import HomeGame from './components/HomeGame.vue';
+import HomeVideo from './components/HomeVideo.vue';
+import HomeNews from './components/HomeNews.vue';
+import HomeAboutUs from './components/HomeAboutUs.vue';
+import { localStore } from '../../utils/data-management';
+import MessageService from '../../service/message';
 declare function require(type: string): string;
 declare let io: any;
 // import { getApprovalDetail } from "@/service/center";
 @Component({
-  name: "Home",
+  name: 'Home',
   components: {
     HomeTitle,
     HomeFlight,
@@ -193,93 +193,93 @@ export default class Home extends Vue {
   private created() {
     clearTimeout();
     // debugger
-    if (!localStore.get("homeAd")) {
-      localStore.set("homeAd", true);
+    if (!localStore.get('homeAd')) {
+      localStore.set('homeAd', true);
       this.showService = true;
     } 
 
     this.navTar = [
       {
-        title: "Flight",
-        value: "flight",
+        title: 'Flight',
+        value: 'flight',
       },
       {
-        title: "Dish",
-        value: "dish",
+        title: 'Dish',
+        value: 'dish',
       },
       {
-        title: "Shopping",
-        value: "shopping",
+        title: 'Shopping',
+        value: 'shopping',
       },
       {
-        title: "Music",
-        value: "music",
+        title: 'Music',
+        value: 'music',
       },
       {
-        title: "Game",
-        value: "game",
+        title: 'Game',
+        value: 'game',
       },
       {
-        title: "Video",
-        value: "video",
+        title: 'Video',
+        value: 'video',
       },
       {
-        title: "News",
-        value: "news",
+        title: 'News',
+        value: 'news',
       },
       {
-        title: "About Us",
-        value: "aboutUs",
+        title: 'About Us',
+        value: 'aboutUs',
       },
     ];
     this.imagesData = [
       {
-        img: require("./images/game.jpg"),
-        name: "name0",
-        details: "details",
+        img: require('./images/game.jpg'),
+        name: 'name0',
+        details: 'details',
       },
       {
-        img: require("./images/game.jpg"),
-        name: "name",
-        details: "details",
+        img: require('./images/game.jpg'),
+        name: 'name',
+        details: 'details',
       },
       {
-        img: require("./images/game.jpg"),
-        name: "name",
-        details: "details",
+        img: require('./images/game.jpg'),
+        name: 'name',
+        details: 'details',
       },
     ];
 
-    this.uInfo = localStore.get("userInfo");
+    this.uInfo = localStore.get('userInfo');
   }
 
   private mounted() {
     // this.initWebSocket();
     this.getChatUnread({ read: 0 });
     this.getNoticeUnread({ read: 0 });
-    if (localStorage.getItem("lang") == "en") {
-      this.$i18n.locale = "en";
+    if (localStorage.getItem('lang') == 'en') {
+      this.$i18n.locale = 'en';
     } else {
-      this.$i18n.locale = "zh";
+      this.$i18n.locale = 'zh';
     }
   }
   public clickShowService(){
-    this.showService = false
+    this.showService = false;
   }
   public stepToPage(pageType: any) {
     let routeMap: any = {
-      flight: "flightIndex",
-      dish: "dishIndex",
-      shopping: "shopping",
-      music: "musicIndex",
-      game: "game",
-      video: "video",
-      news: "news",
-      me: "meIndex",
-      message: "messageIndex",
-      internet: "internet",
-      internetCart: "internetCart",
-      scan: "scan",
+      flight: 'flightIndex',
+      dish: 'dishIndex',
+      shopping: 'shopping',
+      music: 'musicIndex',
+      game: 'game',
+      video: 'video',
+      news: 'news',
+      me: 'meIndex',
+      message: 'messageIndex',
+      internet: 'internet',
+      internetCart: 'internetCart',
+      scan: 'scan',
       aboutUs: 'aboutUs'
     };
     this.$router.push({
@@ -295,7 +295,7 @@ export default class Home extends Vue {
     // _this.socket =  (window as any).io("http://kf.vpclub.cn/airbus/websocket");
     const opt = {
       // path:'http://kf.vpclub.cn/airbus/websocket/'
-      path:'/airbus/websocket'
+      path:process.env.VUE_APP_SOCKET_URL
       // path: process.env.VUE_APP_PROXY + 'websocket'
     };
     _this.socket = io(opt);
@@ -303,25 +303,25 @@ export default class Home extends Vue {
     let uid = _this.uInfo.id;
     
     // socket连接后以uid登录
-    _this.socket.on("connect", function () {
-      _this.socket.emit("login", uid);
+    _this.socket.on('connect', function () {
+      _this.socket.emit('login', uid);
     });
     // 后端推送来消息时
-    _this.socket.on("new_msg", (msg: any) => {
-      let midMsg = msg.replace(/&quot;/g, `"`);
+    _this.socket.on('new_msg', (msg: any) => {
+      let midMsg = msg.replace(/&quot;/g, '"');
       let endMsg = JSON.parse(midMsg);
-      if (endMsg.type == "system") {
+      if (endMsg.type == 'system') {
         // 系统通知
         _this.showRedPoint = true;
         // console.log("推送-系统通知", _this.showRedPoint);
-      } else if (endMsg.type == "message") {
+      } else if (endMsg.type == 'message') {
         // 聊天
         _this.showRedPoint = true;
         // console.log("推送-聊天", _this.showRedPoint);
       }
     });
     // 后端推送来在线数据时
-    _this.socket.on("update_online_count", (online_stat: any) => {
+    _this.socket.on('update_online_count', (online_stat: any) => {
       // console.log("后端推送来在线数据时", online_stat);
     });
   }
@@ -332,7 +332,7 @@ export default class Home extends Vue {
       if (res.code == 200) {
         if (res.data.length != 0) {
           _this.showRedPoint = true;
-          console.log("接口返回-聊天", _this.showRedPoint);
+          console.log('接口返回-聊天', _this.showRedPoint);
         }
       }
     });
@@ -344,7 +344,7 @@ export default class Home extends Vue {
       if (res.code == 200) {
         if (res.data.notice.length != 0) {
           _this.showRedPoint = true;
-          console.log("接口返回-系统通知", _this.showRedPoint);
+          console.log('接口返回-系统通知', _this.showRedPoint);
         }
       }
     });

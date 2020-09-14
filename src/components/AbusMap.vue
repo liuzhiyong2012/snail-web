@@ -132,13 +132,13 @@ export default class AbusMap extends Vue {
 			style: route_style,
 			updateWhileInteracting: true //拖拽时自动更新位置 顺滑拖拽
 		});
-
+       debugger;
 		var mapcontainer = this.$refs.mapCtn;
 		this.map = new Map({
 			target: 'homeMap',
 			layers: [
 				new Tile({
-					source: new OSM({ url: (Vue.config as any).mapImgBase + '/{z}/{x}/{y}.png' })
+					source: new OSM({ url: process.env.VUE_APP_MAP_URL + '{z}/{x}/{y}.png' })
 				}),
 				flightTrackLayer,
 				aircfaftLayer
@@ -206,7 +206,7 @@ export default class AbusMap extends Vue {
 	public startFlightTimer() {
 		let time = 1 * 1000;
 		let len = this.flightPaths.length;
-		this.timeFlag  = window.setInterval(()=>{
+		this.timeFlag = window.setInterval(()=>{
 			this.flightPositionIndex++;
 			if(this.flightPositionIndex > len){
 				this.flightPositionIndex = 0;

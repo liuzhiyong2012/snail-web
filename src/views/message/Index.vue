@@ -209,7 +209,7 @@ export default class messageIndex extends Vue {
     // _this.socket =  (window as any).io('http://kf.vpclub.cn/airbus/websocket');
     const opt = {
       // path:'http://kf.vpclub.cn/airbus/websocket/'
-      path:'/airbus/websocket'
+      path:process.env.VUE_APP_SOCKET_URL
       // path: process.env.VUE_APP_PROXY + 'websocket'
     };
     _this.socket = io(opt);
