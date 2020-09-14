@@ -162,18 +162,10 @@ export default class InternetCart extends Vue {
   }
   public goHome() {
     // ['Seat','Remark','id']
-<<<<<<< HEAD
-    console.log(this.$store.state.me.seatType)
-    let seatName  = localStore.get('seatName');
-    let data ={
-      Seat: seatName,
-      Remark: '',
-=======
     // console.log(this.$store.state.me.seatType);
     let data = {
       Seat: this.seatName || "3D",
       Remark: "",
->>>>>>> development
       id: this.getInternetData.Id,
       SeatType: this.seatType,
     };
