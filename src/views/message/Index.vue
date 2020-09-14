@@ -7,7 +7,7 @@
           slot="left"
           @click="gotoChatMessage('message')"
         >
-          <span>chat</span>
+          <span>{{$t('chat')}}</span>
         </div>
         <div
           slot="right"
@@ -15,7 +15,7 @@
             showMessage == true ? 'header-message' : 'header-message-disable'
           "
         >
-          <span class="message-mr" @click="gotoChatMessage('notice')">message</span>
+          <span class="message-mr" @click="gotoChatMessage('notice')">{{$t('message')}}</span>
           <span>
             <!-- <i class="icon icon-able3_1" v-show="showDelete == false" @click="deleteMsgShow"></i>
             <i
@@ -59,7 +59,7 @@
 
       <div class="send-box">
         <input type="text" class="word-input" v-model="wordContent" @keyup.enter="sendMsgToManager" />
-        <input type="button" value="Send" class="send-btn" @click="sendMsgToManager" />
+        <input type="button" :value="$t('Send')" class="send-btn" @click="sendMsgToManager" />
       </div>
     </section>
 
@@ -95,7 +95,22 @@
     </section>
   </div>
 </template>
-
+<i18n>
+	{
+		"zh":{
+			"chat":"聊天",
+      "message":"消息",
+      "Send":"发送",
+      "QTY":"剩余量"
+		},
+		"en":{
+			"chat":"chat",
+      "message":"message",
+      "Send":"Send",
+      "QTY":"QTY"
+		}
+	}
+</i18n>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import MessageTitle from './components/MessageTitle.vue';
@@ -148,7 +163,12 @@ export default class messageIndex extends Vue {
   
   private created() {
     this.uInfo = localStore.get('userInfo');
-    this.initWebSocket();
+    // this.initWebSocket();
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+    } else {
+      this.$i18n.locale = "zh";
+    }
   }
   private mounted() {
     this.getChatMessage(); // 获取聊天记录
@@ -166,7 +186,7 @@ export default class messageIndex extends Vue {
     //   this.socket.close();
     //   this.socket = null;
     // }
-     this.socket&&this.socket.close();
+    // this.socket&&this.socket.close();
     this.changeNoticeStatus();
   }
 
@@ -203,7 +223,6 @@ export default class messageIndex extends Vue {
 
   // 初始化websocket
   public initWebSocket() {
-	  debugger;
     const _this = this;
     // 连接服务端，workerman.net:2120换成实际部署web-msg-sender服务的域名或者ip
     // _this.socket =  (window as any).io('http://172.16.8.69:2120');
@@ -220,7 +239,6 @@ export default class messageIndex extends Vue {
 
     // socket连接后以uid登录
     _this.socket.on('connect', function () {
-		debugger;
       _this.socket.emit('login', uid);
     });
     // 后端推送来消息时

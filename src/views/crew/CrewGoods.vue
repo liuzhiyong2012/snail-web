@@ -10,7 +10,7 @@
 				 <van-pull-refresh v-model="refreshing" @refresh="refreshList">
 				 	 <van-list  v-model="loading" :finished="finished" finished-text="没有更多了" @load="loadList" :offset="100" :immediate-check="false" ref="mylist">
 				 		<div class="catering-item-ctn">
-				 			<crew-catering-item v-for="(item,index) in dataList" :key="index" :data="item"></crew-catering-item>
+				 			<crew-goods-item v-for="(item,index) in dataList" :key="index" :data="item"></crew-goods-item>
 				 		</div>
 				 	 </van-list>
 				 </van-pull-refresh>
@@ -23,22 +23,23 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import CrewSelect from './components/CrewSelect.vue';
 import CrewSearch from './components/CrewSearch.vue';
-import CrewCateringItem from './components/CrewCateringItem.vue';
+import CrewGoodsItem from './components/CrewGoodsItem.vue';
 import GoodsService from '../../service/crew/goods';
 import UrlUtils from '../../utils/url-utils';
+import TimeAgoUtils from '../../utils/date-ago-utils';
 
 @Component({
 	name: 'CrewCatering',
 	components: {
 		CrewSelect,
 		CrewSearch,
-		CrewCateringItem
+		CrewGoodsItem
 	}
 })
 export default class CrewCatering extends Vue {
 	private dataList:Array<any> = [];
 	
-	private pageSize: number = 12;
+	private pageSize: number = 3*12;
 	private pageNumber: number = 1;
 	
 	private refreshing: boolean = false;
@@ -75,7 +76,7 @@ export default class CrewCatering extends Vue {
 	
 	private loadList(): void {
 		this.pageNumber = this.pageNumber + 1;
-		this.pageSize = 12;
+		this.pageSize = 3*12;
 		this.getList();
 	}
 	
@@ -86,7 +87,7 @@ export default class CrewCatering extends Vue {
 	
 	resetList() {
 		this.pageNumber = 1;
-		this.pageSize = 12;
+		this.pageSize = 3*12;
 		this.dataList = [];
 		this.getList();
 	}
@@ -96,6 +97,7 @@ export default class CrewCatering extends Vue {
 			take: this.pageSize,
 			skip: (this.pageNumber - 1) * this.pageSize,
 			// status:this.status,
+			status: 1,
 			seat:this.seat
 		}).then((resData:any)=>{
 				
@@ -111,6 +113,7 @@ export default class CrewCatering extends Vue {
 					
 					resData.data.data.forEach((item,index)=>{
 						item.BannerImgPath = UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(item.BannerImgPath));
+						item.TimeAgo = TimeAgoUtils.timeAgo(item.CreatedAt);
 					});
 							
 					this.dataList = this.dataList.concat(resData.data.data); 

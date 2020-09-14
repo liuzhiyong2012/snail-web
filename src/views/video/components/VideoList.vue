@@ -3,42 +3,29 @@
     <div class="cell-group" v-if="videoList.length % 3 == 1">
       <div class="cell-item" v-for="(item, index) in videoList" :key="index">
         <div class="video-box" @click="stepToVideoPlay(index)">
-          <img :src="item.CoverImgId|addBaseUrl" :alt="item.title" />
+          <img :src="item.CoverImgPath|addBaseUrl" :alt="item.title" />
           <svg class="icon icon-p" aria-hidden="true">
             <use xlink:href="#icon-play-disable" />
           </svg>
         </div>
       </div>
-      <div class="cell-item"></div>
-      <div class="cell-item"></div>
-    </div>
-    <div class="cell-group" v-else-if="videoList.length % 3 == 2">
-      <div class="cell-item" v-for="(item, index) in videoList" :key="index">
-        <div class="video-box" @click="stepToVideoPlay(index)">
-          <img :src="item.CoverImgId|addBaseUrl" :alt="item.title" />
-          <svg class="icon icon-p" aria-hidden="true">
-            <use xlink:href="#icon-play-disable" />
-          </svg>
-        </div>
-      </div>
-      <div class="cell-item"></div>
-    </div>
-    <div class="cell-group" v-else>
-      <div class="cell-item" v-for="(item, index) in videoList" :key="index">
-        <div class="video-box" @click="stepToVideoPlay(index)">
-          <img :src="item.CoverImgId|addBaseUrl" :alt="item.title" />
-          <svg class="icon icon-p" aria-hidden="true">
-            <use xlink:href="#icon-play-disable" />
-          </svg>
-        </div>
-      </div>
+      <div class="cell-item" v-if="videoList.length % 3 == 1"></div>
+      <div class="cell-item" v-if="videoList.length % 3 == 1"></div>
+      <div class="cell-item" v-if="videoList.length % 3 == 2"></div>
     </div>
   </div>
-  <div v-else class="no-video">
-    No favorite video
-  </div>
+  <div v-else class="no-video">{{$t('noVideo')}}</div>
 </template>
-
+<i18n>
+	{
+		"zh":{
+			"noVideo":"暂无收藏视频"
+		},
+		"en":{
+			"noVideo":"No favorite video"
+		}
+	}
+</i18n>
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import VideoService from "../../../service/video";
@@ -48,30 +35,35 @@ import VideoService from "../../../service/video";
 })
 export default class VideoList extends Vue {
   private videoList: Array<any> = [];
-  private isNoVideo: boolean = false
+  private isNoVideo: boolean = false;
   private created() {
     this.postVideoMyLike();
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+    } else {
+      this.$i18n.locale = "zh";
+    }
   }
   public postVideoMyLike() {
     VideoService.postVideoMyLike().then((res: any) => {
       console.log(res);
       if (res.code == 200) {
         this.videoList = res.data.video;
-        this.$store.commit("setMyLikeList",this.videoList)
-        if(res.data.video.length == 0){
-          this.isNoVideo = true
+        this.$store.commit("setMyLikeList", this.videoList);
+        if (res.data.video.length == 0) {
+          this.isNoVideo = true;
         }
       }
     });
   }
-  public stepToVideoPlay(index:any){
-    console.log(index)
+  public stepToVideoPlay(index: any) {
+    console.log(index);
     this.$router.push({
-      name: 'likePlay',
-      params:{
-        index: index
-      }
-    })
+      name: "likePlay",
+      params: {
+        index: index,
+      },
+    });
   }
 }
 </script>
@@ -108,7 +100,7 @@ export default class VideoList extends Vue {
     }
   }
 }
-.no-video{
+.no-video {
   display: flex;
   justify-content: center;
   align-items: center;

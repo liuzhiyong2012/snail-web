@@ -7,8 +7,9 @@
         rows="3"
         autosize
         type="textarea"
-        placeholder="Please enter the address"
+        :placeholder="$t('address')"
         show-word-limit
+        @input="checkAddress"
       />
     </div>
     <div class="abus-button-box">
@@ -19,11 +20,15 @@
 <i18n>
 	{
 		"zh":{
-			"title":"收货地址",
+      "title":"收货地址",
+      "address":"请输入收货地址",
+      "noAddress":"收货地址不能为空",
       "Sure":"确定"
 		},
 		"en":{
-			"title":"Shopping address",
+      "title":"Shopping address",
+      "address":"Please enter the address",
+      "noAddress":"The address cannot be empty",
       "Sure":"Sure"
 		}
 	}
@@ -60,22 +65,24 @@ export default class ShoppingAddress extends Vue {
   private addressData() {
     this.$store.commit("addressData", this.address);
   }
-  
+  public checkAddress(value: string){
+    return this.address = value.replace(/\s*/g,"")
+  }
   public postUpdateAddress(){
     if(this.address != ''){
       let data = {
-      address: this.address
-    }
-    MeServer.postUpdateAddress(data).then((res: any) => {
-      if(res.code == 200) {
-        this.$toast(res.data)
-        setTimeout(()=>{
-          this.$router.go(-1);
-        },200)
+        address: this.address
       }
-    })
+      MeServer.postUpdateAddress(data).then((res: any) => {
+        if(res.code == 200) {
+          this.$toast(res.data)
+          setTimeout(()=>{
+            this.$router.go(-1);
+          },200)
+        }
+      })
     }else{
-      this.$toast('收货地址不能为空')
+      this.$toast(this.$i18n.t('noAddress'))
     }
   }
   public postAddress(){

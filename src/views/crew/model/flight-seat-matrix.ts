@@ -37,7 +37,16 @@ export default class FlightSeatMatrix{
 			
 			
 			if(!layoutInfo.seatType.valueToName[item.SeatType]){
-				layoutInfo.seatType.valueToName[item.SeatType] = '座位类型' + item.SeatType;
+				let seatTypeName = ''
+				if(item.SeatType==1){
+					seatTypeName = 'First Class-F'
+				}else if(item.SeatType==2){
+					seatTypeName = 'Economy Class-Y'
+				}else if(item.SeatType==3){
+					seatTypeName = 'Business Class-C'
+				}
+				// layoutInfo.seatType.valueToName[item.SeatType] = '座位类型' + item.SeatType;
+				layoutInfo.seatType.valueToName[item.SeatType] = seatTypeName;
 				layoutInfo.seatType.valueArr.push(item.SeatType);
 				
 				layoutInfo.seatTypeMap[item.SeatType] = {};

@@ -209,6 +209,7 @@ export default class Login extends Vue {
                   });
                 } else if (res.code == 200 && res.data.Seat.Name){
                   this.$store.commit('setSeatNumber',res.data.Seat.Name);
+                  this.$store.commit('setSeatName',res.data.Seat.Name);
                   this.$store.commit('setSeatType',res.data.Seat.SeatType);
                    this.$router.push({
                     name: 'home'

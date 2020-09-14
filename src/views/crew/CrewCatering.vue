@@ -27,6 +27,7 @@ import CrewSearch from './components/CrewSearch.vue';
 import CrewCateringItem from './components/CrewCateringItem.vue';
 import CateringService from '../../service/crew/catering';
 import UrlUtils from '../../utils/url-utils';
+import TimeAgoUtils from '../../utils/date-ago-utils';
 
 
 @Component({
@@ -40,7 +41,7 @@ import UrlUtils from '../../utils/url-utils';
 export default class CrewCatering extends Vue {
 	private dataList:Array<any> = [];
 	
-	private pageSize: number = 12;
+	private pageSize: number = 3*12;
 	private pageNumber: number = 1;
 	
 	private refreshing: boolean = false;
@@ -79,7 +80,8 @@ export default class CrewCatering extends Vue {
 	
 	private loadList(): void {
 		this.pageNumber = this.pageNumber + 1;
-		this.pageSize = 12;
+		// this.pageSize = 12;
+		this.pageSize = 3*12;
 		this.getList();
 	}
 	
@@ -90,7 +92,8 @@ export default class CrewCatering extends Vue {
 	
 	resetList() {
 		this.pageNumber = 1;
-		this.pageSize = 12;
+		// this.pageSize = 12;
+		this.pageSize = 3*12;
 		this.dataList = [];
 		this.getList();
 	}
@@ -116,8 +119,15 @@ export default class CrewCatering extends Vue {
 				resData.data.data.forEach((item,index)=>{
 					item.BannerImgPath = UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(item.BannerImgPath));
 				});
-						
-				this.dataList = this.dataList.concat(resData.data.data); 
+				this.dataList = this.dataList.concat(resData.data.data);
+				this.dataList.forEach(item=>{
+					item.CreatedAt = new Date(item.CreatedAt).getTime();
+				})
+				this.dataList = this.dataList.sort(this.compareDown("CreatedAt")) 
+				this.dataList.forEach(item=>{
+					item.TimeAgo = TimeAgoUtils.timeAgo(item.CreatedAt);
+				})
+
 				this.loading = false;
 				this.refreshing = false;
 				
@@ -138,6 +148,14 @@ export default class CrewCatering extends Vue {
 			}
 		});
 	}
+
+	private compareDown(property) {
+      return function(obj1, obj2) {
+        var value1 = obj1[property];
+        var value2 = obj2[property];
+        return value2 - value1; // 降序
+      };
+    }
 }
 </script>
 

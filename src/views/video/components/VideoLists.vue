@@ -1,10 +1,10 @@
 <template>
   <div class="abus-height">
     <div class="cell-group">
+      <!-- :finished-text="$t('noMore')" -->
       <van-list
         v-model="loading"
         :finished="finished"
-        finished-text="没有更多了"
         @load="onLoad"
         :offset="100"
         :immediate-check="false"
@@ -21,11 +21,23 @@
         <div class="cell-item" v-if="videoList.length % 3 == 1"></div>
         <div class="cell-item" v-if="videoList.length % 3 == 2"></div>
       </van-list>
+      <div v-if="finished" class="v-finished-text">
+        {{$t('noMore')}}
+      </div>
     </div>
     
   </div>
 </template>
-
+<i18n>
+	{
+		"zh":{
+			"noMore":"没有更多了"
+		},
+		"en":{
+			"noMore":"No More..."
+		}
+	}
+</i18n>
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import VideoService from "../../../service/video";
@@ -112,9 +124,12 @@ export default class VideoList extends Vue {
       }
     }
   }
+  
 }
-.van-list__finished-text{
+.v-finished-text{
   width: 100% !important;
   font-size: .24rem !important;
+  text-align: center;
+  line-height: 1rem;
 }
 </style>

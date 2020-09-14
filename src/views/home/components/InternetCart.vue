@@ -2,7 +2,8 @@
   <div class="internet-cart">
     <abus-title :title="$t('title')" backRouteName="internet"></abus-title>
     <div class="cart">
-      <div class="name-bg" v-if="getInternetData.DisplayOrder == 1">ALL DAY</div>
+      <div class="name-bg text-two" v-if="getInternetData.DisplayOrder == 0">10 G</div>
+      <div class="name-bg" v-else-if="getInternetData.DisplayOrder == 1">ALL DAY</div>
       <div class="name-bg text-two" v-else-if="getInternetData.DisplayOrder == 2">1 G</div>
       <div class="name-bg text-two" v-else-if="getInternetData.DisplayOrder == 3">50 M</div>
       <div v-else class="name-bg text-two">--</div>
@@ -14,7 +15,7 @@
             <template #input>
               <van-stepper v-model="stepper" />
             </template>
-          </van-field> -->
+          </van-field>-->
         </div>
       </div>
       <!-- <div class="stepper-box">
@@ -94,6 +95,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 // import AbusMap from '../../../components/AbusMap.vue';
 import NetflowService from "../../../service/netflow";
 import AbusTitle from "../../../components/AbusTitle.vue";
+import { localStore } from "../../../utils/data-management";
 @Component({
   name: "InternetCart",
   components: {
@@ -115,7 +117,7 @@ export default class InternetCart extends Vue {
     } else {
       this.$i18n.locale = "zh";
     }
-	}
+  }
   @Watch("stepper", { immediate: true })
   private changeInternetStepper() {
     this.$store.commit("changeInternetStepper", this.stepper);
@@ -128,12 +130,21 @@ export default class InternetCart extends Vue {
     return this.$store.state.home.total;
   }
   private get getInternetData() {
+    console.log('sssss',this.$store.state.home.internetData);
+    
     return this.$store.state.home.internetData;
   }
   private get payType(): number {
     return this.$store.state.me.payType;
   }
-
+   private get seatType():number{
+		return localStore.get("seatType") || this.$store.state.login.voyageInfo.seatType;
+	}
+  private get seatName(): string {
+    return (
+      localStore.get("seatName") || this.$store.state.login.voyageInfo.seatName
+    );
+  }
   public stepToPage(pageType: any) {
     let routeMap: any = {
       exchange: "pointsExchange",
@@ -151,25 +162,25 @@ export default class InternetCart extends Vue {
   }
   public goHome() {
     // ['Seat','Remark','id']
-    console.log(this.$store.state.me.seatType)
-    let data ={
-      Seat: '36B',
-      Remark: '',
+    // console.log(this.$store.state.me.seatType);
+    let data = {
+      Seat: this.seatName || "3D",
+      Remark: "",
       id: this.getInternetData.Id,
-      SeatType: this.$store.state.me.seatType
-    }
-    NetflowService.postNetFlowPlaceOrder(data).then((res: any)=> {
-      console.log(res)
-      if(res.code == 200){
+      SeatType: this.seatType,
+    };
+    console.log(data)
+    NetflowService.postNetFlowPlaceOrder(data).then((res: any) => {
+      console.log(res);
+      if (res.code == 200) {
         this.$toast("Success");
-    setTimeout(() => {
-      this.$router.push({
-        name: "home",
-      });
-    }, 1000);
+        setTimeout(() => {
+          this.$router.push({
+            name: "home",
+          });
+        }, 1000);
       }
-    })
-    
+    });
   }
   public postNetFlowList() {
     NetflowService.postNetFlowList().then((res: any) => {
