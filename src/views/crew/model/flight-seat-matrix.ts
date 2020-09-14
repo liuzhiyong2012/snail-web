@@ -32,35 +32,35 @@ export default class FlightSeatMatrix{
 		
 		seatArr.forEach((item,index)=>{
 			if(item.UserId){
-				layoutInfo.userSeatTypeMap[item.UserId] = item.seatType;
+				layoutInfo.userSeatTypeMap[item.UserId] = item.SeatType;
 			}
 			
 			
-			if(!layoutInfo.seatType.valueToName[item.seatType]){
-				layoutInfo.seatType.valueToName[item.seatType] = '座位类型' + item.seatType;
-				layoutInfo.seatType.valueArr.push(item.seatType);
+			if(!layoutInfo.seatType.valueToName[item.SeatType]){
+				layoutInfo.seatType.valueToName[item.SeatType] = '座位类型' + item.SeatType;
+				layoutInfo.seatType.valueArr.push(item.SeatType);
 				
-				layoutInfo.seatTypeMap[item.seatType] = {};
-				// layoutInfo.seatTypeUserMap[item.seatType] = {};
+				layoutInfo.seatTypeMap[item.SeatType] = {};
+				// layoutInfo.seatTypeUserMap[item.SeatType] = {};
 				
-				layoutInfo.seatTypeRow[item.seatType] = [];
+				layoutInfo.seatTypeRow[item.SeatType] = [];
 			}
 			
-			if(!layoutInfo.sectionMap[item.seatType]){
-				layoutInfo.sectionMap[item.seatType] = {};
+			if(!layoutInfo.sectionMap[item.SeatType]){
+				layoutInfo.sectionMap[item.SeatType] = {};
 			}
-			if(!layoutInfo.sectionMap[item.seatType][item.row]){
-				layoutInfo.sectionMap[item.seatType][item.row] = {};
+			if(!layoutInfo.sectionMap[item.SeatType][item.Row]){
+				layoutInfo.sectionMap[item.SeatType][item.Row] = {};
 			}
-			if(!layoutInfo.sectionMap[item.seatType][item.row][item.col]){
-				layoutInfo.sectionMap[item.seatType][item.row][item.col] = {};
+			if(!layoutInfo.sectionMap[item.SeatType][item.Row][item.Col]){
+				layoutInfo.sectionMap[item.SeatType][item.Row][item.Col] = {};
 			}
-			if(!layoutInfo.sectionMap[item.seatType][item.row][item.col][item['col-number']]){
-				layoutInfo.sectionMap[item.seatType][item.row][item.col][item['col-number']] = item;
+			if(!layoutInfo.sectionMap[item.SeatType][item.Row][item.Col][item['col-number']]){
+				layoutInfo.sectionMap[item.SeatType][item.Row][item.Col][item['col-number']] = item;
 			}
 			
-			layoutInfo.seatTypeMap[item.seatType][item.id] = item;
-			// layoutInfo.seatTypeUserMap[item.seatType][item.UserId] = item;
+			layoutInfo.seatTypeMap[item.SeatType][item.Id] = item;
+			// layoutInfo.seatTypeUserMap[item.SeatType][item.UserId] = item;
 		});
 	
 		let sectionArr = [];

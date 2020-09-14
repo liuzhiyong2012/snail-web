@@ -11,6 +11,10 @@ import PointsExchange from '@/views/me/components/PointsExchange.vue'
 import PointsDetails from '@/views/me/components/PointsDetails.vue'
 import PointsCart from '@/views/me/components/PointsCart.vue'
 
+import PrivacyPolicy from '@/views/me/components/PrivacyPolicy.vue'
+import TermsOfService from '@/views/me/components/TermsOfService.vue'
+
+
 const routes: Array<RouteConfig> = [
 	{
 		path: '/me',
@@ -45,6 +49,16 @@ const routes: Array<RouteConfig> = [
 		path: '/me/payment',
 		name: 'payment',
 		component: Payment
+	},
+	{
+		path: '/me/privacypolicy',
+		name: 'privacyPolicy',
+		component: PrivacyPolicy
+	},
+	{
+		path: '/me/termOfService',
+		name: 'termsOfService',
+		component: TermsOfService
 	},
 	{
 		path: '/me/pointsexchange',

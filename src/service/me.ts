@@ -6,7 +6,18 @@ export default class MeService {
 	static header: any = localStore.get('token')
 	constructor() {
 	}
-	
+
+	// 隐私政策，服务条款，关于我们
+	static ServiceItem(data: Object) {
+		return request({
+			url: '/v1/api/ServiceItem',
+            method: 'POST',
+            headers: {
+				Authorization: MeService.header
+			},
+			data: data
+		});
+	}
 	
 	//用户详情
 	static getUserInfo(data?: Object) {

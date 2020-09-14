@@ -82,7 +82,7 @@ export default class CrewLayoutCtn extends Vue {
 	private show: boolean = false;
 	
 	private mounted(){
-		this.startWebScoket();
+		// this.startWebScoket();
 	}
 	
 	private beforeDestroy(){
@@ -94,8 +94,9 @@ export default class CrewLayoutCtn extends Vue {
 			// this.socket = (window as any).io('http://172.16.8.69:2120');
 			// this.socket = (window as any).io('http://kf.vpclub.cn/airbus/websocket');
            const opt = {
-				path:'http://kf.vpclub.cn/airbus/websocket/'
-				// path: process.env.VUE_APP_PROXY + 'websocket/'
+			//    path:'http://kf.vpclub.cn/airbus/websocket/'
+				path:'/airbus/websocket'
+				// path: process.env.VUE_APP_PROXY + 'websocket'
 			};
 			this.socket = io(opt);
 			// uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数

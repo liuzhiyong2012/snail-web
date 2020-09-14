@@ -80,7 +80,7 @@
     </div>
 
     <div class="cell-group mt2">
-      <div class="cell-item">
+      <div class="cell-item" @click="stepToPage('privacyPolicy')">
         <div class="title">{{$t('PrivacyPolicy')}}</div>
         <div class="f1">
           <svg class="icon icon-right" aria-hidden="true">
@@ -88,7 +88,7 @@
           </svg>
         </div>
       </div>
-      <div class="cell-item">
+      <div class="cell-item" @click="stepToPage('termsOfService')">
         <div class="title">{{$t('TermsOfService')}}</div>
         <div class="f1">
           <svg class="icon icon-right" aria-hidden="true">
@@ -201,6 +201,8 @@ export default class meIndex extends Vue {
       myorder: "myOrder",
       lang: "lang",
       thirdaccount: "thirdAccount",
+      privacyPolicy: "privacyPolicy",
+      termsOfService: "termsOfService",
     };
     if (routeMap[pageType]) {
       this.$router.push({

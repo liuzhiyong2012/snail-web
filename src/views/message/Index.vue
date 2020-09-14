@@ -148,7 +148,7 @@ export default class messageIndex extends Vue {
   
   private created() {
     this.uInfo = localStore.get('userInfo');
-    this.initWebSocket();
+    // this.initWebSocket();
   }
   private mounted() {
     this.getChatMessage(); // 获取聊天记录
@@ -208,8 +208,9 @@ export default class messageIndex extends Vue {
     // _this.socket =  (window as any).io('http://172.16.8.69:2120');
     // _this.socket =  (window as any).io('http://kf.vpclub.cn/airbus/websocket');
     const opt = {
-      path:'http://kf.vpclub.cn/airbus/websocket/'
-      // path: process.env.VUE_APP_PROXY + 'websocket/'
+      // path:'http://kf.vpclub.cn/airbus/websocket/'
+      path:'/airbus/websocket'
+      // path: process.env.VUE_APP_PROXY + 'websocket'
     };
     _this.socket = io(opt);
 
