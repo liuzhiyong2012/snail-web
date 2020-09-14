@@ -3,7 +3,7 @@
     <div class="cell-group"  v-for="(item,index) in orderList" :key="index">
       <div class="header">
         <div class="top">
-          <div class="title">Airspace Explorer {{item.FlightNumber}}</div>
+          <div class="title">{{item.FlightNumber}}</div>
           <!-- <div class="status">processing</div> -->
         </div>
         <div class="con">
