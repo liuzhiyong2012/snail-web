@@ -9,7 +9,7 @@
       color="rgb(0,32,91)"
       title-active-color="rgb(0,32,91)"
     >
-      <van-tab v-for="(val,index) in navTar" :title="val" title-active-color="#3056EF" :key="index">
+      <van-tab v-for="(val,index) in navTar" :title="$t(val)" title-active-color="#3056EF" :key="index">
         <div v-if="val == 'All'" class="flight">
           <video-lists />
         </div>
@@ -26,13 +26,17 @@
 			"title":"视频",
       "Buy":"购买",
       "OutOfStock":"缺货",
-      "QTY":"剩余量"
+      "QTY":"剩余量",
+      "All":"所有",
+      "My collection":"我的收藏"
 		},
 		"en":{
 			"title":"Video",
       "Buy":"Buy",
       "OutOfStock":"Out of stock",
-      "QTY":"QTY"
+      "QTY":"QTY",
+      "All":"All",
+      "My collection":"My collection"
 		}
 	}
 </i18n>
@@ -72,7 +76,11 @@ export default {
     };
   },
   created() {
-
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
+    } else {
+      this.$i18n.locale = "zh";
+    }
   }
 };
 </script>
