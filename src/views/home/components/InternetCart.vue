@@ -2,7 +2,8 @@
   <div class="internet-cart">
     <abus-title :title="$t('title')" backRouteName="internet"></abus-title>
     <div class="cart">
-      <div class="name-bg" v-if="getInternetData.DisplayOrder == 1">ALL DAY</div>
+      <div class="name-bg text-two" v-if="getInternetData.DisplayOrder == 0">10 G</div>
+      <div class="name-bg" v-else-if="getInternetData.DisplayOrder == 1">ALL DAY</div>
       <div class="name-bg text-two" v-else-if="getInternetData.DisplayOrder == 2">1 G</div>
       <div class="name-bg text-two" v-else-if="getInternetData.DisplayOrder == 3">50 M</div>
       <div v-else class="name-bg text-two">--</div>
@@ -94,6 +95,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 // import AbusMap from '../../../components/AbusMap.vue';
 import NetflowService from "../../../service/netflow";
 import AbusTitle from "../../../components/AbusTitle.vue";
+import { localStore } from "../../../utils/data-management";
 @Component({
   name: "InternetCart",
   components: {
@@ -128,6 +130,8 @@ export default class InternetCart extends Vue {
     return this.$store.state.home.total;
   }
   private get getInternetData() {
+    console.log('sssss',this.$store.state.home.internetData);
+    
     return this.$store.state.home.internetData;
   }
   private get payType(): number {
@@ -152,8 +156,9 @@ export default class InternetCart extends Vue {
   public goHome() {
     // ['Seat','Remark','id']
     console.log(this.$store.state.me.seatType)
+    let seatName  = localStore.get('seatName');
     let data ={
-      Seat: '36B',
+      Seat: seatName,
       Remark: '',
       id: this.getInternetData.Id,
       SeatType: this.$store.state.me.seatType

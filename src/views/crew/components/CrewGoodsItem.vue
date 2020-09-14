@@ -13,7 +13,7 @@
 			</div>
 
 			<div class="info-right-ctn">
-				<span class="price-ctn">$:{{ data.Price }}</span>
+				<span class="price-ctn">${{ data.Price }}</span>
 				<span class="finish-ctn" v-if="data.status == '0'"  @click="finish">Finish</span>
 			</div>
 		</div>

@@ -154,7 +154,7 @@ export default class ShoppingCart extends Vue {
       this.$toast("You don't have enough points")
       return;
     }
-    if (this.address != "" && pointsCartList.length > 0) {
+    if (this.address != "" && this.address!= null && pointsCartList.length > 0) {
       let data = {
         Seat: this.seatName || "3D",
         Remark: "",

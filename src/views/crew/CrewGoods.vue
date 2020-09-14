@@ -26,6 +26,7 @@ import CrewSearch from './components/CrewSearch.vue';
 import CrewGoodsItem from './components/CrewGoodsItem.vue';
 import GoodsService from '../../service/crew/goods';
 import UrlUtils from '../../utils/url-utils';
+import TimeAgoUtils from '../../utils/date-ago-utils';
 
 @Component({
 	name: 'CrewCatering',
@@ -38,7 +39,7 @@ import UrlUtils from '../../utils/url-utils';
 export default class CrewCatering extends Vue {
 	private dataList:Array<any> = [];
 	
-	private pageSize: number = 12;
+	private pageSize: number = 3*12;
 	private pageNumber: number = 1;
 	
 	private refreshing: boolean = false;
@@ -75,7 +76,7 @@ export default class CrewCatering extends Vue {
 	
 	private loadList(): void {
 		this.pageNumber = this.pageNumber + 1;
-		this.pageSize = 12;
+		this.pageSize = 3*12;
 		this.getList();
 	}
 	
@@ -86,7 +87,7 @@ export default class CrewCatering extends Vue {
 	
 	resetList() {
 		this.pageNumber = 1;
-		this.pageSize = 12;
+		this.pageSize = 3*12;
 		this.dataList = [];
 		this.getList();
 	}
@@ -96,6 +97,7 @@ export default class CrewCatering extends Vue {
 			take: this.pageSize,
 			skip: (this.pageNumber - 1) * this.pageSize,
 			// status:this.status,
+			status: 1,
 			seat:this.seat
 		}).then((resData:any)=>{
 				
@@ -111,6 +113,7 @@ export default class CrewCatering extends Vue {
 					
 					resData.data.data.forEach((item,index)=>{
 						item.BannerImgPath = UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(item.BannerImgPath));
+						item.TimeAgo = TimeAgoUtils.timeAgo(item.CreatedAt);
 					});
 							
 					this.dataList = this.dataList.concat(resData.data.data); 
