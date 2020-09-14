@@ -10,7 +10,7 @@
 				 <van-pull-refresh v-model="refreshing" @refresh="refreshList">
 				 	 <van-list  v-model="loading" :finished="finished" finished-text="没有更多了" @load="loadList" :offset="100" :immediate-check="false" ref="mylist">
 				 		<div class="catering-item-ctn">
-				 			<crew-catering-item v-for="(item,index) in dataList" :key="index" :data="item"></crew-catering-item>
+				 			<crew-goods-item v-for="(item,index) in dataList" :key="index" :data="item"></crew-goods-item>
 				 		</div>
 				 	 </van-list>
 				 </van-pull-refresh>
@@ -23,7 +23,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import CrewSelect from './components/CrewSelect.vue';
 import CrewSearch from './components/CrewSearch.vue';
-import CrewCateringItem from './components/CrewCateringItem.vue';
+import CrewGoodsItem from './components/CrewGoodsItem.vue';
 import GoodsService from '../../service/crew/goods';
 import UrlUtils from '../../utils/url-utils';
 
@@ -32,7 +32,7 @@ import UrlUtils from '../../utils/url-utils';
 	components: {
 		CrewSelect,
 		CrewSearch,
-		CrewCateringItem
+		CrewGoodsItem
 	}
 })
 export default class CrewCatering extends Vue {

@@ -6,13 +6,14 @@
 			<div class="info-left-ctn">
 				<div class="line-one">
 					<span>{{ data.Seat }}</span>
-					<span>3min</span>
+					<!-- <span>3min</span> -->
+					<span>{{data.TimeAgo}}</span>
 				</div>
 				<div class="line-two">{{ data.Name }}</div>
 			</div>
 
 			<div class="info-right-ctn">
-				<span class="price-ctn">￥:{{ data.Price }}</span>
+				<span class="price-ctn">$:{{ data.Price }}</span>
 				<span class="finish-ctn" v-if="data.status == '0'"  @click="finish">Finish</span>
 			</div>
 		</div>
