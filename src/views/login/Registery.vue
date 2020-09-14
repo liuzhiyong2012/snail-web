@@ -346,7 +346,8 @@ export default class Register extends Vue {
             .dispatch("setUserInfo", {
               name: res.data.userName,
               token: res.data.access_token,
-              id: res.data.airbusId,
+              id: res.data.id,
+			  airbusId:res.data.airbusId
             })
             .then((res: any) => {
               LoginService.getUserMe().then((res: any) => {

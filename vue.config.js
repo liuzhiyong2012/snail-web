@@ -1,6 +1,5 @@
 const path = require('path');
 console.log('hahahahah',process.env.VUE_APP_PROXY);
-
 const autoprefixer = require('autoprefixer');
 const pxtorem = require('postcss-pxtorem');
   

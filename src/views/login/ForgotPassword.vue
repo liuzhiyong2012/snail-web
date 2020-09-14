@@ -89,6 +89,7 @@
               class="flex1"
               :placeholder="$t('NewPasswordTips')"
               type="password"
+              @blur="checkUserPassword"
             />
           </div>
           <div class="main-box no-pad line-height">
@@ -98,6 +99,7 @@
               class="flex1"
               :placeholder="$t('ConfirmPasswordTips')"
               type="password"
+              @blur="checkUserPassword"
             />
           </div>
           <div class="next" @click="onClickConfirm">{{$t('Confirm')}}</div>
@@ -211,7 +213,6 @@ export default class ForgotPassword extends Vue {
       })
       .catch((reason: any) => {
         console.log("=== Error ===");
-        console.log(reason);
         this.$toast(reason.message);
       });
   }
@@ -254,7 +255,7 @@ export default class ForgotPassword extends Vue {
         .then((res: any) => {
           console.log(res);
           if (res.code == 200) {
-            this.password = res.password;
+            this.password = res.data.password;
             this.aLeft = -(this.fullWidth * 2);
             this.isActiveThr = true;
           } else {
@@ -285,7 +286,11 @@ export default class ForgotPassword extends Vue {
       this.$toast("Please select an item from the list");
     }
   }
-  
+  public checkUserPassword(e: any) {
+    if (e.target.value.length < 6) {
+      this.$toast("密码不能少于6位");
+    }
+  }
   public onClickConfirm() {
     if (this.newPassword != "" && this.newPassword == this.confirmPassword) {
       var data = {
@@ -293,6 +298,7 @@ export default class ForgotPassword extends Vue {
         password: this.password,
         newPassword: this.newPassword,
       };
+      console.log(data)
       LoginService.postResetPassword(data).then((res: any) => {
         console.log(res);
         if (res.code == 200) {
@@ -305,7 +311,9 @@ export default class ForgotPassword extends Vue {
         } else {
           this.$toast(res.message);
         }
-      });
+      }).catch((reason:any) => {
+        this.$toast(reason.message);
+      })
     } else if (
       this.newPassword != "" &&
       this.newPassword != this.confirmPassword

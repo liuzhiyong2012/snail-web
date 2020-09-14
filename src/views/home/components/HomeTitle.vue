@@ -7,7 +7,7 @@
 				<use xlink:href="#icon-scan"></use>
 			</svg>
 			<span v-if="!isVip" class="flow-ctn" @click="stepTo('internet')">
-				{{userData.Flow.Flow}}
+				{{userData.Flow.Flow || '0GB'}}
 			</span>
 			<span v-else class="flow-ctn" @click="stepTo('internet')">
 				VIP
@@ -40,7 +40,7 @@
 	})
 	export default class HomeTitle extends Vue{
 		private userData: any = {}
-		private isVip: boolean = false
+		private isVip: boolean = true
 		@Prop() private showRed!: boolean;
 		@Watch("showRed", { immediate: true })
 		showRedWatch(newVal: boolean, oldVal: boolean) {
@@ -60,6 +60,7 @@
 					if(res.data.Flow.Flow == -1){
 						this.isVip = true
 					}
+					this.$store.commit("setSeatNumber", res.data.Seat.Name);
 				}else{
 					this.$toast(res.message)
 				}

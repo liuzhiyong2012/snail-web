@@ -119,8 +119,8 @@ export default class DishCart extends Vue {
 		return this.$store.state.me.payType;
 	}
 	
-	private get seatNumber():number{
-		return localStore.get("seatNumber") || this.$store.state.login.voyageInfo.seatNumber;
+	private get seatName():number{
+		return localStore.get("seatName") || this.$store.state.login.voyageInfo.seatName;
 	}
 	
 	private get cartList():Array<any>{
@@ -190,8 +190,8 @@ export default class DishCart extends Vue {
 		});
 		
 		DishService.placeDishesOrder({
-			Seat:'c20'||this.seatNumber,
-			Remark:'太辣了',
+			Seat:this.seatName || '3D',
+			Remark:'',
 			Items:orderItems
 		}).then((res:any)=>{
 			if(res.code == 200){

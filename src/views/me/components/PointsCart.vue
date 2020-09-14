@@ -74,6 +74,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import AbusTitle from "../../../components/AbusTitle.vue";
 import MeServer from "../../../service/me";
 import ShoppingServer from "../../../service/shopping";
+import { localStore } from "../../../utils/data-management";
 @Component({
   name: "ShoppingCart",
   components: {
@@ -126,6 +127,12 @@ export default class ShoppingCart extends Vue {
       }
     });
   }
+  private get seatName():string{
+		return localStore.get("seatName") || this.$store.state.login.voyageInfo.seatName;
+  }
+  private get seatType():number{
+		return localStore.get("seatType") || this.$store.state.login.voyageInfo.seatType;
+	}
   // 删除操作
   public delGoods(index: any) {
     this.$store.commit("delPointsCartItem", index);
@@ -149,10 +156,10 @@ export default class ShoppingCart extends Vue {
     }
     if (this.address != "" && pointsCartList.length > 0) {
       let data = {
-        Seat: "B36",
+        Seat: this.seatName || "3D",
         Remark: "",
         Items: CartItems,
-        type: 2,
+        type: this.seatType || 1,
         Address: this.address,
       };
       ShoppingServer.postShoppingPlaceOrder(data).then((res: any) => {
