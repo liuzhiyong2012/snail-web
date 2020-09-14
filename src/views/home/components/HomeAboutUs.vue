@@ -21,7 +21,7 @@ export default {
   data() {
     return {
       aboutUs: {
-        img: require("./../images/home_aboutus.png"),
+        img: require("./../images/home_aboutus2.png"),
         name: "We Are Airbus",
         tips: "WE MAKE IT FLY!",
       },
