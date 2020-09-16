@@ -254,7 +254,7 @@ export default class Home extends Vue {
   }
 
   private mounted() {
-    this.initWebSocket();
+    // this.initWebSocket();
     this.getChatUnread({ read: 0 });
     this.getNoticeUnread({ read: 0 });
     if (localStorage.getItem("lang") == "en") {
@@ -263,6 +263,12 @@ export default class Home extends Vue {
       this.$i18n.locale = "zh";
     }
   }
+  private beforeDestroy() {
+    this.socket.close();
+    this.socket = null;
+    // this.socket&&this.socket.close();
+  }
+
   public clickShowService(){
     this.showService = false
   }

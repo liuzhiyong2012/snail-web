@@ -129,7 +129,7 @@
 	
     <!-- 收回的迷你播放器 -->
 	
-	<music-player :currentSong = "currentSong" :playing="playing" @toUp="toUp" @togglePlaying="togglePlaying" @playListClick="playListClick"></music-player>
+	<music-player v-if='showBottomMusic' :currentSong = "currentSong" :playing="playing" @toUp="toUp" @closePlaying='closePlaying' @togglePlaying="togglePlaying" @playListClick="playListClick"></music-player>
     <!-- <div class="mini-player" v-show="!fullScreen" @click="toUp">
       <div class="mini-player-con">
         <img :class="playing? 'playSrart' : 'playStorp'" :src="currentSong.image" alt="">
@@ -228,7 +228,8 @@ export default {
       currentLyric: null, // 封装后的歌词对象
       currentShow: 'cd', // 轮播图底部导航
       currentLineNum: 0, // 当前下显示歌词行数
-      playingLyric: '' // 当前cd页显示歌词
+      playingLyric: '', // 当前cd页显示歌词
+      showBottomMusic: true //是否显示底部
     };
   },
   created() {
@@ -301,8 +302,14 @@ export default {
       }
       this.setPlayingState(!this.playing);
     },
+    // 关闭底部的播放器
+    closePlaying(){
+      this.showBottomMusic= false
+    },
+
     toDown() {
       this.setFullScreen(false);
+      this.showBottomMusic= true
     },
     toUp() {
       this.setFullScreen(true);
@@ -788,8 +795,7 @@ $screen-width: 37.5;
 		text-align: center;
 		align-items: center;
 		justify-content: center;
-		// background:rgba(255,255,255,0.38);
-        background:rgba(255,255,255,1);
+    background:rgba(255,255,255,1);
 		
   		>svg.icon{
 			&.play-btn{

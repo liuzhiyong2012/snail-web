@@ -52,7 +52,7 @@ const mutations = {
 	  });
   },
   likeSong(state,songId){
-	  state.likeSet[songId] = true;
+    state.likeSet[songId] = true;
   },
   disLikeSong(state,songId){
   	  state.likeSet[songId] = false;
