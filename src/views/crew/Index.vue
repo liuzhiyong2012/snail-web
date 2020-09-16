@@ -82,7 +82,7 @@ export default class CrewLayoutCtn extends Vue {
 	private show: boolean = false;
 	
 	private mounted(){
-		// this.startWebScoket();
+		this.startWebScoket();
 	}
 	
 	private beforeDestroy(){
@@ -93,7 +93,7 @@ export default class CrewLayoutCtn extends Vue {
            const opt = {
 				path:process.env.VUE_APP_SOCKET_URL
 			};
-			this.socket = io(opt);
+			this.socket = io(process.env.VUE_APP_HOST,opt);
 			// uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
 			let uid = '4CFC4D33-2C1E-E911-BAD5-F44D307124C0';
 

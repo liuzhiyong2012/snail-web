@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import FlightService from '../service/flight.ts';
+import FlightService from '../service/flight';
 
 import 'ol/ol.css';
 import View from 'ol/View';

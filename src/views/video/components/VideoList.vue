@@ -1,6 +1,6 @@
 <template>
   <div class="abus-height" v-if="!isNoVideo">
-    <div class="cell-group" v-if="videoList.length % 3 == 1">
+    <div class="cell-group">
       <div class="cell-item" v-for="(item, index) in videoList" :key="index">
         <div class="video-box" @click="stepToVideoPlay(index)">
           <img :src="item.CoverImgPath|addBaseUrl" :alt="item.title" />
@@ -30,7 +30,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import VideoService from "../../../service/video";
 @Component({
-  name: "VideoLists",
+  name: "VideoList",
   components: {},
 })
 export default class VideoList extends Vue {
