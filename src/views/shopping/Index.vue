@@ -1,6 +1,8 @@
 <template>
   <div class="abus-height">
-    <abus-title :title="$t('title')" backRouteName="home"></abus-title>
+    <abus-title :title="$t('title')" backRouteName="home">
+      <cart-icon @toCart="stepToCart()"></cart-icon>
+    </abus-title>
     <div class="banner">
       <van-swipe :autoplay="3000">
         <van-swipe-item
@@ -169,6 +171,12 @@ export default class ShoppingIndex extends Vue {
   }
   private showToast(){
 		this.$toast('暂时缺货')
+	}
+   public stepToCart():void{
+		// debugger;
+		this.$router.push({
+			name:'shoppingCart'
+		});
 	}
   private getShoppingCategory() {
     ShoppingService.getShoppingCategory().then((res: any) => {
