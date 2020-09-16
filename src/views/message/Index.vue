@@ -161,10 +161,10 @@ export default class messageIndex extends Vue {
   private created() {
     this.uInfo = localStore.get('userInfo');
     this.initWebSocket();
-    if (localStorage.getItem("lang") == "en") {
-      this.$i18n.locale = "en";
+    if (localStorage.getItem('lang') == 'en') {
+      this.$i18n.locale = 'en';
     } else {
-      this.$i18n.locale = "zh";
+      this.$i18n.locale = 'zh';
     }
   }
   private mounted() {
@@ -224,12 +224,11 @@ export default class messageIndex extends Vue {
     // 连接服务端，workerman.net:2120换成实际部署web-msg-sender服务的域名或者ip
     // _this.socket =  (window as any).io('http://172.16.8.69:2120');
     // _this.socket =  (window as any).io('http://kf.vpclub.cn/airbus/websocket');
-    const opt = {
-      // path:'http://kf.vpclub.cn/airbus/websocket/'
-      path:'/airbus/websocket'
-      // path: process.env.VUE_APP_PROXY + 'websocket'
-    };
-    _this.socket = io(opt);
+ 
+	
+	
+    _this.socket = io(process.env.VUE_APP_HOST,{path:process.env.VUE_APP_SOCKET_URL});
+
 
     // uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
     let uid = _this.uInfo.id;

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-	<title>空乘端</title>
+   <title><%= htmlWebpackPlugin.options.title %></title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <!-- <meta name="viewport" content="width=device-width,initial-scale=1.0"> -->
@@ -25,17 +25,15 @@
    <script src='/static/lib/font_1932862_ghhueve3zb4.js'></script>
    <link rel="stylesheet" href="/static/lib/font_1932862_ghhueve3zb4.css">
   -->
- 
-  
   <!-- 打包 -->
-  <script src="/airbus/static/lib/md5.min.js"></script>
-  <script src="/airbus/static/lib/rem.js"></script>
-  <script src="/airbus/static/lib/WebViewJavascriptBridge.js"></script>
-  <script src="/airbus/static/lib/client.js"></script>
-  <script src='/airbus/static/lib/qrscan.js'></script>
+  <script src="<%= VUE_APP_PUBLIC_PATH %>static/lib/md5.min.js"></script>
+  <script src="<%= VUE_APP_PUBLIC_PATH %>static/lib/rem.js"></script>
+  <script src="<%= VUE_APP_PUBLIC_PATH %>static/lib/WebViewJavascriptBridge.js"></script>
+  <script src="<%= VUE_APP_PUBLIC_PATH %>static/lib/client.js"></script>
+  <script src='<%= VUE_APP_PUBLIC_PATH %>static/lib/qrscan.js'></script>
 
-  <script src='/airbus/static/lib/socket.io.js'></script>
-  <script src='/airbus/static/lib/font_1932862_ghhueve3zb4.js'></script>
+  <script src='<%= VUE_APP_PUBLIC_PATH %>static/lib/socket.io.js'></script>
+  <script src='<%= VUE_APP_PUBLIC_PATH %>static/lib/font_1932862_ghhueve3zb4.js'></script>
   <link rel="stylesheet" href="/airbus/static/lib/font_1932862_ghhueve3zb4.css">
 
 </head>
