@@ -5,7 +5,7 @@
 			<div class="back-ctn" @click="stepBack()">
 				<i class="icon icon-back"></i>
 				<span>
-					返回
+					Return
 				</span>
 			</div>
 			<div class="class-bar-ctn" v-if="layoutInfo">
@@ -420,6 +420,7 @@ export default class CrewCatering extends Vue {
 										width: 100%;
 										font-size: rem(30px);
 										line-height: rem(84px);
+										padding-top: 0.5rem;
 										display: block;
 										position: absolute;
 										

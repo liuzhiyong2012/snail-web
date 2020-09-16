@@ -159,7 +159,7 @@ export default class ShoppingCart extends Vue {
       };
       CartItems.push(items);
     });
-    if (this.address != "" && cartList.length > 0) {
+    if (this.address != "" && this.address!=null && cartList.length > 0) {
       let data = {
         Seat: this.seatName || "3D",
         Remark: "",

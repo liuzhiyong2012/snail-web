@@ -163,7 +163,7 @@ export default class messageIndex extends Vue {
   
   private created() {
     this.uInfo = localStore.get('userInfo');
-    // this.initWebSocket();
+    this.initWebSocket();
     if (localStorage.getItem("lang") == "en") {
       this.$i18n.locale = "en";
     } else {
