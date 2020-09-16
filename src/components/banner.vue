@@ -2,7 +2,10 @@
   <div>
     <van-swipe :autoplay="3000">
       <van-swipe-item class="van_swipe_item" v-for="(item, index) in bannerData" :key="index">
-        <img class="img" :src="item.img |addBaseUrl" @click="stepTo(item)" />
+        <img v-if='item.img' class="img" :src="item.img |addBaseUrl" @click="stepTo(item)" alt="game image" />
+        <span v-else @click="stepTo(item)">
+          <van-empty image="network" description="" />
+        </span>
       </van-swipe-item>
     </van-swipe>
   </div>
@@ -14,7 +17,6 @@ export default {
   props: ["bannerData"],
   data() {
     return {
-      
     };
   },
   methods: {

@@ -116,7 +116,6 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import MessageTitle from './components/MessageTitle.vue';
 import MessageService from '../../service/message';
 import { localStore } from '../../utils/data-management';
-// declare function io(selector: object): any;
 declare let io: any;
 @Component({
   name: 'messageIndex',
@@ -156,8 +155,6 @@ export default class messageIndex extends Vue {
   ]; //系统消息
   
   private get userInfo(){
-	  // debugger;
-	  // this.$store.state.
 	  return this.$store.state.login.userInfo;
   }
   
@@ -183,8 +180,8 @@ export default class messageIndex extends Vue {
 
   private beforeDestroy() {
     // if(this.socket){
-    //   this.socket.close();
-    //   this.socket = null;
+      this.socket.close();
+      this.socket = null;
     // }
     // this.socket&&this.socket.close();
     this.changeNoticeStatus();
@@ -227,11 +224,8 @@ export default class messageIndex extends Vue {
     // 连接服务端，workerman.net:2120换成实际部署web-msg-sender服务的域名或者ip
     // _this.socket =  (window as any).io('http://172.16.8.69:2120');
     // _this.socket =  (window as any).io('http://kf.vpclub.cn/airbus/websocket');
- 
-	
-	
-    _this.socket = io(process.env.VUE_APP_HOST,{path:process.env.VUE_APP_SOCKET_URL});
 
+    _this.socket = io(process.env.VUE_APP_HOST,{path:process.env.VUE_APP_SOCKET_URL});
 
     // uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
     let uid = _this.uInfo.id;
@@ -259,17 +253,19 @@ export default class messageIndex extends Vue {
       } else if (endMsg.type == 'message') {
         // 聊天
         if(this.userInfo.id != endMsg.from_user_id){
-          _this.chatList.push({
-            id: '', //消息id
-            from_user_id: '', //发送人id
-            to_user_id: '', //接收人id
-            content: endMsg.content, //发送的消息
-            created_time: '', // 发送时间
-            airbus_id: '', //航班id
-            read: 0, // 已读  0未读 1已读
-            type: 2, // 1 发送给空乘   2 发送给用户
-          });
-          _this.$store.dispatch('saveChatList', _this.chatList);
+          // _this.chatList.push({
+          //   id: '', //消息id
+          //   from_user_id: '', //发送人id
+          //   to_user_id: '', //接收人id
+          //   content: endMsg.content, //发送的消息
+          //   created_time: '', // 发送时间
+          //   airbus_id: '', //航班id
+          //   read: 0, // 已读  0未读 1已读
+          //   type: 2, // 1 发送给空乘   2 发送给用户
+          // });
+          // _this.$store.dispatch('saveChatList', _this.chatList);
+          _this.changeChatStatus();
+          _this.getChatMessage();
         }
       }
     });
@@ -282,18 +278,34 @@ export default class messageIndex extends Vue {
   }
 
   // 获取聊天记录 1已读  0未读
+  // public getChatMessage() {
+  //   const _this = this;
+  //   let messageList: Array<any> = [];
+  //   if (localStore.get('chatList')) {
+  //     messageList = localStore.get('chatList');
+  //   }
+  //   MessageService.getUserMessage({ read: 0 }).then((res) => {
+  //     if (res.code == 200) {
+  //       console.log('聊天记录', res);
+  //       res.data = res.data.reverse();
+  //       _this.chatList = [...messageList, ...res.data];
+  //       _this.$store.dispatch('saveChatList', _this.chatList);
+  //     }
+  //   });
+  // }
+
   public getChatMessage() {
     const _this = this;
     let messageList: Array<any> = [];
-    if (localStore.get('chatList')) {
-      messageList = localStore.get('chatList');
-    }
-    MessageService.getUserMessage({ read: 0 }).then((res) => {
-      if (res.code == 200) {
-        console.log('聊天记录', res);
-        res.data = res.data.reverse();
-        _this.chatList = [...messageList, ...res.data];
-        _this.$store.dispatch('saveChatList', _this.chatList);
+    MessageService.getUserMessage({ read: 1 }).then((resRead) => {
+      if (resRead.code == 200) {
+        console.log('聊天记录', resRead);
+        resRead.data = resRead.data.reverse();
+        _this.chatList = [...messageList, ...resRead.data];
+        MessageService.getUserMessage({read: 0}).then(resUnread=>{
+          resUnread.data = resUnread.data.reverse();
+          _this.chatList = [..._this.chatList, ...resUnread.data];
+        })
       }
     });
   }
@@ -317,9 +329,10 @@ export default class messageIndex extends Vue {
     };
     MessageService.sendToManager(reqUser).then((res) => {
       if (res.code == 200) {
-        _this.chatList.push(req);
-        _this.$store.dispatch('saveChatList', _this.chatList);
+        // _this.chatList.push(req);
+        // _this.$store.dispatch('saveChatList', _this.chatList);
         _this.wordContent = '';
+        _this.getChatMessage();
       }
     });
     this.wordContent = '';
@@ -356,6 +369,13 @@ export default class messageIndex extends Vue {
 
   public changeNoticeStatus() {
     MessageService.changeReadNotice().then((res) => {
+      if (res.code == 200) {
+      }
+    });
+  }
+
+  public changeChatStatus() {
+    MessageService.changeReadMessage().then((res) => {
       if (res.code == 200) {
       }
     });

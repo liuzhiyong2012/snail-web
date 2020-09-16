@@ -6,6 +6,9 @@
 			<i v-if="!playing" class="icon icon-play"></i>
 			<i v-if="playing" class="icon icon-pause"></i>
 		</div>
+		<div class="play-ctn-close" @click.stop="closePlaying">
+			<i class="icon icon-close"></i>
+		</div>
 	</section>
 </template>
 <i18n>
@@ -49,6 +52,10 @@
 		
 		private togglePlaying(){
 			this.$emit('togglePlaying');
+		}
+
+		private closePlaying(){
+			this.$emit('closePlaying')
 		}
 		
 		private playListClick(){
@@ -114,10 +121,25 @@
 		.play-ctn{
 			position: absolute;
 			top:0.20rem;
+			right: 0.90rem;
+			.icon{
+				line-height: 0.50rem;
+				font-size: 0.48rem;
+			}
+		}
+
+		.play-ctn-close{
+			position: absolute;
+			top:0.20rem;
 			right: 0.30rem;
 			.icon{
 				line-height: 0.50rem;
 				font-size: 0.48rem;
+				background: #00205b;
+				border-radius: 50%;
+			}
+			.icon-close{
+				color: #fff;
 			}
 		}
 	}

@@ -118,15 +118,16 @@ export default class CrewCatering extends Vue {
 				
 				resData.data.data.forEach((item,index)=>{
 					item.BannerImgPath = UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(item.BannerImgPath));
+					item.TimeAgo = TimeAgoUtils.timeAgo(item.CreatedAt);
 				});
 				this.dataList = this.dataList.concat(resData.data.data);
-				this.dataList.forEach(item=>{
-					item.CreatedAt = new Date(item.CreatedAt).getTime();
-				})
-				this.dataList = this.dataList.sort(this.compareDown("CreatedAt")) 
-				this.dataList.forEach(item=>{
-					item.TimeAgo = TimeAgoUtils.timeAgo(item.CreatedAt);
-				})
+				// this.dataList.forEach(item=>{
+				// 	item.CreatedAt = new Date(item.CreatedAt).getTime();
+				// })
+				// this.dataList = this.dataList.sort(this.compareDown("CreatedAt")) 
+				// this.dataList.forEach(item=>{
+				// 	item.TimeAgo = TimeAgoUtils.timeAgo(item.CreatedAt);
+				// })
 
 				this.loading = false;
 				this.refreshing = false;

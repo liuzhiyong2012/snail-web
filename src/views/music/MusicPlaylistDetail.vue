@@ -10,14 +10,14 @@
         <div class="cover-image" :style="{ backgroundImage: `url(${playListObj.CoverImgUrl})` }"></div>
         <div class="cover-info">
           <div class="cover-name">{{ playListObj.Name }}</div>
-          <div class="collect-ctn" v-if="!isCollected" @click="subscribePlaylist()">
+          <div class="collect-ctn disable" v-if="!isCollected" @click="subscribePlaylist()">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-collect" />
             </svg>
             <span class="collect-txt">{{$t('Collect')}}</span>
           </div>
 
-          <div class="collect-ctn disable" v-if="isCollected" @click="unSubscribePlaylist()">
+          <div class="collect-ctn" v-if="isCollected" @click="unSubscribePlaylist()">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-collect-cancle" />
             </svg>
