@@ -48,11 +48,11 @@ module.exports = {
 				}
             },
 			//接口请求地址映射
-            '/': {
+            /* '/': {
                 target: process.env.VUE_APP_BASE_URL,
                 changeOrigin: true,
                 secure: false,
-            },
+            }, */
         },
         before(app) {
 			const base = baseUrl.replace(/\/+$/, ''); // 移除尾部斜杠          
