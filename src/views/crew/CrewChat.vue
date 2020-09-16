@@ -4,7 +4,7 @@
 		<div class="top-ctn">
 			<div class="back-ctn" @click="stepToLayout()">
 				<i class="icon icon-back"></i>
-				<span>返回</span>
+				<span>return</span>
 			</div>
 		</div>
 

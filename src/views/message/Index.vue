@@ -242,14 +242,16 @@ export default class messageIndex extends Vue {
       // {type: "message", content: "Your netFlow order has been completed", mark: "你的流量套餐订单已完成"}
       if (endMsg.type == 'system') {
         // 系统通知
-        _this.systemMsgList.unshift({
-          CreatedAt: '',
-          Id: '',
-          Mark: endMsg.mark,
-          Read: 0,
-          Title: endMsg.content,
-        });
-        _this.$store.dispatch('saveNoticeList', _this.systemMsgList);
+        // _this.systemMsgList.unshift({
+        //   CreatedAt: '',
+        //   Id: '',
+        //   Mark: endMsg.mark,
+        //   Read: 0,
+        //   Title: endMsg.content,
+        // });
+        // _this.$store.dispatch('saveNoticeList', _this.systemMsgList);
+        // _this.changeNoticeStatus();
+        _this.getSysNoticeList();
       } else if (endMsg.type == 'message') {
         // 聊天
         if(this.userInfo.id != endMsg.from_user_id){
@@ -347,26 +349,28 @@ export default class messageIndex extends Vue {
     let storeList: Array<any> = [];
     MessageService.getSystemNoticeList({ read: 1 }).then((res) => {
       if (res.code == 200) {
-        readList = res.data.notice;
+        readList = res.data.notice.reverse();
         MessageService.getSystemNoticeList({ read: 0 }).then((res) => {
           if (res.code == 200) {
-            unreadList = res.data.notice;
-            if (localStore.get('noticeList')) {
-              storeList = localStore.get('noticeList');
-              _this.systemMsgList = [...unreadList, ...storeList];
-            } else {
-              _this.systemMsgList = [...unreadList, ...readList];
-            }
+            unreadList = res.data.notice.reverse();
+            // if (localStore.get('noticeList')) {
+            //   storeList = localStore.get('noticeList');
+            //   _this.systemMsgList = [...unreadList, ...storeList];
+            // } else {
+            //   _this.systemMsgList = [...unreadList, ...readList];
+            // }
+            _this.systemMsgList = [...unreadList, ...readList ]
             _this.showDelete = _this.systemMsgList.every((item) => {
               return item.Read == 1;
             });
-            _this.$store.dispatch('saveNoticeList', _this.systemMsgList);
+            // _this.$store.dispatch('saveNoticeList', _this.systemMsgList);
           }
         });
       }
     });
   }
 
+  // 更改推送的系统通知状态
   public changeNoticeStatus() {
     MessageService.changeReadNotice().then((res) => {
       if (res.code == 200) {
@@ -374,6 +378,7 @@ export default class messageIndex extends Vue {
     });
   }
 
+  // 更改聊天信息的状态
   public changeChatStatus() {
     MessageService.changeReadMessage().then((res) => {
       if (res.code == 200) {
