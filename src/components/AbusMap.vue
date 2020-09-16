@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import FlightService from '../service/flight';
+import FlightService from '../service/flight.ts';
 
 import 'ol/ol.css';
 import View from 'ol/View';
@@ -132,7 +132,7 @@ export default class AbusMap extends Vue {
 			style: route_style,
 			updateWhileInteracting: true //拖拽时自动更新位置 顺滑拖拽
 		});
-       debugger;
+		
 		var mapcontainer = this.$refs.mapCtn;
 		this.map = new Map({
 			target: 'homeMap',

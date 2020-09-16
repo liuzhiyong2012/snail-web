@@ -99,6 +99,7 @@ export default class CrewLayoutCtn extends Vue {
 
 			// socket连接后以uid登录
 			this.socket.on('connect', () => {
+				debugger;
 				this.socket.emit('login', uid);
 			});
 
