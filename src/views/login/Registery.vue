@@ -181,6 +181,13 @@
       "AnswerTips":"请输入答案",
       "Cancel":"取消",
       "Determine":"确定",
+      "toast1":"手机号码不可以超出11位",
+      "toast2":"请先正确填写密码",
+      "toast3":"密码不能少于6位",
+      "toast4":"密码不一致",
+      "toast5":"当前手机号码已注册",
+      "toast6":"暂未阅读《隐私政策》、《服务条款》",
+      "toast7":"请先填写信息",
       "Date":"日期"
 		},
 		"en":{
@@ -209,9 +216,13 @@
       "AnswerTips":"Please enter Security answer",
       "Cancel":"Cancel",
       "Determine":"Determine",
-      "toast1":"Determine",
-      "toast2":"Determine",
-      "toast3":"Determine",
+      "toast1":"Phone number cannot exceed 11 digits",
+      "toast2":"Please fill in the password correctly",
+      "toast3":"The password cannot be less than 6 digits",
+      "toast4":"Password inconsistency",
+      "toast5":"The current mobile number is registered",
+      "toast6":"Have you read the 《Privacy policy》《Terms of service》",
+      "toast7":"Please complete the information",
       "Date":"Date"
 		}
 	}
@@ -271,7 +282,7 @@ export default class Register extends Vue {
 
   public getUserPhoneLength(e:any){
     if(e.target.value.length >= 11 && e.keyCode != 8){
-      this.$toast('数字不可以超出11位')
+      this.$toast(this.$i18n.t('toast1'))
       this.phone = e.target.value.substring(0,10)
     }
   }
@@ -279,7 +290,7 @@ export default class Register extends Vue {
     if (this.isCheckPassword) {
       this.show = true;
     }else{
-      this.$toast('请先正确填写密码')
+      this.$toast(this.$i18n.t('toast2'))
     }
   }
   public showQuestion() {
@@ -309,13 +320,13 @@ export default class Register extends Vue {
   }
   public checkUserPassword(e: any) {
     if (e.target.value.length < 6) {
-      this.$toast("密码不能少于6位");
+      this.$toast(this.$i18n.t('toast3'));
     }
   }
   public checkPassword() {
     if (this.password != this.confirmPassword) {
       this.isCheckPassword = false;
-      this.$toast("Password inconsistency");
+      this.$toast(this.$i18n.t('toast4'));
     } else {
       this.isCheckPassword = true;
     }
@@ -388,16 +399,16 @@ export default class Register extends Vue {
         } else {
           this.$toast(res.message);
         }
+      })
+      .catch((reason: any) => {
+        this.$toast(this.$i18n.t('toast5'));
       });
-      // .catch((reason: any) => {
-      //   this.$toast("The current mobile number is registered");
-      // });
     } else if (!this.isCheckPassword) {
-      this.$toast("Password inconsistency");
+      this.$toast(this.$i18n.t('toast4'));
     } else if (!this.isReaded) {
-      this.$toast("Have you read the 《Privacy policy》《Terms of service》");
+      this.$toast(this.$i18n.t('toast6'));
     } else {
-      this.$toast("Please complete the information");
+      this.$toast(this.$i18n.t('toast7'));
     }
   }
 

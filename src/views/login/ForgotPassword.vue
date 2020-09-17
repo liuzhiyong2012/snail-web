@@ -52,7 +52,7 @@
                     type="text"
                   />
                   <!-- <div class="on-sms">获取验证码</div> -->
-                  <div v-if="isShowCode" class="sms-code" @click="getVerificationCode">获取验证码</div>
+                  <div v-if="isShowCode" class="sms-code" @click="getVerificationCode">{{$t('GetCode')}}</div>
                   <div v-else class="sms-code">{{countdown}}s</div>
                 </div>
               </div>
@@ -128,6 +128,12 @@
       "NewPasswordTips":"请输入新密码",
       "ConfirmPassword":"确认密码",
       "ConfirmPasswordTips":"请再次输入密码",
+      "GetCode":"获取验证码",
+      "toast1":"手机号码不可以超出11位",
+      "toast2":"请从列表中选择一个项目",
+      "toast3":"密码不能少于6位",
+      "toast4":"密码不一致",
+      "toast5":"请输入新密码",
       "Confirm":"确认"
     },
     "en":{
@@ -148,6 +154,12 @@
       "NewPasswordTips":"Please set new password",
       "ConfirmPassword":"Confirm password",
       "ConfirmPasswordTips":"Please Confirm password",
+      "GetCode":"Verification Code",
+      "toast1":"Phone number cannot exceed 11 digits",
+      "toast2":"Please select an item from the list",
+      "toast3":"The password cannot be less than 6 digits",
+      "toast4":"Password inconsistency",
+      "toast5":"Please set new password",
       "Confirm":"Confirm"
     }
   }
@@ -190,7 +202,7 @@ export default class ForgotPassword extends Vue {
   }
   public getUserPhoneLength(e:any){
     if(e.target.value.length >= 11 && e.keyCode != 8){
-      this.$toast('数字不可以超出11位')
+      this.$toast(this.$i18n.t('toast1'))
       this.phone = e.target.value.substring(0,10)
     }
   }
@@ -283,12 +295,12 @@ export default class ForgotPassword extends Vue {
         }
       });
     } else {
-      this.$toast("Please select an item from the list");
+      this.$toast(this.$i18n.t('toast2'));
     }
   }
   public checkUserPassword(e: any) {
     if (e.target.value.length < 6) {
-      this.$toast("密码不能少于6位");
+      this.$toast(this.$i18n.t('toast3'));
     }
   }
   public onClickConfirm() {
@@ -318,9 +330,9 @@ export default class ForgotPassword extends Vue {
       this.newPassword != "" &&
       this.newPassword != this.confirmPassword
     ) {
-      this.$toast("Password inconsistency");
+      this.$toast(this.$i18n.t('toast4'));
     } else {
-      this.$toast("Please set new password");
+      this.$toast(this.$i18n.t('toast5'));
     }
   }
   public showSMS() {

@@ -22,7 +22,7 @@
             <video
               preload="auto"
               @click="playVideo(index)"
-              :src="'http://172.16.125.11:8010/'+item.Id"
+              :src="item.FilePath|addBaseUrl"
               :poster="item.CoverImgPath|addBaseUrl"
               class="video-box"
             ></video>

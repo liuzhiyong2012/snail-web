@@ -87,7 +87,8 @@
         "placeholderPhone": "你的手机号码",
         "placeholderPassword": "请输入密码",
         "showError":"手机号码有误，请重填",
-        "showLengthError": "手机号码不可以超出11位"
+        "toast1": "手机号码不可以超出11位",
+        "toast2": "用户名或密码不正确"
 		},
 		"en":{
 			  "LOGIN": "LOGIN",
@@ -96,7 +97,9 @@
         "ForgotPassword": "Forgot Password",
         "placeholderPhone": "Your phone",
         "placeholderPassword": "Password",
-        "showError":"Wrong mobile number, please fill in again"
+        "showError":"Wrong mobile number, please fill in again",
+        "toast1": "Phone number cannot exceed 11 digits",
+        "toast2": "The user name or password is incorrect."
 		}
 	}
 </i18n>
@@ -157,7 +160,7 @@ export default class Login extends Vue {
   // }
   public getUserPhoneLength(e:any){
     if(e.target.value.length >= 11 && e.keyCode != 8){
-      this.$toast('数字不可以超出11位')
+      this.$toast(this.$i18n.t('toast1'))
       this.userPhone = e.target.value.substring(0,10)
     }
   }
@@ -180,7 +183,7 @@ export default class Login extends Vue {
   public postUserLogin() {
     // console.log(this.$store.state.login.name)
     if(!(/^1[3456789]\d{9}$/.test(this.userPhone))){ 
-        this.$toast("手机号码有误，请重填");  
+        this.$toast(this.$i18n.t('showError'));  
         return false; 
     } else if (this.userPhone != '' && this.userPassword != '') {
       var data = {
@@ -229,7 +232,7 @@ export default class Login extends Vue {
         })
         .catch((error: any) => {
           console.log(error);
-          this.$toast('The user name or password is incorrect.');
+          this.$toast(this.$i18n.t('toast2'));
         });
     }
   }

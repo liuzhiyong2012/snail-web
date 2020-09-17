@@ -10,7 +10,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@nutui/nutui": "^2.2.6",
+    "@nutui/nutui": "^2.2.10",
     "@types/crypto-js": "^3.1.47",
     "@types/echarts": "^4.6.3",
     "@types/js-md5": "^0.4.2",
@@ -23,6 +23,7 @@
     "crypto-js": "^4.0.0",
     "echarts": "^4.8.0",
     "good-storage": "^1.1.1",
+    "html5-qrcode": "^1.2.1",
     "js-md5": "^0.7.3",
     "jsqr": "^1.3.1",
     "lyric-parser": "^1.0.1",

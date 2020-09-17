@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import Home from "../views/home/Index.vue";
 import Scan from "../views/home/Scan.vue";
+import ScanH5 from "../views/home/ScanH5.vue";
 import Internet from "../views/home/Internet.vue";
 import InternetCart from "../views/home/components/InternetCart.vue";
 import About from "../views/About.vue";
@@ -46,6 +47,11 @@ const routes: Array<RouteConfig> = [
         path: "/scan",
         name: "scan",
         component: Scan,
+      },
+      {
+        path: "/scanH5",
+        name: "scanH5",
+        component: ScanH5,
       },
       {
         path: "/internet",
