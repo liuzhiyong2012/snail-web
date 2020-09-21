@@ -90,23 +90,24 @@ export default class CrewLayoutCtn extends Vue {
 	}
 	
 	private startWebScoket() {
-		//debugger;
            const opt = {
 				path:process.env.VUE_APP_SOCKET_URL
 			};
-			this.socket = io(process.env.VUE_APP_HOST,opt.path);
+			this.socket = io(process.env.VUE_APP_HOST,opt);
 			
 			//需要获取航班的id.
 			let uid = '4CFC4D33-2C1E-E911-BAD5-F44D307124C0';
 
 			// socket连接后以uid登录
 			this.socket.on('connect', () => {
-				// debugger;
+				console.log('crew:connect');
 				this.socket.emit('login', uid);
 			});
 
 			// 后端推送来消息时
 			this.socket.on('new_msg', (msg) => {
+				console.log('crew:new_msg');
+				
 				let midMsg = msg.replace(/&quot;/g, '"');
 				let newMessageObj = JSON.parse(midMsg);
 				(this as any).$globalEvent.$emit('new_msg',newMessageObj);
@@ -116,14 +117,6 @@ export default class CrewLayoutCtn extends Vue {
 				}
 			});
 
-			// 后端推送来在线数据时
-			this.socket.on('saveNoticeList', function(online_stat) {
-				
-			});
-
-			this.socket.on('saveChatList', function(online_stat) {
-				
-			});
 		}
 	
 	

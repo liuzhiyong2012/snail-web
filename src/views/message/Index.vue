@@ -160,6 +160,7 @@ export default class messageIndex extends Vue {
   
   private created() {
     this.uInfo = localStore.get('userInfo');
+	
     this.initWebSocket();
     if (localStorage.getItem('lang') == 'en') {
       this.$i18n.locale = 'en';
@@ -229,9 +230,10 @@ export default class messageIndex extends Vue {
 
     // uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
     let uid = _this.uInfo.id;
-
+ 
     // socket连接后以uid登录
     _this.socket.on('connect', function () {
+    	console.log('login:',uid);
       _this.socket.emit('login', uid);
     });
     // 后端推送来消息时
@@ -253,6 +255,7 @@ export default class messageIndex extends Vue {
         // _this.changeNoticeStatus();
         _this.getSysNoticeList();
       } else if (endMsg.type == 'message') {
+		  debugger;
         // 聊天
         if(this.userInfo.id != endMsg.from_user_id){
           // _this.chatList.push({
@@ -307,7 +310,7 @@ export default class messageIndex extends Vue {
         MessageService.getUserMessage({read: 0}).then(resUnread=>{
           resUnread.data = resUnread.data.reverse();
           _this.chatList = [..._this.chatList, ...resUnread.data];
-        })
+        });
       }
     });
   }
@@ -359,7 +362,7 @@ export default class messageIndex extends Vue {
             // } else {
             //   _this.systemMsgList = [...unreadList, ...readList];
             // }
-            _this.systemMsgList = [...unreadList, ...readList ]
+            _this.systemMsgList = [...unreadList, ...readList ];
             _this.showDelete = _this.systemMsgList.every((item) => {
               return item.Read == 1;
             });
