@@ -2,7 +2,7 @@ import VueRouter, {
 	RouteConfig
 } from 'vue-router';
 import Game from '@/views/game/Index.vue';
-// import GameDetail from '@/views/game/GameDetail.vue';
+import GameDetail from '@/views/game/GameDetail.vue';
 
 const routes: Array < RouteConfig > = [
 	{
@@ -11,11 +11,11 @@ const routes: Array < RouteConfig > = [
 		component: Game,
 		children: []
 	},
-	// {
-	// 	path: '/game/detail',
-	// 	name: 'gameDetail',
-	// 	component: GameDetail,
-	// },
+	{
+		path: '/game/detail',
+		name: 'gameDetail',
+		component: GameDetail
+	},
 ]
 
 

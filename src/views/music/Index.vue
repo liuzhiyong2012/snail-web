@@ -122,10 +122,10 @@
 		 private mounted(){
 			 this.getMusicBanners();
 			 this.getPlayList();
-			if (localStorage.getItem("lang") == "en") {
-			this.$i18n.locale = "en";
+			if (localStorage.getItem('lang') == 'en') {
+			this.$i18n.locale = 'en';
 			} else {
-			this.$i18n.locale = "zh";
+			this.$i18n.locale = 'zh';
 			}
 		 }
 		 
@@ -133,6 +133,9 @@
 			 MusicService.getMusicBanners({}).then((res:any)=>{
 				 if(res.code == '200'){
 					 this.recomendList = res.data.Banners;  
+					 this.recomendList.forEach((item,index)=>{
+						 item.ImgPath = UrlUtils.addBaseUrl( UrlUtils.delBaseUrl(item.ImgPath));
+					 });
 				 }
 			 });
 		 }
@@ -160,7 +163,9 @@
 			 		if (resData.data.EOF) {
 			 			this.finished = true;
 			 		}
-					
+					resData.data.Playlists.forEach((item,index)=>{
+						item.CoverImgUrl = UrlUtils.addBaseUrl( UrlUtils.delBaseUrl(item.CoverImgUrl));
+					});
 			 		this.playList = this.playList.concat(resData.data.Playlists);
 			 	} else {
 			 		this.$toast(this.$i18n.t('fail'));
@@ -196,9 +201,10 @@
 								 id: item.Id,
 								 image: '',
 								 mid: '',
+								 isLike:item.isLike,
 								 name:  item.Name,
 								 singer: this.computeAuthorName(item),
-								 url: 'http://172.16.125.11:8010/' + item.Id,
+								 url:  UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(item.Id))
 							 });
 						});
 						

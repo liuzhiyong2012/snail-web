@@ -53,12 +53,12 @@
 </i18n>
 
 <script lang="ts">
-import { Vue, Prop, Component } from "vue-property-decorator";
-import AbusTitle from "../../components/AbusTitle.vue";
-import MusicService from "../../service/music";
-
+import { Vue, Prop, Component } from 'vue-property-decorator';
+import AbusTitle from '../../components/AbusTitle.vue';
+import MusicService from '../../service/music';
+import UrlUtils from '../../utils/url-utils';
 @Component({
-  name: "MusicTopRanks",
+  name: 'MusicTopRanks',
   components: {
     AbusTitle,
   },
@@ -66,25 +66,30 @@ import MusicService from "../../service/music";
 export default class MusicTopRanks extends Vue {
   private typeList: Array<any> = [];
   private rankImg: any = {
-    "0": require("./images/rank1.png"),
-    "1": require("./images/rank2.png"),
-    "2": require("./images/rank3.png"),
+    '0': require('./images/rank1.png'),
+    '1': require('./images/rank2.png'),
+    '2': require('./images/rank3.png'),
   };
 
   private mounted() {
     this.getMusicTop();
-    if (localStorage.getItem("lang") == "en") {
-      this.$i18n.locale = "en";
+    if (localStorage.getItem('lang') == 'en') {
+      this.$i18n.locale = 'en';
     } else {
-      this.$i18n.locale = "zh";
+      this.$i18n.locale = 'zh';
     }
   }
 
   public getMusicTop() {
     MusicService.getMusicTop().then((res: any) => {
-      if (res.code == "200") {
+      if (res.code == '200') {
         // debugger;
         this.typeList = res.data.Types;
+		 this.typeList.forEach((item,index)=>{
+			 item.Playlists.forEach((item1,index1)=>{
+				 item1.CoverImgUrl = UrlUtils.addBaseUrl( UrlUtils.delBaseUrl(item1.CoverImgUrl));
+			 });
+		 });
         // debugger;
       }
     });
@@ -92,7 +97,7 @@ export default class MusicTopRanks extends Vue {
 
   private stepToPage(item: any): void {
     this.$router.push({
-      name: "musicPlaylistDetail",
+      name: 'musicPlaylistDetail',
       query: {
         id: item.Id,
       },

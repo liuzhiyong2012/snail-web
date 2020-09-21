@@ -28,6 +28,8 @@ export const playHistory = state => state.playHistory;
 
 export const favoriteList = state => state.favoriteList;
 
-export const likeSet = state => state.likeSet;
+export const likeSet = (state)=>{
+	return state.likeSet;
 
+}; 
 

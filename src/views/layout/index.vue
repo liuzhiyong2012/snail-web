@@ -30,38 +30,10 @@ export default class LayoutIndex extends Vue {
   }
   
   private beforeDestroy(){
-  	this.socket&&this.socket.close();
+	  
   }
   
-  private startWebScoket() {
-         const opt = {
-  			path:process.env.VUE_APP_SOCKET_URL
-  		};
-  		this.socket = io(process.env.VUE_APP_HOST,opt);
-  		
-  		//需要获取航班的id.
-  		let uid = '4CFC4D33-2C1E-E911-BAD5-F44D307124C0';
-  
-  		// socket连接后以uid登录
-  		this.socket.on('connect', () => {
-  			console.log('connect');
-  			this.socket.emit('login', uid);
-  		});
-  
-  		// 后端推送来消息时
-  		this.socket.on('new_msg', (msg) => {
-  			console.log('new_msg');
-  			
-  			let midMsg = msg.replace(/&quot;/g, '"');
-  			let newMessageObj = JSON.parse(midMsg);
-  			(this as any).$globalEvent.$emit('new_msg',newMessageObj);
-  			
-  			if(newMessageObj.type == 'system'){
-  				this.showNotify();
-  			}
-  		});
-  
-  	}
+  private startWebScoket() {}
   
 }
 </script>

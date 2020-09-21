@@ -302,7 +302,7 @@ export default class Home extends Vue {
     const opt = {
       path:process.env.VUE_APP_SOCKET_URL
     };
-    _this.socket = io(process.env.VUE_APP_HOST,opt);
+    _this.socket = io(process.env.VUE_APP_SOCKET_HOST,opt);
     // uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
     let uid = _this.uInfo.id;
     

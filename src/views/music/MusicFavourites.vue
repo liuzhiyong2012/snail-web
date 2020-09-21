@@ -136,10 +136,10 @@ export default class MusicFavourites extends Vue {
 	private mounted() {
 		this.resetList();
 		this.getAllSong();
-		if (localStorage.getItem("lang") == "en") {
-			this.$i18n.locale = "en";
+		if (localStorage.getItem('lang') == 'en') {
+			this.$i18n.locale = 'en';
 			} else {
-			this.$i18n.locale = "zh";
+			this.$i18n.locale = 'zh';
 			}
 	}
 
@@ -285,6 +285,7 @@ export default class MusicFavourites extends Vue {
 					id: item.Id,
 					image: '',
 					mid: '',
+					isLike:item.isLike,
 					name: item.Name,
 					singer: this.computeAuthorName(item),
 					url: UrlUtils.addBaseUrl( UrlUtils.delBaseUrl(item.Id))

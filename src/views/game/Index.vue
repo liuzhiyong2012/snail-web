@@ -1,7 +1,7 @@
 <template>
   <div class="game">
     <van-sticky>
-      <abus-title title="Game">
+      <abus-title title="Game" backRouteName="home">
         <div slot style="width:0.3rem"></div>
       </abus-title>
     </van-sticky>
@@ -27,12 +27,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import AbusTitle from "../../components/AbusTitle.vue";
-import GameService from "../../service/game";
-import { component } from "vue/types/umd";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import AbusTitle from '../../components/AbusTitle.vue'; 
+import GameService from '../../service/game';
+import { component } from 'vue/types/umd';
 @Component({
-  name: "GameIndex",
+  name: 'GameIndex',
   components: {
     AbusTitle,
   },
@@ -67,7 +67,7 @@ export default class GameIndex extends Vue {
   public getGameList() {
     GameService.getGameList().then((res) => {
       if (res.code == 200) {
-        console.log("游戏列表", res.data);
+        console.log('游戏列表', res.data);
         this.gameList = res.data.Games;
       }
     });
@@ -75,15 +75,13 @@ export default class GameIndex extends Vue {
 
   public goToDetail(item: any) {
     //进入游戏详情
-    console.log("ingame", item);
-    // window.location.href();
-    window.open(item.GameUrl); 
-    // this.$router.push({
-    //   name: "gameDetail",
-    //   query: {
-    //     gameId: id,
-    //   },
-    // });
+	   this.$router.push({
+		  name: 'gameDetail',
+		  query: {
+			gameUrl: item.GameUrl,
+		  }
+		});
+		
   }
 }
 </script>

@@ -84,14 +84,14 @@
 	}
 </i18n>
 <script lang="ts">
-import { Vue, Prop, Component } from "vue-property-decorator";
-import AbusTitle from "../../components/AbusTitle.vue";
-import MusicService from "../../service/music";
-import AbusMusicIcon from "../../components/AbusMusicIcon.vue";
-import UrlUtils from "../../utils/url-utils";
+import { Vue, Prop, Component } from 'vue-property-decorator';
+import AbusTitle from '../../components/AbusTitle.vue';
+import MusicService from '../../service/music';
+import AbusMusicIcon from '../../components/AbusMusicIcon.vue';
+import UrlUtils from '../../utils/url-utils';
 
 @Component({
-  name: "MusicPlaylistDetail",
+  name: 'MusicPlaylistDetail',
   components: {
     AbusTitle,
     AbusMusicIcon,
@@ -99,7 +99,7 @@ import UrlUtils from "../../utils/url-utils";
 })
 export default class MusicPlaylistDetail extends Vue {
   private recomendList: Array<any> = [];
-  private playListId: any | string = "";
+  private playListId: any | string = '';
 
   private total: number = 0;
 
@@ -118,30 +118,32 @@ export default class MusicPlaylistDetail extends Vue {
   private mounted() {
     this.playListId = this.$route.query.id;
     this.getPlaylistDetail();
-    if (localStorage.getItem("lang") == "en") {
-      this.$i18n.locale = "en";
+    if (localStorage.getItem('lang') == 'en') {
+      this.$i18n.locale = 'en';
     } else {
-      this.$i18n.locale = "zh";
+      this.$i18n.locale = 'zh';
     }
   }
 
   public getPlaylistDetail() {
     MusicService.getPlaylistDetail({ id: this.playListId }).then((res) => {
-      if (res.code == "200") {
+      if (res.code == '200') {
         this.total = res.data.TrackCount;
         this.playListObj = res.data;
+		this.playListObj.CoverImgUrl = UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(this.playListObj.CoverImgUrl));
 
         let songs = [];
 
         this.playListObj.Tracks.forEach((item, index) => {
           songs.push({
-            album: "album",
+            album: 'album',
             duration: item.Duration / 1000,
             id: item.Id,
             image: UrlUtils.addBaseUrl(
               UrlUtils.delBaseUrl(this.playListObj.CoverImgUrl)
             ),
-            mid: "",
+            mid: '',
+			isLike:item.isLike,
             name: item.Name,
             singer: this.computeAuthorName(item),
             url: UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(item.Id)),
@@ -162,13 +164,13 @@ export default class MusicPlaylistDetail extends Vue {
       anthorList.push(artistItem.Name);
     });
 
-    return anthorList.join(",");
+    return anthorList.join(',');
   }
 
   private subscribePlaylist(): void {
     MusicService.subscribePlaylist({ id: this.playListId }).then((res) => {
-      if (res.code == "200") {
-        this.$toast(this.$i18n.t("success"));
+      if (res.code == '200') {
+        this.$toast(this.$i18n.t('success'));
         this.isCollected = true;
       }
     });
@@ -176,9 +178,9 @@ export default class MusicPlaylistDetail extends Vue {
 
   private unSubscribePlaylist(): void {
     MusicService.unSubscribePlaylist({ id: this.playListId }).then((res) => {
-      if (res.code == "200") {
+      if (res.code == '200') {
         this.isCollected = false;
-        this.$toast(this.$i18n.t("CancelledSuccessfully"));
+        this.$toast(this.$i18n.t('CancelledSuccessfully'));
       }
     });
   }
@@ -189,7 +191,7 @@ export default class MusicPlaylistDetail extends Vue {
 
   private playSong(index) {
     // debugger;
-    this.$store.dispatch("selectPlay", {
+    this.$store.dispatch('selectPlay', {
       list: this.allSong,
       index: index,
     });

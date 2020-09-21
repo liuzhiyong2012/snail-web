@@ -41,21 +41,31 @@ const mutations = {
     state.favoriteList = list;
   },
   setLikeSet(state,list){
-	  state.likeSet = {};
-	  
+	 debugger;
+	  let likeSet = {};
 	  list.forEach((item,index)=>{
 		  if(item.isLike){
-			   state.likeSet[item.id] = true;
+			   likeSet[item.id] = true;
 		  }else{
-			  state.likeSet[item.id] = false;
+			  likeSet[item.id] = false;
 		  }
 	  });
+	  
+	  state.likeSet = likeSet;
   },
   likeSong(state,songId){
-    state.likeSet[songId] = true;
+	   //debugger;
+	   let likeSet = JSON.parse(JSON.stringify(state.likeSet));
+	   
+	    likeSet[songId] = true;
+	    state.likeSet = likeSet;
+    //state.likeSet[songId] = true;
   },
   disLikeSong(state,songId){
-  	  state.likeSet[songId] = false;
+	 let likeSet = JSON.parse(JSON.stringify(state.likeSet));
+	 
+	  likeSet[songId] = false;
+	  state.likeSet = likeSet;
   }
   
 };

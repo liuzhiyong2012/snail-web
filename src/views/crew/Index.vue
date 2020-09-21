@@ -93,7 +93,7 @@ export default class CrewLayoutCtn extends Vue {
            const opt = {
 				path:process.env.VUE_APP_SOCKET_URL
 			};
-			this.socket = io(process.env.VUE_APP_HOST,opt);
+			this.socket = io(process.env.VUE_APP_SOCKET_HOST,opt);
 			
 			//需要获取航班的id.
 			let uid = '4CFC4D33-2C1E-E911-BAD5-F44D307124C0';
