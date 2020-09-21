@@ -134,6 +134,7 @@
       "toast3":"密码不能少于6位",
       "toast4":"密码不一致",
       "toast5":"请输入新密码",
+      "toast6":"服务端错误",
       "Confirm":"确认"
     },
     "en":{
@@ -160,6 +161,7 @@
       "toast3":"The password cannot be less than 6 digits",
       "toast4":"Password inconsistency",
       "toast5":"Please set new password",
+      "toast6":"Server error",
       "Confirm":"Confirm"
     }
   }
@@ -225,7 +227,11 @@ export default class ForgotPassword extends Vue {
       })
       .catch((reason: any) => {
         console.log("=== Error ===");
-        this.$toast(reason.message);
+        if(reason.code == 500 || reason.code == 502){
+          this.$toast(this.$i18n.t('toast6'))
+        }else{
+          this.$toast(reason.message != '' ? this.$i18n.t('toast6'):reason.message)
+        }
       });
   }
   // 验证码请求接口

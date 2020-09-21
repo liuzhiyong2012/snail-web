@@ -8,6 +8,9 @@ import Vant from 'vant';
 import 'vant/lib/index.css';
 import VueI18n from 'vue-i18n'
 import { Lazyload } from 'vant';
+import VueQrcodeReader from "vue-qrcode-reader";
+
+
 //引入rem适配
 // import 'amfe-flexible/index.js';
 // import myCharts from './comm/js/myCharts.js';
@@ -25,7 +28,7 @@ Vue.use(Lazyload, {
   lazyComponent: true,
 });
 Vue.use(VueI18n);
-
+Vue.use(VueQrcodeReader);
 //  import Vconsole from 'vconsole'
 //  const vConsole: any = new Vconsole();
 //  Vue.use(vConsole)
