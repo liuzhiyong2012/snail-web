@@ -308,10 +308,12 @@ export default class Home extends Vue {
     
     // socket连接后以uid登录
     _this.socket.on('connect', function () {
+    	console.log('home connect');
       _this.socket.emit('login', uid);
     });
     // 后端推送来消息时
     _this.socket.on('new_msg', (msg: any) => {
+    		console.log('home new_msg');
       let midMsg = msg.replace(/&quot;/g, '"');
       let endMsg = JSON.parse(midMsg);
       if (endMsg.type == 'system') {
