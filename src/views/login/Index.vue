@@ -11,7 +11,11 @@
           <div class="t" @click="changeZh">简体中文</div>
         </div>
       </span> 
-    </div> -->
+    </div>-->
+    <!-- <qrcode-stream @decode="onDecode"></qrcode-stream> -->
+<!-- <qrcode-drop-zone></qrcode-drop-zone> -->
+<!-- <qrcode-capture></qrcode-capture> -->
+
     <div class="login-bg"></div>
     <div class="form">
       <div class="user-details">
@@ -86,6 +90,7 @@
         "ForgotPassword": "忘记密码",
         "placeholderPhone": "你的手机号码",
         "placeholderPassword": "请输入密码",
+        "noPassword": "密码不能为空",
         "showError":"手机号码有误，请重填",
         "toast1": "手机号码不可以超出11位",
         "toast2": "用户名或密码不正确"
@@ -97,6 +102,7 @@
         "ForgotPassword": "Forgot Password",
         "placeholderPhone": "Your phone",
         "placeholderPassword": "Password",
+        "noPassword": "Password cannot be empty",
         "showError":"Wrong mobile number, please fill in again",
         "toast1": "Phone number cannot exceed 11 digits",
         "toast2": "The user name or password is incorrect."
@@ -104,40 +110,40 @@
 	}
 </i18n>
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import AdModel from './components/ADModel.vue';
-import LoginService from '../../service/login';
-import { localStore } from '../../utils/data-management';
+import { Component, Prop, Vue } from "vue-property-decorator";
+import AdModel from "./components/ADModel.vue";
+import LoginService from "../../service/login";
+import { localStore } from "../../utils/data-management";
 
 @Component({
-  name: 'Login',
+  name: "Login",
   components: {
-    AdModel
-  }
+    AdModel,
+  },
 })
 export default class Login extends Vue {
   private isActive: boolean = true;
   private isShowLang: boolean = false;
-  private lang: string = '';
-  private userPhone: string = '';
-  private userPassword: string = '';
-  
+  private lang: string = "";
+  private userPhone: string = "";
+  private userPassword: string = "";
+
   private created() {
     clearTimeout();
     setTimeout(() => {
       this.isActive = false;
     }, 1000);
     // console.log(navigator.language)
-    if(navigator.language == 'zh-CN'){
-      this.lang = '简体中文';
-      this.$i18n.locale = 'zh';
-      localStorage.setItem('lang', 'zh');
-      this.$store.commit('changeLanguage', 'zh')
-    }else{
-      this.lang = 'English';
-      this.$i18n.locale = 'en';
-      localStorage.setItem('lang', 'en');
-      this.$store.commit('changeLanguage', 'en')
+    if (navigator.language == "zh-CN") {
+      this.lang = "简体中文";
+      this.$i18n.locale = "zh";
+      localStorage.setItem("lang", "zh");
+      this.$store.commit("changeLanguage", "zh");
+    } else {
+      this.lang = "English";
+      this.$i18n.locale = "en";
+      localStorage.setItem("lang", "en");
+      this.$store.commit("changeLanguage", "en");
     }
     // if(localStorage.getItem('lang') == 'en'){
     //   this.lang = 'English';
@@ -158,81 +164,93 @@ export default class Login extends Vue {
   //     this.$toast('数字不可以超出11位')
   //   }
   // }
-  public getUserPhoneLength(e:any){
-    if(e.target.value.length >= 11 && e.keyCode != 8){
-      this.$toast(this.$i18n.t('toast1'))
-      this.userPhone = e.target.value.substring(0,10)
+  public getUserPhoneLength(e: any) {
+    if (e.target.value.length >= 11 && e.keyCode != 8) {
+      this.$toast(this.$i18n.t("toast1"));
+      this.userPhone = e.target.value.substring(0, 10);
     }
   }
   // public getUserPassword(e: any) {
   //   this.userPassword = e.target.value;
   // }
+  public onDecode (decodedString) {
+    console.log(decodedString)
+    // ...
+  }
   public showLang() {
     this.isShowLang = !this.isShowLang;
   }
-  public changeEn(){
-    this.lang = 'English';
-    this.$i18n.locale = 'en';
-    localStorage.setItem('lang', 'en');
+  public changeEn() {
+    this.lang = "English";
+    this.$i18n.locale = "en";
+    localStorage.setItem("lang", "en");
   }
-  public changeZh(){
-    this.lang = '简体中文';
-    this.$i18n.locale = 'zh';
-    localStorage.setItem('lang', 'zh');
+  public changeZh() {
+    this.lang = "简体中文";
+    this.$i18n.locale = "zh";
+    localStorage.setItem("lang", "zh");
   }
   public postUserLogin() {
     // console.log(this.$store.state.login.name)
-    if(!(/^1[3456789]\d{9}$/.test(this.userPhone))){ 
-        this.$toast(this.$i18n.t('showError'));  
-        return false; 
-    } else if (this.userPhone != '' && this.userPassword != '') {
+    if (!/^1[3456789]\d{9}$/.test(this.userPhone)) {
+      this.$toast(this.$i18n.t("showError"));
+      return false;
+    } else if (this.userPassword == "") {
+      this.$toast(this.$i18n.t("noPassword"));
+    } else if (this.userPhone != "" && this.userPassword != "") {
       var data = {
-        username: '86_' + this.userPhone, // 默认86
-        password: this.userPassword
+        username: "86_" + this.userPhone, // 默认86
+        password: this.userPassword,
       };
       LoginService.postUserLogin(data)
         .then((res: any) => {
           console.log(res);
-		  // debugger;
+          // debugger;
           if (res.code == 200) {
             // 写入成功后，判断是否有座位
-            this.$store.dispatch('setUserInfo', {
-              name: res.data.userName,
-              token: res.data.access_token,
-              id: res.data.id,
-			  airbusId:res.data.airbusId
-            }).then((res:any)=>{
-				// debugger;
-              console.log('token:' + localStore.get('token'));
-              LoginService.getUserMe().then((res: any)=>{
-                console.log(res);
-                if (res.code == 200 && res.data.Seat == null) {
-                      this.$router.push({
-                    name: 'selectSeat'
-                  });
-                } else if (res.code == 200 && res.data.Seat.Name){
-                  this.$store.commit('setSeatNumber',res.data.Seat.Name);
-                  this.$store.commit('setSeatName',res.data.Seat.Name);
-                  this.$store.commit('setSeatType',res.data.Seat.SeatType);
-                   this.$router.push({
-                    name: 'home'
-                  });
-                }else{
-                  this.$toast(res.message);
-                }
+            this.$store
+              .dispatch("setUserInfo", {
+                name: res.data.userName,
+                token: res.data.access_token,
+                id: res.data.id,
+                airbusId: res.data.airbusId,
+              })
+              .then((res: any) => {
+                // debugger;
+                console.log("token:" + localStore.get("token"));
+                LoginService.getUserMe().then((res: any) => {
+                  console.log(res);
+                  if (res.code == 200 && res.data.Seat == null) {
+                    this.$router.push({
+                      name: "selectSeat",
+                    });
+                  } else if (res.code == 200 && res.data.Seat.Name) {
+                    this.$store.commit("setSeatNumber", res.data.Seat.Name);
+                    this.$store.commit("setSeatName", res.data.Seat.Name);
+                    this.$store.commit("setSeatType", res.data.Seat.SeatType);
+                    this.$router.push({
+                      name: "home",
+                    });
+                  } else {
+                    this.$toast(res.message);
+                  }
+                });
               });
-            });
-            
+
             // this.$router.push({
             //   name: "home"
             // });
-          }else{
+          } else {
             this.$toast(res.message);
           }
         })
         .catch((error: any) => {
           console.log(error);
-          this.$toast(this.$i18n.t('toast2'));
+          if(error.code == 500 || error.code == 502){
+            this.$toast(error.message)
+          }else{
+            this.$toast(this.$i18n.t("toast2"));
+          }
         });
     }
   }
@@ -249,10 +267,10 @@ export default class Login extends Vue {
   background-color: #00205b;
   width: 100%;
   height: 100vh;
-  .login-bg{
+  .login-bg {
     width: 100%;
     height: 2.7rem;
-    background-image: url('./images/login_bg.png');
+    background-image: url("./images/login_bg.png");
     background-repeat: no-repeat;
     background-size: cover;
   }
@@ -313,7 +331,7 @@ export default class Login extends Vue {
         padding: 0 0 0 0.1rem;
         flex: 1;
         background-color: #00205b;
-        font-size: 0.30rem;
+        font-size: 0.3rem;
         color: #fff;
       }
     }
