@@ -6,6 +6,9 @@ const routes: Array<RouteConfig> = [
     path: "/message",
     name: "messageIndex",
     component: MessageIndex,
+    meta: {
+			keepAlive: false
+		},
     children: [],
   },
 ];

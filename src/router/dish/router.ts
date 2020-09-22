@@ -15,18 +15,27 @@ const routes: Array<RouteConfig> = [
 		path: '/dish/index',
 		name: 'dishIndex',
 		component: DishIndex,
+		meta: {
+			keepAlive: false
+		},
 		children: []
 	},
 	{
 		path: '/dish/detail',
 		name: 'dishDetail',
 		component: DishDetail,
+		meta: {
+			keepAlive: false
+		},
 		children: []
 	},
 	{
 		path: '/dish/cart',
 		name: 'dishCart',
 		component: DishCart,
+		meta: {
+			keepAlive: false
+		},
 		children: []
 	}
 ];

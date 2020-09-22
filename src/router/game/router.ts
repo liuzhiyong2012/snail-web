@@ -9,6 +9,9 @@ const routes: Array < RouteConfig > = [
 		path: '/game',
 		name: 'game',
 		component: Game,
+		meta: {
+			keepAlive: false
+		},
 		children: []
 	},
 	{

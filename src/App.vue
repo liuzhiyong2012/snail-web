@@ -120,6 +120,21 @@ svg.icon {
 .van-picker__cancel, .van-picker__confirm{
   font-size: .32rem !important;
 }
+.van-field__left-icon .van-icon{
+  width: .4rem !important;
+  height: .4rem !important;
+  font-size: .3rem !important;
+}
+.van-search__content{
+  background-color: #fff !important;
+}
+.van-search{
+  height: 1rem !important;
+  box-sizing: border-box !important;
+}
+.van-search .van-cell{
+
+}
 .van-tabs__line{
   width: .5rem !important;
   height: .15rem !important;

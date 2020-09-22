@@ -34,7 +34,7 @@
 		<div class="pay-info-ctn">
 			<div class="seat-ctn" >
 				<span>{{$t('seatNumber')}}</span>
-				<span>{{seatNumber}}</span>
+				<span>{{seatName}}</span>
 			</div>
 			
 			<div class="pay-ctn">

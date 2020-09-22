@@ -42,36 +42,57 @@ const routes: Array<RouteConfig> = [
         path: "/home",
         name: "home",
         component: Home,
+        meta:{
+          keepAlive: false
+        }
       },
       {
         path: "/scan",
         name: "scan",
         component: Scan,
+        meta:{
+          keepAlive: false
+        }
       },
       {
         path: "/scanH5",
         name: "scanH5",
         component: ScanH5,
+        meta:{
+          keepAlive: false
+        }
       },
       {
         path: "/internet",
         name: "internet",
         component: Internet,
+        meta:{
+          keepAlive: true
+        }
       },
       {
         path: "/internet/cart",
         name: "internetCart",
         component: InternetCart,
+        meta:{
+          keepAlive: false
+        }
       },
       {
         path: "/about",
         name: "about",
         component: About,
+        meta:{
+          keepAlive: false
+        }
       },
       {
         path: "/aboutUs",
         name: "aboutUs",
         component: AboutUs,
+        meta:{
+          keepAlive: false
+        }
       },
     ],
   },

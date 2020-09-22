@@ -13,6 +13,9 @@ const routes: Array < RouteConfig > = [{
 	path: '/flight/index',
 	name: 'flightIndex',
 	component: FlightIndex,
+	meta: {
+		keepAlive: false
+	},
 	children: []
 }]
 

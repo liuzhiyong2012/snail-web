@@ -688,6 +688,7 @@ export default class VideoPlay extends Vue {
   /*object-fit: fill !important;*/
   /*z-index: 999;*/
   width: 100%;
+  // height: 100vh;
 }
 video {
   object-position: 0 0;

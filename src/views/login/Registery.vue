@@ -10,6 +10,7 @@
             class="main-item-con"
             maxlength="20"
             type="text"
+            @change="setNickName"
             :placeholder="$t('NameTips')"
           />
         </div>
@@ -23,6 +24,7 @@
             v-model="radio"
             direction="horizontal"
             checked-color="#00205B"
+            @change="setRadio"
             icon-size="12px"
           >
             <van-radio name="0">
@@ -52,6 +54,7 @@
             class="main-item-con"
             type="number"
             maxlength="20"
+            @change="setPhone"
             @keydown="getUserPhoneLength"
             :placeholder="$t('PhoneTips')"
           />
@@ -63,6 +66,7 @@
             maxlength="25"
             class="main-item-con"
             type="text"
+            @change="setIdCard"
             :placeholder="$t('IDCardTips')"
           />
         </div>
@@ -72,6 +76,7 @@
             v-model="password"
             class="main-item-con"
             type="password"
+            @change="setPassword"
             :placeholder="$t('PasswordTips')"
             @blur="checkUserPassword"
           />
@@ -83,6 +88,7 @@
             @blur="checkPassword"
             class="main-item-con"
             type="password"
+            @change="setConfirmPassword"
             :placeholder="$t('ConfirmPasswordTips')"
           />
         </div>
@@ -231,6 +237,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import LoginService from "../../service/login";
 import AbusTitle from "../../components/AbusTitle.vue";
+import { localStore } from "../../utils/data-management";
 
 @Component({
   name: "Registery",
@@ -278,19 +285,94 @@ export default class Register extends Vue {
         "我最喜欢的动物?",
       ];
     }
+    this.getUserChangeData()
   }
-
-  public getUserPhoneLength(e:any){
-    if(e.target.value.length >= 11 && e.keyCode != 8){
-      this.$toast(this.$i18n.t('toast1'))
-      this.phone = e.target.value.substring(0,10)
+  /**
+   * 缓存用户输入的信息
+   */
+  public getUserChangeData(){
+    this.getNickName()
+    this.getRadio()
+    this.getPhone()
+    this.getIdCard()
+    this.getConfirmPassword()
+    this.getPassword()
+  }
+  public setUserDataNull(){
+    localStore.set("nickName", '');
+    localStore.set('radio','0')
+    localStore.set("uPhone", '');
+    localStore.set("idCard", '');
+    localStore.set("uPassword", '');
+    localStore.set("confirmPassword", '');
+  }
+  public setNickName(e) {
+    this.nickname = e.target.value;
+    localStore.set("nickName", e.target.value);
+  }
+  public getNickName() {
+    if (localStore.get("nickName") != "") {
+      this.nickname = localStore.get("nickName");
+    }
+  }
+  public setRadio(e) {
+    this.radio = e;
+    localStore.set("radio", e);
+  }
+  public getRadio() {
+    if (localStore.get("radio") != "" && localStore.get("radio") != null) {
+      this.radio = localStore.get("radio");
+    }else{
+      this.radio = '0'
+    }
+  }
+  public setPhone(e) {
+    this.phone = e.target.value;
+    localStore.set("uPhone", e.target.value);
+  }
+  public getPhone() {
+    if (localStore.get("uPhone") != "") {
+      this.phone = localStore.get("uPhone");
+    }
+  }
+  public setIdCard(e) {
+    this.idCard = e.target.value;
+    localStore.set("idCard", e.target.value);
+  }
+  public getIdCard() {
+    if (localStore.get("idCard") != "") {
+      this.idCard = localStore.get("idCard");
+    }
+  }
+  public setPassword(e) {
+    this.password = e.target.value;
+    localStore.set("uPassword", e.target.value);
+  }
+  public getPassword() {
+    if (localStore.get("uPassword") != "") {
+      this.password = localStore.get("uPassword");
+    }
+  }
+  public setConfirmPassword(e) {
+    this.confirmPassword = e.target.value;
+    localStore.set("confirmPassword", e.target.value);
+  }
+  public getConfirmPassword() {
+    if (localStore.get("confirmPassword") != "") {
+      this.confirmPassword = localStore.get("confirmPassword");
+    }
+  }
+  public getUserPhoneLength(e: any) {
+    if (e.target.value.length >= 11 && e.keyCode != 8) {
+      this.$toast(this.$i18n.t("toast1"));
+      this.phone = e.target.value.substring(0, 10);
     }
   }
   public showPopup() {
     if (this.isCheckPassword) {
       this.show = true;
-    }else{
-      this.$toast(this.$i18n.t('toast2'))
+    } else {
+      this.$toast(this.$i18n.t("toast2"));
     }
   }
   public showQuestion() {
@@ -320,13 +402,13 @@ export default class Register extends Vue {
   }
   public checkUserPassword(e: any) {
     if (e.target.value.length < 6) {
-      this.$toast(this.$i18n.t('toast3'));
+      this.$toast(this.$i18n.t("toast3"));
     }
   }
   public checkPassword() {
     if (this.password != this.confirmPassword) {
       this.isCheckPassword = false;
-      this.$toast(this.$i18n.t('toast4'));
+      this.$toast(this.$i18n.t("toast4"));
     } else {
       this.isCheckPassword = true;
     }
@@ -351,77 +433,79 @@ export default class Register extends Vue {
         answer: this.answer,
       };
       // console.log(this.radio);
-      LoginService.postUserRegistery(data).then((res: any) => {
-        console.log(res);
-        if (res.code == 200) {
-          // 存储用户信息
-          // 写入成功后，判断是否有座位
-          this.$store
-            .dispatch("setUserInfo", {
-              name: res.data.userName,
-              token: res.data.access_token,
-              id: res.data.id,
-			  airbusId:res.data.airbusId
-            })
-            .then((res: any) => {
-              LoginService.getUserMe().then((res: any) => {
-                // AvatarPath: ""
-                // DisplayName: "mizao"
-                // Email: null
-                // Flow: {flow: -1}
-                // Id: "3a03a40ac79b4f0d6eef58fcd99271d7"
-                // IsWeChatBinded: false
-                // NickName: "mizao"
-                // PhoneNumber: "13570492375"
-                // Seat:{
-                // Id: "1"
-                // Name: "1A"
-                // col: 1
-                // col-number: 1
-                // row: 1
-                // }
-                // __proto__: Object
-                // UserName: "86_13570492375"
-                // WeChatId: null
-                // points: "2000"
-                if (res.code == 200 && res.data.Seat == null) {
-                  this.$router.push({
-                    name: "selectSeat",
-                  });
-                } else if (res.code == 200 && res.data.Seat.Name) {
-                  this.$store.commit("setSeatNumber", res.data.Seat.Name);
-                  this.$router.push({
-                    name: "home",
-                  });
-                }
+      LoginService.postUserRegistery(data)
+        .then((res: any) => {
+          console.log(res);
+          if (res.code == 200) {
+            // 存储用户信息
+            // 写入成功后，判断是否有座位
+            this.$store
+              .dispatch("setUserInfo", {
+                name: res.data.userName,
+                token: res.data.access_token,
+                id: res.data.id,
+                airbusId: res.data.airbusId,
+              })
+              .then((res: any) => {
+                this.setUserDataNull()
+                LoginService.getUserMe().then((res: any) => {
+                  // AvatarPath: ""
+                  // DisplayName: "mizao"
+                  // Email: null
+                  // Flow: {flow: -1}
+                  // Id: "3a03a40ac79b4f0d6eef58fcd99271d7"
+                  // IsWeChatBinded: false
+                  // NickName: "mizao"
+                  // PhoneNumber: "13570492375"
+                  // Seat:{
+                  // Id: "1"
+                  // Name: "1A"
+                  // col: 1
+                  // col-number: 1
+                  // row: 1
+                  // }
+                  // __proto__: Object
+                  // UserName: "86_13570492375"
+                  // WeChatId: null
+                  // points: "2000"
+                  if (res.code == 200 && res.data.Seat == null) {
+                    this.$router.push({
+                      name: "selectSeat",
+                    });
+                  } else if (res.code == 200 && res.data.Seat.Name) {
+                    this.$store.commit("setSeatNumber", res.data.Seat.Name);
+                    this.$router.push({
+                      name: "home",
+                    });
+                  }
+                });
               });
-            });
-        } else {
-          this.$toast(res.message);
-        }
-      })
-      .catch((reason: any) => {
-        this.$toast(this.$i18n.t('toast5'));
-      });
+          } else {
+            this.$toast(res.message);
+          }
+        })
+        .catch((reason: any) => {
+          this.$toast(this.$i18n.t("toast5"));
+        });
     } else if (!this.isCheckPassword) {
-      this.$toast(this.$i18n.t('toast4'));
+      this.$toast(this.$i18n.t("toast4"));
     } else if (!this.isReaded) {
-      this.$toast(this.$i18n.t('toast6'));
+      this.$toast(this.$i18n.t("toast6"));
     } else {
-      this.$toast(this.$i18n.t('toast7'));
+      this.$toast(this.$i18n.t("toast7"));
     }
   }
 
-  public gotoPrivacy(){
+  public gotoPrivacy() {
     this.$router.push({
-      name:'privacyPolicy'
-    })
+      name: "privacyPolicy",
+    });
   }
 
-  public gotoTerms(){
+  public gotoTerms() {
     this.$router.push({
-      name:'termsOfService'
-    })
+      name: "termsOfService",
+    });
   }
 }
 </script>

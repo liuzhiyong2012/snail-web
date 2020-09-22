@@ -130,7 +130,6 @@ export default class ShoppingDetail extends Vue {
   }
 
   public stepToCart():void{
-		// debugger;
 		this.$router.push({
 			name:'shoppingCart'
 		});
