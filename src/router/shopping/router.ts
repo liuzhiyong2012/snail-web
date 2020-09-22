@@ -11,16 +11,25 @@ const routes: Array<RouteConfig> = [
         path: '/shopping',
         name: 'shopping',
         component: Shopping,
+        meta: {
+			keepAlive: false
+		},
         children: []
     },
     {
         path: '/shopping/details',
         name: 'shoppingDetails',
-        component: ShoppingDetails
+        component: ShoppingDetails,
+        meta: {
+			keepAlive: false
+		}
     },
     {
         path: '/shopping/cart',
         name: 'shoppingCart',
+        meta: {
+			keepAlive: false
+		},
         component: ShoppingCart
     }
 

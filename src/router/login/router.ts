@@ -10,7 +10,8 @@ const routes: Array<RouteConfig> = [
 	{
 		path: '/login',
 		meta:{
-			noRequireAuth:true
+			noRequireAuth:true,
+			keepAlive: false
 		},
 		name: 'login',
 		component: LoginIndex,
@@ -19,7 +20,8 @@ const routes: Array<RouteConfig> = [
 	{
 		path: '/forgot/password',
 		meta:{
-			noRequireAuth:true
+			noRequireAuth:true,
+			keepAlive: false
 		},
 		name: 'forgotPassword',
 		component: ForgotPassword,
@@ -30,7 +32,8 @@ const routes: Array<RouteConfig> = [
 	{
 		path: '/registery',
 		meta:{
-			noRequireAuth:true
+			noRequireAuth:true,
+			keepAlive: false
 		},
 		name: 'registery',
 		component: Registery,		
@@ -38,7 +41,8 @@ const routes: Array<RouteConfig> = [
 	{
 		path: '/select/seat',
 		meta:{
-			noRequireAuth:true
+			noRequireAuth:true,
+			keepAlive: false
 		},
 		name: 'selectSeat',
 		component: SelectSeat

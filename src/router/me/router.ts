@@ -20,39 +20,60 @@ const routes: Array<RouteConfig> = [
 		path: '/me',
 		name: 'meIndex',
 		component: Me,
+		meta: {
+			keepAlive: false
+		},
 		children: []
 	},
 	{
 		path: '/address',
 		name: 'address',
 		component: Address,
+		meta: {
+			keepAlive: false
+		},
 		children: []
 	},
 	{
 		path: '/my/order',
 		name: 'myOrder',
 		component: MyOrder,
+		meta: {
+			keepAlive: false
+		},
 		children: []
 	},
 	{
 		path: '/lang',
 		name: 'lang',
 		component: Lang,
+		meta: {
+			keepAlive: false
+		},
 		children: []
 	},
 	{
 		path: '/third/account',
 		name: 'thirdAccount',
+		meta: {
+			keepAlive: false
+		},
 		component: ThirdAccount
 	},
 	{
 		path: '/me/payment',
 		name: 'payment',
+		meta: {
+			keepAlive: false
+		},
 		component: Payment
 	},
 	{
 		path: '/me/privacypolicy',
 		name: 'privacyPolicy',
+		meta: {
+			keepAlive: false
+		},
 		component: PrivacyPolicy
 	},
 	{
@@ -63,12 +84,18 @@ const routes: Array<RouteConfig> = [
 	{
 		path: '/me/pointsexchange',
 		name: 'pointsExchange',
+		meta: {
+			keepAlive: false
+		},
 		component: PointsExchange,
 		children: []
 	},
 	{
 		path: '/me/pointsdetails',
 		name: 'pointsDetails',
+		meta: {
+			keepAlive: false
+		},
 		component: PointsDetails,
 		children: []
 	},

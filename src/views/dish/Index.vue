@@ -20,8 +20,8 @@
 					<div class="name-ctn">{{ item.Name }}</div>
 					<div class="bottom-ctn" v-if="item.Stocking">
 						<div class="qty-ctn">
-							<!-- <span>QTY</span>
-							<span>{{item.Stocking}}</span> -->
+							<span>QTY</span>
+							<span>{{item.Stocking}}</span>
 						</div>
 						<div class="order-btn" @click="stepToDetail(item)">{{$t("order")}}</div>
 					</div>
