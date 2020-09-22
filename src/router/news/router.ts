@@ -9,12 +9,18 @@ const routes: Array < RouteConfig > = [
 		path: '/news',
 		name: 'news',
 		component: News,
+		meta: {
+			keepAlive: false
+		},
 		children: []
 	},
 	{
 		path: '/news/detail',
 		name: 'newsDetail',
 		component: NewsDetail,
+		meta: {
+			keepAlive: false
+		}
 	},
 ]
 

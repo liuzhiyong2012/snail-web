@@ -12,30 +12,45 @@ const routes: Array < RouteConfig > = [
 		name:'musicIndex',
 		path:'/music/index',
 		component:MusicIndex,
+		meta: {
+			keepAlive: false
+		},
 		children:[]
 	},
 	{
 		name:'musicFavourites',
 		path:'/music/index',
 		component:MusicFavourites,
+		meta: {
+			keepAlive: false
+		},
 		children:[]
 	},
 	{
 		name:'musicAirFm',
 		path:'/music/airfm',
 		component:MusicAirFm,
+		meta: {
+			keepAlive: false
+		},
 		children:[]
 	},
 	{
 		name:'musicTopRanks',
 		path:'/music/topranks',
 		component:MusicTopRanks,
+		meta: {
+			keepAlive: false
+		},
 		children:[]
 	},
 	{
 		name:'musicPlaylistDetail',
 		path:'/music/playlist/detail',
 		component:MusicPlaylistDetail,
+		meta: {
+			keepAlive: false
+		},
 		children:[]
 	}
 ]

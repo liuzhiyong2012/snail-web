@@ -93,7 +93,7 @@
         "noPassword": "密码不能为空",
         "showError":"手机号码有误，请重填",
         "toast1": "手机号码不可以超出11位",
-        "toast2": "用户名或密码不正确"
+        "toast2": "服务端错误"
 		},
 		"en":{
 			  "LOGIN": "LOGIN",
@@ -105,7 +105,7 @@
         "noPassword": "Password cannot be empty",
         "showError":"Wrong mobile number, please fill in again",
         "toast1": "Phone number cannot exceed 11 digits",
-        "toast2": "The user name or password is incorrect."
+        "toast2": "Server error."
 		}
 	}
 </i18n>

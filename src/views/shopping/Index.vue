@@ -3,20 +3,33 @@
     <abus-title :title="$t('title')" backRouteName="home">
       <cart-icon @toCart="stepToCart()"></cart-icon>
     </abus-title>
+    <van-search  placeholder="请输入搜索关键词" />
     <div class="banner">
-      <van-swipe :autoplay="3000">
+      <shopping-item />
+      <!-- <van-swipe :autoplay="3000">
         <van-swipe-item
           class="shopping-recomend-item"
           v-for="(item, index) in recomendList"
           :key="index"
         >
-          <!-- <div class="shopping-recomend-img" :style="{backgroundImage:`url(${item.CoverImgUrl})`}"></div> -->
           <img class="shopping-recomend-img" v-lazy="item.CoverImgUrl" />
         </van-swipe-item>
-      </van-swipe>
+      </van-swipe> -->
       <!-- <banner :bannerData="bannerData" /> -->
       <div v-if="isShowMenu" :class="[isActive? 'menu active': 'menu']">
-        <van-icon class="wap-menu" name="wap-nav" size="24" />
+        <!-- <van-icon class="wap-menu" name="wap-nav" size="24" /> -->
+        <div  v-if="isFilter" @click="clickIsFilter">
+              Filter
+              <svg class="icon i-icon" aria-hidden="true">
+                <use xlink:href="#icon-select_1" />
+              </svg>
+            </div>
+            <div v-else @click="clickIsFilter">
+              Filter
+              <svg class="icon i-icon icon-up" aria-hidden="true">
+                <use xlink:href="#icon-select_1" />
+              </svg>
+            </div>
       </div>
     </div>
     <div class="shopping-box">
@@ -39,14 +52,14 @@
           :key="index"
           class="vant-tab"
         >
-          <div class="filter">
+          <!-- <div class="filter">
             <div @click="clickShowFilter">
               Sort by：{{filterInfo}}
               <svg class="icon i-icon" aria-hidden="true">
                 <use xlink:href="#icon-select_1" />
               </svg>
             </div>
-            <!-- <div v-if="isNewest" @click="clickIsNewest">
+             <div v-if="isNewest" @click="clickIsNewest">
               Sort by：Newest
               <svg class="icon i-icon" aria-hidden="true">
                 <use xlink:href="#icon-select_1" />
@@ -57,7 +70,7 @@
               <svg class="icon i-icon" aria-hidden="true">
                 <use xlink:href="#icon-select_1" />
               </svg>
-            </div>-->
+            </div>
             <div  v-if="isFilter" @click="clickIsFilter">
               Filter
               <svg class="icon i-icon" aria-hidden="true">
@@ -74,7 +87,7 @@
               <van-cell value="Price" @click="changeVal" />
               <van-cell value="CreatedAt" @click="changeVal" />
             </div>
-          </div>
+          </div> -->
 
           <div class="goods-box">
             <div class="goods-item" v-for="(item,i) in options1[index].data" :key="i">
@@ -103,9 +116,9 @@
             </div>
           </div>
         </van-tab>
-        <!-- <van-tab disabled></van-tab> -->
+        <van-tab disabled></van-tab>
       </van-tabs>
-      <div class="nav-menu"></div>
+      <!-- <div class="nav-menu"></div> -->
     </div>
   </div>
 </template>
@@ -130,12 +143,16 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import DishService from "../../service/shopping";
 import ShoppingService from "../../service/shopping";
 import AbusTitle from "../../components/AbusTitle.vue";
+import CartIcon from "./components/ShoppingCartIcon.vue";
 import UrlUtils from "../../utils/url-utils";
+import ShoppingItem from "./components/ShoppingItem.vue"
 // import Banner from "@/components/banner";
 @Component({
   name: "Shopping",
   components: {
     AbusTitle,
+    CartIcon,
+    ShoppingItem
   },
 })
 export default class ShoppingIndex extends Vue {
@@ -144,7 +161,7 @@ export default class ShoppingIndex extends Vue {
   private options1: Array<any> = [];
   private tapIndex: any = "1";
   private isActive: boolean = false;
-  private isShowMenu: boolean = false;
+  private isShowMenu: boolean = true;
   private isNewest: boolean = false;
   private isFilter: boolean = false;
   private isShowFilter: boolean = false;
@@ -267,6 +284,7 @@ export default class ShoppingIndex extends Vue {
       this.isActive = false;
     }
   }
+  
 }
 </script>
 
@@ -295,6 +313,11 @@ export default class ShoppingIndex extends Vue {
   }
   
 }
+.van-icon-search{
+  width: .4rem !important;
+  height: .4rem !important;
+}
+
 .menu {
   box-sizing: border-box;
   padding: 10px 0;
@@ -303,7 +326,7 @@ export default class ShoppingIndex extends Vue {
   justify-content: center;
   align-items: center;
   right: 0;
-  width: 15%;
+  width: 22%;
   height: 0.88rem;
   background-color: #fff;
   z-index: 9999;
@@ -323,7 +346,7 @@ export default class ShoppingIndex extends Vue {
   position: relative;
   width: 100%;
   min-height: 2.5rem;
-  background-color: #f2f4f7;
+  // background-color: #f2f4f7;
 }
 .shopping-box {
   width: 100%;
@@ -374,6 +397,7 @@ export default class ShoppingIndex extends Vue {
 .goods-box {
   display: flex;
   flex-wrap: wrap;
+  padding: .2rem 0 0 0;
   .goods-item {
     box-sizing: border-box;
     width: 50%;
