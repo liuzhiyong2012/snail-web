@@ -79,14 +79,29 @@ export default class CrewLayoutCtn extends Vue {
 	private active:string = 'catering';
 	private socket:any = null;
 	
+	private unloadHandler: any = null;
+	
 	private show: boolean = false;
 	
 	private mounted(){
+		let THIS = this;
+		this.unloadHandler = (e)=>{
+			THIS.socket&&THIS.socket.close&&THIS.socket.close();
+		  THIS.socket&&THIS.socket.destroy&&THIS.socket.destroy();
+		  THIS.socket = null;
+			 //e = window.event||e;
+			//e.returnValue=('确定离开当前网站吗?');
+		};
+		window.addEventListener('beforeunload',this.unloadHandler);
+		
 		this.startWebScoket();
 	}
 	
 	private beforeDestroy(){
-		this.socket&&this.socket.close();
+		window.removeEventListener('beforeunload',this.unloadHandler);
+		this.socket.close&&this.socket.close();
+		this.socket.destroy&&this.socket.destroy();
+		this.socket = null;
 	}
 	
 	private startWebScoket() {
