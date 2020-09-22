@@ -254,7 +254,7 @@ export default class Home extends Vue {
   }
 
   private mounted() {
-    //this.initWebSocket();
+    this.initWebSocket();
     this.getChatUnread({ read: 0 });
     this.getNoticeUnread({ read: 0 });
     if (localStorage.getItem('lang') == 'en') {
