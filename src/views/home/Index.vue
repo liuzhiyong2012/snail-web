@@ -266,7 +266,6 @@ export default class Home extends Vue {
   private beforeDestroy() {
     this.socket&&this.socket.close();
     this.socket = null;
-    // this.socket&&this.socket.close();
   }
 
   public clickShowService(){

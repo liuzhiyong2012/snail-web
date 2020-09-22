@@ -197,7 +197,6 @@ export default class messageIndex extends Vue {
       this.socket.destroy&&this.socket.destroy();
       this.socket = null;
     // }
-    // this.socket&&this.socket.close();
     this.changeNoticeStatus();
   }
 
