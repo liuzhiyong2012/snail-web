@@ -69,9 +69,8 @@ export default class CrewCateringItem extends Vue {
 		top: 0;
 		height: 100%;
 		width: rem(132px);
-		// background-color: blue
 		background-repeat: no-repeat;
-		background-size: contain;
+		background-size: cover;
 		background-position: center;
 	}
 

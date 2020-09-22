@@ -117,6 +117,8 @@ export default class CrewCatering extends Vue {
 				}
 				
 				resData.data.data.forEach((item,index)=>{
+					
+					item.SampleImgPath = UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(item.SampleImgPath));
 					item.BannerImgPath = UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(item.BannerImgPath));
 					item.TimeAgo = TimeAgoUtils.timeAgo(item.CreatedAt);
 				});

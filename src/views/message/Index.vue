@@ -129,6 +129,7 @@ export default class messageIndex extends Vue {
   private showDelete: boolean = true; // 系统消息是否显示清除按钮: true是不清除 false是要清除
   private uInfo: any = {};
   private socket: any = null;
+  private unloadHandler: any = null;
 
   private chatList: Array<any> = [
     // {
@@ -159,6 +160,16 @@ export default class messageIndex extends Vue {
   }
   
   private created() {
+	  let THIS = this;
+  	this.unloadHandler = (e)=>{
+  		THIS.socket&&THIS.socket.close&&THIS.socket.close();
+      THIS.socket&&THIS.socket.destroy&&THIS.socket.destroy();
+      THIS.socket = null;
+		 //e = window.event||e;
+		//e.returnValue=('确定离开当前网站吗?');
+  	};
+  	window.addEventListener('beforeunload',this.unloadHandler);
+	
     this.uInfo = localStore.get('userInfo');
 	
     this.initWebSocket();
@@ -181,7 +192,9 @@ export default class messageIndex extends Vue {
 
   private beforeDestroy() {
     // if(this.socket){
-      this.socket.close();
+     window.removeEventListener('beforeunload',this.unloadHandler);
+      this.socket.close&&this.socket.close();
+      this.socket.destroy&&this.socket.destroy();
       this.socket = null;
     // }
     // this.socket&&this.socket.close();
@@ -225,16 +238,20 @@ export default class messageIndex extends Vue {
     // 连接服务端，workerman.net:2120换成实际部署web-msg-sender服务的域名或者ip
     // _this.socket =  (window as any).io('http://172.16.8.69:2120');
     // _this.socket =  (window as any).io('http://kf.vpclub.cn/airbus/websocket');
-debugger;
     // _this.socket = io(process.env.VUE_APP_SOCKET_HOST,{path:''||process.env.VUE_APP_SOCKET_URL});
-	 _this.socket = io(process.env.VUE_APP_SOCKET_HOST,{path:''});
+	 //_this.socket = io(process.env.VUE_APP_SOCKET_HOST,{path:''});
+	 
+	  const opt = {
+      path:process.env.VUE_APP_SOCKET_URL
+    };
+	 _this.socket = io(process.env.VUE_APP_SOCKET_HOST,opt);
 
     // uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
-    let uid = _this.uInfo.id;
+    let uid = _this.uInfo.id.trim();
  
     // socket连接后以uid登录
     _this.socket.on('connect', function () {
-    	console.log('login:',uid);
+    	console.log('login:',uid.trim());
       _this.socket.emit('login', uid);
     });
     // 后端推送来消息时
