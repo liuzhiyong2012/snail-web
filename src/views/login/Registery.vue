@@ -194,6 +194,9 @@
       "toast5":"当前手机号码已注册",
       "toast6":"暂未阅读《隐私政策》、《服务条款》",
       "toast7":"请先填写信息",
+      "toast8":"服务端错误",
+      "toast9":"密保问题不能为空",
+      "toast10":"答案不能为空",
       "Date":"日期"
 		},
 		"en":{
@@ -229,6 +232,9 @@
       "toast5":"The current mobile number is registered",
       "toast6":"Have you read the 《Privacy policy》《Terms of service》",
       "toast7":"Please complete the information",
+      "toast8":"Server error",
+      "toast9":"Security question cannot be empty",
+      "toast10":"The answer cannot be empty",
       "Date":"Date"
 		}
 	}
@@ -375,6 +381,7 @@ export default class Register extends Vue {
       this.$toast(this.$i18n.t("toast2"));
     }
   }
+   
   public showQuestion() {
     this.showIssues = true;
   }
@@ -418,7 +425,9 @@ export default class Register extends Vue {
       this.phone != "" &&
       this.idCard != "" &&
       this.isCheckPassword &&
-      this.isReaded
+      this.isReaded &&
+      this.question != "" &&
+      this.answer != ""
     ) {
       // (['nickname','gender','phone','idCard','password','birthday','question','answer']);
 
@@ -491,6 +500,10 @@ export default class Register extends Vue {
       this.$toast(this.$i18n.t("toast4"));
     } else if (!this.isReaded) {
       this.$toast(this.$i18n.t("toast6"));
+    } else if (this.question == '') {
+      this.$toast(this.$i18n.t("toast9"));
+    } else if (this.answer == '') {
+      this.$toast(this.$i18n.t("toast10"));
     } else {
       this.$toast(this.$i18n.t("toast7"));
     }

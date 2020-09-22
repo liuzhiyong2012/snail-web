@@ -3,7 +3,7 @@
     <div class="abus-scroller-box home-flight-box">
       <div class="home-flight-t">
         <span classs="flight-model">{{ airplane.AirplaneModels }}</span>
-        <span classs="flight-number">{{ baseInfo.FlightNumber }}</span>
+        <span classs="flight-number">{{baseInfo.AirlinesName}}{{ baseInfo.FlightNumber }}</span>
         <!-- <i class="icon  icon-search"></i> -->
       </div>
 

@@ -294,12 +294,17 @@ export default class ForgotPassword extends Vue {
       LoginService.postCheckCode(aData).then((res: any) => {
         console.log(res)
         if (res.code == 200) {
+          this.password = res.data.password;
           this.aLeft = -(this.fullWidth * 2);
           this.isActiveThr = true;
         } else {
           this.$toast(res.message);
         }
-      });
+      })
+      .catch((reason: any) => {
+          console.log("=== Error ===");
+          this.$toast(reason.message);
+        });
     } else {
       this.$toast(this.$i18n.t('toast2'));
     }

@@ -19,13 +19,13 @@
       <div v-if="isShowMenu" :class="[isActive? 'menu active': 'menu']">
         <!-- <van-icon class="wap-menu" name="wap-nav" size="24" /> -->
         <div  v-if="isFilter" @click="clickIsFilter">
-              Filter
+              Price
               <svg class="icon i-icon" aria-hidden="true">
                 <use xlink:href="#icon-select_1" />
               </svg>
             </div>
             <div v-else @click="clickIsFilter">
-              Filter
+              Price
               <svg class="icon i-icon icon-up" aria-hidden="true">
                 <use xlink:href="#icon-select_1" />
               </svg>
@@ -170,9 +170,9 @@ export default class ShoppingIndex extends Vue {
   private listAsc: string = "Asc";
 
   private created() {
-    this.getShoppingRecommendedList();
+    // this.getShoppingRecommendedList();
     this.getShoppingCategory();
-    this.getShoppingList();
+    
   }
   private mounted() {
     if (localStorage.getItem("lang") == "en") {
@@ -203,6 +203,7 @@ export default class ShoppingIndex extends Vue {
       // category: "珠宝首饰"
       if (res.code == 200) {
         this.options1 = res.data;
+        this.getShoppingList();
       }
     });
   }
@@ -320,7 +321,7 @@ export default class ShoppingIndex extends Vue {
 
 .menu {
   box-sizing: border-box;
-  padding: 10px 0;
+  // padding: 10px 0;
   position: absolute;
   display: flex;
   justify-content: center;
@@ -328,11 +329,14 @@ export default class ShoppingIndex extends Vue {
   right: 0;
   width: 22%;
   height: 0.88rem;
-  background-color: #fff;
+  line-height: .88rem;
+  // background-color: #fff;
   z-index: 9999;
-  box-shadow: -0.2rem 0 0.2rem rgba(0, 0, 0, 0.1);
+  box-shadow: -0.1rem 0 0.2rem rgba(0, 0, 0, 0.05);
   text-align: center;
-  color: #1c1c1c;
+  color: rgb(181, 182, 184);
+  background: linear-gradient(rgba(255,255,255,.7) ,#fff , rgba(255,255,255,.7) );
+  // background: linear-gradient(to left, #fff, rgba(255,255,255,.7));
   .wap-menu {
     font-size: 0.48rem !important;
   }

@@ -5,7 +5,7 @@
     <div class="con">
       <div class="main-item">
         <div class="title line-h">{{$t('Name')}}</div>
-        <p class="main-p">Vision Airlines VA3928</p>
+        <p class="main-p">{{flightData.AirlinesName}} {{flightData.FlightNumber}}</p>
       </div>
       <div class="main-item">
         <div class="title line-h">{{$t('Seat')}}</div>
@@ -70,6 +70,7 @@ export default class SelectSeat extends Vue {
   private seatId: string = "";
   private showIssues: boolean = false;
   private columns: Array<any> = [];
+  private flightData: any = {};
   private columnsName: Array<string> = [];
 
   private created() {
@@ -100,7 +101,8 @@ export default class SelectSeat extends Vue {
     LoginServer.getCrmOtherSeatList().then((res: any) => {
       console.log(res);
       if (res.code == 200) {
-        this.columns = res.data;
+        this.columns = res.data.SeatList;
+        this.flightData = res.data.Flight;
         this.columns.forEach((item: any, index: any) => {
           this.columnsName.push(item.Name);
         });

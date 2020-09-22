@@ -123,10 +123,8 @@ export default class ShoppingDetail extends Vue {
 
   public buyNow(): void {
     // this.$toast('购买成功!');
-    this.$store.commit("addShoppingCartItem", this.shoppingInfo);
-    this.$router.push({
-      name: "shoppingCart",
-    });
+    this.$store.commit("addShoppingCartItemRouter", this.shoppingInfo);
+    this.stepToCart()
   }
 
   public stepToCart():void{
