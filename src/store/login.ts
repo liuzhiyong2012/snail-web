@@ -58,8 +58,7 @@ export default {
   },
   actions: {
     setUserInfo(context: any, state: any){
-		// debugger;
-		context.commit('setName', state.name)
+	  context.commit('setName', state.name)
       context.commit('setName', state.name)
       context.commit('setToken', state.token)
       context.commit('setAirbusId', state.airbusId)

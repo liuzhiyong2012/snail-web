@@ -7,7 +7,7 @@
 			<router-view class="crew-route-view-ctn" />
 		</section>
 		<section class="footer-ctn">
-			<crew-footer></crew-footer>
+			<crew-footer :flightResData = "flightResData"></crew-footer>
 		</section>
 
 		<!--<van-button type="primary" class="message-btn" text="组件调用" @click="showNotify" />-->
@@ -30,7 +30,6 @@
 						<div class="seat-ctn">{{messageContent.seatNumber}}</div>
 						<div class="msg-ctn">{{messageContent.content}}</div>
 					</div>
-					
 				</div>
 			</div>
 		</van-notify>
@@ -42,6 +41,7 @@
 	import { Component, Prop, Vue } from 'vue-property-decorator';
 	import CrewTab from './components/CrewTab.vue';
 	import CrewFooter from './components/CrewFooter.vue';
+	import FlightService from '../../service/flight.ts';
     declare let io: any;
     
 	@Component({
@@ -85,8 +85,13 @@
 		private unloadHandler: any = null;
 
 		private show: boolean = false;
+		private show: boolean = false;
 		
-		private  messageContent:any = {
+		private timer: any = null;
+		
+		private flightResData:any = {};
+		
+		private messageContent:any = {
 			
 			 seatNumber:'--',
 			 userName:'',
@@ -104,8 +109,8 @@
 				//e.returnValue=('确定离开当前网站吗?');
 			};
 			window.addEventListener('beforeunload', this.unloadHandler);
-
-			this.startWebScoket();
+            
+			this.getFlightInfo();
 		}
 
 		private beforeDestroy() {
@@ -114,98 +119,37 @@
 			this.socket.destroy && this.socket.destroy();
 			this.socket = null;
 		}
-
-		private startWebScoket() {
+        
+		private startTimer(){
+			let timePeriod = 10000;
+			this.timer = window.setInterval();
+			FlightService.getFlightInfo().then((res: any) => {
+				if(res.code == 200){
+					this.flightResData = res.data;
+					this.$store.commit('setAirbusId', this.flightResData.Flight.BaseInfo.Id);
+					this.startWebScoket(this.flightResData.Flight.BaseInfo.Id);
+				}
+			});
+		}
+		
+		private startWebScoket(airbusId) {
 			const opt = {
 				path: process.env.VUE_APP_SOCKET_URL
 			};
 			this.socket = io(process.env.VUE_APP_SOCKET_HOST, opt);
-
-			//需要获取航班的id.
-			let uid = '4CFC4D33-2C1E-E911-BAD5-F44D307124C0';
-
 			// socket连接后以uid登录
 			this.socket.on('connect', () => {
-				console.log('crew:connect');
-				this.socket.emit('login', uid);
+				this.socket.emit('login', airbusId);
 			});
-
-			let a = {
-				"type": "crew",
-				"itemType": "netFlow",
-				"user": {
-					"Id": "7db5a33d4b489835ac1da8b58dd83a91",
-					"IsActive": 1,
-					"LanguageId": null,
-					"UserType": 0,
-					"AvatarId": "",
-					"NickName": "洪之",
-					"CountryId": "",
-					"Gender": 1,
-					"IdCard": "430321199001197938",
-					"Birthday": "1990-01-19",
-					"Question": "My favorite animal?",
-					"Answer": "dog",
-					"CreatedAt": "2020-09-11 02:52:25",
-					"CreatedById": null,
-					"UpdatedAt": null,
-					"UpdatedById": null,
-					"Email": null,
-					"EmailConfirmed": 0,
-					"PasswordHash": null,
-					"Password": "14e1b600b1fd579f47433b88e8d85291",
-					"SecurityStamp": null,
-					"PhoneNumber": "18665340340",
-					"PhoneNumberConfirmed": 0,
-					"TwoFactorEnabled": 0,
-					"LockoutEndDateUtc": null,
-					"LockoutEnabled": 0,
-					"AccessFailedCount": null,
-					"UserName": "86_18665340340",
-					"AreaCode": "86",
-					"TimeZoneId": null,
-					"Password_str": "123456",
-					"Sync": 0,
-					"Address": "金融基地",
-					"Points": "-364",
-					"Vip": null,
-					"AvatarPath": "",
-					"airbusId": "4CFC4D33-2C1E-E911-BAD5-F44D307124C0"
-				},
-				"notice": {
-					"Id": "4",
-					"Title": "Your shopping order was placed successfully",
-					"Mark": "您的商品订单下单成功",
-					"TO": null,
-					"CreatedAt": null
-				},
-				"netFlow": {
-					"Id": "d3022bee-e0e8-ea11-9737-4cbb5897acf9",
-					"Name": "10G流量包",
-					"Price": "30.00",
-					"Flow": 10240,
-					"Remark": "10G流量包",
-					"Status": 1,
-					"TextTime": "60Hour",
-					"MusicTime": "10hour",
-					"VideoTime": "5hour",
-					"DisplayOrder": 0,
-					"OriginalPrice": "50.00"
-				},
-				"shopping": "",
-				"dish": ""
-			};
 			
 			// 后端推送来消息时
 			this.socket.on('new_msg', (msg) => {
 				console.log('crew:new_msg');
-
 				let midMsg = msg.replace(/&quot;/g, '"');
 				let newMessageObj = JSON.parse(midMsg);
 				(this as any).$globalEvent.$emit('new_msg', newMessageObj);
 
 				if(newMessageObj.type == 'crew') {
-					
 					/*let messageContent:any = {
 						 seatNumber:'--',
 						 itemImgUrl:'--',

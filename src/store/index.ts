@@ -9,6 +9,7 @@ import News from './news';
 import Video from './video';
 import Music from './music/index';
 import Message from './message';
+import Crew from './crew';
 
 Vue.use(Vuex)
 
@@ -29,6 +30,7 @@ export default new Vuex.Store<any>({
   home: Home,
   news:News,
   video: Video,
+  crew:Crew,
   music:Music,
     message:Message
   }

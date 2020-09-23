@@ -47,7 +47,7 @@
 
 <script lang = "ts">
 	import {Vue,Component,Prop} from 'vue-property-decorator';
-	import FlightService from '../../../service/flight';
+	
 	
 	@Component({
 		name:'crew-footer',
@@ -60,33 +60,18 @@
 				return [];
 			}
 		})
-		tabList:Array<any>;
+		flightResData:any = null;
 		
-		@Prop({
-			default:()=>{
-				return false;
-			}
-		})
-		active:boolean;
+	
 		
-		private flightResData:any = null;
 		
 		private mounted(){
-			this.getFlightInfo();
 		}
 		
 		
 		public getFlightInfo(): void {
-			FlightService.getFlightInfo().then((res: any) => {
-				if(res.code == 200){
-					this.flightResData = res.data;
-				}
-			});
 		}
 		
-		public switchPage(item){
-			this.$emit('switchPage',item.value);
-		}
 	}
 </script>
 
