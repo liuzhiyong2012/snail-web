@@ -30,7 +30,7 @@ export default {
     // this.qrCodeUrl = ` https://qrcodescan.in/`
     // window.location.href = `https://qrcodescan.in/`;
 
-    this.qrCodeUrl = `http://kf.vpclub.cn/scan/`
+    this.qrCodeUrl = `https://kf.vpclub.cn/scan/`
     // window.location.href = `http://kf.vpclub.cn/scan/`;
   },
   mounted() {

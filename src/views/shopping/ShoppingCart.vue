@@ -128,6 +128,7 @@ export default class ShoppingCart extends Vue {
     cartList.forEach((item: any, index: any) => {
       amount = amount + item.Price * item.orderNumber;
     });
+    // this.$store.commit("addShoppingCartList",cartList)
     return (this.orderAmount = amount);
   }
   private get seatName():string{

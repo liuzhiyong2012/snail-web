@@ -35,6 +35,16 @@ export default {
                 state.cartList[retIndex].orderNumber = state.cartList[retIndex].orderNumber + item.orderNumber;
             }
         },
+        addShoppingCartItemRouter(state: any, item: any) {
+            let retIndex = ArrayUtils.searchIndexByKey(state.cartList, 'Id', item.Id)
+
+            if (retIndex == -1) {
+                state.cartList.push(item);
+            } 
+        },
+        addShoppingCartList(state: any, list: any){
+            state.cartList = list
+        },
         setShoppingDetail(state: any, data: any) {
             state.shoppingDetail = data
         },

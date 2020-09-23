@@ -93,7 +93,9 @@
         "noPassword": "密码不能为空",
         "showError":"手机号码有误，请重填",
         "toast1": "手机号码不可以超出11位",
-        "toast2": "服务端错误"
+        "toast2": "服务端错误",
+        "toast3": "网络异常！",
+        "toast4": "用户名或密码不正确。"
 		},
 		"en":{
 			  "LOGIN": "LOGIN",
@@ -105,7 +107,9 @@
         "noPassword": "Password cannot be empty",
         "showError":"Wrong mobile number, please fill in again",
         "toast1": "Phone number cannot exceed 11 digits",
-        "toast2": "Server error."
+        "toast2": "Server error.",
+        "toast3": "Network anomaly!",
+        "toast4": "The user name or password is incorrect."
 		}
 	}
 </i18n>
@@ -145,6 +149,7 @@ export default class Login extends Vue {
       localStorage.setItem("lang", "en");
       this.$store.commit("changeLanguage", "en");
     }
+    
     // if(localStorage.getItem('lang') == 'en'){
     //   this.lang = 'English';
     //   this.$i18n.locale = 'en';
@@ -164,6 +169,13 @@ export default class Login extends Vue {
   //     this.$toast('数字不可以超出11位')
   //   }
   // }
+  public getOnLineDetails(){
+    if(navigator.onLine){
+      this.postUserLoginMethod()
+    }else{
+      this.$toast(this.$i18n.t('toast3'))
+    }
+  }
   public getUserPhoneLength(e: any) {
     if (e.target.value.length >= 11 && e.keyCode != 8) {
       this.$toast(this.$i18n.t("toast1"));
@@ -198,7 +210,11 @@ export default class Login extends Vue {
     } else if (this.userPassword == "") {
       this.$toast(this.$i18n.t("noPassword"));
     } else if (this.userPhone != "" && this.userPassword != "") {
-      var data = {
+      this.getOnLineDetails()
+    }
+  }
+  public postUserLoginMethod(){
+    var data = {
         username: "86_" + this.userPhone, // 默认86
         password: this.userPassword,
       };
@@ -248,11 +264,13 @@ export default class Login extends Vue {
           console.log(error);
           if(error.code == 500 || error.code == 502){
             this.$toast(error.message)
-          }else{
+          }else if(error.code == 400){
+            this.$toast(this.$i18n.t('toast4'))
+          }
+          else{
             this.$toast(this.$i18n.t("toast2"));
           }
         });
-    }
   }
 }
 </script>
