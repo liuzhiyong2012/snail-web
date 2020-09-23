@@ -4,6 +4,7 @@ import VueRouter, {
 import Shopping from '../../views/shopping/Index.vue';
 import ShoppingDetails from '../../views/shopping/ShoppingDetails.vue';
 import ShoppingCart from '../../views/shopping/ShoppingCart.vue';
+import ShoppingSearch from '../../views/shopping/components/ShoppingSearch.vue';
 
 
 const routes: Array<RouteConfig> = [
@@ -31,6 +32,14 @@ const routes: Array<RouteConfig> = [
 			keepAlive: false
 		},
         component: ShoppingCart
+    },
+    {
+        path: '/shopping/search',
+        name: 'shoppingSearch',
+        meta: {
+			keepAlive: false
+		},
+        component: ShoppingSearch
     }
 
 ]
