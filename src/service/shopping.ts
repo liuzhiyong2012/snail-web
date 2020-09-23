@@ -16,7 +16,7 @@ export default class ShoppingService {
 		});
 	}
 	// 商品列表
-	static getShoppingList(data: Object) {
+	static getShoppingList(data?: Object) {
 		return request({
 			url: '/v1/api/shopping/List',
 			method: 'GET',

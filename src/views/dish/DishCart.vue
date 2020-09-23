@@ -71,14 +71,14 @@
 <i18n>
 	{
 		"zh":{
-			"title":"餐品详情",
+			"title":"餐品购物车",
 			"seatNumber":"座位",
 			"payWay":"支付方式",
 			"totalAmount":"总金额",
 			"payBtn":"支付"
 		},
 		"en":{
-			"title":"DishDetail",
+			"title":"Dish Cart",
 			"seatNumber":"Seat No:",
 			"payWay":"Payment Method",
 			"totalAmount":"Total Amount",

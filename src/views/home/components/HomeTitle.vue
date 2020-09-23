@@ -59,6 +59,8 @@
 					this.userData = res.data
 					if(res.data.Flow.Flow == -1){
 						this.isVip = true
+					}else{
+						this.isVip = false
 					}
 					this.$store.commit("setSeatNumber", res.data.Seat.Name);
 				}else{

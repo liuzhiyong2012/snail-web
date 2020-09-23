@@ -4,13 +4,14 @@
     <div class="user-info">
       <div class="user">
         <div class="user-img">
-          <van-image
+          <!-- <van-image
             round
             fit="cover"
             width="1.26rem"
             height="1.26rem"
-            :src="userInfo.AvatarPath || 'https://img.yzcdn.cn/vant/cat.jpeg'"
-          />  
+            
+          />   -->
+          <img width="100%" height="100%" :src="userInfo.AvatarPath || 'https://img.yzcdn.cn/vant/cat.jpeg'" alt="">
         </div>
         <div class="f1">
           <div class="name" >{{userInfo.NickName|| '--'}}</div>
@@ -227,6 +228,8 @@ export default class meIndex extends Vue {
       margin: 0 0.2rem 0 0;
       width: 1.26rem;
       height: 1.26rem;
+      border-radius: 50%;
+      overflow: hidden;
     }
     .f1 {
       display: flex;
