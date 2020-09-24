@@ -11,62 +11,97 @@
         :loop="false"
         vertical
       >
-        <van-swipe-item v-for="(item, index) in videoListOne" class="product-swiper" :key="index">
+        <van-swipe-item
+          v-for="(item, index) in videoListOne"
+          class="product-swiper"
+          :key="index"
+        >
           <div class="video-item">
             <svg
               @click="playVideo(index)"
-              :class="[isPlay?'icon i-icon show': 'icon i-icon']"
+              :class="[isPlay ? 'icon i-icon show' : 'icon i-icon']"
               aria-hidden="true"
             >
               <use xlink:href="#icon-play-disable" />
             </svg>
             <!-- :src="item.FilePath" -->
             <video
-              preload="auto"
-              @click="playVideo(index)"
-              :src="item.FilePath|addBaseUrl"
-              :poster="item.CoverImgPath|addBaseUrl"
-              class="video-box"
-            ></video>
+                preload="auto"
+                @click="playVideo(index)"
+                :src="item.FilePath | addBaseUrl"
+                :poster="item.CoverImgPath | addBaseUrl"
+                class="video-box"
+              ></video>
+            <!-- <div class="video-main">
+              <video
+                preload="auto"
+                @click="playVideo(index)"
+                :src="item.FilePath | addBaseUrl"
+                :poster="item.CoverImgPath | addBaseUrl"
+                class="video-box"
+              ></video>
+            </div> -->
             <!-- 右侧栏 -->
             <div class="right-box">
-              <svg @click="clickLike(index,item.Id)" class="icon right-icon" aria-hidden="true">
+              <svg
+                @click="clickLike(index, item.Id)"
+                class="icon right-icon"
+                aria-hidden="true"
+              >
                 <use v-if="item.isLike != null" xlink:href="#icon-collect" />
                 <use v-else xlink:href="#icon-collect-undo" />
               </svg>
-              <div class="text">{{item.LikeCount}}</div>
-              <svg @click="showComment(index,item.Id)" class="icon right-icon1" aria-hidden="true">
+              <div class="text">{{ item.LikeCount }}</div>
+              <svg
+                @click="showComment(index, item.Id)"
+                class="icon right-icon1"
+                aria-hidden="true"
+              >
                 <use xlink:href="#icon-1-chat" />
               </svg>
-              <div class="text">{{item.CommentCount}}</div>
+              <div class="text">{{ item.CommentCount }}</div>
             </div>
             <!-- 评论 -->
             <!-- <div class="comment-mask active"> -->
-            <div :class="[item.isCommentShow?'comment-mask active':'comment-mask']">
-              <svg @click="closePopup(index)" class="icon c-icon" aria-hidden="true">
+            <div
+              :class="[
+                item.isCommentShow ? 'comment-mask active' : 'comment-mask',
+              ]"
+            >
+              <svg
+                @click="closePopup(index)"
+                class="icon c-icon"
+                aria-hidden="true"
+              >
                 <use xlink:href="#icon-close" />
               </svg>
               <div class="comment-list" v-if="item.CommentCount != 0">
                 <div
                   class="list-cell"
-                  v-for="(i,aIndex) in item.Comments.slice(0, 5)"
+                  v-for="(i, aIndex) in item.Comments.slice(0, 5)"
                   :key="aIndex"
                 >
                   <div class="list-l">
-                    <div class="img-box">{{getOneText(i.Creator.NickName)}}</div>
+                    <div class="img-box">
+                      {{ getOneText(i.Creator.NickName) }}
+                    </div>
                   </div>
                   <div class="list-r">
-                    <div class="name">{{i.Creator.NickName}}</div>
-                    <div class="comment">{{i.Comment}}</div>
+                    <div class="name">{{ i.Creator.NickName }}</div>
+                    <div class="comment">{{ i.Comment }}</div>
                   </div>
                 </div>
                 <div
                   v-if="item.Comments.length > 5"
                   class="more"
-                  @click="stepComment(index,item.Id)"
-                >{{$t('more')}}...</div>
+                  @click="stepComment(index, item.Id)"
+                >
+                  {{ $t("more") }}...
+                </div>
               </div>
-              <div v-else class="comment-list text-c">{{$t('NoComments')}}</div>
+              <div v-else class="comment-list text-c">
+                {{ $t("NoComments") }}
+              </div>
               <div class="comment-init">
                 <input
                   v-model="Comment"
@@ -75,25 +110,38 @@
                   placeholder="Leave your wonderful comments"
                 />
                 <div class="btn-box">
-                  <div class="btn" @click="sendComment(index,item.Id)">{{$t('Send')}}</div>
+                  <div class="btn" @click="sendComment(index, item.Id)">
+                    {{ $t("Send") }}
+                  </div>
                 </div>
               </div>
             </div>
             <!-- 下侧栏 -->
             <div class="bottom-box">
-              <div :class="[isShowAd? 'ad active': 'ad']" @click="stepToDetail(adData)">
+              <div
+                :class="[isShowAd ? 'ad active' : 'ad']"
+                @click="stepToDetail(adData)"
+              >
                 <div class="img-box1">
-                  <img class="img" :src="adData.BannerImgPath|addBaseUrl" alt />
+                  <img
+                    class="img"
+                    :src="adData.BannerImgPath | addBaseUrl"
+                    alt
+                  />
                 </div>
                 <div class="r-box">
-                  <div class="r-name">{{adData.Name}}</div>
-                  <div class="r-price">${{adData.Price}}</div>
+                  <div class="r-name">{{ adData.Name }}</div>
+                  <div class="r-price">${{ adData.Price }}</div>
                 </div>
-                <svg @click="closeAd" class="icon close-icon" aria-hidden="true">
+                <svg
+                  @click="closeAd"
+                  class="icon close-icon"
+                  aria-hidden="true"
+                >
                   <use xlink:href="#icon-close" />
                 </svg>
               </div>
-              <div class="name">{{item.title}}</div>
+              <div class="name">{{ item.title }}</div>
               <!-- <div class="tap">
                 <div>#daasda</div>
                 <div>#daasda</div>
@@ -137,7 +185,7 @@ export default class VideoPlay extends Vue {
   private videoListTwo: Array<any> = [];
   private adDataList: Array<any> = [];
   private adData: any = "";
-  private adDataTime: number = 0
+  private adDataTime: number = 0;
   private isGetVideo: boolean = true;
   private isPlay: boolean = false;
   private isShowAd: boolean = false;
@@ -147,10 +195,9 @@ export default class VideoPlay extends Vue {
   private videoListIndex: any = 0;
   private pageNumber: any = 1;
   private pageSize: any = 10;
-  private getDataNum: any = 2;  // 列表最后三个视频都可，且只触发一次
-  private finished: boolean = false
+  private getDataNum: any = 2; // 列表最后三个视频都可，且只触发一次
+  private finished: boolean = false;
   private Comment: string = "";
-  
 
   private mounted() {
     if (localStorage.getItem("lang") == "en") {
@@ -159,7 +206,7 @@ export default class VideoPlay extends Vue {
       this.$i18n.locale = "zh";
     }
     this.videoListIndex = this.$route.params.index;
-    this.pageNumber = this.$route.params.number
+    this.pageNumber = this.$route.params.number;
     // console.log(this.videoListIndex);
     // this.postVideoList();
     this.postAdvertList();
@@ -206,25 +253,25 @@ export default class VideoPlay extends Vue {
   }
   // 切换操作
   public onChange(index: any) {
-    console.log(index)
+    // console.log(index)
     let video = document.querySelectorAll("video")[this.current];
     video.currentTime = 0;
     video.pause();
     this.playVideoSwipe(index);
-    
-    if(!this.finished && this.videoListOne.length - index <= this.getDataNum){
-      setTimeout(()=>{
-        this.videoListIndex = index
-        this.pageNumber = this.pageNumber + 1
-      // console.log(this.pageNumber)
-        this.getPlayList()
-      },200)
+
+    if (!this.finished && this.videoListOne.length - index <= this.getDataNum) {
+      setTimeout(() => {
+        this.videoListIndex = index;
+        this.pageNumber = this.pageNumber + 1;
+        // console.log(this.pageNumber)
+        this.getPlayList();
+      }, 200);
     }
     // 这段逻辑要改
     // if (index == Math.round(this.videoListOne.length / 2) && this.isGetVideo) {
     //   this.isGetVideo = false;
     //   this.getPlayList()
-      
+
     // } else if (index == 0 && !this.isGetVideo) {
     //   this.isGetVideo = true;
     //   this.videoListOne = this.videoListTwo;
@@ -233,32 +280,32 @@ export default class VideoPlay extends Vue {
     // }
   }
   // 获取播放列表
-  public getPlayList(){
+  public getPlayList() {
     VideoService.postVideoList({
-        skip: (this.pageNumber-1) * this.pageSize,
-        take: this.pageSize,
-      }).then((res: any) => {
-        // console.log(res);
-        if (res.code == 200) {
-          if (res.data.EOF) {
-			 			this.finished = true;
-			 		}
-          this.videoListTwo = res.data.Videos;
-          
-          this.videoListTwo.forEach((item: any, index: any) => {
-            item.isCommentShow = false;
-            // item.isHaveComment = false;
-            item.Comments = [];
-            // 测试使用
-            // item.isLike = false;
-          });
-          console.log(this.videoListOne)
-          this.videoListOne = this.videoListOne.concat(this.videoListTwo)
-          console.log(this.videoListOne)
-        } else {
-          this.$toast(this.$i18n.t('fail'));
+      skip: (this.pageNumber - 1) * this.pageSize,
+      take: this.pageSize,
+    }).then((res: any) => {
+      // console.log(res);
+      if (res.code == 200) {
+        if (res.data.EOF) {
+          this.finished = true;
         }
-      });
+        this.videoListTwo = res.data.Videos;
+
+        this.videoListTwo.forEach((item: any, index: any) => {
+          item.isCommentShow = false;
+          // item.isHaveComment = false;
+          item.Comments = [];
+          // 测试使用
+          // item.isLike = false;
+        });
+        console.log(this.videoListOne);
+        this.videoListOne = this.videoListOne.concat(this.videoListTwo);
+        console.log(this.videoListOne);
+      } else {
+        this.$toast(this.$i18n.t("fail"));
+      }
+    });
   }
   // 取首字母
   public getOneText(str: string) {
@@ -269,25 +316,24 @@ export default class VideoPlay extends Vue {
     VideoService.postAdvertList().then((res: any) => {
       console.log(res);
       if (res.code == 200) {
-        this.adDataList = res.data
+        this.adDataList = res.data;
         this.adData = res.data[0];
       }
     });
   }
   // 点击跳转详情页
-  private stepToDetail(item:any){
-	  this.$router.push({
-		  name:'shoppingDetails',
-		  params:{
-			  shoppingInfo:item
-		  }
-	  });
-	  
+  private stepToDetail(item: any) {
+    this.$router.push({
+      name: "shoppingDetails",
+      params: {
+        shoppingInfo: item,
+      },
+    });
   }
   // 关闭广告
   public closeAd() {
-    this.adDataTime = this.adDataTime + 1
-    this.adData = this.adDataList[this.adDataTime]
+    this.adDataTime = this.adDataTime + 1;
+    this.adData = this.adDataList[this.adDataTime];
     this.isShowAd = false;
     clearTimeout(this.adShowTime);
     this.adShowTime = setTimeout(() => {
@@ -437,20 +483,26 @@ export default class VideoPlay extends Vue {
 .product-swiper {
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
 }
 .van-swipe {
   height: 100vh;
   max-width: 100vw;
 }
 .video-item {
-  display: flex;
+  position: relative;
+  display: grid;
+  // vertical-align: middle;
   align-items: center;
-  justify-content: center;
-  width: 100%;
+  // justify-content: center;
+  width: 100vw;
   height: 100vh;
   .i-icon {
     display: block;
     position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     width: 1rem;
     height: 1rem;
     z-index: 88;
@@ -715,10 +767,28 @@ export default class VideoPlay extends Vue {
   width: 100vw;
   height: 100vh;
 }
-
+.video-main {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+}
 .video-box {
+  // position: absolute;
+  // left: 0;
+  // top: 50%;
+  // transform: translate(0%,-50%);
   /*object-fit: fill !important;*/
   /*z-index: 999;*/
+  // left: 0;
+  // top: 0;
+  // position: fixed;
+  // bottom: 0;
+  // right: 0;
+  // margin: auto;
   width: 100%;
   // height: 100vh;
 }

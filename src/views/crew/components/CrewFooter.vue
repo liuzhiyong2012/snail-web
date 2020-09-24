@@ -3,7 +3,7 @@
 		  <div class="info-ctn first">
 			  <i class="icon icon-crew-flight"></i>
 			  <span class="seat-number">
-				  {{flightResData.Flight.Airplane.AirplaneModels}}
+				  {{flightResData.Flight.BaseInfo.FlightNumber}}
 			  </span>
 		  </div>
 		  <div class="info-ctn second">
@@ -17,11 +17,11 @@
 		  
 		  <div class="info-ctn third">
 			  <i class="icon icon-time"></i>
-			  <span class="start-time">{{flightResData.Flight.BaseInfo.DeparturePlanTimestamp| dateFormate('hh:mm')}}</span>
+			  <span class="start-time">{{flightResData.DepartureTime| dateFormate('hh:mm')}}</span>
 			  <div class="progress-ctn">
-				  <div class="progress"></div>
+				  <div class="progress" :style="{width:flightResData.Flight.BaseInfo.OntimeRate}"></div>
 			  </div>
-			  <span class="end-time">{{flightResData.Flight.BaseInfo.ArrivalPlanTimestamp| dateFormate('hh:mm')}}</span>
+			  <span class="end-time">{{flightResData.ArrivalTime| dateFormate('hh:mm')}}</span>
 		  </div>
 		  
 		  <div class="info-ctn fourth">
@@ -47,7 +47,7 @@
 
 <script lang = "ts">
 	import {Vue,Component,Prop} from 'vue-property-decorator';
-	import FlightService from '../../../service/flight';
+	
 	
 	@Component({
 		name:'crew-footer',
@@ -57,36 +57,18 @@
 	export default class CrewFooter extends Vue{
 		@Prop({
 			default:()=>{
-				return [];
+				return null;
 			}
 		})
-		tabList:Array<any>;
-		
-		@Prop({
-			default:()=>{
-				return false;
-			}
-		})
-		active:boolean;
-		
-		private flightResData:any = null;
+		flightResData:any = null;
 		
 		private mounted(){
-			this.getFlightInfo();
 		}
 		
 		
 		public getFlightInfo(): void {
-			FlightService.getFlightInfo().then((res: any) => {
-				if(res.code == 200){
-					this.flightResData = res.data;
-				}
-			});
 		}
 		
-		public switchPage(item){
-			this.$emit('switchPage',item.value);
-		}
 	}
 </script>
 
@@ -141,7 +123,7 @@
 					
 					.progress{
 						overflow: hidden;
-						width:rem(130px);
+						// width:rem(130px);
 						height:100%;
 						background:#00AEC7;
 						border-radius:rem(8px);

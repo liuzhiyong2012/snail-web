@@ -58,9 +58,8 @@ export default class CrewGoodsItem extends Vue {
 		top: 0;
 		height: 100%;
 		width: rem(132px);
-		// background-color: blue
 		background-repeat: no-repeat;
-		background-size: contain;
+		background-size: cover;
 		background-position: center;
 	}
 
@@ -73,7 +72,6 @@ export default class CrewGoodsItem extends Vue {
 		padding:0 rem(50px) 0 rem(32px);
 
 		.info-left-ctn {
-			
 			.line-one {
 				span:nth-child(1) {
 					padding:0 rem(12px);

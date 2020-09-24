@@ -57,7 +57,6 @@ service.interceptors.response.use(
      */
 	//状态编码
 	// debugger;
-	
     if (response.status === 200&&(!response.data.error)&&response.data.code=="200") {
        return response.data;
     } else if(response.status === 200&&(!response.data.error)&&response.data.code=="401"){

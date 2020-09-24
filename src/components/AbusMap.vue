@@ -44,6 +44,7 @@ import ZoomToExtent from 'ol/control/ZoomToExtent';
 import { defaults } from 'ol/control';
 
 import { buffer } from 'ol/extent';
+import DateUtils from '../utils/date-utils';
 
 // import { buffer }  from 'ol/layer';
 /* import 'ol/ol.css';
@@ -73,18 +74,30 @@ export default class AbusMap extends Vue {
 	private map: any;
 	private flightInfo: any;
 	
-	private flightPositionIndex:number = 0;
 	private timeFlag?:any = null;
 	private marker:any = null;
 	
 	private flightPaths:Array<any> = [];
 	
+	private updateFlightHandler: any = null;
+	
+	private get airbusId():string{
+		return this.$store.state.login.airbusId;
+	}
+	
+	private get flightResData():string{
+		return this.$store.state.login.flightInfo;
+	}
+	
 
 	created() {
-		let a = this.flightInfo;
 	}
 
 	mounted() {
+		this.updateFlightHandler = (e)=>{
+			this.updateMarkPosition();
+		};
+		(this as any).$globalEvent.$on('updateFlightInfo',this.updateFlightHandler);
 		this.getFlightInfo();
 	}
 	
@@ -93,16 +106,9 @@ export default class AbusMap extends Vue {
 		
 	}
 	
-	
-	
-
 	public getFlightInfo(): void {
-		FlightService.getFlightInfo({}).then((res: any) => {
-			if (res.code == '200') {
-				this.flightInfo = res.data;
-				this.renderMap();
-			}
-		});
+		this.flightInfo = this.flightResData;
+		this.renderMap();
 	}
 
 	public renderMap(): void {
@@ -196,44 +202,32 @@ export default class AbusMap extends Vue {
 			trackLine.appendCoordinate(point);
 		});
 		
-		this.flightPositionIndex = 0;
 		this.updateMarkPosition();
-		this.startFlightTimer();
-		
-		
 	}
 	
-	public startFlightTimer() {
-		let time = 1 * 1000;
-		let len = this.flightPaths.length;
-		this.timeFlag = window.setInterval(()=>{
-			this.flightPositionIndex++;
-			if(this.flightPositionIndex > len){
-				this.flightPositionIndex = 0;
-			}
-			this.updateMarkPosition();
-		},time);
-	}
 	
 	public centerMark(position:any){
 		this.map.getView().setCenter(position);
 	}
  
     public updateMarkPosition(){
-		let position = this.flightPaths[this.flightPositionIndex];
-		let cord = [position.Lng,position.Lat];
+		// debugger;
+		console.log('更新飞机坐标位置');
+		let flightAltitudes = this.flightResData.FlightPaths;
 		
-		/* Course: 155
-		Lat: "22.603300"
-		Lng: "113.829000" */
-		this.marker.setPosition(cord);
-		this.marker.getElement().style.transform = `rotate(${position.Course - 90}deg)`;
-		this.centerMark(cord);
+		if(flightAltitudes&&flightAltitudes.length > 0){
+			let position = flightAltitudes[flightAltitudes.length - 1];
+			let cord = [position.Lng,position.Lat];
+			
+			this.marker.setPosition(cord);
+			this.marker.getElement().style.transform = `rotate(${position.Course - 90}deg)`;
+			this.centerMark(cord);
+		}
+		
 		
 	}
 	
 	createGoodStyle() {
-		
 		return new Style({
 			image: new Circle({
 				radius: 4,

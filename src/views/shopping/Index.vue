@@ -3,7 +3,7 @@
     <abus-title :title="$t('title')" backRouteName="home">
       <cart-icon @toCart="stepToCart()"></cart-icon>
     </abus-title>
-    <van-search  placeholder="请输入搜索关键词" />
+    <van-search :placeholder="$t('Search')"  @focus="stepToSearch"/>
     <div class="banner">
       <shopping-item />
       <!-- <van-swipe :autoplay="3000">
@@ -14,22 +14,22 @@
         >
           <img class="shopping-recomend-img" v-lazy="item.CoverImgUrl" />
         </van-swipe-item>
-      </van-swipe> -->
+      </van-swipe>-->
       <!-- <banner :bannerData="bannerData" /> -->
       <div v-if="isShowMenu" :class="[isActive? 'menu active': 'menu']">
         <!-- <van-icon class="wap-menu" name="wap-nav" size="24" /> -->
-        <div  v-if="isFilter" @click="clickIsFilter">
-              Filter
-              <svg class="icon i-icon" aria-hidden="true">
-                <use xlink:href="#icon-select_1" />
-              </svg>
-            </div>
-            <div v-else @click="clickIsFilter">
-              Filter
-              <svg class="icon i-icon icon-up" aria-hidden="true">
-                <use xlink:href="#icon-select_1" />
-              </svg>
-            </div>
+        <div v-if="isFilter" @click="clickIsFilter">
+          Price
+          <svg class="icon i-icon" aria-hidden="true">
+            <use xlink:href="#icon-select_1" />
+          </svg>
+        </div>
+        <div v-else @click="clickIsFilter">
+          Price
+          <svg class="icon i-icon icon-up" aria-hidden="true">
+            <use xlink:href="#icon-select_1" />
+          </svg>
+        </div>
       </div>
     </div>
     <div class="shopping-box">
@@ -64,8 +64,8 @@
               <svg class="icon i-icon" aria-hidden="true">
                 <use xlink:href="#icon-select_1" />
               </svg>
-            </div>-->
-            <!-- <div v-else @click="clickIsNewest">
+          </div>-->
+          <!-- <div v-else @click="clickIsNewest">
               Sort by：Oldest
               <svg class="icon i-icon" aria-hidden="true">
                 <use xlink:href="#icon-select_1" />
@@ -87,7 +87,7 @@
               <van-cell value="Price" @click="changeVal" />
               <van-cell value="CreatedAt" @click="changeVal" />
             </div>
-          </div> -->
+          </div>-->
 
           <div class="goods-box">
             <div class="goods-item" v-for="(item,i) in options1[index].data" :key="i">
@@ -98,7 +98,7 @@
                 <div class="price">${{item.Price}}</div>
                 <div class="name">{{item.Name}}</div>
                 <div class="qty">
-                  <!-- {{$t('QTY')}} {{item.QTY}} -->
+                  {{$t('QTY')}} {{item.QTY}}
                   <span class="buy" @click="stepToDetail(item)">{{$t('Buy')}}</span>
                 </div>
               </div>
@@ -128,12 +128,14 @@
 			"title":"机上购物",
       "Buy":"购买",
       "OutOfStock":"缺货",
+      "Search":"请输入搜索关键词",
       "QTY":"剩余量"
 		},
 		"en":{
 			"title":"Shopping",
       "Buy":"Buy",
       "OutOfStock":"Out of stock",
+      "Search":"Please enter search keywords",
       "QTY":"QTY"
 		}
 	}
@@ -145,14 +147,14 @@ import ShoppingService from "../../service/shopping";
 import AbusTitle from "../../components/AbusTitle.vue";
 import CartIcon from "./components/ShoppingCartIcon.vue";
 import UrlUtils from "../../utils/url-utils";
-import ShoppingItem from "./components/ShoppingItem.vue"
+import ShoppingItem from "./components/ShoppingItem.vue";
 // import Banner from "@/components/banner";
 @Component({
   name: "Shopping",
   components: {
     AbusTitle,
     CartIcon,
-    ShoppingItem
+    ShoppingItem,
   },
 })
 export default class ShoppingIndex extends Vue {
@@ -170,9 +172,8 @@ export default class ShoppingIndex extends Vue {
   private listAsc: string = "Asc";
 
   private created() {
-    this.getShoppingRecommendedList();
+    // this.getShoppingRecommendedList();
     this.getShoppingCategory();
-    this.getShoppingList();
   }
   private mounted() {
     if (localStorage.getItem("lang") == "en") {
@@ -186,15 +187,21 @@ export default class ShoppingIndex extends Vue {
   private beforeDestroy() {
     document.removeEventListener("scroll", this.handleScroll);
   }
-  private showToast(){
-		this.$toast('暂时缺货')
-	}
-   public stepToCart():void{
-		// debugger;
-		this.$router.push({
-			name:'shoppingCart'
-		});
-	}
+  private showToast() {
+    this.$i18n.t('OutOfStock')
+  }
+  public stepToCart(): void {
+    // debugger;
+    this.$router.push({
+      name: "shoppingCart",
+    });
+  }
+  public stepToSearch(): void {
+    // debugger;
+    this.$router.push({
+      name: "shoppingSearch",
+    });
+  }
   private getShoppingCategory() {
     ShoppingService.getShoppingCategory().then((res: any) => {
       // console.log(res);
@@ -203,6 +210,7 @@ export default class ShoppingIndex extends Vue {
       // category: "珠宝首饰"
       if (res.code == 200) {
         this.options1 = res.data;
+        this.getShoppingList();
       }
     });
   }
@@ -214,7 +222,7 @@ export default class ShoppingIndex extends Vue {
   public changeVal(e: any) {
     this.isShowFilter = false;
     this.filterInfo = e.target.innerText;
-    this.getShoppingListFilter()
+    this.getShoppingListFilter();
   }
   // public clickIsNewest() {
   //   this.isNewest = !this.isNewest;
@@ -223,7 +231,7 @@ export default class ShoppingIndex extends Vue {
   // 点击升降序
   public clickIsFilter() {
     this.isFilter = !this.isFilter;
-    this.getShoppingListFilter()
+    this.getShoppingListFilter();
   }
 
   // 首次获取
@@ -237,16 +245,16 @@ export default class ShoppingIndex extends Vue {
   private getGoodsList(name: any, title: any) {
     // console.log(name)
     this.tapIndex = name;
-    this.getShoppingListFilter()
+    this.getShoppingListFilter();
   }
   // 获取筛选后列表
-  public getShoppingListFilter(){
-    var data = { 
+  public getShoppingListFilter() {
+    var data = {
       orderName: this.filterInfo,
       orderFlag: this.isFilter ? this.listDesc : this.listAsc,
       category: this.tapIndex,
-     };
-    
+    };
+
     ShoppingService.getShoppingList(data).then((res: any) => {
       Vue.set(this.options1[this.tapIndex - 1], "data", res.data.Dishes);
     });
@@ -284,7 +292,6 @@ export default class ShoppingIndex extends Vue {
       this.isActive = false;
     }
   }
-  
 }
 </script>
 
@@ -308,19 +315,18 @@ export default class ShoppingIndex extends Vue {
   /deep/ .van-tab {
     line-height: 0.4rem;
   }
-  /deep/ .van-tab__text--ellipsis{
-    font-size: .28rem !important;
+  /deep/ .van-tab__text--ellipsis {
+    font-size: 0.28rem !important;
   }
-  
 }
-.van-icon-search{
-  width: .4rem !important;
-  height: .4rem !important;
+.van-icon-search {
+  width: 0.4rem !important;
+  height: 0.4rem !important;
 }
 
 .menu {
   box-sizing: border-box;
-  padding: 10px 0;
+  // padding: 10px 0;
   position: absolute;
   display: flex;
   justify-content: center;
@@ -328,11 +334,18 @@ export default class ShoppingIndex extends Vue {
   right: 0;
   width: 22%;
   height: 0.88rem;
-  background-color: #fff;
+  line-height: 0.88rem;
+  // background-color: #fff;
   z-index: 9999;
-  box-shadow: -0.2rem 0 0.2rem rgba(0, 0, 0, 0.1);
+  box-shadow: -0.1rem 0 0.2rem rgba(0, 0, 0, 0.05);
   text-align: center;
-  color: #1c1c1c;
+  color: rgb(181, 182, 184);
+  background: linear-gradient(
+    rgba(255, 255, 255, 0.7),
+    #fff,
+    rgba(255, 255, 255, 0.7)
+  );
+  // background: linear-gradient(to left, #fff, rgba(255,255,255,.7));
   .wap-menu {
     font-size: 0.48rem !important;
   }
@@ -372,11 +385,11 @@ export default class ShoppingIndex extends Vue {
     width: 0.2rem;
     height: 0.2rem;
     padding: 0 0 0.05rem;
-    transition: all cubic-bezier(0.075, 0.82, 0.165, 1) .3s;
+    transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 0.3s;
   }
-  .icon-up{
+  .icon-up {
     transform: rotate(-180deg);
-    padding:  0.05rem 0 0;
+    padding: 0.05rem 0 0;
   }
   .f-box {
     display: none;
@@ -397,7 +410,7 @@ export default class ShoppingIndex extends Vue {
 .goods-box {
   display: flex;
   flex-wrap: wrap;
-  padding: .2rem 0 0 0;
+  padding: 0.2rem 0 0 0;
   .goods-item {
     box-sizing: border-box;
     width: 50%;

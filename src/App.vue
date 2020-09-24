@@ -114,8 +114,19 @@ svg.icon {
 .van-picker__title{
   font-size: .32rem !important;
 }
+.van-image{
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.van-image__img{
+  height: auto !important;
+}
 .van-ellipsis{
   overflow: inherit !important;
+}
+.van-field__clear{
+  font-size: .32rem !important;
 }
 .van-picker__cancel, .van-picker__confirm{
   font-size: .32rem !important;

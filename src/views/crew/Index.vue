@@ -1,212 +1,288 @@
 <template>
 	<section class="crew-layout-ctn">
 		<section class="header-ctn">
-			<crew-tab :tabList = "tabList" :active="active" @switchPage="switchPage"></crew-tab>
+			<crew-tab :tabList="tabList" :active="active" @switchPage="switchPage"></crew-tab>
 		</section>
-		<section  class="body-ctn">
-			 <router-view class="crew-route-view-ctn"/>
+		<section class="body-ctn">
+			<router-view class="crew-route-view-ctn" />
 		</section>
-		<section  class="footer-ctn">
-			<crew-footer></crew-footer>
+		<section class="footer-ctn">
+			<crew-footer :flightResData = "flightResData"></crew-footer>
 		</section>
-		
+
 		<!--<van-button type="primary" class="message-btn" text="组件调用" @click="showNotify" />-->
 		<van-notify v-model="show" class="message-ctn">
-		  <div class="notify-ctn">
-		  		<div class="notify-head">
-		  			<!--<i class="icon"></i>-->
-		  			<span class="tip">
+			<div class="notify-ctn">
+				<div class="notify-head">
+					<!--<i class="icon"></i>-->
+					<span class="tip">
 		  				You got a new message
 		  			</span>
-		  		</div>
-		  		<div class="notify-content">
-		  			  <div class="head-img">
-		  			  	Lzy
-		  			  </div>
-		  			  <div class="content-ctn">
-		  			  	<div class="seat-ctn">C21</div>
-		  			  	<div class="msg-ctn">我是消息的内容</div>
-		  			  </div>
-		  		</div>
-		  </div>
+				</div>
+				<div class="notify-content">
+					<div class="head-img" >
+						{{messageContent.userName}}
+					</div>
+					
+					<!--<div class="head-img" v-if="messageContent.itemType!='netFlow'" :style="{backgroundImage:`url(${messageContent.itemImgUrl})`}">
+					</div>-->
+					<div class="content-ctn">
+						<div class="seat-ctn">{{messageContent.seatNumber}}</div>
+						<div class="msg-ctn">{{messageContent.content}}</div>
+					</div>
+				</div>
+			</div>
 		</van-notify>
-		
+
 	</section>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import CrewTab from './components/CrewTab.vue';
-import CrewFooter from './components/CrewFooter.vue';
-declare let io: any;
-
-@Component({
-	name: 'CrewLayoutCtn',
-	components: {
-		CrewTab,
-		CrewFooter
-	}
-})
-export default class CrewLayoutCtn extends Vue {
-	private tabList:Array<any> = [
-			{ 
-				name:'Catering',
-				value:'catering',
-				routeName:'crewCatering'
+	import { Component, Prop, Vue } from 'vue-property-decorator';
+	import CrewTab from './components/CrewTab.vue';
+	import CrewFooter from './components/CrewFooter.vue';
+	import FlightService from '../../service/flight';
+    declare let io: any;
+    
+	@Component({
+		name: 'CrewLayoutCtn',
+		components: {
+			CrewTab,
+			CrewFooter
+		}
+	})
+	export default class CrewLayoutCtn extends Vue {
+		private tabList: Array < any > = [{
+				name: 'Catering',
+				value: 'catering',
+				routeName: 'crewCatering'
 			},
 			{
-				name:'Data package',
-				value:'dataPackage',
-				routeName:'crewDataPackage'
+				name: 'Data package',
+				value: 'dataPackage',
+				routeName: 'crewDataPackage'
 			},
 			{
-				name:'Goods',
-				value:'goods',
-				routeName:'crewGoods'
+				name: 'Goods',
+				value: 'goods',
+				routeName: 'crewGoods'
 			},
 			{
-				name:'Income statistics',
-				value:'incomeStatistics',
-				routeName:'crewIncomeStatistics'
+				name: 'Income statistics',
+				value: 'incomeStatistics',
+				routeName: 'crewIncomeStatistics'
 			},
 			{
-				name:'Cabin layout',
-				value:'cabinLayout',
-				routeName:'crewCabinLayout'
+				name: 'Cabin layout',
+				value: 'cabinLayout',
+				routeName: 'crewCabinLayout'
 			}
 		];
-		
-	private active:string = 'catering';
-	private socket:any = null;
-	
-	private unloadHandler: any = null;
-	
-	private show: boolean = false;
-	
-	private mounted(){
-		let THIS = this;
-		this.unloadHandler = (e)=>{
-			THIS.socket&&THIS.socket.close&&THIS.socket.close();
-		  THIS.socket&&THIS.socket.destroy&&THIS.socket.destroy();
-		  THIS.socket = null;
-			 //e = window.event||e;
-			//e.returnValue=('确定离开当前网站吗?');
-		};
-		window.addEventListener('beforeunload',this.unloadHandler);
-		
-		this.startWebScoket();
-	}
-	
-	private beforeDestroy(){
-		window.removeEventListener('beforeunload',this.unloadHandler);
-		this.socket.close&&this.socket.close();
-		this.socket.destroy&&this.socket.destroy();
-		this.socket = null;
-	}
-	
-	private startWebScoket() {
-           const opt = {
-				path:process.env.VUE_APP_SOCKET_URL
-			};
-			this.socket = io(process.env.VUE_APP_SOCKET_HOST,opt);
-			
-			//需要获取航班的id.
-			let uid = '4CFC4D33-2C1E-E911-BAD5-F44D307124C0';
 
+		private active: string = 'catering';
+		private socket: any = null;
+
+		private unloadHandler: any = null;
+
+		private show: boolean = false;
+		
+		private timer: any = null;
+		
+		public flightResData:any = {};
+		
+		private messageContent:any = {
+			 seatNumber:'--',
+			 userName:'',
+			 itemImgUrl:'--',
+			 content:''
+		}
+
+		private mounted() {
+			let THIS = this;
+			this.unloadHandler = (e) => {
+				THIS.socket && THIS.socket.close && THIS.socket.close();
+				THIS.socket && THIS.socket.destroy && THIS.socket.destroy();
+				THIS.socket = null;
+				//e = window.event||e;
+				//e.returnValue=('确定离开当前网站吗?');
+			};
+			window.addEventListener('beforeunload', this.unloadHandler);
+            this.getFlightInfo();
+			this.startTimer();
+		}
+
+		private beforeDestroy() {
+			window.clearInterval(this.timer);
+			window.removeEventListener('beforeunload', this.unloadHandler);
+			this.socket&&this.socket.close && this.socket.close();
+			this.socket&&this.socket.destroy && this.socket.destroy();
+			this.socket = null;
+		}
+        
+	    private getFlightInfo(){
+			FlightService.getFlightInfo().then((res: any) => {
+				if(res.code == 200){
+					this.flightResData = res.data;
+					this.$store.commit('setAirbusId', this.flightResData.Flight.BaseInfo.Id);
+					this.startWebScoket(this.flightResData.Flight.BaseInfo.Id);
+				}
+			});
+		}
+		
+		private startTimer(){
+			let timePeriod = 10000;
+			
+			this.timer = window.setInterval(()=>{
+				FlightService.getFlightInfo().then((res: any) => {
+					if(res.code == 200){
+						//如果飞机航班改变了，则跳转登录页面，并且重新开始实时推送。
+						if(this.flightResData.Flight.BaseInfo.Id == res.Flight.BaseInfo.Id){
+							this.flightResData = res.data;
+						}else{
+							this.$toast('飞机航班已经切换,请重新登录!');
+							this.socket&&this.socket.close && this.socket.close();
+							this.socket&&this.socket.destroy && this.socket.destroy();
+							this.socket = null;
+							this.flightResData = res.data;
+							this.$store.commit('setAirbusId', this.flightResData.Flight.BaseInfo.Id);
+							this.startWebScoket(this.flightResData.Flight.BaseInfo.Id);
+							if(this.$route.path.indexOf('/crew/login') < 0){
+								this.$router.push({
+									path:'/crew/login'
+								});
+							}
+						}
+						
+					}
+				});
+			},timePeriod);
+			
+				
+		}
+		
+		private startWebScoket(airbusId) {
+			const opt = {
+				path: process.env.VUE_APP_SOCKET_URL
+			};
+			this.socket = io(process.env.VUE_APP_SOCKET_HOST, opt);
 			// socket连接后以uid登录
 			this.socket.on('connect', () => {
-				console.log('crew:connect');
-				this.socket.emit('login', uid);
+				this.socket.emit('login', airbusId);
 			});
-
+			
 			// 后端推送来消息时
 			this.socket.on('new_msg', (msg) => {
 				console.log('crew:new_msg');
-				
 				let midMsg = msg.replace(/&quot;/g, '"');
 				let newMessageObj = JSON.parse(midMsg);
-				(this as any).$globalEvent.$emit('new_msg',newMessageObj);
-				
-				if(newMessageObj.type == 'system'){
+				(this as any).$globalEvent.$emit('new_msg', newMessageObj);
+
+				if(newMessageObj.type == 'crew') {
+					/*let messageContent:any = {
+						 seatNumber:'--',
+						 itemImgUrl:'--',
+						 content:''
+					};*/
+					this.messageContent.seatNumber = newMessageObj.seatNumber;
+					this.messageContent.itemType = newMessageObj.itemType;
+					this.messageContent.userName = newMessageObj.user.NickName;
+					this.messageContent.content = newMessageObj.notice.Title;
+					/*if(newMessageObj.itemType == 'netFlow'){//流量
+						this.messageContent.itemName = newMessageObj.netFlow.Name;
+						this.messageContent.itemImgUrl = '';//Name
+						this.messageContent.content = newMessageObj.notice.Title;
+					}else if(newMessageObj.itemType == 'shopping'){//商品
+					}else if(newMessageObj.itemType == 'dish'){//菜品
+					}*/
 					this.showNotify();
+					
 				}
 			});
 
 		}
-	
-	
-	public switchPage(value):void{
-		this.active = value;
-		let routeMap = {
-			catering:'crewCatering',
-			dataPackage:'crewDataPackage',
-			goods:'crewGoods',
-			incomeStatistics:'crewIncomeStatistics',
-			cabinLayout:'crewCabinLayout'
-		};
-		
-		if(routeMap[value]){
-			this.$router.push({
-				name:routeMap[value]
-			});
+
+		public switchPage(value): void {
+			this.active = value;
+			let routeMap = {
+				catering: 'crewCatering',
+				dataPackage: 'crewDataPackage',
+				goods: 'crewGoods',
+				incomeStatistics: 'crewIncomeStatistics',
+				cabinLayout: 'crewCabinLayout'
+			};
+
+			if(routeMap[value]) {
+				this.$router.push({
+					name: routeMap[value]
+				});
+			}
+		}
+
+		public showNotify() {
+			let time = 100000000;
+			if(this.show){
+				this.show = false;
+				setTimeout(() => {
+			     this.show = true;
+			     setTimeout(()=>{
+			     	this.show = false;
+			     },time);
+			   }, 1000);
+			}else{
+				this.show = true;
+				setTimeout(() => {
+			     this.show = false;
+			   }, time);
+			}
+			
+			
 		}
 	}
-	
-	public showNotify() {
-      this.show = true;
-      setTimeout(() => {
-        this.show = false;
-      }, 2000);
-    }
-}
 </script>
 
 <style lang="scss" scoped>
 	@import '../../assets/style/index.scss';
-	@function rem($px){//$px为需要转换的字号
-	    @return $px / 100px * 1rem; //100px为根字体大小
-	} 
-	
-	
-	.message-btn{
-	 position: relative;
-	 z-index: 10000;
+	@function rem($px) {
+		//$px为需要转换的字号
+		@return $px / 100px * 1rem; //100px为根字体大小
 	}
-	.message-ctn{
-		    position: absolute;
-    		right: 40px;
-		    bottom: 240px;
-		    top: auto;
-		    left: auto;
-		    width: 4.8rem;
-		    height: 1.82rem;
-		    border-radius: 0.3rem;
-		    border: 0.04rem solid #AFD5FD;
-		    z-index: 1000;
-		    background: #003e81;
-		
-		 .notify-ctn{
-		 	position: relative;
-		 	padding:rem(16px) rem(30px) rem(20px);
-		 	
-		  	.notify-head{
-		  		.tip{
+	
+	.message-btn {
+		position: relative;
+		z-index: 10000;
+	}
+	
+	.message-ctn {
+		position: absolute;
+		right: 40px;
+		bottom: 240px;
+		top: auto;
+		left: auto;
+		width: 4.8rem;
+		height: 1.82rem;
+		border-radius: 0.3rem;
+		border: 0.04rem solid #AFD5FD;
+		z-index: 1000;
+		background: #003e81;
+		.notify-ctn {
+			position: relative;
+			padding: rem(16px) rem(30px) rem(20px);
+			.notify-head {
+				.tip {
 					font-size: rem(32px);
 					font-family: PingFangSC-Semibold, PingFang SC;
 					font-weight: 600;
 					color: #AFD5FD;
 					line-height: rem(32px);
-		  		}
-		  		margin-bottom:rem(20px);
-		  		
-		  	}
-		  	.notify-content{
-		  		position: relative;
-		  		
-		  		.head-img{
-		  			position: absolute;
-		  			border-radius: 50%;
-		  			width: rem(84px);
+				}
+				margin-bottom:rem(20px);
+			}
+			.notify-content {
+				position: relative;
+				.head-img {
+					position: absolute;
+					border-radius: 50%;
+					width: rem(84px);
 					height: rem(84px);
 					line-height: rem(84px);
 					overflow: hidden;
@@ -214,13 +290,12 @@ export default class CrewLayoutCtn extends Vue {
 					text-align: center;
 					color: #ffffff;
 					background: #83abd9;
-		  		}
-		  		
-		  		.content-ctn{
-		  			
-		  			margin-left: rem(108px);
-		  			.seat-ctn{
-		  				width: rem(68px);
+					font-size: rem(18px);
+				}
+				.content-ctn {
+					margin-left: rem(108px);
+					.seat-ctn {
+						width: rem(68px);
 						height: rem(36px);
 						background: #00AEC7;
 						border-radius: rem(6px);
@@ -231,49 +306,39 @@ export default class CrewLayoutCtn extends Vue {
 						font-weight: 600;
 						color: #FFFFFF;
 						margin-bottom: rem(12px);
-		  			}
-		  			
-		  			.msg-ctn{
-		  				   text-align: left;
-							font-size: rem(24px);
-							font-family: PingFangSC-Medium, PingFang SC;
-							font-weight: 500;
-							color: #FFFFFF;
-							line-height: rem(30px);
-		  			}
-		  		}
-		  	}
-		  }
-	}
-
-
-      .crew-layout-ctn{
-		  position: relative;
-		  overflow: hidden;
-		  width: 100%;
-		  height: 100vh;
-		  background: #002468;
-		  
-      	.header-ctn{
-      		
-      	}
-		
-      	.body-ctn{
-			position: absolute;
-			top:rem(182px);
-			bottom:rem(120px);
-			width:100%;
-			
-      		.crew-route-view-ctn{
-				
+					}
+					.msg-ctn {
+						text-align: left;
+						font-size: rem(24px);
+						font-family: PingFangSC-Medium, PingFang SC;
+						font-weight: 500;
+						color: #FFFFFF;
+						line-height: rem(30px);
+					}
+				}
 			}
-      	}
-      	.footer-ctn{
-      		position: absolute;
+		}
+	}
+	
+	.crew-layout-ctn {
+		position: relative;
+		overflow: hidden;
+		width: 100%;
+		height: 100vh;
+		background: #002468;
+		.header-ctn {}
+		.body-ctn {
+			position: absolute;
+			top: rem(182px);
+			bottom: rem(120px);
+			width: 100%;
+			.crew-route-view-ctn {}
+		}
+		.footer-ctn {
+			position: absolute;
 			left: 0;
 			bottom: 0;
 			width: 100%;
-      	}
-      }
-
+		}
+	}
 </style>

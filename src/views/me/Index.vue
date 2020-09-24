@@ -4,13 +4,14 @@
     <div class="user-info">
       <div class="user">
         <div class="user-img">
-          <van-image
+          <!-- <van-image
             round
             fit="cover"
             width="1.26rem"
             height="1.26rem"
-            :src="userInfo.AvatarPath || 'https://img.yzcdn.cn/vant/cat.jpeg'"
-          />  
+            
+          />   -->
+          <img width="100%" height="100%" :src="userInfo.AvatarPath || 'https://img.yzcdn.cn/vant/cat.jpeg'" alt="">
         </div>
         <div class="f1">
           <div class="name" >{{userInfo.NickName|| '--'}}</div>
@@ -97,6 +98,12 @@
         </div>
       </div>
     </div>
+	<div class="logout-ctn">
+	 <div class="logout-btn" @click="logout()">
+	       {{$t('LogoutTxt')}}
+	  </div>
+	</div>
+	
   </div>
 </template>
 <i18n>
@@ -111,7 +118,8 @@
 			  "PaymentMethod":"支付方式",
 			  "OtherAccountNumber":"第三方授权",
 			  "PrivacyPolicy":"隐私政策",
-			  "TermsOfService":"服务条款"
+			  "TermsOfService":"服务条款",
+			  "LogoutTxt":"退出当前账号"
 		},
 		"en":{
 			  "Me":"Profile",
@@ -123,18 +131,19 @@
 			  "PaymentMethod":"Payment method",
 			  "OtherAccountNumber":"Third party account",
 			  "PrivacyPolicy":"Privacy policy",
-			  "TermsOfService":"Terms of service"
+			  "TermsOfService":"Terms of service",
+			  "LogoutTxt":"Exit current account"
 		}
 	}
 </i18n>
 <script lang="ts">
-import AbusTitle from "../../components/AbusTitle.vue";
-import { Vue, Prop, Component } from "vue-property-decorator";
-import MeServer from '../../service/me'
+import AbusTitle from '../../components/AbusTitle.vue';
+import { Vue, Prop, Component } from 'vue-property-decorator';
+import MeServer from '../../service/me';
 import { mapState } from 'vuex';
 
 @Component({
-  name: "meIndex",
+  name: 'meIndex',
   components: {
     AbusTitle,
   },
@@ -143,14 +152,14 @@ export default class meIndex extends Vue {
   private userInfo: Object = {}
   private address: string = ''
   private created() {
-    this.getUserInfo()
-    this.postAddress()
+    this.getUserInfo();
+    this.postAddress();
   }
   private mounted() {
-    if (localStorage.getItem("lang") == "en") {
-      this.$i18n.locale = "en";
+    if (localStorage.getItem('lang') == 'en') {
+      this.$i18n.locale = 'en';
     } else {
-      this.$i18n.locale = "zh";
+      this.$i18n.locale = 'zh';
     }
     
   }
@@ -176,33 +185,33 @@ export default class meIndex extends Vue {
     MeServer.getUserInfo().then((res:any)=>{
       // console.log(res)
       if(res.code == 200){
-        this.userInfo = res.data
-        this.$store.commit('setUserData',res.data)
+        this.userInfo = res.data;
+        this.$store.commit('setUserData',res.data);
       }else{
-        this.$toast(res.message)
+        this.$toast(res.message);
       }
-    })
+    });
   }
   public postAddress(){
     MeServer.postAddress().then((res: any) => {
       if(res.code == 200) {
-        this.address = res.data.Address
+        this.address = res.data.Address;
         this.$store.dispatch('setAddressData',{
           data: res.data.Address
-        })
+        });
       }
-    })
+    });
   }
   public stepToPage(pageType: any) {
     let routeMap: any = {
-      exchange: "pointsExchange",
-      address: "address",
-      payment: "payment",
-      myorder: "myOrder",
-      lang: "lang",
-      thirdaccount: "thirdAccount",
-      privacyPolicy: "privacyPolicy",
-      termsOfService: "termsOfService",
+      exchange: 'pointsExchange',
+      address: 'address',
+      payment: 'payment',
+      myorder: 'myOrder',
+      lang: 'lang',
+      thirdaccount: 'thirdAccount',
+      privacyPolicy: 'privacyPolicy',
+      termsOfService: 'termsOfService',
     };
     if (routeMap[pageType]) {
       this.$router.push({
@@ -210,6 +219,14 @@ export default class meIndex extends Vue {
       });
     }
   }
+  
+  public logout(pageType: any) {
+	  this.$router.push({
+		  path:'login'
+	  });
+	  this.$store.dispatch('logout');
+  }
+  
 }
 </script>
 
@@ -227,6 +244,8 @@ export default class meIndex extends Vue {
       margin: 0 0.2rem 0 0;
       width: 1.26rem;
       height: 1.26rem;
+      border-radius: 50%;
+      overflow: hidden;
     }
     .f1 {
       display: flex;
@@ -324,4 +343,21 @@ export default class meIndex extends Vue {
     }
   }
 }
+
+//退出按钮
+	.logout-ctn{
+		margin-top:0.50rem;
+		margin-bottom:1.00rem;
+		padding:0 0.30rem;
+		.logout-btn{
+			height: 0.80rem;
+			border-radius: 0.50rem;
+			border: 0.02rem solid #E4002B;
+			
+			text-align: center;
+			font-size: 0.34rem;
+			color: #E4002B;
+			line-height: 0.76rem;
+		}
+	}
 </style>

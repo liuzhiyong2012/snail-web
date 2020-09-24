@@ -27,5 +27,17 @@ export default {
   	{
   	    return y + '-' + m + '-' + d +' '+ h +':'+ minute +':' + second;  
   	}
+  },
+  calcRemaingTime(DepartureTime,ArrivalTime,CurrentTime){
+  	  let startTime = CurrentTime?new Date(DepartureTime * 1000):new Date(DepartureTime * 1000);
+  	  let entTime = new Date(ArrivalTime * 1000);
+  	  let remaingTime = entTime.getTime() - startTime.getTime();
+  	  let hour = parseInt((remaingTime/1000) / (60 * 60));
+  	  let mimute = parseInt(((remaingTime/1000) % (60 * 60) )/60);
+  	  
+  	  return {
+  		  hour:hour,
+  		  mimute:mimute
+  	  };
   }
 }

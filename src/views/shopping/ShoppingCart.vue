@@ -128,6 +128,7 @@ export default class ShoppingCart extends Vue {
     cartList.forEach((item: any, index: any) => {
       amount = amount + item.Price * item.orderNumber;
     });
+    // this.$store.commit("addShoppingCartList",cartList)
     return (this.orderAmount = amount);
   }
   private get seatName():string{
@@ -165,14 +166,19 @@ export default class ShoppingCart extends Vue {
         Remark: "",
         Items: CartItems,
         type: 1,
+        SeatType: this.seatType || 2,
         Address: this.address,
       };
       ShoppingServer.postShoppingPlaceOrder(data).then((res: any) => {
         console.log(res);
         if (res.code == 200) {
           this.$store.commit("clearShoppingCart");
-          this.$toast("SUCCESS!");
-          this.stepToPage("shopping");
+          if (localStorage.getItem("lang") == "en") {
+            return this.$toast("Success");
+          } else {
+            return this.$toast("下单成功!");
+          }
+          this.stepToPage("home");
         }
       });
     }else{

@@ -160,6 +160,7 @@ export default class ShoppingCart extends Vue {
         Remark: "",
         Items: CartItems,
         type: 2,
+        SeatType: this.seatType || 2,
         Address: this.address,
       };
       ShoppingServer.postShoppingPlaceOrder(data).then((res: any) => {

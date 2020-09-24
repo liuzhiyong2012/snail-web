@@ -194,6 +194,9 @@
       "toast5":"当前手机号码已注册",
       "toast6":"暂未阅读《隐私政策》、《服务条款》",
       "toast7":"请先填写信息",
+      "toast8":"服务端错误",
+      "toast9":"密保问题不能为空",
+      "toast10":"答案不能为空",
       "Date":"日期"
 		},
 		"en":{
@@ -229,25 +232,28 @@
       "toast5":"The current mobile number is registered",
       "toast6":"Have you read the 《Privacy policy》《Terms of service》",
       "toast7":"Please complete the information",
+      "toast8":"Server error",
+      "toast9":"Security question cannot be empty",
+      "toast10":"The answer cannot be empty",
       "Date":"Date"
 		}
 	}
 </i18n>
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import LoginService from "../../service/login";
-import AbusTitle from "../../components/AbusTitle.vue";
-import { localStore } from "../../utils/data-management";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import LoginService from '../../service/login';
+import AbusTitle from '../../components/AbusTitle.vue';
+import { localStore } from '../../utils/data-management';
 
 @Component({
-  name: "Registery",
+  name: 'Registery',
   components: {
     AbusTitle,
   },
 })
 export default class Register extends Vue {
   private fileList: Array<any> = [];
-  private radio: string = "0";
+  private radio: string = '0';
   private show: boolean = false;
   private showIssues: boolean = false;
   private isReaded: boolean = false;
@@ -255,116 +261,116 @@ export default class Register extends Vue {
   private minDate: Date = new Date(1920, 1, 1);
   private maxDate: Date = new Date(2020, 7, 1);
   private currentDate: Date = new Date(2000, 1, 15);
-  private datetime: string = "";
+  private datetime: string = '';
   private columns: Array<any> = [
-    "My father's name?",
-    "My mother's name?",
-    "My favorite singer?",
-    "My favorite animal?",
+    'My father\'s name?',
+    'My mother\'s name?',
+    'My favorite singer?',
+    'My favorite animal?',
   ];
   // 校验密码是否一致
   private isCheckPassword: boolean = false;
   // 用户输入信息
-  private nickname: string = "";
-  private phone: string = "";
-  private idCard: string = "";
-  private birthday: string = "";
-  private password: string = "";
-  private confirmPassword: string = "";
-  private question: string = "";
-  private answer: string = "";
+  private nickname: string = '';
+  private phone: string = '';
+  private idCard: string = '';
+  private birthday: string = '';
+  private password: string = '';
+  private confirmPassword: string = '';
+  private question: string = '';
+  private answer: string = '';
   private mounted() {
-    if (localStorage.getItem("lang") == "en") {
-      this.$i18n.locale = "en";
+    if (localStorage.getItem('lang') == 'en') {
+      this.$i18n.locale = 'en';
     } else {
-      this.$i18n.locale = "zh";
+      this.$i18n.locale = 'zh';
       this.columns = [
-        "我爸爸的名字?",
-        "我妈妈的名字?",
-        "我最喜欢的歌手?",
-        "我最喜欢的动物?",
+        '我爸爸的名字?',
+        '我妈妈的名字?',
+        '我最喜欢的歌手?',
+        '我最喜欢的动物?',
       ];
     }
-    this.getUserChangeData()
+    this.getUserChangeData();
   }
   /**
    * 缓存用户输入的信息
    */
   public getUserChangeData(){
-    this.getNickName()
-    this.getRadio()
-    this.getPhone()
-    this.getIdCard()
-    this.getConfirmPassword()
-    this.getPassword()
+    this.getNickName();
+    this.getRadio();
+    this.getPhone();
+    this.getIdCard();
+    this.getConfirmPassword();
+    this.getPassword();
   }
   public setUserDataNull(){
-    localStore.set("nickName", '');
-    localStore.set('radio','0')
-    localStore.set("uPhone", '');
-    localStore.set("idCard", '');
-    localStore.set("uPassword", '');
-    localStore.set("confirmPassword", '');
+    localStore.set('nickName', '');
+    localStore.set('radio','0');
+    localStore.set('uPhone', '');
+    localStore.set('idCard', '');
+    localStore.set('uPassword', '');
+    localStore.set('confirmPassword', '');
   }
   public setNickName(e) {
     this.nickname = e.target.value;
-    localStore.set("nickName", e.target.value);
+    localStore.set('nickName', e.target.value);
   }
   public getNickName() {
-    if (localStore.get("nickName") != "") {
-      this.nickname = localStore.get("nickName");
+    if (localStore.get('nickName') != '') {
+      this.nickname = localStore.get('nickName');
     }
   }
   public setRadio(e) {
     this.radio = e;
-    localStore.set("radio", e);
+    localStore.set('radio', e);
   }
   public getRadio() {
-    if (localStore.get("radio") != "" && localStore.get("radio") != null) {
-      this.radio = localStore.get("radio");
+    if (localStore.get('radio') != '' && localStore.get('radio') != null) {
+      this.radio = localStore.get('radio');
     }else{
-      this.radio = '0'
+      this.radio = '0';
     }
   }
   public setPhone(e) {
     this.phone = e.target.value;
-    localStore.set("uPhone", e.target.value);
+    localStore.set('uPhone', e.target.value);
   }
   public getPhone() {
-    if (localStore.get("uPhone") != "") {
-      this.phone = localStore.get("uPhone");
+    if (localStore.get('uPhone') != '') {
+      this.phone = localStore.get('uPhone');
     }
   }
   public setIdCard(e) {
     this.idCard = e.target.value;
-    localStore.set("idCard", e.target.value);
+    localStore.set('idCard', e.target.value);
   }
   public getIdCard() {
-    if (localStore.get("idCard") != "") {
-      this.idCard = localStore.get("idCard");
+    if (localStore.get('idCard') != '') {
+      this.idCard = localStore.get('idCard');
     }
   }
   public setPassword(e) {
     this.password = e.target.value;
-    localStore.set("uPassword", e.target.value);
+    localStore.set('uPassword', e.target.value);
   }
   public getPassword() {
-    if (localStore.get("uPassword") != "") {
-      this.password = localStore.get("uPassword");
+    if (localStore.get('uPassword') != '') {
+      this.password = localStore.get('uPassword');
     }
   }
   public setConfirmPassword(e) {
     this.confirmPassword = e.target.value;
-    localStore.set("confirmPassword", e.target.value);
+    localStore.set('confirmPassword', e.target.value);
   }
   public getConfirmPassword() {
-    if (localStore.get("confirmPassword") != "") {
-      this.confirmPassword = localStore.get("confirmPassword");
+    if (localStore.get('confirmPassword') != '') {
+      this.confirmPassword = localStore.get('confirmPassword');
     }
   }
   public getUserPhoneLength(e: any) {
     if (e.target.value.length >= 11 && e.keyCode != 8) {
-      this.$toast(this.$i18n.t("toast1"));
+      this.$toast(this.$i18n.t('toast1'));
       this.phone = e.target.value.substring(0, 10);
     }
   }
@@ -372,9 +378,10 @@ export default class Register extends Vue {
     if (this.isCheckPassword) {
       this.show = true;
     } else {
-      this.$toast(this.$i18n.t("toast2"));
+      this.$toast(this.$i18n.t('toast2'));
     }
   }
+   
   public showQuestion() {
     this.showIssues = true;
   }
@@ -389,43 +396,45 @@ export default class Register extends Vue {
     this.show = false;
     this.currentDate = val;
     this.datetime =
-      val.getFullYear() + "-" + (val.getMonth() + 1) + "-" + val.getDate();
+      val.getFullYear() + '-' + (val.getMonth() + 1) + '-' + val.getDate();
     this.birthday =
       this.datetime +
-      " " +
+      ' ' +
       val.getHours() +
-      ":" +
+      ':' +
       val.getMinutes() +
-      ":" +
+      ':' +
       val.getSeconds();
     return val;
   }
   public checkUserPassword(e: any) {
     if (e.target.value.length < 6) {
-      this.$toast(this.$i18n.t("toast3"));
+      this.$toast(this.$i18n.t('toast3'));
     }
   }
   public checkPassword() {
     if (this.password != this.confirmPassword) {
       this.isCheckPassword = false;
-      this.$toast(this.$i18n.t("toast4"));
+      this.$toast(this.$i18n.t('toast4'));
     } else {
       this.isCheckPassword = true;
     }
   }
   public onClickRegistery() {
     if (
-      this.phone != "" &&
-      this.idCard != "" &&
+      this.phone != '' &&
+      this.idCard != '' &&
       this.isCheckPassword &&
-      this.isReaded
+      this.isReaded &&
+      this.question != '' &&
+      this.answer != ''
     ) {
       // (['nickname','gender','phone','idCard','password','birthday','question','answer']);
 
       var data = {
         nickname: this.nickname,
         gender: this.radio,
-        phone: "86_" + this.phone,
+        phone: '86_' + this.phone,
         idCard: this.idCard,
         password: this.password,
         birthday: this.birthday,
@@ -440,14 +449,14 @@ export default class Register extends Vue {
             // 存储用户信息
             // 写入成功后，判断是否有座位
             this.$store
-              .dispatch("setUserInfo", {
+              .dispatch('setUserInfo', {
                 name: res.data.userName,
                 token: res.data.access_token,
-                id: res.data.id,
-                airbusId: res.data.airbusId,
+                id: res.data.id
+                // airbusId: res.data.airbusId,
               })
               .then((res: any) => {
-                this.setUserDataNull()
+                this.setUserDataNull();
                 LoginService.getUserMe().then((res: any) => {
                   // AvatarPath: ""
                   // DisplayName: "mizao"
@@ -470,12 +479,12 @@ export default class Register extends Vue {
                   // points: "2000"
                   if (res.code == 200 && res.data.Seat == null) {
                     this.$router.push({
-                      name: "selectSeat",
+                      name: 'selectSeat',
                     });
                   } else if (res.code == 200 && res.data.Seat.Name) {
-                    this.$store.commit("setSeatNumber", res.data.Seat.Name);
+                    this.$store.commit('setSeatNumber', res.data.Seat.Name);
                     this.$router.push({
-                      name: "home",
+                      name: 'home',
                     });
                   }
                 });
@@ -485,26 +494,30 @@ export default class Register extends Vue {
           }
         })
         .catch((reason: any) => {
-          this.$toast(this.$i18n.t("toast5"));
+          this.$toast(this.$i18n.t('toast5'));
         });
     } else if (!this.isCheckPassword) {
-      this.$toast(this.$i18n.t("toast4"));
+      this.$toast(this.$i18n.t('toast4'));
     } else if (!this.isReaded) {
-      this.$toast(this.$i18n.t("toast6"));
+      this.$toast(this.$i18n.t('toast6'));
+    } else if (this.question == '') {
+      this.$toast(this.$i18n.t('toast9'));
+    } else if (this.answer == '') {
+      this.$toast(this.$i18n.t('toast10'));
     } else {
-      this.$toast(this.$i18n.t("toast7"));
+      this.$toast(this.$i18n.t('toast7'));
     }
   }
 
   public gotoPrivacy() {
     this.$router.push({
-      name: "privacyPolicy",
+      name: 'privacyPolicy',
     });
   }
 
   public gotoTerms() {
     this.$router.push({
-      name: "termsOfService",
+      name: 'termsOfService',
     });
   }
 }
