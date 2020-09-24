@@ -3,7 +3,7 @@
 	<section class="home-title-ctn">
 		
 		<div class="title-left-ctn">
-			<svg aira-hidden="true" class="icon"  @click="stepTo('scan')">
+			<svg aira-hidden="true" class="icon"  @click="stepToScan">
 				<use xlink:href="#icon-scan"></use>
 			</svg>
 			<span v-if="!isVip" class="flow-ctn" @click="stepTo('internet')">
@@ -67,6 +67,9 @@
 					this.$toast(res.message)
 				}
 			})
+		}
+		public stepToScan(){
+			window.location.href = `https://kf.vpclub.cn/scan/`;
 		}
 	}
 </script>

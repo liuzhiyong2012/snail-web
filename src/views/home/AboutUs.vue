@@ -62,4 +62,7 @@ export default class ServiceDetailPage extends Vue {
   font-size: 0.3rem;
   color: #333333;
 }
+.a-img img{
+  width: 100%;
+}
 </style>

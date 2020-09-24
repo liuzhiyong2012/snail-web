@@ -167,7 +167,7 @@ export default class InternetCart extends Vue {
       Seat: this.seatName || "3D",
       Remark: "",
       id: this.getInternetData.Id,
-      SeatType: this.seatType,
+      SeatType: this.seatType || 2,
     };
     console.log(data)
     NetflowService.postNetFlowPlaceOrder(data).then((res: any) => {
