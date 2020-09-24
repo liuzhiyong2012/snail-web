@@ -6,7 +6,7 @@
           <van-icon name="arrow-left" size="18" @click="goBack" />
         </template>
       </van-nav-bar> -->
-      <abus-title title="News">
+      <abus-title :title="$t('title')">
         <div slot style="width:0.3rem"></div>
       </abus-title>
     </van-sticky>
@@ -26,11 +26,11 @@
     >
       <van-tab
         v-for="(val, index) in navTar"
-        :title="val.Name"
+        :title="val.endName"
         title-active-color="#3056EF"
         :key="index"
       >
-        <div v-if="val.Name == navTar[index].Name" class="">
+        <div v-if="val.endName == navTar[index].endName" class="">
           <ul class="news-list">
             <news-list-item
               v-for="(item, index) in newsListBackup"
@@ -46,10 +46,10 @@
 <i18n>
 	{
 		"zh":{
-			
+			"title":"新闻"
 		},
 		"en":{
-			
+			"title":"News"
 		}
 	}
 </i18n>
@@ -79,7 +79,7 @@ export default class NewsList extends Vue {
       CreatedAt: false,
       Description: null,
       DisplayOrder: null,
-      EName: null,
+      EName: 'All',
     },
     {
       Id: "0",
@@ -87,13 +87,14 @@ export default class NewsList extends Vue {
       CreatedAt: false,
       Description: null,
       DisplayOrder: null,
-      EName: null,
+      EName: 'Collect',
     },
   ];
   private newsList: any = [];
   private newsListBackup: any = [];
 
   private created() {
+    
     this.getCategory(); //获取分类
     this.getNewsList(); //获取新闻列表
     // this.postNewsMyLike(); //收藏列表
@@ -101,8 +102,14 @@ export default class NewsList extends Vue {
   private mounted() {
     if (localStorage.getItem("lang") == "en") {
       this.$i18n.locale = "en";
+      this.navTar.forEach(item=>{
+        item.endName = item.EName
+      })
     } else {
       this.$i18n.locale = "zh";
+      this.navTar.forEach(item=>{
+        item.endName = item.Name
+      })
     }
   }
   private destroyed() {}
@@ -138,15 +145,27 @@ export default class NewsList extends Vue {
       if (res.code == 200) {
         this.navTar = [...this.navTar, ...res.data];
       }
+
+      if (localStorage.getItem("lang") == "en") {
+        this.$i18n.locale = "en";
+        this.navTar.forEach(item=>{
+          item.endName = item.EName
+        })
+      } else {
+        this.$i18n.locale = "zh";
+        this.navTar.forEach(item=>{
+          item.endName = item.Name
+        })
+      }
     });
   }
 
   // 切换分类
   public changeTab(name: number, title: string) {
     this.newsListBackup = [];
-    if (title == "所有") {
+    if (title == "所有" || title == "All") {
       this.newsListBackup = this.newsList;
-    } else if (title == "收藏") {
+    } else if (title == "收藏" || title == "Collect") {
       this.newsList.forEach((item: any) => {
         if (item.isCollect == true) {
           this.newsListBackup.push(item);
@@ -155,7 +174,7 @@ export default class NewsList extends Vue {
     } else {
       let i = "";
       this.navTar.forEach((item: any) => {
-        if (item.Name == title) {
+        if (item.endName == title) {
           i = item.Id;
         }
       });

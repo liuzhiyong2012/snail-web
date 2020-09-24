@@ -2,7 +2,8 @@
   <li class="news-list-wrap">
     <div class="news-list-item">
       <div class="item-img" @click="goToDetail(recommedNewsItem)">
-        <img :src="recommedNewsItem.ThumbsImg[0] | addBaseUrl" />
+        <img :src="recommedNewsItem.BannerImg | addBaseUrl" />
+        <!-- <img :src="recommedNewsItem.ThumbsImg[0] | addBaseUrl" /> -->
       </div>
 
       <div class="item-info">

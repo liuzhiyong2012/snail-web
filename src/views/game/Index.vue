@@ -1,7 +1,7 @@
 <template>
   <div class="game">
     <van-sticky>
-      <abus-title title="Game" backRouteName="home">
+      <abus-title :title="$t('title')" backRouteName="home">
         <div slot style="width:0.3rem"></div>
       </abus-title>
     </van-sticky>
@@ -25,6 +25,16 @@
     </div>
   </div>
 </template>
+<i18n>
+	{
+		"zh":{
+			"title":"游戏"
+		},
+		"en":{
+			"title":"Game"
+		}
+	}
+</i18n>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
