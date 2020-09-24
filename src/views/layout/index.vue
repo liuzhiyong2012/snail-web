@@ -67,7 +67,7 @@ export default class LayoutIndex extends Vue {
   		FlightService.getFlightInfo().then((res: any) => {
   			if(res.code == 200){
   				//如果飞机航班改变了，则跳转登录页面，并且重新开始实时推送。
-  				if(this.airbusId&&this.airbusId == res.data.Flight.BaseInfo.Id){
+  				if(true||this.airbusId&&this.airbusId == res.data.Flight.BaseInfo.Id){
 					this.$store.dispatch('setFlightInfo',res.data);
 					(this as any).$globalEvent.$emit('updateFlightInfo',res.data);
   				}else{

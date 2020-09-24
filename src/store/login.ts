@@ -35,7 +35,8 @@ export default {
       localStore.set('phone',phone)
     },
     setAirbusId(state:any,id:string){
-      state.airbusId = id
+		// '4CFC4D33-2C1E-E911-BAD5-F44D307124C0'||
+      state.airbusId =id;
       localStore.set('airbusId',id)
     },
     setSeatNumber(state:any,seat:string){
