@@ -31,13 +31,13 @@ export default {
   calcRemaingTime(DepartureTime,ArrivalTime,CurrentTime){
   	  let startTime = CurrentTime?new Date(DepartureTime * 1000):new Date(DepartureTime * 1000);
   	  let entTime = new Date(ArrivalTime * 1000);
-  	  let remaingTime = entTime.getTime() - startTime.getTime();
-  	  let hour = parseInt((remaingTime/1000) / (60 * 60));
-  	  let mimute = parseInt(((remaingTime/1000) % (60 * 60) )/60);
+  	  let remaingTime:number = entTime.getTime() - startTime.getTime();
+  	  let hour:number =(remaingTime/1000) / (60 * 60);
+  	  let mimute:number = ((remaingTime/1000) % (60 * 60) )/60;
   	  
   	  return {
-  		  hour:hour,
-  		  mimute:mimute
+  		  hour:hour.toFixed(0),
+  		  mimute:mimute.toFixed(0)
   	  };
   }
 }
