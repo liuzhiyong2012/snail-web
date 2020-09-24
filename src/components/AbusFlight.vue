@@ -14,7 +14,7 @@
 				</span>
 				<span class="flight-duration-time">
 					<span>Remaining:</span>
-					<span>2hours 10min</span>
+					<span>{{remainingTime.hour}} hours {{remainingTime.mimute}}min</span>
 				</span>
 				<span class="home-flight-c">{{ weather.Temper+' '+weather.Desc}}</span>
 			</div>
@@ -48,7 +48,6 @@
 			</div>
 			
 			<div class="map-box">
-				<!-- <home-map></home-map> -->
 				<slot></slot>
 			</div>
 		</div>
@@ -68,14 +67,13 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-// import HomeMap from './HomeMap.vue';
 import FlightService from '../service/flight';
-import { localStore } from "../utils/data-management";
+import { localStore } from '../utils/data-management';
+import DateUtils from '../utils/date-utils.ts';
 
 @Component({
 	name: 'HomeFlight',
 	components: {
-		// HomeMap
 	}
 })
 export default class HomeFlight extends Vue {
@@ -84,36 +82,60 @@ export default class HomeFlight extends Vue {
 	public airplane: any = {};
 	public flightAltitudes: any = {};
 	public weather: any = {};
+	private updateFlightHandler: any = null;
+	private remainingTime :any = {
+		  hour:'--',
+		  mimute:'--'
+	};
 
 	private get seatNumber(): string {
-		return localStore.get("seatNumber") || this.$store.state.login.voyageInfo.seatNumber;
+		return localStore.get('seatNumber') || this.$store.state.login.voyageInfo.seatNumber;
+	}
+	
+	private get airbusId():string{
+		return this.$store.state.login.airbusId;
+	}
+	
+	private get flightInfo():string{
+		return this.$store.state.login.flightInfo;
 	}
 	
 	private get seatClass(): string {
-		if(localStore.get("seatType")==1){
-			return 'F'
-		}else if(localStore.get("seatType")==2){
-			return 'Y'
-		}else if(localStore.get("seatType")==3){
-			return 'C'
+		if(localStore.get('seatType')==1){
+			return 'F';
+		}else if(localStore.get('seatType')==2){
+			return 'Y';
+		}else if(localStore.get('seatType')==3){
+			return 'C';
 		}
 	}
 
 	created() {
+		this.updateFlightHandler = (e)=>{
+				this.getFlightInfo();
+		};
+		(this as any).$globalEvent.$on('updateFlightInfo',this.updateFlightHandler);
 		this.getFlightInfo();
 	}
-
+    
+	private beforeDestroy() {
+		(this as any).$globalEvent.$off('updateFlightInfo',this.updateFlightHandler);
+	}
+	
 	public getFlightInfo(): void {
-		FlightService.getFlightInfo().then((res: any) => {
-			if(res.code== 200){
-				this.flightResData = res.data;
-				this.baseInfo = this.flightResData.Flight.BaseInfo;
-				this.airplane = this.flightResData.Flight.Airplane;
-				this.flightAltitudes = this.flightResData.FlightAltitudes;
-				this.weather = this.flightResData.Weather;
-			}
-			
-		});
+		this.flightResData = this.flightInfo;
+		this.baseInfo = this.flightResData.Flight.BaseInfo;
+		this.airplane = this.flightResData.Flight.Airplane;
+		this.flightAltitudes = this.flightResData.FlightAltitudes;
+		this.weather = this.flightResData.Weather;
+		
+		if(this.flightAltitudes&&this.flightAltitudes.length >0){
+			this.currentTime = this.flightAltitudes[this.flightAltitudes.length - 1].TimePoint;
+		}else{
+			this.currentTime = null;
+		}
+		this.remainingTime = DateUtils.calcRemaingTime(this.flightResData.DepartureTime,this.flightResData.ArrivalTime,this.currentTime);
+		
 	}
 
 	public stepToFlight(): void {

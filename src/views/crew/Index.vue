@@ -91,7 +91,6 @@
 		public flightResData:any = {};
 		
 		private messageContent:any = {
-			
 			 seatNumber:'--',
 			 userName:'',
 			 itemImgUrl:'--',
@@ -113,6 +112,7 @@
 		}
 
 		private beforeDestroy() {
+			window.clearInterval(this.timer);
 			window.removeEventListener('beforeunload', this.unloadHandler);
 			this.socket&&this.socket.close && this.socket.close();
 			this.socket&&this.socket.destroy && this.socket.destroy();
@@ -132,15 +132,13 @@
 		private startTimer(){
 			let timePeriod = 10000;
 			
-			window.setInterval(()=>{
-				
+			this.timer = window.setInterval(()=>{
 				FlightService.getFlightInfo().then((res: any) => {
 					if(res.code == 200){
 						//如果飞机航班改变了，则跳转登录页面，并且重新开始实时推送。
 						if(this.flightResData.Flight.BaseInfo.Id == res.Flight.BaseInfo.Id){
 							this.flightResData = res.data;
 						}else{
-							console.log('this');
 							this.$toast('飞机航班已经切换,请重新登录!');
 							this.socket&&this.socket.close && this.socket.close();
 							this.socket&&this.socket.destroy && this.socket.destroy();

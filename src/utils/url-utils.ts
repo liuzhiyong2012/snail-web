@@ -13,7 +13,6 @@ export default {
   },
   delBaseUrl:function(url:string){
   	  if (!url) return url;
-	  
   	  
   	  let index = url.lastIndexOf('/');
 	  

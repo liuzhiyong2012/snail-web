@@ -1,6 +1,9 @@
 import {localStore} from '../utils/data-management'
 export default {
   state: {
+	flightInfo:{
+		
+	},
     voyageInfo: {
       seatNumber: '12',
       seatClass:'Y',
@@ -22,8 +25,6 @@ export default {
       localStore.set('nickname',name)
     },
     setToken(state:any, token: string){
-		// debugger;
-		// debugger;
       state.token = token
       state.userInfo.token = token
       localStore.set('token',token)
@@ -54,12 +55,18 @@ export default {
 	},
 
     setUserInfo(state:any, userInfo: any){
-		// debugger;
       state.userInfo = userInfo
       localStore.set('userInfo', userInfo)
-    }
+    },
+	setFlightInfo(state:any, flightInfo: any){
+	  state.flightInfo = flightInfo;
+	}
   },
   actions: {
+	setFlightInfo(context: any, state: any){
+		context.commit('setFlightInfo', state);
+		context.commit('setAirbusId', state.Flight.BaseInfo.Id);
+	},
 	logout(context: any, state: any){
 		context.commit('setName', '')
 		context.commit('setToken', '')
@@ -70,7 +77,7 @@ export default {
     setUserInfo(context: any, state: any){
       context.commit('setName', state.name)
       context.commit('setToken', state.token)
-      context.commit('setAirbusId', state.airbusId)
+      // context.commit('setAirbusId', state.airbusId)
       context.commit('setUserInfo', state)
     },
     setUserLoginInfo(context: any,state:any){

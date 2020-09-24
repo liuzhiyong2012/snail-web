@@ -115,19 +115,19 @@
 	}
 </i18n>
 <script lang="ts">
-import VoyageInfo from "./components/VoyageInfo.vue";
-import AbusMap from "../../components/AbusMap.vue";
-import AbusTitle from "../../components/AbusTitle.vue";
-import AbusFlight from "../../components/AbusFlight.vue";
+import VoyageInfo from './components/VoyageInfo.vue';
+import AbusMap from '../../components/AbusMap.vue';
+import AbusTitle from '../../components/AbusTitle.vue';
+import AbusFlight from '../../components/AbusFlight.vue';
 
-import { Component, Prop, Vue } from "vue-property-decorator";
-import echarts from "echarts";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import echarts from 'echarts';
 
-import FlightService from "../../service/flight";
-import DateUtils from "../../utils/date-utils";
+import FlightService from '../../service/flight';
+import DateUtils from '../../utils/date-utils';
 
 @Component({
-  name: "FlightIndex",
+  name: 'FlightIndex',
   components: {
     AbusMap,
     AbusFlight,
@@ -138,10 +138,10 @@ import DateUtils from "../../utils/date-utils";
 export default class FlightIndex extends Vue {
   @Prop() private msg!: string;
 
-  private active: string = "map"; //"camera,map"
+  private active: string = 'map'; //"camera,map"
   private dataList: any = [];
 
-  private activeCamera: string = "frontCamera"; //header,body,footer
+  private activeCamera: string = 'frontCamera'; //header,body,footer
 
   private cameraUrl: any = {
     frontCamera: null,
@@ -151,7 +151,7 @@ export default class FlightIndex extends Vue {
 
   private chart: any = {};
   private flightInfo: any = {
-    name: "刘志勇",
+    name: '刘志勇',
   };
 
   private isCollapsed: boolean = false;
@@ -159,23 +159,41 @@ export default class FlightIndex extends Vue {
   private touchStartHandle: any = null;
   private touchMoveHandle: any = null;
   private touchEndHandle: any = null;
+  
+  private updateFlightHandler: any = null;
+  
+  private get airbusId():string{
+  	return this.$store.state.login.airbusId;
+  }
+  
+  private get flightResData():string{
+  	return this.$store.state.login.flightInfo;
+  }
 
-  private created() {}
+  private created() {
+	  
+  }
 
   private mounted() {
     this.listenScroll();
+	
+	this.updateFlightHandler = (e)=>{
+			  this.getFlightInfo();
+	};
+	(this as any).$globalEvent.$on('updateFlightInfo',this.updateFlightHandler);
 	this.getFlightInfo();
-	if (localStorage.getItem("lang") == "en") {
-      this.$i18n.locale = "en";
+	
+	if (localStorage.getItem('lang') == 'en') {
+      this.$i18n.locale = 'en';
     } else {
-      this.$i18n.locale = "zh";
+      this.$i18n.locale = 'zh';
     }
   }
 
   private destroyed() {
-    document.removeEventListener("touchstart", this.touchStartHandle);
-    document.removeEventListener("touchmove", this.touchMoveHandle);
-    document.removeEventListener("touchend", this.touchEndHandle);
+    document.removeEventListener('touchstart', this.touchStartHandle);
+    document.removeEventListener('touchmove', this.touchMoveHandle);
+    document.removeEventListener('touchend', this.touchEndHandle);
   }
 
   public listenScroll(): void {
@@ -196,26 +214,24 @@ export default class FlightIndex extends Vue {
     this.touchEndHandle = (event: any) => {
       //100是给定触上下方向摸起始的坐标差
       if (endY > 100) {
-        console.log("向上滑动");
+        console.log('向上滑动');
         this.isCollapsed = false;
       } else if (endY < -100) {
-        console.log("向上滑动");
+        console.log('向上滑动');
         this.isCollapsed = true;
       } else {
         //啥也不干
-        console.log("啥也不干");
+        console.log('啥也不干');
       }
     };
 
-    document.addEventListener("touchstart", this.touchStartHandle, false);
-    document.addEventListener("touchmove", this.touchMoveHandle, false);
-    document.addEventListener("touchend", this.touchEndHandle, false);
+    document.addEventListener('touchstart', this.touchStartHandle, false);
+    document.addEventListener('touchmove', this.touchMoveHandle, false);
+    document.addEventListener('touchend', this.touchEndHandle, false);
   }
 
   public getFlightInfo(): void {
-    FlightService.getFlightInfo({}).then((res: any) => {
-      if (res.code == 200) {
-        this.flightInfo = res.data;
+        this.flightInfo = this.flightResData;
 
         this.cameraUrl = {
           frontCamera: this.flightInfo.Flight.Airplane.FrontVideo,
@@ -224,32 +240,30 @@ export default class FlightIndex extends Vue {
         };
 
         this.renderCharts();
-      }
-    });
   }
 
   public calcStyle(page: string) {
-    if (this.active == "camera") {
-      if (page == "camera") {
+    if (this.active == 'camera') {
+      if (page == 'camera') {
         return {
-          visibility: "visible",
+          visibility: 'visible',
           zIndex: 100,
         };
       } else {
         return {
-          visibility: "hidden",
+          visibility: 'hidden',
           zIndex: 10,
         };
       }
     } else {
-      if (page == "camera") {
+      if (page == 'camera') {
         return {
-          visibility: "hidden",
+          visibility: 'hidden',
           zIndex: 10,
         };
       } else {
         return {
-          visibility: "visible",
+          visibility: 'visible',
           zIndex: 100,
         };
       }
@@ -258,14 +272,12 @@ export default class FlightIndex extends Vue {
 
   public toggleCameraTo(camera: string): void {
     this.activeCamera = camera;
-
-    // 'centralCamera',false
   }
 
   public switchPageTo(page: string): void {
     this.active = page;
-    if (page == "camera") {
-      this.toggleCameraTo("frontCamera");
+    if (page == 'camera') {
+      this.toggleCameraTo('frontCamera');
     }
   }
 
@@ -275,7 +287,7 @@ export default class FlightIndex extends Vue {
     let altitudesData: Array<any> = [];
 
     this.flightInfo.FlightAltitudes.forEach((item: any, index: number) => {
-      let time = DateUtils.formate(item.TimePoint, "hh:mm");
+      let time = DateUtils.formate(item.TimePoint, 'hh:mm');
       timesData.push(time);
       speedsData.push(this.flightInfo.FlightSpeeds[index].Speed);
       altitudesData.push(item.Altitude);
@@ -286,26 +298,26 @@ export default class FlightIndex extends Vue {
 
     const optionData = {
       grid: {
-        left: "13.5%",
-        right: "12%",
-        top: "18%",
-        bottom: "25%",
+        left: '13.5%',
+        right: '12%',
+        top: '18%',
+        bottom: '25%',
       },
       legend: {
-        orient: "horizontal",
-        backgroundColor: "#ccc",
+        orient: 'horizontal',
+        backgroundColor: '#ccc',
         borderRadius: 5,
-        x: "center",
-        y: "bottom",
+        x: 'center',
+        y: 'bottom',
         // padding: [5, 20, 15, 20],
         padding: [2, 20, 2, 20],
-        data: ["Altitude m", "Speed km/h"],
+        data: ['Altitude m', 'Speed km/h'],
       },
       tooltip: {
-        trigger: "axis",
+        trigger: 'axis',
       },
       xAxis: {
-        type: "category",
+        type: 'category',
         data: timesData,
         axisTick: {
           show: false,
@@ -313,11 +325,11 @@ export default class FlightIndex extends Vue {
       },
       yAxis: [
         {
-          name: "Altitude",
+          name: 'Altitude',
           nameTextStyle: {
             padding: [0, 0, -7, -40], // 四个数字分别为上右下左与原位置距离
           },
-          type: "value",
+          type: 'value',
           max: 12000,
           axisLine: {
             show: false,
@@ -330,17 +342,17 @@ export default class FlightIndex extends Vue {
           },
         },
         {
-          name: "Speed",
+          name: 'Speed',
           nameTextStyle: {
             padding: [0, 0, -7, 40], // 四个数字分别为上右下左与原位置距离
           },
-          type: "value",
+          type: 'value',
           max: 1200,
           axisLine: {
             show: false,
           },
           axisLabel: {
-            interval: "auto",
+            interval: 'auto',
             show: true,
           },
           axisTick: {
@@ -350,30 +362,30 @@ export default class FlightIndex extends Vue {
       ],
       series: [
         {
-          name: "Altitude m",
+          name: 'Altitude m',
           data: altitudesData,
-          type: "line",
+          type: 'line',
           smooth: true,
           itemStyle: {
             normal: {
-              color: "#02AEC8", //改变折线点的颜色
+              color: '#02AEC8', //改变折线点的颜色
               lineStyle: {
-                color: "#02AEC8", //改变折线颜色
+                color: '#02AEC8', //改变折线颜色
               },
             },
           },
         },
         {
-          name: "Speed km/h",
+          name: 'Speed km/h',
           data: speedsData,
-          type: "line",
+          type: 'line',
           yAxisIndex: 1,
           smooth: true,
           itemStyle: {
             normal: {
-              color: "#00205B", //改变折线点的颜色
+              color: '#00205B', //改变折线点的颜色
               lineStyle: {
-                color: "#00205B", //改变折线颜色
+                color: '#00205B', //改变折线颜色
               },
             },
           },

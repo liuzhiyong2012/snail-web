@@ -4,7 +4,6 @@
       <div class="home-flight-t">
         <span classs="flight-model">{{ airplane.AirplaneModels }}</span>
         <span classs="flight-number">{{baseInfo.AirlinesName}}{{ baseInfo.FlightNumber }}</span>
-        <!-- <i class="icon  icon-search"></i> -->
       </div>
 
       <div class="home-flight-info">
@@ -15,7 +14,7 @@
         </span>
         <span class="flight-duration-time">
           <span>Remaining:</span>
-          <span>2hours 10min</span>
+          <span>{{remainingTime.hour}} hours {{remainingTime.mimute}}min</span>
         </span>
         <span class="home-flight-c">{{weather.Temper +' '+ weather.Desc}}</span>
       </div>
@@ -49,7 +48,6 @@
       </div>
       <div class="map-box">
         <abus-map zoom="4"></abus-map>
-        <!-- <home-map></home-map> -->
       </div>
     </div>
   </section>
@@ -67,16 +65,15 @@
 </i18n>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import HomeMap from "./HomeMap.vue";
-import AbusMap from "../../../components/AbusMap.vue";
-import FlightService from "../../../service/flight";
-import { localStore } from "../../../utils/data-management";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import AbusMap from '../../../components/AbusMap.vue';
+import FlightService from '../../../service/flight';
+import DateUtils from '../../../utils/date-utils';
+import { localStore } from '../../../utils/data-management';
 
 @Component({
-  name: "HomeFlight",
+  name: 'HomeFlight',
   components: {
-    HomeMap,
     AbusMap,
   },
 })
@@ -86,44 +83,71 @@ export default class HomeFlight extends Vue {
   public airplane: any = {};
   public flightAltitudes: any = {};
   public weather: any = {};
-
+  private currentTime: any = null;
+  private updateFlightHandler: any = null;
+  private remainingTime :any = {
+	  hour:'--',
+	  mimute:'--'
+  };
+  
   private get seatNumber(): string {
     return (
-      localStore.get("seatNumber") ||
+      localStore.get('seatNumber') ||
       this.$store.state.login.voyageInfo.seatNumber
     );
   }
+  
+  private get airbusId():string{
+  	return this.$store.state.login.airbusId;
+  }
+  
+  private get flightInfo():string{
+  	return this.$store.state.login.flightInfo;
+  }
 
   private get seatClass(): string {
-    if (localStore.get("seatType") == 1) {
-      return "F";
-    } else if (localStore.get("seatType") == 2) {
-      return "Y";
-    } else if (localStore.get("seatType") == 3) {
-      return "C";
+    if (localStore.get('seatType') == 1) {
+      return 'F';
+    } else if (localStore.get('seatType') == 2) {
+      return 'Y';
+    } else if (localStore.get('seatType') == 3) {
+      return 'C';
     }
   }
 
   private created() {
-    this.getFlightInfo();
-    if (localStorage.getItem("lang") == "en") {
-      this.$i18n.locale = "en";
+	  this.updateFlightHandler = (e)=>{
+		  this.getFlightInfo();
+	  };
+	  (this as any).$globalEvent.$on('updateFlightInfo',this.updateFlightHandler);
+      this.getFlightInfo();
+	
+	
+    if (localStorage.getItem('lang') == 'en') {
+      this.$i18n.locale = 'en';
     } else {
-      this.$i18n.locale = "zh";
+      this.$i18n.locale = 'zh';
     }
+  }
+  
+  private beforeDestroy() {
+  	(this as any).$globalEvent.$off('updateFlightInfo',this.updateFlightHandler);
   }
 
   public getFlightInfo(): void {
-    FlightService.getFlightInfo().then((res: any) => {
-      if (res.code == 200) {
-        this.flightResData = res.data;
+        this.flightResData = this.flightInfo;
         this.baseInfo = this.flightResData.Flight.BaseInfo;
         this.airplane = this.flightResData.Flight.Airplane;
         this.flightAltitudes = this.flightResData.FlightAltitudes;
         this.weather = this.flightResData.Weather;
-      }
-    });
+		if(this.flightAltitudes&&this.flightAltitudes.length >0){
+			this.currentTime = this.flightAltitudes[this.flightAltitudes.length - 1].TimePoint;
+		}else{
+			this.currentTime = null;
+		}
+		this.remainingTime = DateUtils.calcRemaingTime(this.flightResData.DepartureTime,this.flightResData.ArrivalTime,this.currentTime);
   }
+  
 }
 </script>
 
