@@ -69,7 +69,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import FlightService from '../service/flight';
 import { localStore } from '../utils/data-management';
-import DateUtils from '../utils/date-utils.ts';
+import DateUtils from '../utils/date-utils';
 
 @Component({
 	name: 'HomeFlight',
@@ -83,6 +83,8 @@ export default class HomeFlight extends Vue {
 	public flightAltitudes: any = {};
 	public weather: any = {};
 	private updateFlightHandler: any = null;
+	
+	public currentTime: any = null;
 	private remainingTime :any = {
 		  hour:'--',
 		  mimute:'--'

@@ -190,7 +190,8 @@ export default class FlightIndex extends Vue {
     }
   }
 
-  private destroyed() {
+  private beforeDestroy() {
+	  (this as any).$globalEvent.$off('updateFlightInfo',this.updateFlightHandler);
     document.removeEventListener('touchstart', this.touchStartHandle);
     document.removeEventListener('touchmove', this.touchMoveHandle);
     document.removeEventListener('touchend', this.touchEndHandle);

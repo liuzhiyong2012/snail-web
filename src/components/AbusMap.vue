@@ -85,7 +85,7 @@ export default class AbusMap extends Vue {
 		return this.$store.state.login.airbusId;
 	}
 	
-	private get flightResData():string{
+	private get flightResData():any{
 		return this.$store.state.login.flightInfo;
 	}
 	
@@ -102,9 +102,15 @@ export default class AbusMap extends Vue {
 	}
 	
 	destroyed() {
-		window.clearInterval(this.timeFlag);
 		
 	}
+	
+	private beforeDestroy() {
+		window.clearInterval(this.timeFlag);
+		(this as any).$globalEvent.$off('updateFlightInfo',this.updateFlightHandler);
+	}
+	
+	
 	
 	public getFlightInfo(): void {
 		this.flightInfo = this.flightResData;
@@ -213,7 +219,7 @@ export default class AbusMap extends Vue {
     public updateMarkPosition(){
 		// debugger;
 		console.log('更新飞机坐标位置');
-		let flightAltitudes = this.flightResData.FlightPaths;
+		let flightAltitudes:any = this.flightResData.FlightPaths;
 		
 		if(flightAltitudes&&flightAltitudes.length > 0){
 			let position = flightAltitudes[flightAltitudes.length - 1];
