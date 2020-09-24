@@ -49,6 +49,9 @@ export default {
       state.voyageInfo.seatType = seat
       localStore.set('seatType',seat)
     },
+	setVoyageInfo(state:any,voyageInfo:any){
+	  state.voyageInfo = voyageInfo;
+	},
 
     setUserInfo(state:any, userInfo: any){
 		// debugger;
@@ -57,8 +60,14 @@ export default {
     }
   },
   actions: {
+	logout(context: any, state: any){
+		context.commit('setName', '')
+		context.commit('setToken', '')
+		context.commit('setAirbusId', '')
+		context.commit('setUserInfo', {})
+		context.commit('setVoyageInfo', {})
+	},
     setUserInfo(context: any, state: any){
-	  context.commit('setName', state.name)
       context.commit('setName', state.name)
       context.commit('setToken', state.token)
       context.commit('setAirbusId', state.airbusId)
