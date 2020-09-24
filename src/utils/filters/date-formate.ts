@@ -3,6 +3,7 @@ let filter = {
 	name:'dateFormate',
 	handler:function(input:any,formate:string = 'YYYY-MM-DD hh:mm:ss' ){ 
 		input = input+'';
+		
 		input = input.length==10?input*1000:input;
 		var date:any = new Date(input);
 		var y:any = date.getFullYear();  

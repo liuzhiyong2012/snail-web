@@ -41,7 +41,7 @@
 	import { Component, Prop, Vue } from 'vue-property-decorator';
 	import CrewTab from './components/CrewTab.vue';
 	import CrewFooter from './components/CrewFooter.vue';
-	import FlightService from '../../service/flight.ts';
+	import FlightService from '../../service/flight';
     declare let io: any;
     
 	@Component({
@@ -85,11 +85,10 @@
 		private unloadHandler: any = null;
 
 		private show: boolean = false;
-		private show: boolean = false;
 		
 		private timer: any = null;
 		
-		private flightResData:any = {};
+		public flightResData:any = {};
 		
 		private messageContent:any = {
 			
@@ -109,20 +108,18 @@
 				//e.returnValue=('确定离开当前网站吗?');
 			};
 			window.addEventListener('beforeunload', this.unloadHandler);
-            
-			this.getFlightInfo();
+            this.getFlightInfo();
+			this.startTimer();
 		}
 
 		private beforeDestroy() {
 			window.removeEventListener('beforeunload', this.unloadHandler);
-			this.socket.close && this.socket.close();
-			this.socket.destroy && this.socket.destroy();
+			this.socket&&this.socket.close && this.socket.close();
+			this.socket&&this.socket.destroy && this.socket.destroy();
 			this.socket = null;
 		}
         
-		private startTimer(){
-			let timePeriod = 10000;
-			this.timer = window.setInterval();
+	    private getFlightInfo(){
 			FlightService.getFlightInfo().then((res: any) => {
 				if(res.code == 200){
 					this.flightResData = res.data;
@@ -130,6 +127,39 @@
 					this.startWebScoket(this.flightResData.Flight.BaseInfo.Id);
 				}
 			});
+		}
+		
+		private startTimer(){
+			let timePeriod = 10000;
+			
+			window.setInterval(()=>{
+				
+				FlightService.getFlightInfo().then((res: any) => {
+					if(res.code == 200){
+						//如果飞机航班改变了，则跳转登录页面，并且重新开始实时推送。
+						if(this.flightResData.Flight.BaseInfo.Id == res.Flight.BaseInfo.Id){
+							this.flightResData = res.data;
+						}else{
+							console.log('this');
+							this.$toast('飞机航班已经切换,请重新登录!');
+							this.socket&&this.socket.close && this.socket.close();
+							this.socket&&this.socket.destroy && this.socket.destroy();
+							this.socket = null;
+							this.flightResData = res.data;
+							this.$store.commit('setAirbusId', this.flightResData.Flight.BaseInfo.Id);
+							this.startWebScoket(this.flightResData.Flight.BaseInfo.Id);
+							if(this.$route.path.indexOf('/crew/login') < 0){
+								this.$router.push({
+									path:'/crew/login'
+								});
+							}
+						}
+						
+					}
+				});
+			},timePeriod);
+			
+				
 		}
 		
 		private startWebScoket(airbusId) {
