@@ -99,6 +99,7 @@
             @click="showPopup"
             :value="datetime"
             type="text"
+            readonly="readonly"
             :placeholder="$t('DateTips')"
           />
           <div class="data-icon">
@@ -126,6 +127,7 @@
             class="main-item-con"
             type="text"
             :value="question"
+            readonly="readonly"
             :placeholder="$t('IssuesTips')"
           />
           <van-popup v-model="showIssues" position="bottom" :style="{ height: '30%' }">
