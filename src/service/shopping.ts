@@ -31,6 +31,13 @@ export default class ShoppingService {
 			data: data
 		});
 	}
+	static getShoppingDetail(data: Object) {
+		return request({
+			url: '/v1/api/Shopping/Detail',
+			method: 'POST',
+			data: data
+		});
+	}
 	// 商品下单
 	//Route::post(':version/api/Shopping/PlaceOrder', 'api/:version.app.Shopping/PlaceOrder');//下单
 	static postShoppingPlaceOrder(data?: Object) {
