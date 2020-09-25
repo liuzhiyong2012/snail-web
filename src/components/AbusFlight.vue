@@ -279,7 +279,6 @@ export default class HomeFlight extends Vue {
 					.address{
 						text-align: center;
 						font-size:0.20rem;
-						font-family:Helvetica;
 						color:rgba(51,51,51,1);
 						line-height:0.24rem;
 					}
