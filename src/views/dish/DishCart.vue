@@ -202,12 +202,16 @@ private get seatType():number{
           } else {
             return this.$toast("下单成功!");
           }
-          window.setTimeout(() => {
-            this.$store.commit("clearDishCart"); //clearDishCart();
+           this.$store.commit("clearDishCart"); //clearDishCart();
             this.$router.push({
               name: "home",
             });
-          }, 1000);
+          // window.setTimeout(() => {
+          //   this.$store.commit("clearDishCart"); //clearDishCart();
+          //   this.$router.push({
+          //     name: "home",
+          //   });
+          // }, 1000);
         }
       })
       .catch((e: any) => {});
