@@ -11,10 +11,10 @@
         <div class="game" @click="goToDetail(item)">
           <div class="game-img">
             <img class="game-img-up" :src="item.CoverImgPath |addBaseUrl" alt="" />
-            <div class="game-img-down">
+            <!-- <div class="game-img-down">
               <img class="img" :src="item.CoverImgPath |addBaseUrl" alt="" />
               <img class="img" :src="item.CoverImgPath |addBaseUrl" alt="" />
-            </div>
+            </div> -->
           </div>
           <div style="height:1.1rem">
             <div class="game-name game-word">{{ item.Name }}</div>
