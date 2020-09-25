@@ -119,6 +119,9 @@ svg.icon {
   align-items: center !important;
   justify-content: center !important;
 }
+.van-picker-column__item{
+  padding: 0 !important;
+}
 .van-image__img{
   height: auto !important;
 }
@@ -177,7 +180,6 @@ svg.icon {
     text-align: center;
     line-height: 0.8rem;
     color: #fff;
-    font-family: Helvetica-Bold, Helvetica;
     font-weight: bold;
   }
 }

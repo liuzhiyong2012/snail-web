@@ -260,7 +260,7 @@ export default class Register extends Vue {
   private showIssues: boolean = false;
   private isReaded: boolean = false;
   // date
-  private minDate: Date = new Date(1920, 1, 1);
+  private minDate: Date = new Date(1930, 1, 1);
   private maxDate: Date = new Date(2020, 7, 1);
   private currentDate: Date = new Date(2000, 1, 15);
   private datetime: string = '';

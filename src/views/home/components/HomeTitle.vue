@@ -7,7 +7,7 @@
 				<use xlink:href="#icon-scan"></use>
 			</svg>
 			<span v-if="!isVip" class="flow-ctn" @click="stepTo('internet')">
-				{{userData.Flow.Flow || '0GB'}}
+				{{(userData.Flow.flow/1024) + 'GB' || '0GB'}}
 			</span>
 			<span v-else class="flow-ctn" @click="stepTo('internet')">
 				VIP
@@ -55,9 +55,10 @@
 		public getUserMe(){
 			LoginService.getUserMe().then((res:any) => {
 				console.log(res)
+				
 				if(res.code == 200){
 					this.userData = res.data
-					if(res.data.Flow.Flow == -1){
+					if(res.data.Flow.flow == -1){
 						this.isVip = true
 					}else{
 						this.isVip = false
