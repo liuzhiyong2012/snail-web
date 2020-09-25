@@ -47,7 +47,7 @@
       >
         <van-tab
           v-for="(item,index) in options1"
-          :title="item.category"
+          :title="item.Category"
           :name="item.Id"
           :key="index"
           class="vant-tab"
@@ -191,20 +191,17 @@ export default class ShoppingIndex extends Vue {
     this.$i18n.t('OutOfStock')
   }
   public stepToCart(): void {
-    // debugger;
     this.$router.push({
       name: "shoppingCart",
     });
   }
   public stepToSearch(): void {
-    // debugger;
     this.$router.push({
       name: "shoppingSearch",
     });
   }
   private getShoppingCategory() {
     ShoppingService.getShoppingCategory().then((res: any) => {
-      // console.log(res);
       // CreatedAt: 1550707757
       // Id: "1"
       // category: "珠宝首饰"
@@ -236,14 +233,15 @@ export default class ShoppingIndex extends Vue {
 
   // 首次获取
   private getShoppingList() {
-    var data = { category: "1" };
+    // var data = { category: "1" };
+    var data = { Category: "1" };
     ShoppingService.getShoppingList(data).then((res: any) => {
       Vue.set(this.options1[0], "data", res.data.Dishes);
     });
   }
   // 点击Tap切换获取
   private getGoodsList(name: any, title: any) {
-    // console.log(name)
+    console.log(name)
     this.tapIndex = name;
     this.getShoppingListFilter();
   }
@@ -384,7 +382,7 @@ export default class ShoppingIndex extends Vue {
   .i-icon {
     width: 0.2rem;
     height: 0.2rem;
-    padding: 0 0 0.05rem;
+    padding: 0.1rem 0 0.05rem;
     transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 0.3s;
   }
   .icon-up {
