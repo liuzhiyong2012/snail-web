@@ -149,6 +149,7 @@ export default {
     height: 1.6rem;
     text-align: center;
     box-shadow: 0 0 0.08rem #efefef;
+    overflow: hidden;
     .img {
       width: 100%;
       border-radius: 0.1rem;

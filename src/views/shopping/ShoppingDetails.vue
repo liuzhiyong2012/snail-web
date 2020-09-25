@@ -71,6 +71,8 @@ import { Component, Prop, Vue, Watch} from "vue-property-decorator";
 import AbusTitle from "../../components/AbusTitle.vue";
 import CartIcon from "./components/ShoppingCartIcon.vue";
 import UrlUtils from '../../utils/url-utils';
+import ShoppingService from "../../service/shopping";
+import { localStore } from '@/utils/data-management';
 @Component({
   name: "ShoppingDetail",
   components: {
@@ -84,7 +86,7 @@ export default class ShoppingDetail extends Vue {
   private shoppingList: Array<any> = [];
 
   private shoppingInfo: any = {};
-
+  private id: any = ''
   private get seatNumber(): string {
     return this.$store.state.login.voyageInfo.seatNumber;
   }
@@ -99,8 +101,10 @@ export default class ShoppingDetail extends Vue {
       this.$i18n.locale = "zh";
     }
     // this.$store.commit("setShoppingDetail", this.$route.params.shoppingInfo);
-    this.shoppingInfo = this.$route.params.shoppingInfo;
-    this.shoppingInfo.BannerImgPath = UrlUtils.addBaseUrl( UrlUtils.delBaseUrl(this.shoppingInfo.BannerImgPath));
+    // this.shoppingInfo = this.$route.params.shoppingInfo;
+    this.id = this.$route.params.id
+    this.getShoppingDetail()
+    // this.shoppingInfo.BannerImgPath = UrlUtils.addBaseUrl( UrlUtils.delBaseUrl(this.shoppingInfo.BannerImgPath));
   }
   @Watch("stepper", { immediate: true })
   private watchStepper() {
@@ -115,7 +119,20 @@ export default class ShoppingDetail extends Vue {
       name: "dishIndex",
     });
   }
-
+  public getShoppingDetail(){
+    ShoppingService.getShoppingDetail({
+			id:this.id
+		}).then((res:any)=>{
+			if(res.code == '200'){
+				 this.shoppingInfo = res.data;
+				 this.shoppingInfo.orderNumber = 1;
+				 this.shoppingInfo.BannerImgPath = UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(this.shoppingInfo.BannerImgPath));
+				// localStore.set('GoodsDetails',this.shoppingInfo)
+			}else{
+				
+			}
+		});
+  }
   public addToCart(): void {
     this.$store.commit("addShoppingCartItem", this.shoppingInfo);
     this.$toast(this.$i18n.t('success'));

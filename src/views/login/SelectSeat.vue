@@ -14,6 +14,7 @@
           @click="showSeat"
           class="main-item-con"
           type="text"
+          readonly="readonly"
           :placeholder="$t('SeatTips')"
         />
         <van-popup v-model="showIssues" position="bottom" :style="{ height: '30%' }">
