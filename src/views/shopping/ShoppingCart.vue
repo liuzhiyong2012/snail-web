@@ -174,9 +174,9 @@ export default class ShoppingCart extends Vue {
         if (res.code == 200) {
           this.$store.commit("clearShoppingCart");
           if (localStorage.getItem("lang") == "en") {
-            return this.$toast("Success");
+             this.$toast("Success");
           } else {
-            return this.$toast("下单成功!");
+             this.$toast("下单成功!");
           }
           this.stepToPage("home");
         }

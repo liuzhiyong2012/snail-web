@@ -20,7 +20,7 @@
           v-model="Comment"
           class="input-box"
           type="text"
-          placeholder="Leave your wonderful comments"
+          :placeholder="$t('CommentsPlaceholder')"
         />
         <div class="btn-box">
           <div class="btn" @click="sendComment(videoId)">{{$t('Send')}}</div>
@@ -33,10 +33,12 @@
 	{
 		"zh":{
       "Send": "发送",
+      "CommentsPlaceholder": "留下你精彩的评论",
       "Comments":"评论"
 		},
 		"en":{
       "Send":"Send",
+      "CommentsPlaceholder": "Leave your wonderful comments",
       "Comments": "Comments"
 		}
 	}

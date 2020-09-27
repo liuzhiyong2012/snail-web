@@ -75,7 +75,7 @@ export default {
     stepToDetail(item) {
       this.$router.push({
         name: "shoppingDetails",
-        params: {
+        query: {
           id: item.Id,
         },
       });

@@ -7,7 +7,7 @@
       <!-- <banner :bannerData="bannerData" /> -->
       <!-- <div class="dish-img" :style="{backgroundImage:`url(${shoppingInfo.BannerImgPath})`}"></div> -->
       <div class="dish-img" >
-        <img :src="shoppingInfo.BannerImgPath|addBaseUrl" alt="">
+        <img :src="shoppingInfo.SampleImgPath|addBaseUrl" alt="">
       </div>
     </div>
     <div class="m-box">
@@ -102,7 +102,7 @@ export default class ShoppingDetail extends Vue {
     }
     // this.$store.commit("setShoppingDetail", this.$route.params.shoppingInfo);
     // this.shoppingInfo = this.$route.params.shoppingInfo;
-    this.id = this.$route.params.id
+    this.id = this.$route.query.id
     this.getShoppingDetail()
     // this.shoppingInfo.BannerImgPath = UrlUtils.addBaseUrl( UrlUtils.delBaseUrl(this.shoppingInfo.BannerImgPath));
   }
@@ -123,6 +123,7 @@ export default class ShoppingDetail extends Vue {
     ShoppingService.getShoppingDetail({
 			id:this.id
 		}).then((res:any)=>{
+      console.log(this.id)
 			if(res.code == '200'){
 				 this.shoppingInfo = res.data;
 				 this.shoppingInfo.orderNumber = 1;

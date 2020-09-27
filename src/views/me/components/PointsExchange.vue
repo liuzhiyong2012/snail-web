@@ -1,7 +1,7 @@
 <template>
 <div class="abus-height">
   <abus-title :title="$t('title')" backRouteName="meIndex"></abus-title>
-  <div class="goods-box">
+  <div v-if="isHaveList" class="goods-box">
     <div class="goods-item" v-for="(item,index) in shoppingList" :key="index">
       <div class="goods"  @click="stepToDetail(item)">
         <div class="goods-img">
@@ -19,6 +19,9 @@
       </div>
     </div>
   </div>
+  <div v-else class="goods-box box-text">
+    {{$t('noList')}}
+  </div>
 </div>
 </template>
 <i18n>
@@ -26,11 +29,13 @@
 		"zh":{
 			"title":"积分兑换",
       "QTY":"剩余量",
+      "noList": "暂无数据",
       "Point":"积分"
 		},
 		"en":{
 			"title":"Points exchange",
       "QTY":"QTY",
+      "noList": "No data available",
       "Point":"Point"
 		}
 	}
@@ -49,6 +54,7 @@ import ShoppingService from "../../../service/shopping";
 export default class ShoppingIndex extends Vue {
   private recomendList: Array<any> = [];
   private shoppingList: Array<any> = [];
+  private isHaveList: boolean = false
   private options1: Array<any> = [];
 
   private created() {
@@ -91,12 +97,20 @@ export default class ShoppingIndex extends Vue {
     }
     ShoppingService.getShoppingList(data).then((res: any) => {
       console.log(res);
-      this.shoppingList = res.data.Dishes;
 
-      this.shoppingList.forEach((item, index) => {
-        item.GoodsImgPath =
-          "http://172.16.125.11:8010/7873f0d1-ac22-e911-bd22-c4209d3e3b89";
-      });
+      if(res.code == 200){
+        this.shoppingList = res.data.Dishes;
+        if(this.shoppingList.length > 0){
+          this.isHaveList = true
+        }else {
+          this.isHaveList = false
+        }
+      }
+
+      // this.shoppingList.forEach((item, index) => {
+      //   item.GoodsImgPath =
+      //     "http://172.16.125.11:8010/7873f0d1-ac22-e911-bd22-c4209d3e3b89";
+      // });
     });
   }
 }
@@ -174,5 +188,11 @@ export default class ShoppingIndex extends Vue {
   :nth-child(even) {
     padding: 0 0.3rem 0.3rem 0.13rem;
   }
+}
+.box-text{
+  display: flex;
+  width: 100%;
+  line-height: 1rem;
+  justify-content: center;
 }
 </style>

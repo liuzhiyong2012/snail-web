@@ -88,8 +88,8 @@ export default class ShoppingSearch extends Vue {
   private stepToDetail(item: any) {
     this.$router.push({
       name: "shoppingDetails",
-      params: {
-        shoppingInfo: item,
+      query: {
+        id: item.Id,
       },
     });
   }

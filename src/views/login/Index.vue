@@ -13,11 +13,26 @@
       </span> 
     </div>-->
     <!-- <qrcode-stream @decode="onDecode"></qrcode-stream> -->
-<!-- <qrcode-drop-zone></qrcode-drop-zone> -->
-<!-- <qrcode-capture></qrcode-capture> -->
+    <!-- <qrcode-drop-zone></qrcode-drop-zone> -->
+    <!-- <qrcode-capture></qrcode-capture> -->
 
     <div class="login-bg"></div>
     <div class="form">
+      <!-- <div class="user-details">
+        <div class="i-icon">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-phone" />
+          </svg>
+        </div>
+        <input
+          v-model="userPhone"
+          class="form-input "
+          maxlength="20"
+          :placeholder="$t('placeholderPhone')"
+          type="number"
+          @keydown="getUserPhoneLength"
+        />
+      </div> -->
       <div class="user-details">
         <div class="i-icon">
           <svg class="icon" aria-hidden="true">
@@ -27,12 +42,29 @@
         <!-- @keyup="getUserPhone" -->
         <input
           v-model="userPhone"
-          class="form-input"
+          class="form-input padding1"
           maxlength="20"
           :placeholder="$t('placeholderPhone')"
           type="number"
           @keydown="getUserPhoneLength"
         />
+        <div class="area-code" @click="clickShowAreaCode">+ {{ areaCode }}</div>
+        <div class="area-code-line"></div>
+        <van-popup
+          v-model="showAreaCode"
+          position="bottom"
+          :style="{ height: '30%' }"
+        >
+          <van-picker
+            show-toolbar
+            :columns="columns"
+            @cancel="showAreaCode = false"
+            @confirm="onConfirm"
+            :default-index="0"
+            :cancel-button-text="$t('Cancel')"
+            :confirm-button-text="$t('Determine')"
+          />
+        </van-popup>
       </div>
       <div class="user-details m40">
         <div class="i-icon">
@@ -51,14 +83,14 @@
 
     <div class="min-box">
       <router-link to="/registery">
-        <div class="registery">{{$t('Registery')}}</div>
+        <div class="registery">{{ $t("Registery") }}</div>
       </router-link>
       <router-link to="/forgot/password">
-        <div class="forgot-password">{{$t('ForgotPassword')}}?</div>
+        <div class="forgot-password">{{ $t("ForgotPassword") }}?</div>
       </router-link>
     </div>
     <div class="button-box">
-      <button @click="postUserLogin" class="button">{{$t('Login')}}</button>
+      <button @click="postUserLogin" class="button">{{ $t("Login") }}</button>
     </div>
 
     <div class="login-other">
@@ -92,6 +124,8 @@
         "placeholderPassword": "请输入密码",
         "noPassword": "密码不能为空",
         "showError":"手机号码有误，请重填",
+        "Cancel":"取消",
+        "Determine":"确定",
         "toast1": "手机号码不可以超出11位",
         "toast2": "服务端错误",
         "toast3": "网络异常！",
@@ -106,6 +140,8 @@
         "placeholderPassword": "Password",
         "noPassword": "Password cannot be empty",
         "showError":"Wrong mobile number, please fill in again",
+        "Cancel":"Cancel",
+        "Determine":"Determine",
         "toast1": "Phone number cannot exceed 11 digits",
         "toast2": "Server error.",
         "toast3": "Network anomaly!",
@@ -114,13 +150,15 @@
 	}
 </i18n>
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import AdModel from './components/ADModel.vue';
-import LoginService from '../../service/login';
-import { localStore } from '../../utils/data-management';
+import { Component, Prop, Vue } from "vue-property-decorator";
+import AdModel from "./components/ADModel.vue";
+import LoginService from "../../service/login";
+import { localStore } from "../../utils/data-management";
+import {AreaCode} from "../../utils/area-code"
+import ArrayUtils from "../../utils/array-utils"
 
 @Component({
-  name: 'Login',
+  name: "Login",
   components: {
     AdModel,
   },
@@ -128,28 +166,37 @@ import { localStore } from '../../utils/data-management';
 export default class Login extends Vue {
   private isActive: boolean = true;
   private isShowLang: boolean = false;
-  private lang: string = '';
-  private userPhone: string = '';
-  private userPassword: string = '';
+  private showAreaCode: boolean = false;
+  private lang: string = "";
+  private areaCode: string = "86";
+  private userPhone: string = "";
+  private userPassword: string = "";
+  private columns: Array<any> = [];
+  private columnsList: Array<any> = [];
 
   private created() {
+    this.columnsList =  ArrayUtils.sortByKey(AreaCode,'tel',true)
+    this.columnsList.forEach(item => {
+      this.columns.push(item.tel)
+    })
+    this.columns.unshift('86')
     clearTimeout();
     setTimeout(() => {
       this.isActive = false;
     }, 1000);
     // console.log(navigator.language)
-    if (navigator.language == 'zh-CN') {
-      this.lang = '简体中文';
-      this.$i18n.locale = 'zh';
-      localStorage.setItem('lang', 'zh');
-      this.$store.commit('changeLanguage', 'zh');
+    if (navigator.language == "zh-CN") {
+      this.lang = "简体中文";
+      this.$i18n.locale = "zh";
+      localStorage.setItem("lang", "zh");
+      this.$store.commit("changeLanguage", "zh");
     } else {
-      this.lang = 'English';
-      this.$i18n.locale = 'en';
-      localStorage.setItem('lang', 'en');
-      this.$store.commit('changeLanguage', 'en');
+      this.lang = "English";
+      this.$i18n.locale = "en";
+      localStorage.setItem("lang", "en");
+      this.$store.commit("changeLanguage", "en");
     }
-    
+
     // if(localStorage.getItem('lang') == 'en'){
     //   this.lang = 'English';
     //   this.$i18n.locale = 'en';
@@ -169,107 +216,114 @@ export default class Login extends Vue {
   //     this.$toast('数字不可以超出11位')
   //   }
   // }
-  public getOnLineDetails(){
-    if(navigator.onLine){
+  public getOnLineDetails() {
+    if (navigator.onLine) {
       this.postUserLoginMethod();
-    }else{
-      this.$toast(this.$i18n.t('toast3'));
+    } else {
+      this.$toast(this.$i18n.t("toast3"));
     }
   }
   public getUserPhoneLength(e: any) {
     if (e.target.value.length >= 11 && e.keyCode != 8) {
-      this.$toast(this.$i18n.t('toast1'));
+      this.$toast(this.$i18n.t("toast1"));
       this.userPhone = e.target.value.substring(0, 10);
     }
   }
   // public getUserPassword(e: any) {
   //   this.userPassword = e.target.value;
   // }
-  public onDecode (decodedString) {
+  public onDecode(decodedString) {
     console.log(decodedString);
     // ...
+  }
+  public clickShowAreaCode() {
+    this.showAreaCode = true;
+  }
+  public onConfirm(value: any) {
+    this.areaCode = value;
+    this.showAreaCode = false;
   }
   public showLang() {
     this.isShowLang = !this.isShowLang;
   }
   public changeEn() {
-    this.lang = 'English';
-    this.$i18n.locale = 'en';
-    localStorage.setItem('lang', 'en');
+    this.lang = "English";
+    this.$i18n.locale = "en";
+    localStorage.setItem("lang", "en");
   }
   public changeZh() {
-    this.lang = '简体中文';
-    this.$i18n.locale = 'zh';
-    localStorage.setItem('lang', 'zh');
+    this.lang = "简体中文";
+    this.$i18n.locale = "zh";
+    localStorage.setItem("lang", "zh");
   }
   public postUserLogin() {
     // console.log(this.$store.state.login.name)
     if (!/^1[3456789]\d{9}$/.test(this.userPhone)) {
-      this.$toast(this.$i18n.t('showError'));
+      this.$toast(this.$i18n.t("showError"));
       return false;
-    } else if (this.userPassword == '') {
-      this.$toast(this.$i18n.t('noPassword'));
-    } else if (this.userPhone != '' && this.userPassword != '') {
+    } else if (this.userPassword == "") {
+      this.$toast(this.$i18n.t("noPassword"));
+    } else if (this.userPhone != "" && this.userPassword != "") {
       this.getOnLineDetails();
     }
   }
-  public postUserLoginMethod(){
+  public postUserLoginMethod() {
     var data = {
-        username: '86_' + this.userPhone, // 默认86
-        password: this.userPassword,
-      };
-      LoginService.postUserLogin(data)
-        .then((res: any) => {
-          console.log(res);
-          // debugger;
-          if (res.code == 200) {
-            // 写入成功后，判断是否有座位
-            this.$store
-              .dispatch('setUserInfo', {
-                name: res.data.userName,
-                token: res.data.access_token,
-                id: res.data.id
-              })
-              .then((res: any) => {
-                // debugger;
-                console.log('token:' + localStore.get('token'));
-                LoginService.getUserMe().then((res: any) => {
-                  console.log(res);
-                  if (res.code == 200 && res.data.Seat == null) {
-                    this.$router.push({
-                      name: 'selectSeat',
-                    });
-                  } else if (res.code == 200 && res.data.Seat.Name) {
-                    this.$store.commit('setSeatNumber', res.data.Seat.Name);
-                    this.$store.commit('setSeatName', res.data.Seat.Name);
-                    this.$store.commit('setSeatType', res.data.Seat.SeatType);
-                    this.$router.push({
-                      name: 'home',
-                    });
-                  } else {
-                    this.$toast(res.message);
-                  }
-                });
+      // username: "86_" + this.userPhone, // 默认86
+      username: this.areaCode+ "_" + this.userPhone, // 默认86
+      password: this.userPassword,
+    };
+    LoginService.postUserLogin(data)
+      .then((res: any) => {
+        console.log(res);
+        // debugger;
+        if (res.code == 200) {
+          // 写入成功后，判断是否有座位
+          this.$store
+            .dispatch("setUserInfo", {
+              name: res.data.userName,
+              token: res.data.access_token,
+              id: res.data.id,
+            })
+            .then((res: any) => {
+              // debugger;
+              console.log("token:" + localStore.get("token"));
+              LoginService.getUserMe().then((res: any) => {
+                console.log(res);
+                if (res.code == 200 && res.data.Seat == null) {
+                  this.$router.push({
+                    name: "selectSeat",
+                  });
+                } else if (res.code == 200 && res.data.Seat.Name) {
+                  this.$store.commit("setSeatNumber", res.data.Seat.Name);
+                  this.$store.commit("setSeatName", res.data.Seat.Name);
+                  this.$store.commit("setSeatType", res.data.Seat.SeatType);
+                  this.$router.push({
+                    name: "home",
+                  });
+                } else {
+                  this.$toast(res.message);
+                }
               });
+            });
 
-            // this.$router.push({
-            //   name: "home"
-            // });
-          } else {
-            this.$toast(res.message);
-          }
-        })
-        .catch((error: any) => {
-          console.log(error);
-          if(error.code == 500 || error.code == 502){
-            this.$toast(error.message);
-          }else if(error.code == 400){
-            this.$toast(this.$i18n.t('toast4'));
-          }
-          else{
-            this.$toast(this.$i18n.t('toast2'));
-          }
-        });
+          // this.$router.push({
+          //   name: "home"
+          // });
+        } else {
+          this.$toast(res.message);
+        }
+      })
+      .catch((error: any) => {
+        console.log(error);
+        if (error.code == 500 || error.code == 502) {
+          this.$toast(error.message);
+        } else if (error.code == 400) {
+          this.$toast(this.$i18n.t("toast4"));
+        } else {
+          this.$toast(this.$i18n.t("toast2"));
+        }
+      });
   }
 }
 </script>
@@ -332,24 +386,47 @@ export default class Login extends Vue {
     margin: 0 0.3rem 0;
     //   background-color: rgba(0, 32, 91, 0.8);
     .user-details {
+      position: relative;
       display: flex;
       border: 0.02rem solid #fff;
       border-radius: 0.05rem;
       height: 1rem;
       .i-icon {
-        width: 1rem;
+        width: 0.6rem;
         height: 1rem;
         text-align: center;
         line-height: 1.1rem;
+        padding: 0 0 0 0.2rem;
         // background-color: #fff;
       }
       .form-input {
         box-sizing: border-box;
-        padding: 0 0 0 0.1rem;
+        padding: 0 0 0 0.2rem;
         flex: 1;
         background-color: #00205b;
         font-size: 0.3rem;
         color: #fff;
+      }
+      .padding1 {
+        padding: 0 0 0 1.2rem;
+      }
+      .area-code {
+        position: absolute;
+        left: 0.8rem;
+        top: 0;
+        min-width: 1rem;
+        line-height: 1rem;
+        color: #fff;
+        font-size: 0.3rem;
+        text-align: center;
+      }
+      .area-code-line {
+        position: absolute;
+        left: 1.8rem;
+        top: 0.25rem;
+        width: 0.02rem;
+        height: 0.5rem;
+        background-color: rgba(255, 255, 255, 0.8);
       }
     }
     .m40 {
