@@ -141,7 +141,7 @@
         "noPassword": "Password cannot be empty",
         "showError":"Wrong mobile number, please fill in again",
         "Cancel":"Cancel",
-        "Determine":"Determine",
+        "Determine":"OK",
         "toast1": "Phone number cannot exceed 11 digits",
         "toast2": "Server error.",
         "toast3": "Network anomaly!",

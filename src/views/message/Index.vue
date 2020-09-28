@@ -101,12 +101,14 @@
 			"chat":"聊天",
       "message":"消息",
       "Send":"发送",
+      "toast1":"请输入内容",
       "QTY":"剩余量"
 		},
 		"en":{
 			"chat":"chat",
       "message":"message",
       "Send":"Send",
+      "toast1":"Please enter the content",
       "QTY":"QTY"
 		}
 	}
@@ -335,7 +337,7 @@ export default class messageIndex extends Vue {
   // 发送消息给空乘
   public sendMsgToManager() {
     const _this = this;
-    if (!this.wordContent) return this.$toast('请输入内容');
+    if (!this.wordContent) return this.$toast(this.$i18n.t('toast1'));
     let req = {
       id: '', //消息id
       from_user_id: this.uInfo.id, //发送人id
