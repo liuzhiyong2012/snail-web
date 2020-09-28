@@ -14,12 +14,21 @@
 
 			<div class="info-right-ctn">
 				<span class="price-ctn">${{ data.Price }}</span>
-				<span class="finish-ctn" v-if="data.status == '0'"  @click="finish">Finish</span>
+				<span class="finish-ctn" v-if="data.status == '0'"  @click="finish">{{$t('Finish')}}</span>
 			</div>
 		</div>
 	</section>
 </template>
-
+<i18n>
+	{
+		"zh":{
+			"Finish":"完成"
+		},
+		"en":{
+			"Finish":"Finish"
+		}
+	}
+</i18n>
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 

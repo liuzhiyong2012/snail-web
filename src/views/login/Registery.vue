@@ -278,7 +278,7 @@
       "IssuesTips":"Please enter Security issues",
       "AnswerTips":"Please enter Security answer",
       "Cancel":"Cancel",
-      "Determine":"Determine",
+      "Determine":"OK",
       "toast1":"Phone number cannot exceed 11 digits",
       "toast2":"Please fill in the password correctly",
       "toast3":"The password cannot be less than 6 digits",

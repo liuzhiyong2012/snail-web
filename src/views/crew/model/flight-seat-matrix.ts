@@ -64,8 +64,11 @@ export default class FlightSeatMatrix{
 			if(!layoutInfo.sectionMap[item.SeatType][item.Row][item.Col]){
 				layoutInfo.sectionMap[item.SeatType][item.Row][item.Col] = {};
 			}
-			if(!layoutInfo.sectionMap[item.SeatType][item.Row][item.Col][item['col-number']]){
-				layoutInfo.sectionMap[item.SeatType][item.Row][item.Col][item['col-number']] = item;
+			// if(!layoutInfo.sectionMap[item.SeatType][item.Row][item.Col][item['col-number']]){
+			// 	layoutInfo.sectionMap[item.SeatType][item.Row][item.Col][item['col-number']] = item;
+			// }
+			if(!layoutInfo.sectionMap[item.SeatType][item.Row][item.Col][item.ColNumber]){
+				layoutInfo.sectionMap[item.SeatType][item.Row][item.Col][item.ColNumber] = item;
 			}
 			
 			layoutInfo.seatTypeMap[item.SeatType][item.Id] = item;
