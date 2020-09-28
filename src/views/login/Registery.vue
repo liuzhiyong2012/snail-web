@@ -83,7 +83,7 @@
           <van-popup
             v-model="showAreaCode"
             position="bottom"
-            :style="{ height: '30%' }"
+            :style="{ height: '36%' }"
           >
             <van-picker
               show-toolbar
@@ -174,7 +174,7 @@
           <van-popup
             v-model="showIssues"
             position="bottom"
-            :style="{ height: '30%' }"
+            :style="{ height: '36%' }"
           >
             <van-picker
               show-toolbar

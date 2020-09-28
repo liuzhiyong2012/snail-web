@@ -18,7 +18,7 @@
           <div class="price">${{shoppingInfo.Price || 0}}</div>
           <van-field class="field-ctn" name="stepper" label>
             <template #input>
-              <van-stepper v-model="stepper" />
+              <van-stepper v-model="stepper" integer disable-input :max="shoppingInfo.Stocking" />
             </template>
           </van-field>
         </div>
@@ -135,20 +135,38 @@ export default class ShoppingDetail extends Vue {
 		});
   }
   public addToCart(): void {
-    this.$store.commit("addShoppingCartItem", this.shoppingInfo);
-    this.$toast(this.$i18n.t('success'));
+    if(this.shoppingInfo.Stocking===0){
+      return this.showToast()
+    }else{
+      this.$store.commit("addShoppingCartItem", this.shoppingInfo);
+      this.$toast(this.$i18n.t('success'));
+    }
+    
   }
 
   public buyNow(): void {
     // this.$toast('购买成功!');
-    this.$store.commit("addShoppingCartItemRouter", this.shoppingInfo);
-    this.stepToCart()
+    if(this.shoppingInfo.Stocking===0){
+      return this.showToast()
+    }else{
+      this.$store.commit("addShoppingCartItemRouter", this.shoppingInfo);
+      this.stepToCart()
+    }
+    
   }
 
   public stepToCart():void{
 		this.$router.push({
 			name:'shoppingCart'
 		});
+  }
+  
+  private showToast(){
+		if (localStorage.getItem("lang") == "en") {
+			this.$toast('Stockout!')
+		} else {
+			this.$toast('暂时缺货')
+		}
 	}
 }
 </script>
@@ -192,7 +210,8 @@ export default class ShoppingDetail extends Vue {
     line-height: 0.58rem;
     .qty {
       font-size: 0.28rem;
-      color: rgba(96, 116, 153, 1);
+      // color: rgba(96, 116, 153, 1);
+      color: rgba(51, 51, 51, 1);
     }
     .f1 {
       flex: 1;

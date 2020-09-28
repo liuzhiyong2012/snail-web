@@ -27,7 +27,7 @@
 
 						<van-field class="field-ctn" name="stepper" label="">
 							<template #input>
-								<van-stepper v-model="dishInfo.orderNumber" />
+								<van-stepper integer disable-input v-model="dishInfo.orderNumber" :max="dishInfo.Stocking"  />
 							</template>
 						</van-field>
 					</div>
@@ -123,16 +123,33 @@ export default class DishDetail extends Vue {
 	
 	public addToCart():void{
 		// debugger;
-		this.$store.commit('addCartItem',this.dishInfo);
-		this.$toast('成功加入购物车!');
+		if(this.dishInfo.Stocking===0){
+			return this.showToast();
+		}else{
+			this.$store.commit('addCartItem',this.dishInfo);
+			this.$toast('成功加入购物车!');
+		}
 	}
 	
 	public buyNow():void{
 		// this.$toast('购买成功!');
-		this.$store.commit('addCartItem',this.dishInfo);
-		this.$router.push({
-			name:'dishCart'
-		});
+		if(this.dishInfo.Stocking===0){
+			return this.showToast();
+		}else{
+			this.$store.commit('addCartItem',this.dishInfo);
+			this.$router.push({
+				name:'dishCart'
+			});
+		}
+		
+	}
+
+	private showToast(){
+		if (localStorage.getItem("lang") == "en") {
+			this.$toast('Stockout!')
+		} else {
+			this.$toast('暂时缺货')
+		}
 	}
 	
 	public stepToCart():void{
@@ -199,6 +216,7 @@ export default class DishDetail extends Vue {
 				.qty-ctn {
 					font-size: 0.28rem;
 					color: rgba(51, 51, 51, 1);
+					// color: gray;
 					line-height: 0.28rem;
 
 					> span {

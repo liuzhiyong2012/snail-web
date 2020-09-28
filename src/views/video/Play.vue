@@ -26,12 +26,12 @@
             </svg>
             <!-- :src="item.FilePath" -->
             <video
-                preload="auto"
-                @click="playVideo(index)"
-                :src="item.FilePath | addBaseUrl"
-                :poster="item.CoverImgPath | addBaseUrl"
-                class="video-box"
-              ></video>
+              preload="auto"
+              @click="playVideo(index)"
+              :src="item.FilePath | addBaseUrl"
+              :poster="item.CoverImgPath | addBaseUrl"
+              class="video-box"
+            ></video>
             <!-- <div class="video-main">
               <video
                 preload="auto"
@@ -656,6 +656,18 @@ export default class VideoPlay extends Vue {
     width: 0.6rem;
     height: 0.6rem;
     padding: 0.2rem 0.2rem 0;
+    .icon-on {
+      color: red;
+      position: absolute;
+      right: 0.35rem;
+      top: 0.45rem;
+    }
+    .icon-off {
+      color: #ffffff;
+      position: absolute;
+      right: 0.35rem;
+      top: 0.45rem;
+    }
   }
   .right-icon1 {
     width: 0.5rem;

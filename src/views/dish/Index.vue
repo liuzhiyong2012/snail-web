@@ -238,7 +238,8 @@ export default class DishIndex extends Vue {
 					align-items: center;
 					.qty-ctn {
 						font-size: 0.22rem;
-						color: rgba(0, 0, 0, 1);
+						// color: rgba(51, 51, 51, 1);
+						color:gray;
 						line-height: 0.26rem;
 						> span:nth-child(1) {
 							margin-right: 0.12rem;
