@@ -5,7 +5,7 @@ const autoprefixer = require('autoprefixer');
 const pxtorem = require('postcss-pxtorem');
   
 const baseUrl = '/';
-
+ const vConsolePlugin = require('vconsole-webpack-plugin');
 module.exports = {
 	pages: {//配置多页面入口        
 	      crew: {          
@@ -24,6 +24,18 @@ module.exports = {
     configureWebpack: {
 		devtool: 'source-map'
     },
+	/* configureWebpack: config => {
+	   		 //生产环境去掉vconsole调试器
+	    	let envType = process.env.NODE_ENV != 'production';
+	    	let pluginsDev = [
+	     		 new vConsolePlugin({
+	       			 filter: [],
+	      		 	 enable: true
+	     		 })
+	    	];
+	
+	    	config.plugins = [...config.plugins, ...pluginsDev];
+	   	}, */
     productionSourceMap: false,
     // publicPath: '/', //开发
 	publicPath: process.env.VUE_APP_PUBLIC_PATH, //打包

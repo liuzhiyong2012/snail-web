@@ -81,6 +81,13 @@ export default class AbusMap extends Vue {
 	
 	private updateFlightHandler: any = null;
 	
+	private flightPositionIndex: number = 0;
+	
+	
+	private get isDemo():string{
+		return this.$store.state.login.isDemo;
+	}
+	
 	private get airbusId():string{
 		return this.$store.state.login.airbusId;
 	}
@@ -94,19 +101,57 @@ export default class AbusMap extends Vue {
 	}
 
 	mounted() {
-		this.updateFlightHandler = (e)=>{
-			this.updateMarkPosition();
-		};
-		(this as any).$globalEvent.$on('updateFlightInfo',this.updateFlightHandler);
+		
 		this.getFlightInfo();
+		
+		//根据是否是demo进行飞机航线绘制
+		if(this.isDemo){
+			this.startFlightTimer();
+		}else{
+			this.updateFlightHandler = (e)=>{
+				this.updateMarkPosition();
+			};
+			this.updateMarkPosition();
+			(this as any).$globalEvent.$on('updateFlightInfo',this.updateFlightHandler);
+			
+		}
 	}
+	
+	public updateMarkPosition(index?){
+		let flightAltitudes:any = this.flightResData.FlightPaths;
+		
+		if(flightAltitudes&&flightAltitudes.length > 0){
+			let position = flightAltitudes[index||(flightAltitudes.length - 1)];
+			let cord = [position.Lng,position.Lat];
+			
+			this.marker.setPosition(cord);
+			this.marker.getElement().style.transform = `rotate(${position.Course - 90}deg)`;
+			this.centerMark(cord);
+		}
+	}
+	
 	
 	destroyed() {
 		
+	} 
+	
+	public startFlightTimer() {
+		let time = 1 * 1000;
+		let len = this.flightPaths.length;
+		this.flightPositionIndex = 0;
+		this.updateMarkPosition(this.flightPositionIndex);
+		this.timeFlag = window.setInterval(()=>{
+			this.flightPositionIndex++;
+			if(this.flightPositionIndex > len){
+				this.flightPositionIndex = 0;
+			}
+			this.updateMarkPosition(this.flightPositionIndex);
+		},time);
 	}
+		
 	
 	private beforeDestroy() {
-		window.clearInterval(this.timeFlag);
+		window.clearInterval(this.timeFlag);  
 		(this as any).$globalEvent.$off('updateFlightInfo',this.updateFlightHandler);
 	}
 	
@@ -114,7 +159,9 @@ export default class AbusMap extends Vue {
 	
 	public getFlightInfo(): void {
 		this.flightInfo = this.flightResData;
+		// this.isDemo = this.flightInfo.Flight.BaseInfo.IsDemo;
 		this.renderMap();
+		
 	}
 
 	public renderMap(): void {
@@ -208,7 +255,7 @@ export default class AbusMap extends Vue {
 			trackLine.appendCoordinate(point);
 		});
 		
-		this.updateMarkPosition();
+		//this.updateMarkPosition();
 	}
 	
 	
@@ -216,22 +263,7 @@ export default class AbusMap extends Vue {
 		this.map.getView().setCenter(position);
 	}
  
-    public updateMarkPosition(){
-		// debugger;
-		console.log('更新飞机坐标位置');
-		let flightAltitudes:any = this.flightResData.FlightPaths;
-		
-		if(flightAltitudes&&flightAltitudes.length > 0){
-			let position = flightAltitudes[flightAltitudes.length - 1];
-			let cord = [position.Lng,position.Lat];
-			
-			this.marker.setPosition(cord);
-			this.marker.getElement().style.transform = `rotate(${position.Course - 90}deg)`;
-			this.centerMark(cord);
-		}
-		
-		
-	}
+    
 	
 	createGoodStyle() {
 		return new Style({
