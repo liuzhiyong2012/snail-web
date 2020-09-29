@@ -49,6 +49,7 @@ export default class ServiceDetailPage extends Vue {
       Item: "TermsOfServiceItem",
     }).then((res) => {
       this.ServiceDetail = res.data;
+      this.ServiceDetail.FullDescription = this.ServiceDetail.FullDescription.replace(new RegExp("http://kf.vpclub.cn/airbusifeimg","g"),process.env.VUE_APP_STATIC_URL);
     });
   }
 }
