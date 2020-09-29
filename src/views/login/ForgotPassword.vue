@@ -229,7 +229,9 @@ export default class ForgotPassword extends Vue {
         console.log("=== Error ===");
         if(reason.code == 500 || reason.code == 502){
           this.$toast(this.$i18n.t('toast6'))
-        }else{
+        }else if(reason.code == 400){
+          this.$toast(reason.message)
+        }else {
           this.$toast(reason.message != '' ? this.$i18n.t('toast6'):reason.message)
         }
       });

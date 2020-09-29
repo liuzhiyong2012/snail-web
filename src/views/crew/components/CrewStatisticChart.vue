@@ -137,7 +137,7 @@ export default class CrewStatisticChart extends Vue {
         //标题组件
         textStyle: {
           color: "#333333",
-          fontSize: 12,
+          fontSize: 20,
         },
       },
       tooltip: {
@@ -146,7 +146,7 @@ export default class CrewStatisticChart extends Vue {
         textStyle: {
           //图例文字的样式
           color: "#fff", //文字颜色
-          fontSize: 10, //文字大小
+          fontSize: 20, //文字大小
         },
       },
       graphic: [
@@ -250,10 +250,12 @@ export default class CrewStatisticChart extends Vue {
 }
 
 .crew-statistic-chart {
-  padding-top: rem(120px);
+  padding-top: rem(20px);
+//   padding-top: rem(120px);
 
   .charts-ctn {
-    margin-bottom: rem(80px);
+    // margin-bottom: rem(80px);
+    margin-bottom: rem(20px);
     .pie-ctn {
       margin: auto;
       width: rem(460px);
@@ -277,7 +279,7 @@ export default class CrewStatisticChart extends Vue {
       align-items: center;
       padding: 0 rem(50px);
       justify-content: space-between;
-      margin-bottom: rem(42px);
+      margin-bottom: rem(40px);
 
       .img-ctn {
         white-space: nowrap;
