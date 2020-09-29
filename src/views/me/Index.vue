@@ -11,7 +11,8 @@
             height="1.26rem"
             
           />   -->
-          <img width="100%" height="100%" :src="userInfo.AvatarPath || 'https://img.yzcdn.cn/vant/cat.jpeg'" alt="">
+          <!-- <img width="100%" height="100%" :src="userInfo.AvatarPath || 'https://img.yzcdn.cn/vant/cat.jpeg'" alt=""> -->
+          <img width="100%" height="100%" :src="userInfo.AvatarPath || airbusIcon" alt="">
         </div>
         <div class="f1">
           <div class="name" >{{userInfo.NickName|| '--'}}</div>
@@ -141,6 +142,7 @@ import AbusTitle from '../../components/AbusTitle.vue';
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import MeServer from '../../service/me';
 import { mapState } from 'vuex';
+declare function require(type: string): string;
 
 @Component({
   name: 'meIndex',
@@ -151,6 +153,7 @@ import { mapState } from 'vuex';
 export default class meIndex extends Vue {
   private userInfo: Object = {}
   private address: string = ''
+  private airbusIcon = require("../../assets/airbus_icon.png");
   private created() {
     this.getUserInfo();
     this.postAddress();

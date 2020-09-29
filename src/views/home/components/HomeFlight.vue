@@ -282,7 +282,7 @@ export default class HomeFlight extends Vue {
 
       .place {
         // font-size: 0.3rem;
-        font-size: 0.28rem;
+        font-size: 0.24rem;
         font-weight: bold;
         color: rgba(46, 46, 46, 1);
         line-height: 0.36rem;
@@ -310,7 +310,8 @@ export default class HomeFlight extends Vue {
         align-items: center;
         justify-content: center;
         height: 0.36rem;
-        width: 1.8rem;
+        // width: 1.8rem;
+        width: 1.2rem;
         font-size: 0;
         // border-top: 0.02rem dotted rgb(0, 32, 91);
 
