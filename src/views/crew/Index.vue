@@ -42,7 +42,9 @@
           <div class="fl">{{ $t("demo") }}</div>
           <div class="f1 set-center">
             <van-switch
-              v-model="checked"
+			:active-value="'1'" 
+			:inactive-value="'0'"
+              v-model="runDemo"
               active-color="#00AEC7"
               inactive-color="#AFD5FD"
             />
@@ -52,6 +54,7 @@
           <div class="fl">{{ $t("CloudAddress") }}</div>
           <div class="f1">
             <input
+			  v-model="cloudLink"
               class="address-inp"
               type="text"
               :placeholder="$t('CloudAddressText')"
@@ -107,15 +110,18 @@
 </i18n>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import CrewTab from "./components/CrewTab.vue";
-import CrewFooter from "./components/CrewFooter.vue";
-import FlightService from "../../service/flight";
-import { localStore } from "@/utils/data-management";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import CrewTab from './components/CrewTab.vue';
+import CrewFooter from './components/CrewFooter.vue';
+import FlightService from '../../service/flight';
+
+import SettingService from '../../service/crew/setting';
+
+import { localStore } from '@/utils/data-management';
 declare let io: any;
 
 @Component({
-  name: "CrewLayoutCtn",
+  name: 'CrewLayoutCtn',
   components: {
     CrewTab,
     CrewFooter,
@@ -124,38 +130,43 @@ declare let io: any;
 export default class CrewLayoutCtn extends Vue {
   private tabList: Array<any> = [
     {
-      name: "Catering",
-      value: "catering",
-      routeName: "crewCatering",
+      name: 'Catering',
+      value: 'catering',
+      routeName: 'crewCatering',
     },
     {
-      name: "Data package",
-      value: "dataPackage",
-      routeName: "crewDataPackage",
+      name: 'Data package',
+      value: 'dataPackage',
+      routeName: 'crewDataPackage',
     },
     {
-      name: "Goods",
-      value: "goods",
-      routeName: "crewGoods",
+      name: 'Goods',
+      value: 'goods',
+      routeName: 'crewGoods',
     },
     {
-      name: "Income statistics",
-      value: "incomeStatistics",
-      routeName: "crewIncomeStatistics",
+      name: 'Income statistics',
+      value: 'incomeStatistics',
+      routeName: 'crewIncomeStatistics',
     },
     {
-      name: "Cabin layout",
-      value: "cabinLayout",
-      routeName: "crewCabinLayout",
+      name: 'Cabin layout',
+      value: 'cabinLayout',
+      routeName: 'crewCabinLayout',
     },
   ];
 
-  private active: string = "catering";
+  private active: string = 'catering';
   private socket: any = null;
-  private checked: boolean = true;
+  
+  private runDemo: boolean = true;
+  private cloudLink: string = '';
+  
+  
+  
   private unloadHandler: any = null;
 
-  private language: string = "English";
+  private language: string = 'English';
   private isLanguageShow: boolean = false;
   private show: boolean = false;
   private isShowSetting: boolean = false;
@@ -166,10 +177,10 @@ export default class CrewLayoutCtn extends Vue {
   public flightResData: any = {};
 
   private messageContent: any = {
-    seatNumber: "--",
-    userName: "",
-    itemImgUrl: "--",
-    content: "",
+    seatNumber: '--',
+    userName: '',
+    itemImgUrl: '--',
+    content: '',
   };
   private provide() {
     return {
@@ -177,18 +188,38 @@ export default class CrewLayoutCtn extends Vue {
     };
   }
   public created() {
-    if (localStorage.getItem("lang") == "en") {
-	  this.$i18n.locale = "en";
-	  this.language = "English"
+    if (localStorage.getItem('lang') == 'en') {
+	  this.$i18n.locale = 'en';
+	  this.language = 'English';
     } else {
-	  this.$i18n.locale = "zh";
-	  this.language = "简体中文"
+	  this.$i18n.locale = 'zh';
+	  this.language = '简体中文';
 	}
-	if(localStorage.getItem('checked') == "true"){
-		this.checked = true
+	
+	/* if(localStorage.getItem('checked') == 'true'){
+		this.checked = true;
 	}else {
-		this.checked = false
-	}
+		this.checked = false;
+	} */
+	
+	SettingService.getSetting().then((res:any)=>{
+		// debugger;
+		/* this.checked = true;
+		this.cloudLink = 'hell'; */
+		if(res.code == '200'){
+			this.runDemo = res.data.RunDemo;
+			this.cloudLink = res.data.CloudLink;
+		}else{
+			this.$toast('获取配置失败!');
+		}
+		
+		/* RunDemo: "true", CloudLink: "http://kf.vpclub.cn/airbusife/"}
+		CloudLink: "http://kf.vpclub.cn/airbusife/"
+		RunDemo: "true" */
+	});
+	
+	
+	
   }
   private mounted() {
     let THIS = this;
@@ -199,7 +230,7 @@ export default class CrewLayoutCtn extends Vue {
       //e = window.event||e;
       //e.returnValue=('确定离开当前网站吗?');
     };
-    window.addEventListener("beforeunload", this.unloadHandler);
+    window.addEventListener('beforeunload', this.unloadHandler);
     this.getFlightInfo();
     this.startTimer();
   }
@@ -210,38 +241,50 @@ export default class CrewLayoutCtn extends Vue {
     });
   }
   private showSetting(){
-	  this.isShowSetting = true
+	  this.isShowSetting = true;
   }
   private beforeDestroy() {
     window.clearInterval(this.timer);
-    window.removeEventListener("beforeunload", this.unloadHandler);
+    window.removeEventListener('beforeunload', this.unloadHandler);
     this.socket && this.socket.close && this.socket.close();
     this.socket && this.socket.destroy && this.socket.destroy();
     this.socket = null;
   }
   private changeToEnglish() {
-    this.language = "English";
+    this.language = 'English';
     this.isLanguageShow = false;
   }
   private changeToCn() {
-    this.language = "简体中文";
+    this.language = '简体中文';
     this.isLanguageShow = false;
   }
   private clickSubmit() {
-    if (this.language == "English") {
-      localStorage.setItem("lang", "en");
+    if (this.language == 'English') {
+      localStorage.setItem('lang', 'en');
     } else {
-      localStorage.setItem("lang", "zh");
+      localStorage.setItem('lang', 'zh');
 	}
-	if(this.checked){
-		localStorage.setItem("checked", "true");
+	/* if(this.runDemo){
+		localStorage.setItem('runDemo', 'true');
 	}else{
-		localStorage.setItem("checked", "false");
+		localStorage.setItem('runDemo', 'false');
 	}
+	 */
+	SettingService.setSetting({
+		CloudLink:this.cloudLink,
+		RunDemo:this.runDemo,
+	}).then((res:any)=>{
+		if(res.code == '200'){
+			this.$toast('提交配置成功!');
+			this.isShowSetting = false;
+			/* this.$router.go(0); */
+		}else{
+			this.$toast('提交配置失败!');
+		}
+	});
 	// this.reload();
 	
-	this.isShowSetting = false;
-	this.$router.go(0)
+	
   }
   private clickCancel() {
     this.isShowSetting = false;
@@ -251,7 +294,7 @@ export default class CrewLayoutCtn extends Vue {
       if (res.code == 200) {
         this.flightResData = res.data;
         this.$store.commit(
-          "setAirbusId",
+          'setAirbusId',
           this.flightResData.Flight.BaseInfo.Id
 		);
 		
@@ -270,19 +313,19 @@ export default class CrewLayoutCtn extends Vue {
           if (this.flightResData.Flight.BaseInfo.Id == res.data.Flight.BaseInfo.Id) {
             this.flightResData = res.data;
           } else {
-            this.$toast(this.$i18n.t("toast1"));
+            this.$toast(this.$i18n.t('toast1'));
             this.socket && this.socket.close && this.socket.close();
             this.socket && this.socket.destroy && this.socket.destroy();
             this.socket = null;
             this.flightResData = res.data;
             this.$store.commit(
-              "setAirbusId",
+              'setAirbusId',
               this.flightResData.Flight.BaseInfo.Id
             );
             this.startWebScoket(this.flightResData.Flight.BaseInfo.Id);
-            if (this.$route.path.indexOf("/crew/login") < 0) {
+            if (this.$route.path.indexOf('/crew/login') < 0) {
               this.$router.push({
-                path: "/crew/login",
+                path: '/crew/login',
               });
             }
           }
@@ -299,18 +342,18 @@ export default class CrewLayoutCtn extends Vue {
     };
     this.socket = io(process.env.VUE_APP_SOCKET_HOST, opt);
     // socket连接后以uid登录
-    this.socket.on("connect", () => {
-      this.socket.emit("login", airbusId);
+    this.socket.on('connect', () => {
+      this.socket.emit('login', airbusId);
     });
 
     // 后端推送来消息时
-    this.socket.on("new_msg", (msg) => {
-      console.log("crew:new_msg");
+    this.socket.on('new_msg', (msg) => {
+      console.log('crew:new_msg');
       let midMsg = msg.replace(/&quot;/g, '"');
       let newMessageObj = JSON.parse(midMsg);
-      (this as any).$globalEvent.$emit("new_msg", newMessageObj);
+      (this as any).$globalEvent.$emit('new_msg', newMessageObj);
 
-      if (newMessageObj.type == "crew") {
+      if (newMessageObj.type == 'crew') {
         /*let messageContent:any = {
 						 seatNumber:'--',
 						 itemImgUrl:'--',
@@ -335,11 +378,11 @@ export default class CrewLayoutCtn extends Vue {
   public switchPage(value): void {
     this.active = value;
     let routeMap = {
-      catering: "crewCatering",
-      dataPackage: "crewDataPackage",
-      goods: "crewGoods",
-      incomeStatistics: "crewIncomeStatistics",
-      cabinLayout: "crewCabinLayout",
+      catering: 'crewCatering',
+      dataPackage: 'crewDataPackage',
+      goods: 'crewGoods',
+      incomeStatistics: 'crewIncomeStatistics',
+      cabinLayout: 'crewCabinLayout',
     };
 
     if (routeMap[value]) {

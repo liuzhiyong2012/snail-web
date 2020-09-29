@@ -16,7 +16,8 @@ export default {
     name: '',
     phone: '',
     token: '',
-    airbusId: ''
+    airbusId: '',
+	isDemo:''
   },
   mutations: {
     setName(state: any, name: any) {
@@ -36,6 +37,7 @@ export default {
     },
     setAirbusId(state:any,id:string){
 		// '4CFC4D33-2C1E-E911-BAD5-F44D307124C0'||
+		// debugger;
       state.airbusId =id;
       localStore.set('airbusId',id)
     },
@@ -61,12 +63,17 @@ export default {
     },
 	setFlightInfo(state:any, flightInfo: any){
 	  state.flightInfo = flightInfo;
+	},
+	setIsDemo(state:any, isDemo: any){
+	  state.isDemo = isDemo;
 	}
   },
   actions: {
 	setFlightInfo(context: any, state: any){
 		context.commit('setFlightInfo', state);
 		context.commit('setAirbusId', state.Flight.BaseInfo.Id);
+		context.commit('setIsDemo', state.Flight.BaseInfo.IsDemo);
+		
 	},
 	logout(context: any, state: any){
 		context.commit('setName', '')
@@ -83,7 +90,7 @@ export default {
     },
     setUserLoginInfo(context: any,state:any){
       context.commit('setToken', state.token)
-      context.commit('setAirbusId', state.id)
+      // context.commit('setAirbusId', state.id)
     }
   }
 }
