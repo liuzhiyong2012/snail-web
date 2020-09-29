@@ -182,5 +182,8 @@ export default class NewsDetailPage extends Vue {
   font-size: 0.28rem;
   font-weight: 400;
   color: #666666;
+  /deep/ img{
+    width: 100%;
+  }
 }
 </style>

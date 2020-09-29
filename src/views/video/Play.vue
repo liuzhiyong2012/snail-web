@@ -219,7 +219,7 @@ export default class VideoPlay extends Vue {
     clearTimeout(this.adShowTime);
     this.adShowTime = setTimeout(() => {
       this.isShowAd = true;
-    }, 60000);
+    }, 30000);
   }
   // public postVideoList() {
   //   VideoService.postVideoList().then((res: any) => {
@@ -315,7 +315,7 @@ export default class VideoPlay extends Vue {
   public postAdvertList() {
     VideoService.postAdvertList().then((res: any) => {
       console.log(res);
-      if (res.code == 200) {
+      if (res.code == 200 && res.data.length!=0) {
         this.adDataList = res.data;
         this.adData = res.data[0];
       }
@@ -369,6 +369,15 @@ export default class VideoPlay extends Vue {
   }
   // 发送评论
   public sendComment(index: any, id: any) {
+    if(!this.Comment){
+      if (localStorage.getItem("lang") == "en") {
+        this.$toast('please input content!')
+      } else {
+        this.$toast('请输入评论！')
+      }
+      return;
+    }
+
     let data = {
       VideoId: id,
       Comment: this.Comment,
@@ -635,6 +644,7 @@ export default class VideoPlay extends Vue {
       }
     }
     .input-box {
+      border-top: 0.01rem solid #888;
       flex: 1;
       padding: 0 0 0 0.3rem;
     }

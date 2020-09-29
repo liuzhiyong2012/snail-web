@@ -90,6 +90,15 @@ export default class videoComment extends Vue{
   }
   // 发送评论
   public sendComment( id: any) {
+    if(!this.Comment){
+      if (localStorage.getItem("lang") == "en") {
+        this.$toast('please input content!')
+      } else {
+        this.$toast('请输入评论！')
+      }
+      return;
+    }
+    
     let data = {
       VideoId: id,
       Comment: this.Comment,
@@ -215,6 +224,7 @@ export default class videoComment extends Vue{
       }
     }
     .input-box {
+      border-top: 0.01rem solid #888;
       flex: 1;
       padding: 0 0 0 0.3rem;
     }
