@@ -206,7 +206,8 @@
 								 isLike:item.isLike,
 								 name:  item.Name,
 								 singer: this.computeAuthorName(item),
-								 url:  UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(item.Id))
+								 lyricUrl:UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(item.LyricUrl)),
+								 url:  UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(item.Url))
 							 });
 						});
 						

@@ -1,6 +1,11 @@
 import * as types from './mutation-types';
 
 const mutations = {
+	
+	
+  [types.SET_LYRIC_URL](state, lyricUrl) {
+	  state.lyricUrl = lyricUrl;
+  },
   [types.SET_SINGER](state, singer) {
     state.singer = singer;
   },
@@ -41,7 +46,7 @@ const mutations = {
     state.favoriteList = list;
   },
   setLikeSet(state,list){
-	//  debugger;
+
 	  let likeSet = {};
 	  list.forEach((item,index)=>{
 		  if(item.isLike){
@@ -54,12 +59,10 @@ const mutations = {
 	  state.likeSet = likeSet;
   },
   likeSong(state,songId){
-	   //debugger;
 	   let likeSet = JSON.parse(JSON.stringify(state.likeSet));
 	   
 	    likeSet[songId] = true;
 	    state.likeSet = likeSet;
-    //state.likeSet[songId] = true;
   },
   disLikeSong(state,songId){
 	 let likeSet = JSON.parse(JSON.stringify(state.likeSet));

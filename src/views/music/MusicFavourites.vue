@@ -288,7 +288,8 @@ export default class MusicFavourites extends Vue {
 					isLike:item.isLike,
 					name: item.Name,
 					singer: this.computeAuthorName(item),
-					url: UrlUtils.addBaseUrl( UrlUtils.delBaseUrl(item.Id))
+					lyricUrl:UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(item.LyricUrl)),
+					url: UrlUtils.addBaseUrl( UrlUtils.delBaseUrl(item.Url))
 				}
 			],
 			index: 0
@@ -322,7 +323,8 @@ export default class MusicFavourites extends Vue {
 							mid: '',
 							name: item.Name,
 							singer: this.computeAuthorName(item),
-							url: UrlUtils.addBaseUrl( UrlUtils.delBaseUrl(item.Id))
+							lyricUrl:UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(item.LyricUrl)),
+							url: UrlUtils.addBaseUrl( UrlUtils.delBaseUrl(item.Url))
 						});
 					});
 					

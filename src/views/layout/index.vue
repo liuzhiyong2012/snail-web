@@ -61,7 +61,7 @@ export default class LayoutIndex extends Vue {
   }
   
   private startTimer(){
-  	let timePeriod = 4000;
+  	let timePeriod = 20000;
   	
   	this.timer = window.setInterval(()=>{
   		FlightService.getFlightInfo().then((res: any) => {
