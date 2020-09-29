@@ -36,7 +36,7 @@
       <div class="user-details">
         <div class="i-icon">
           <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-phone" />
+            <use xlink:href="#icon-phone1" />
           </svg>
         </div>
         <!-- @keyup="getUserPhone" -->
@@ -69,7 +69,7 @@
       <div class="user-details m40">
         <div class="i-icon">
           <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-code" />
+            <use xlink:href="#icon-code1" />
           </svg>
         </div>
         <input
