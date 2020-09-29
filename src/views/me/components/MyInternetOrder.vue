@@ -23,7 +23,8 @@
       <div class="main">
         <div class="item" >
           <div class="img">
-            <img src="https://img.yzcdn.cn/vant/cat.jpeg" alt />
+            <!-- <img src="https://img.yzcdn.cn/vant/cat.jpeg" alt /> -->
+            <img :src="airbusIcon" alt />
           </div>
           <div class="f1">
             <div class="title">{{item.netFlowName}}</div>
@@ -58,12 +59,14 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import MeService from "../../../service/me";
 import DateUtils from "../../../utils/date-utils";
+declare function require(type: string): string;
 @Component({
   name: "MyInternetOrder",
   components: {},
 })
 export default class MyInternetOrder extends Vue {
   private orderList: Array<any>=[]
+  private airbusIcon = require("../../../assets/airbus_icon.png");
   private created() {
     if (localStorage.getItem("lang") == "en") {
       this.$i18n.locale = "en";
