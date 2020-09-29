@@ -13,6 +13,8 @@ export const SET_PLAY_MODE = 'SET_PLAY_MODE';
 export const SET_CURRENT_INDEX = 'SET_CURRENT_INDEX';
 
 export const SET_VKEY = 'SET_VKEY';
+//设置歌词路径
+export const SET_LYRIC_URL = 'SET_LYRIC_URL';
 
 export const SET_DISC = 'SET_DISC';
 

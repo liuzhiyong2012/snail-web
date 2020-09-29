@@ -146,10 +146,15 @@ export default class MusicPlaylistDetail extends Vue {
 			isLike:item.isLike,
             name: item.Name,
             singer: this.computeAuthorName(item),
-            url: UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(item.Id)),
+			lyricUrl:UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(item.LyricUrl)),
+            url: UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(item.Url))
           });
         });
-
+/* axios.get(url, {
+    params: data
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  }) */
         this.allSong = songs;
 
         this.isCollected = Boolean(this.playListObj.isLike);

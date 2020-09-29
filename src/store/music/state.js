@@ -2,6 +2,7 @@ import {playMode} from '../../views/music/js/config';
 import {loadSearch, loadPlay, loadFavorite} from '../../views/music/js/cache';
 
 const state = {
+  lyricUrl:'',
   likeSet:{}, //喜欢的歌曲
   singer: {}, // 歌手页面列表，某个歌手的相关数据对象使用头像与名称
   playing: false, // 是播放状态

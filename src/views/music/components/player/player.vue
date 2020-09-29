@@ -15,11 +15,10 @@
         
         <!-- 旋转大头像 -->
         <div class="middle" @touchstart.prevent="middleTouchStart" @touchmove.prevent="middleTouchMove" @touchend="middleTouchEnd">
-			
 		  <div class="title-ctn">
 			  <img :class="playImg" class="album-img" :src="coverImage" alt="">
-			   <h1 class="title-sing-name" v-html="currentSong.name"></h1>
-			   <h1 class="title-singer" v-html="currentSong.singer"></h1>
+			   <h1 v-if="currentShow != 'lyric'" class="title-sing-name" v-html="currentSong.name"></h1>
+			   <h1 v-if="currentShow != 'lyric'" class="title-singer" v-html="currentSong.singer"></h1>
 		  </div>
           <p :class="playImgTxt" class="cd-lyric">
             {{playingLyric}}
@@ -177,7 +176,8 @@ import { playMode } from '../../js/config';
 import { Base64 } from 'js-base64';
 import Lyric from 'lyric-parser';
 import Scroll from '../../base/scroll/scroll';
-import MusicService from '../../../../service/music.ts';
+import MusicService from '../../../../service/music';
+import axios from 'axios';
 
 export default {
   components: {
@@ -304,12 +304,12 @@ export default {
     },
     // 关闭底部的播放器
     closePlaying(){
-      this.showBottomMusic= false
+      this.showBottomMusic= false;
     },
 
     toDown() {
       this.setFullScreen(false);
-      this.showBottomMusic= true
+      this.showBottomMusic= true;
     },
     toUp() {
       this.setFullScreen(true);
@@ -420,6 +420,7 @@ export default {
     /* 重新请求key */
     _getVkey(mid) {
       var that = this;
+	  debugger;
       getVkey(mid).then(res => {
         if (res.code === ERR_OK) {
           let vkey = res.data.items[0].vkey;
@@ -428,23 +429,9 @@ export default {
           console.log('player组件 vkey请求错误');
         }
       });
+	  
       /* 获取歌词 */
-      getLyric(mid).then(res => {
-        this.currentLyric = null;
-        if (res.code === ERR_OK) {
-          let lyric = Base64.decode(res.lyric);
-          this.currentLyric = new Lyric(lyric, this.handleLyric);
-          if (this.playing) {
-            // 如果此时正在播放则歌词也开始播放
-            this.currentLyric.play();
-          }
-        } else {
-          console.log('player组件 Lyric请求错误');
-          this.currentLyric = null;
-          this.playingLyric = '';
-          this.currentLineNum = 0;
-        }
-      });
+      
 	  
     },
     handleLyric({ lineNum, txt }) {
@@ -515,6 +502,7 @@ export default {
         this.currentShow = 'cd';
       }
     },
+	
     ...mapMutations({ 
 	  'likeSong':'likeSong',
 		disLikeSong:'disLikeSong',
@@ -548,12 +536,75 @@ export default {
       if (this.currentLyric) {
         this.currentLyric.stop();
       }
+	 /* debugger; */
       this.$nextTick(() => {
 		  this.songUrlData = this.currentSong.url;//||songUrl(val, this.currentSong.mid);
 		  console.log(this.songUrlData);
 		  this.songPlay();
 		  
         // this._getVkey(this.currentSong.mid);
+		//获取歌词
+		/* if(){} */
+		// debugger;
+		debugger;
+		axios( {
+			 method:'get',
+			  url : process.env.VUE_APP_STATIC_URL + '/geci.lrc',
+			  // responseType: 'blob',
+			 headers: {
+			   'Content-Type': 'text/plain;charset=utf-8'
+			 },
+		  // headers:{'filename':'utf-8'},
+		  params: {
+			 
+		  }
+		}).then((res) => {
+			// debugger;
+		  if (res.status == '200') {
+			  // debugger;  
+			   //svar blobReader = new Response(res.data).text();
+			   
+			   /* var blobReader = new Response(res.data).text();
+			     blobReader.then(res => {
+			         let responObj = JSON.parse(res);
+			   
+			         if( responObj.code !== 0){
+			             reject(responObj.message);
+			         }
+			     }); */
+				 //Base64.decode(res.data)||
+				 debugger;
+		  				let lyric = res.data;
+		  				this.currentLyric = new Lyric(lyric, this.handleLyric);
+		  				if (this.playing) {
+		  				  // 如果此时正在播放则歌词也开始播放
+		  				  this.currentLyric.play();
+		  				}
+		  } else {
+		  				console.log('player组件 Lyric请求错误');
+		  				this.currentLyric = null;
+		  				this.playingLyric = '';
+		  				this.currentLineNum = 0;
+		  }
+		});
+		
+			/* getLyric(this.currentSong.mid).then(res => {
+			  this.currentLyric = null;
+			  if (res.code === ERR_OK) {
+				let lyric = Base64.decode(res.lyric);
+				this.currentLyric = new Lyric(lyric, this.handleLyric);
+				if (this.playing) {
+				  // 如果此时正在播放则歌词也开始播放
+				  this.currentLyric.play();
+				}
+			  } else {
+				console.log('player组件 Lyric请求错误');
+				this.currentLyric = null;
+				this.playingLyric = '';
+				this.currentLineNum = 0;
+			  }
+			}); */
+		
       });
     },
     // 检测播放状态
@@ -937,11 +988,17 @@ $screen-width: 37.5;
 }
 .middle-r {
   width: 100%;
-  height: 64%;
+  // height: 64%;
   float: left;
-  transform: translate3d(rem(375), 0, 0);
+  // transform: translate3d(rem(375), 0, 0);
+  transform: translate3d(rem(750), 0, 0);
   position: absolute;
   top: 0;
+  
+      overflow: hidden;
+      bottom: 0;
+      // top: auto;
+      // height: 2.00rem;
 }
 .middleTime {
   transition: transform 0.5s;
