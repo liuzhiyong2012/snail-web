@@ -57,15 +57,18 @@ export default class ServiceDetailPage extends Vue {
 </script>
 <style lang="scss" scoped>
 .service-info {
+  // width: 96%;
   padding: 0.25rem;
   background: #fff;
   line-height: 0.36rem;
   text-align: justify;
   font-size: 0.3rem;
-  color: #333333;
-  img{
-  width: 100%;
-}
+  // color: #333333;
+  font-weight: 400;
+  color: #666666;
+  img {
+    width: 100%;
+  }
 }
 .service-info img{
   width: 100%;

@@ -179,7 +179,8 @@ export default class NewsDetailPage extends Vue {
   background: #fff;
   line-height: 0.36rem;
   text-align: justify;
-  font-size: 0.3rem;
-  color: #333333;
+  font-size: 0.28rem;
+  font-weight: 400;
+  color: #666666;
 }
 </style>
