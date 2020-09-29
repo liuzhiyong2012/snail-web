@@ -69,7 +69,9 @@
 			})
 		}
 		public stepToScan(){
-			window.location.href = `https://kf.vpclub.cn/scan/`;
+			let proHref = window.location.href
+			window.location.href = `https://kf.vpclub.cn/scan/?name=`+proHref;
+			
 		}
 	}
 </script>

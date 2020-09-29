@@ -393,7 +393,7 @@ export default class CrewLayoutCtn extends Vue {
   }
 
   public showNotify() {
-    let time = 100000000;
+    let time = 50000;
     if (this.show) {
       this.show = false;
       setTimeout(() => {
