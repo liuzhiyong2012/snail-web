@@ -109,8 +109,6 @@ export default {
     },
     getDishesRecommendedList() {
       DishService.getDishesRecommendedList({}).then((res) => {
-        // debugger;
-        // console.log(res);
         this.isHaveData = true;
         this.recomendList = res.data.RecommendedDishes;
 
@@ -120,14 +118,14 @@ export default {
         });
 
         /* :version/api/Dishes/List */
-        /* BannerImgPath: "172.16.125.11:8010/133b9f0b-dfa4-4cd9-8ebb-958c44bfbf26"
-		  Id: "e2dc9e2c-6733-e911-b13c-96af276fddb7"
-		  Name: "素食拼盘"
-		  Price: 32
-		  Remark: null
-		  SampleImgPath: "172.16.125.11:8010/eb8ea336-9434-4295-8215-3821c76baba8"
-		  Status: 0
-		  Stocking: 0 */
+        /*  BannerImgPath: "172.16.125.11:8010/133b9f0b-dfa4-4cd9-8ebb-958c44bfbf26"
+            Id: "e2dc9e2c-6733-e911-b13c-96af276fddb7"
+            Name: "素食拼盘"
+            Price: 32
+            Remark: null
+            SampleImgPath: "172.16.125.11:8010/eb8ea336-9434-4295-8215-3821c76baba8"
+            Status: 0
+            Stocking: 0 */
         // http://172.16.125.11:8010/50.jpg
       });
     },

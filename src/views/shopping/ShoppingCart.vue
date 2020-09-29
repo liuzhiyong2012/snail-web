@@ -170,7 +170,6 @@ export default class ShoppingCart extends Vue {
         Address: this.address,
       };
       ShoppingServer.postShoppingPlaceOrder(data).then((res: any) => {
-        console.log(res);
         if (res.code == 200) {
           this.$store.commit("clearShoppingCart");
           if (localStorage.getItem("lang") == "en") {

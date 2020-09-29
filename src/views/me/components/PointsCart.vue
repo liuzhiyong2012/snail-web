@@ -102,7 +102,6 @@ export default class ShoppingCart extends Vue {
     return this.$store.state.me.points;
   }
   // private get orderAmount(): any{
-  //     console.log('点击了')
   //   let pointsCartList = this.$store.state.shopping.pointsCartList;
   //   let amount = 0;
 
@@ -164,7 +163,6 @@ export default class ShoppingCart extends Vue {
         Address: this.address,
       };
       ShoppingServer.postShoppingPlaceOrder(data).then((res: any) => {
-        console.log(res);
         if (res.code == 200) {
           this.$store.commit("clearPointsCart");
           this.$toast("SUCCESS!");

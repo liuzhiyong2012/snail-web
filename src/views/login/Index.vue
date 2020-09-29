@@ -276,7 +276,6 @@ export default class Login extends Vue {
     LoginService.postUserLogin(data)
       .then((res: any) => {
         console.log(res);
-        // debugger;
         if (res.code == 200) {
           // 写入成功后，判断是否有座位
           this.$store
@@ -286,10 +285,8 @@ export default class Login extends Vue {
               id: res.data.id,
             })
             .then((res: any) => {
-              // debugger;
               console.log("token:" + localStore.get("token"));
               LoginService.getUserMe().then((res: any) => {
-                console.log(res);
                 if (res.code == 200 && res.data.Seat == null) {
                   this.$router.push({
                     name: "selectSeat",
@@ -315,7 +312,6 @@ export default class Login extends Vue {
         }
       })
       .catch((error: any) => {
-        console.log(error);
         if (error.code == 500 || error.code == 502) {
           this.$toast(error.message);
         } else if (error.code == 400) {

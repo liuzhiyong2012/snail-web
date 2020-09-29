@@ -56,14 +56,12 @@ export default class VideoList extends Vue {
   private created() {
     this.postVideoList();
     // this.videoList = this.$store.state.video.videoList
-    // console.log(this.videoList)
   }
   public postVideoList() {
     VideoService.postVideoList({
       skip: (this.pageNumber - 1) * this.pageSize,
       take: this.pageSize,
     }).then((res: any) => {
-      console.log(res);
       if (res.code == 200) {
         if (res.data.EOF) {
           this.finished = true;

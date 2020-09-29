@@ -46,7 +46,6 @@ export default class VideoList extends Vue {
   }
   public postVideoMyLike() {
     VideoService.postVideoMyLike().then((res: any) => {
-      console.log(res);
       if (res.code == 200) {
         this.videoList = res.data.video;
         this.$store.commit("setMyLikeList", this.videoList);
@@ -57,7 +56,6 @@ export default class VideoList extends Vue {
     });
   }
   public stepToVideoPlay(index: any) {
-    console.log(index);
     this.$router.push({
       name: "likePlay",
       params: {

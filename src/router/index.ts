@@ -107,20 +107,15 @@ router.beforeEach((to, from, next) => {
 	//localStore
 	/* import {localStore} from '../utils/data-management';*/
 	
-	
   let islogin = localStore.get('token');
-             // debugger;   
-  
   islogin = Boolean(islogin);
-  
   if(to.meta.noRequireAuth ||islogin) {
     next();
   }else{
 	  // next();
-      next("/login");
+    next("/login");
   }  
   
-
   /* if(to.name == "/login"){
     if(islogin){
       next("/table");

@@ -223,7 +223,6 @@ export default class VideoPlay extends Vue {
   }
   // public postVideoList() {
   //   VideoService.postVideoList().then((res: any) => {
-  //     // console.log(res);
   //     if (res.code == 200) {
   //       this.videoListOne = res.data.Videos;
   //       this.videoListOne.forEach((item: any, index: any) => {
@@ -285,7 +284,6 @@ export default class VideoPlay extends Vue {
       skip: (this.pageNumber - 1) * this.pageSize,
       take: this.pageSize,
     }).then((res: any) => {
-      // console.log(res);
       if (res.code == 200) {
         if (res.data.EOF) {
           this.finished = true;
@@ -314,7 +312,6 @@ export default class VideoPlay extends Vue {
   // 获取广告
   public postAdvertList() {
     VideoService.postAdvertList().then((res: any) => {
-      console.log(res);
       if (res.code == 200 && res.data.length!=0) {
         this.adDataList = res.data;
         this.adData = res.data[0];
@@ -356,14 +353,12 @@ export default class VideoPlay extends Vue {
       Vue.set(this.videoListOne, index, this.videoListOne[index]);
       // 接口交互
       VideoService.postVideoLike({ id: id }).then((res: any) => {
-        // console.log(res);
       });
     } else {
       this.videoListOne[index].LikeCount =
         this.videoListOne[index].LikeCount - 1;
       Vue.set(this.videoListOne, index, this.videoListOne[index]);
       VideoService.postVideoUnLike({ id: id }).then((res: any) => {
-        // console.log(res);
       });
     }
   }
@@ -383,13 +378,11 @@ export default class VideoPlay extends Vue {
       Comment: this.Comment,
     };
     VideoService.postVideoComments(data).then((res: any) => {
-      // console.log(res);
       if (res.code == 200) {
         this.Comment = "";
         VideoService.getVideoCommentsList({
           videoId: id,
         }).then((res: any) => {
-          // console.log(res);
           if (res.code == 200) {
             this.videoListOne[index].Comments = res.data.Comments;
             // if (res.data.Comments.length != 0) {
@@ -412,7 +405,6 @@ export default class VideoPlay extends Vue {
     VideoService.getVideoCommentsList({
       videoId: id,
     }).then((res: any) => {
-      // console.log(res);
       if (res.code == 200) {
         this.videoListOne[index].Comments = res.data.Comments;
         // if (res.data.Comments.length != 0) {

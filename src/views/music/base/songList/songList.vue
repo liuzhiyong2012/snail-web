@@ -46,7 +46,6 @@ export default {
       }
     },
     selectItem(item, index) {
-		// debugger;
       this.$emit("select", item, index);
     },
     getDesc(song) {

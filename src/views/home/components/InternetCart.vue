@@ -106,7 +106,6 @@ export default class InternetCart extends Vue {
   private created() {
     // this.postNetFlowList()
     // this.internetData = this.$route.params.key
-    // console.log(this.$route.params.key)
   }
   private mounted() {
     this.stepper = this.$store.state.home.internetCartNum;
@@ -128,7 +127,6 @@ export default class InternetCart extends Vue {
     return this.$store.state.home.total;
   }
   private get getInternetData() {
-    console.log('sssss',this.$store.state.home.internetData);
     
     return this.$store.state.home.internetData;
   }
@@ -167,9 +165,7 @@ export default class InternetCart extends Vue {
       id: this.getInternetData.Id,
       SeatType: this.seatType || 2,
     };
-    console.log(data);
     NetflowService.postNetFlowPlaceOrder(data).then((res: any) => {
-      console.log(res);
       if (res.code == 200) {
         this.$toast('Success');
         setTimeout(() => {

@@ -217,7 +217,6 @@ export default class AbusMap extends Vue {
 	}
  
     public updateMarkPosition(){
-		// debugger;
 		console.log('更新飞机坐标位置');
 		let flightAltitudes:any = this.flightResData.FlightPaths;
 		

@@ -192,7 +192,6 @@ export default class Home extends Vue {
 
   private created() {
     clearTimeout();
-    // debugger
     if (!localStore.get('homeAd')) {
       localStore.set('homeAd', true);
       this.showService = true;

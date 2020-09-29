@@ -9,7 +9,6 @@ export default class FlightSeatMatrix{
 	
 	calcSeatArr(seatArr){
 		let seatMap = {};
-		// debugger;
 		seatArr.forEach((item,index)=>{
 			if(!seatMap[item.row]){
 				seatMap[item.row] = {};

@@ -58,7 +58,6 @@ export default {
       });
     },
     goToGame(item) {
-      console.log("游戏item", item);
       this.$router.push({
         name: "gameDetail",
         query: {

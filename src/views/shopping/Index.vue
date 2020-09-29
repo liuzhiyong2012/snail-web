@@ -286,7 +286,6 @@ export default class ShoppingIndex extends Vue {
           );
         });
       }
-      // console.log(res);
     });
   }
 

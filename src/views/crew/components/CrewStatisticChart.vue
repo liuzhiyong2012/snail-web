@@ -122,7 +122,6 @@ export default class CrewStatisticChart extends Vue {
         value: item.getMoney,
       });
 
-      //debugger;
       item.percent = ((item.getMoney / total) * 100).toFixed();
       item.SampleImgPath = UrlUtils.addBaseUrl(
         UrlUtils.delBaseUrl(item.SampleImgPath)

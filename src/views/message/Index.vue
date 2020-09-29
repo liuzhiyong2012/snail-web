@@ -274,7 +274,6 @@ export default class messageIndex extends Vue {
         // _this.changeNoticeStatus();
         _this.getSysNoticeList();
       } else if (endMsg.type == 'message') {
-		  // debugger;
         // 聊天
         if(this.userInfo.id != endMsg.from_user_id){
           // _this.chatList.push({

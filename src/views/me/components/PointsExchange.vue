@@ -96,8 +96,6 @@ export default class ShoppingIndex extends Vue {
       type: 2  // 1或者''是默认普通商品，2是积分商品
     }
     ShoppingService.getShoppingList(data).then((res: any) => {
-      console.log(res);
-
       if(res.code == 200){
         this.shoppingList = res.data.Dishes;
         if(this.shoppingList.length > 0){

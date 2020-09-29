@@ -242,7 +242,6 @@ export default class ForgotPassword extends Vue {
     // 验证码请求接口位置
     LoginService.postSendCode(data)
       .then((res: any) => {
-        console.log(res);
         if (res.code == 200) {
           clearInterval(intervalId);
           this.isShowCode = false;
@@ -271,7 +270,6 @@ export default class ForgotPassword extends Vue {
       };
       LoginService.postCheckAnswer(data)
         .then((res: any) => {
-          console.log(res);
           if (res.code == 200) {
             this.password = res.data.password;
             this.aLeft = -(this.fullWidth * 2);
@@ -292,7 +290,6 @@ export default class ForgotPassword extends Vue {
       };
       // 验证码验证
       LoginService.postCheckCode(aData).then((res: any) => {
-        console.log(res)
         if (res.code == 200) {
           this.password = res.data.password;
           this.aLeft = -(this.fullWidth * 2);
@@ -302,7 +299,6 @@ export default class ForgotPassword extends Vue {
         }
       })
       .catch((reason: any) => {
-          console.log("=== Error ===");
           this.$toast(reason.message);
         });
     } else {
@@ -321,9 +317,7 @@ export default class ForgotPassword extends Vue {
         password: this.password,
         newPassword: this.newPassword,
       };
-      console.log(data)
       LoginService.postResetPassword(data).then((res: any) => {
-        console.log(res);
         if (res.code == 200) {
           this.aLeft = 0;
           this.isActiveTwo = false;

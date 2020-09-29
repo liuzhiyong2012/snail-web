@@ -43,15 +43,20 @@
 			return {};
 		}})
 		private params?:object;
-		// debugger
 		public back():void {
 			if(!this.backRouteName){
 				this.$router.go(-1);
 			}else{
-				(this as any).$router.push({
-					name:this.backRouteName,
-					params:this.params
-				});
+				if(this.backRouteName=='backLoginFromSelectSeat'){
+					this.$store.dispatch('logout');
+					this.$router.go(-1)
+				}else{
+					(this as any).$router.push({
+						name:this.backRouteName,
+						params:this.params
+					});
+				}
+				
 			}
 		}
 		

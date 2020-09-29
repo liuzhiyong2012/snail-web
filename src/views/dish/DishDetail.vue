@@ -94,14 +94,11 @@ export default class DishDetail extends Vue {
 	}
 
 	private mounted() {
-		// debugger;
 		this.id = this.$route.query.id;
-		/* this.dishInfo = */
 		this.getDishesDetail();
 	}
 	
 	public getDishesDetail(): void {
-		// debugger;
 		DishService.getDishesDetail({
 			id:this.id
 		}).then((res:any)=>{
@@ -122,7 +119,6 @@ export default class DishDetail extends Vue {
 	}
 	
 	public addToCart():void{
-		// debugger;
 		if(this.dishInfo.Stocking===0){
 			return this.showToast();
 		}else{
@@ -153,7 +149,6 @@ export default class DishDetail extends Vue {
 	}
 	
 	public stepToCart():void{
-		// debugger;
 		this.$router.push({
 			name:'dishCart'
 		});

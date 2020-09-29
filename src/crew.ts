@@ -11,10 +11,9 @@ import { Lazyload } from 'vant';
 //引入rem适配
 // import 'amfe-flexible/index.js';
 // import myCharts from './comm/js/myCharts.js';
-//https://www.cnblogs.com/fqh123/p/11981646.html
+// https://www.cnblogs.com/fqh123/p/11981646.html
 
 filters.forEach((filter: any, index) => {
-	// debugger;
   Vue.filter(filter.name, filter.handler)
 });
    

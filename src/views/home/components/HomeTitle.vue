@@ -54,8 +54,6 @@
 		}
 		public getUserMe(){
 			LoginService.getUserMe().then((res:any) => {
-				console.log(res)
-				
 				if(res.code == 200){
 					this.userData = res.data
 					if(res.data.Flow.Flow == -1){

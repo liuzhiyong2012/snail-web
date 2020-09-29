@@ -96,7 +96,6 @@ export default class FlightSeatMatrix{
 		
 		layoutInfo.sectionArr = sectionArr;
 		layoutInfo.maxSeatLen = this.calcMaxSeatLen(layoutInfo);
-		// debugger;
 		
 		this.layoutInfo = layoutInfo;
 		

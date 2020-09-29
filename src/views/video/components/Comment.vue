@@ -78,7 +78,6 @@ export default class videoComment extends Vue{
         VideoService.getVideoCommentsList({
       videoId: id,
     }).then((res: any) => {
-      console.log(res);
       if (res.code == 200) {
         this.Comments = res.data.Comments;
       }
@@ -104,13 +103,11 @@ export default class videoComment extends Vue{
       Comment: this.Comment,
     };
     VideoService.postVideoComments(data).then((res: any) => {
-      // console.log(res);
       if (res.code == 200) {
         this.Comment= ''
         VideoService.getVideoCommentsList({
           videoId: id,
         }).then((res: any) => {
-          // console.log(res);
           if (res.code == 200) {
             this.Comments = res.data.Comments;
           }

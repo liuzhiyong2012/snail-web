@@ -244,7 +244,6 @@ export default {
 				id:song.id
 		  }).then((res)=>{
 			  if(res.code== '200'){
-				  // debugger;
 				this.likeSong(song.id);
 				this.$toast('收藏歌曲成功!');
 			  }else{
@@ -372,7 +371,6 @@ export default {
     },
     /* 封装歌曲当前播放时间 */
     format(interval) {
-		// debugger;
       interval = interval | 0;
       var min = (interval / 60) | 0;
       var sec = interval % 60;
@@ -420,7 +418,6 @@ export default {
     /* 重新请求key */
     _getVkey(mid) {
       var that = this;
-	  debugger;
       getVkey(mid).then(res => {
         if (res.code === ERR_OK) {
           let vkey = res.data.items[0].vkey;
@@ -536,7 +533,6 @@ export default {
       if (this.currentLyric) {
         this.currentLyric.stop();
       }
-	 /* debugger; */
       this.$nextTick(() => {
 		  this.songUrlData = this.currentSong.url;//||songUrl(val, this.currentSong.mid);
 		  console.log(this.songUrlData);
@@ -544,9 +540,6 @@ export default {
 		  
         // this._getVkey(this.currentSong.mid);
 		//获取歌词
-		/* if(){} */
-		// debugger;
-		debugger;
 		axios( {
 			 method:'get',
 			  url : process.env.VUE_APP_STATIC_URL + '/geci.lrc',
@@ -559,9 +552,7 @@ export default {
 			 
 		  }
 		}).then((res) => {
-			// debugger;
 		  if (res.status == '200') {
-			  // debugger;  
 			   //svar blobReader = new Response(res.data).text();
 			   
 			   /* var blobReader = new Response(res.data).text();
@@ -573,7 +564,6 @@ export default {
 			         }
 			     }); */
 				 //Base64.decode(res.data)||
-				 debugger;
 		  				let lyric = res.data;
 		  				this.currentLyric = new Lyric(lyric, this.handleLyric);
 		  				if (this.playing) {

@@ -71,7 +71,6 @@ export default class ShoppingSearch extends Vue {
   private getShoppingList(value) {
     var data = { name: value };
     ShoppingService.getShoppingList(data).then((res: any) => {
-      console.log(res);
       if(res.code == 200){
           this.searchData = res.data.Dishes
           if(res.data.Dishes.length >0){
