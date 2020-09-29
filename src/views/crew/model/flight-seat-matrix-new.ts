@@ -93,7 +93,6 @@ export default class FlightSeatMatrix{
 			
 			layoutInfo.seatTypeMap[item.seatType][item.id] = item;
 		});
-		// debugger;
 		let sectionArr = {};
 		layoutInfo.seatType.valueArr.forEach((seatType,seatTypeIndex)=>{
 			if(sectionArr[seatType]){
@@ -115,7 +114,6 @@ export default class FlightSeatMatrix{
 			});
 			sectionArr[seatType] = rowArr;
 		});
-		// debugger;
 	}
 	
 	

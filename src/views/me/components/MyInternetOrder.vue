@@ -74,7 +74,6 @@ export default class MyInternetOrder extends Vue {
   }
   public postNetFlowOrder() {
     MeService.postNetFlowOrder().then((res: any) => {
-      console.log(res);
       if(res.code == 200) {
         this.orderList = res.data.Orders
       }

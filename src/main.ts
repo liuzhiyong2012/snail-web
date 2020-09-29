@@ -14,10 +14,8 @@ import VueQrcodeReader from "vue-qrcode-reader";
 //引入rem适配
 // import 'amfe-flexible/index.js';
 // import myCharts from './comm/js/myCharts.js';
-// debugger;
 
 filters.forEach((filter: any, index) => {
-	// debugger;
   Vue.filter(filter.name, filter.handler)
 });
    

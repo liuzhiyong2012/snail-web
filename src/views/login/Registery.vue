@@ -515,10 +515,8 @@ export default class Register extends Vue {
         question: this.question,
         answer: this.answer,
       };
-      // console.log(this.radio);
       LoginService.postUserRegistery(data)
         .then((res: any) => {
-          console.log(res);
           if (res.code == 200) {
             // 存储用户信息
             // 写入成功后，判断是否有座位

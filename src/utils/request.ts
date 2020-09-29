@@ -28,9 +28,7 @@ service.interceptors.request.use(
     const timestamp = new Date().getTime() + ''
     const nonce = StringUtils.randomStr(32)
     const ZCT_SECRET = '21fa6sd1f95w1133edsafas6';
-	//hello world
-	//hello world?
-	//加班
+	
     const encrptString = `${timestamp}.${ZCT_SECRET}.${nonce}`
     const sign = md5(encrptString)
     config.headers = {
@@ -50,13 +48,11 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
   (response:any) => {
-	 // AxiosResponse<ZCTAPI.Res>
-	  // debugger;
+	  // AxiosResponse<ZCTAPI.Res>
     /**
      * TODO: 补充服务端状态码规范
      */
-	//状态编码
-	// debugger;
+	  //状态编码
     if (response.status === 200&&(!response.data.error)&&response.data.code=="200") {
        return response.data;
     } else if(response.status === 200&&(!response.data.error)&&response.data.code=="401"){

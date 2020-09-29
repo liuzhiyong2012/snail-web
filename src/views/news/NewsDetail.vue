@@ -116,7 +116,6 @@ export default class NewsDetailPage extends Vue {
       id: val,
     }).then((res) => {
       if (res.code == 200) {
-        console.log("进行收藏", res);
         this.newsDetail.isCollect = true;
       }
     });
@@ -128,7 +127,6 @@ export default class NewsDetailPage extends Vue {
       id: val,
     }).then((res) => {
       if (res.code == 200) {
-        console.log("取消收藏", res);
         this.newsDetail.isCollect = false;
       }
     });

@@ -61,7 +61,6 @@ export default class HomeNews extends Vue {
   }
   private getNewsRecommended() {
     NewsService.getNewsRecommended().then((res: any) => {
-      // console.log(res);
       if (res.code == 200) {
         this.isHaveData = true
         res.data.RecommendedNews.forEach((item:any) => {

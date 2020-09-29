@@ -312,11 +312,9 @@ export default class CrewCatering extends Vue {
           seatMessageMap[item.UserId] = item;
           // this.messageCount[seatType] = 0;
           let seatType = this.layoutInfo.userSeatTypeMap[item.UserId];
-          // debugger;
           this.messageCount[seatType] =
             this.messageCount[seatType] + item.total;
         });
-        // debugger;
       }
       this.seatMessageMap = seatMessageMap;
     });

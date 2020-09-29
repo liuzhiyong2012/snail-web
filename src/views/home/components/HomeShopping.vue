@@ -67,7 +67,6 @@ export default {
         type: '1'
       }
       ShoppingService.getShoppingList(data).then((res) => {
-        // console.log(res);
         this.shoppingList = res.data.Dishes;
         this.isHaveData = true
       });

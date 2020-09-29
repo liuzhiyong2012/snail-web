@@ -1,6 +1,6 @@
 <template>
 <div  class="registery">
-  <abus-title :title="$t('SeatSelection')" />
+  <abus-title :title="$t('SeatSelection')" backRouteName='backLoginFromSelectSeat' />
   <div>
     <div class="con">
       <div class="main-item">
@@ -96,12 +96,10 @@ export default class SelectSeat extends Vue {
   }
   public getCrmSeatInfo() {
     LoginServer.getCrmSeatInfo().then((res: any) => {
-      console.log(res);
     });
   }
   public getCrmOtherSeatList() {
     LoginServer.getCrmOtherSeatList().then((res: any) => {
-      console.log(res);
       if (res.code == 200) {
         this.columns = res.data.SeatList;
         this.flightData = res.data.Flight;
@@ -125,7 +123,6 @@ export default class SelectSeat extends Vue {
         this.$store.commit('setSeatNumber',this.seat)
         this.$store.commit('setSeatName',this.seat)
         this.$store.commit('setSeatType',this.seatType)
-        console.log(res);
         if (res.code == 200) {
           this.$toast(res.data)
           // user/me

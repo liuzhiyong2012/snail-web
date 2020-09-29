@@ -263,7 +263,23 @@ export default class AbusMap extends Vue {
 		this.map.getView().setCenter(position);
 	}
  
-    
+
+    public updateMarkPosition1(){
+		console.log('更新飞机坐标位置');
+		let flightAltitudes:any = this.flightResData.FlightPaths;
+		
+		if(flightAltitudes&&flightAltitudes.length > 0){
+			let position = flightAltitudes[flightAltitudes.length - 1];
+			let cord = [position.Lng,position.Lat];
+			
+			this.marker.setPosition(cord);
+			this.marker.getElement().style.transform = `rotate(${position.Course - 90}deg)`;
+			this.centerMark(cord);
+		}
+		
+		
+	}
+
 	
 	createGoodStyle() {
 		return new Style({

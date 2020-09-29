@@ -80,7 +80,6 @@ export default class InternetIndex extends Vue{
   }
   public postNetFlowList(){
       NetflowService.postNetFlowList().then((res: any) => {
-        console.log(res)
         if(res.code == 200){
           this.cardList = res.data
         }

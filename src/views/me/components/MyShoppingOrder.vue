@@ -94,7 +94,6 @@ export default class MyShoppingOrder extends Vue {
   }
   public getShoppingOrder() {
     MeService.getShoppingOrder().then((res: any) => {
-      console.log(res);
       if(res.code == 200) {
         this.orderList = res.data.Orders
       }

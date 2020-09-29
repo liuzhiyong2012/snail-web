@@ -50,7 +50,6 @@ export default {
       // VideoService.postVideoList().then(res => {
         // 随机列表
       VideoService.getVideoRecommended().then(res => {
-        // console.log(res);
         // CommentCount: 1
         // CoverImgId: "75840a83-3425-e911-bd22-c4209d3e3b89"
         // CoverImgPath: "http://disk.service.osp.connectivity.aero/429c349d-b44b-415a-ab2b-bbccb499195e"

@@ -86,7 +86,6 @@ export default class MyDishOrder extends Vue {
   }
   public getDishOrder(){
     MeServer.getDishOrder().then((res: any) => {
-      console.log(res)
       if(res.code == 200) {
         this.orderList = res.data.Orders
       }

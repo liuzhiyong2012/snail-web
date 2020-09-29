@@ -83,14 +83,12 @@ export default class MusicTopRanks extends Vue {
   public getMusicTop() {
     MusicService.getMusicTop().then((res: any) => {
       if (res.code == '200') {
-        // debugger;
         this.typeList = res.data.Types;
-		 this.typeList.forEach((item,index)=>{
-			 item.Playlists.forEach((item1,index1)=>{
-				 item1.CoverImgUrl = UrlUtils.addBaseUrl( UrlUtils.delBaseUrl(item1.CoverImgUrl));
-			 });
-		 });
-        // debugger;
+        this.typeList.forEach((item,index)=>{
+          item.Playlists.forEach((item1,index1)=>{
+            item1.CoverImgUrl = UrlUtils.addBaseUrl( UrlUtils.delBaseUrl(item1.CoverImgUrl));
+          });
+        });
       }
     });
   }
