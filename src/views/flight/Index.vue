@@ -235,9 +235,9 @@ export default class FlightIndex extends Vue {
         this.flightInfo = this.flightResData;
 
         this.cameraUrl = {
-          frontCamera: this.flightInfo.Flight.Airplane.FrontVideo,
-          centralCamera: this.flightInfo.Flight.Airplane.MiddleVideo,
-          backCamera: this.flightInfo.Flight.Airplane.RearVideo,
+          frontCamera: this.flightInfo.Flight.BaseInfo.FrontLink ? this.flightInfo.Flight.BaseInfo.FrontLink : this.flightInfo.Flight.BaseInfo.FrontVideo,
+          centralCamera: this.flightInfo.Flight.BaseInfo.MiddleLink ? this.flightInfo.Flight.BaseInfo.MiddleLink : this.flightInfo.Flight.BaseInfo.MiddleVideo,
+          backCamera: this.flightInfo.Flight.BaseInfo.RearLink ? this.flightInfo.Flight.BaseInfo.RearLink : this.flightInfo.Flight.BaseInfo.RearVideo,
         };
 
         this.renderCharts();

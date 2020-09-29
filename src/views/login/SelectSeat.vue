@@ -17,7 +17,7 @@
           readonly="readonly"
           :placeholder="$t('SeatTips')"
         />
-        <van-popup v-model="showIssues" position="bottom" :style="{ height: '30%' }">
+        <van-popup v-model="showIssues" position="bottom" :style="{ height: '36%' }">
           <van-picker
             show-toolbar
             :columns="columnsName"
@@ -69,6 +69,7 @@ import AbusTitle from '../../components/AbusTitle.vue'
 export default class SelectSeat extends Vue {
   private seat: string = "";
   private seatId: string = "";
+  private seatType: number = null;
   private showIssues: boolean = false;
   private columns: Array<any> = [];
   private flightData: any = {};
@@ -114,13 +115,16 @@ export default class SelectSeat extends Vue {
     this.columns.forEach((item: any, index: any) => {
       if (item.Name == this.seat) {
         this.seatId = item.Id;
+        this.seatType = item.SeatType;
         return;
       }
     });
     if (this.seatId != "") {
       LoginServer.getCrmSelectSeat(this.seatId).then((res: any) => {
-        this.$store.commit('setSeatNumber',this.seatId)
+        // this.$store.commit('setSeatNumber',this.seatId)
+        this.$store.commit('setSeatNumber',this.seat)
         this.$store.commit('setSeatName',this.seat)
+        this.$store.commit('setSeatType',this.seatType)
         console.log(res);
         if (res.code == 200) {
           this.$toast(res.data)

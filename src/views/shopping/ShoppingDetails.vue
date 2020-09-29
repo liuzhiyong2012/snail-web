@@ -7,7 +7,7 @@
       <!-- <banner :bannerData="bannerData" /> -->
       <!-- <div class="dish-img" :style="{backgroundImage:`url(${shoppingInfo.BannerImgPath})`}"></div> -->
       <div class="dish-img" >
-        <img :src="shoppingInfo.BannerImgPath|addBaseUrl" alt="">
+        <img :src="shoppingInfo.SampleImgPath|addBaseUrl" alt="">
       </div>
     </div>
     <div class="m-box">
@@ -18,7 +18,7 @@
           <div class="price">${{shoppingInfo.Price || 0}}</div>
           <van-field class="field-ctn" name="stepper" label>
             <template #input>
-              <van-stepper v-model="stepper" />
+              <van-stepper v-model="stepper" integer disable-input :max="shoppingInfo.Stocking" />
             </template>
           </van-field>
         </div>
@@ -102,7 +102,7 @@ export default class ShoppingDetail extends Vue {
     }
     // this.$store.commit("setShoppingDetail", this.$route.params.shoppingInfo);
     // this.shoppingInfo = this.$route.params.shoppingInfo;
-    this.id = this.$route.params.id
+    this.id = this.$route.query.id
     this.getShoppingDetail()
     // this.shoppingInfo.BannerImgPath = UrlUtils.addBaseUrl( UrlUtils.delBaseUrl(this.shoppingInfo.BannerImgPath));
   }
@@ -123,6 +123,7 @@ export default class ShoppingDetail extends Vue {
     ShoppingService.getShoppingDetail({
 			id:this.id
 		}).then((res:any)=>{
+      console.log(this.id)
 			if(res.code == '200'){
 				 this.shoppingInfo = res.data;
 				 this.shoppingInfo.orderNumber = 1;
@@ -134,20 +135,38 @@ export default class ShoppingDetail extends Vue {
 		});
   }
   public addToCart(): void {
-    this.$store.commit("addShoppingCartItem", this.shoppingInfo);
-    this.$toast(this.$i18n.t('success'));
+    if(this.shoppingInfo.Stocking===0){
+      return this.showToast()
+    }else{
+      this.$store.commit("addShoppingCartItem", this.shoppingInfo);
+      this.$toast(this.$i18n.t('success'));
+    }
+    
   }
 
   public buyNow(): void {
     // this.$toast('购买成功!');
-    this.$store.commit("addShoppingCartItemRouter", this.shoppingInfo);
-    this.stepToCart()
+    if(this.shoppingInfo.Stocking===0){
+      return this.showToast()
+    }else{
+      this.$store.commit("addShoppingCartItemRouter", this.shoppingInfo);
+      this.stepToCart()
+    }
+    
   }
 
   public stepToCart():void{
 		this.$router.push({
 			name:'shoppingCart'
 		});
+  }
+  
+  private showToast(){
+		if (localStorage.getItem("lang") == "en") {
+			this.$toast('Stockout!')
+		} else {
+			this.$toast('暂时缺货')
+		}
 	}
 }
 </script>
@@ -191,7 +210,8 @@ export default class ShoppingDetail extends Vue {
     line-height: 0.58rem;
     .qty {
       font-size: 0.28rem;
-      color: rgba(96, 116, 153, 1);
+      // color: rgba(96, 116, 153, 1);
+      color: rgba(51, 51, 51, 1);
     }
     .f1 {
       flex: 1;

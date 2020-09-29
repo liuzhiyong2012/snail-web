@@ -4,14 +4,14 @@
     <van-search v-model="value"  :placeholder="$t('Search')" @search="getShoppingList"/>
     <div v-if="haveList" class="goods-box">
       <div class="goods-item" v-for="(item,i) in searchData" :key="i">
-        <div class="goods" v-if="item.QTY != 0">
+        <div class="goods" v-if="item.Stocking != 0">
           <div class="goods-img" @click="stepToDetail(item)">
             <img :src="item.SampleImgPath|addBaseUrl" :alt="item.Name" />
           </div>
           <div class="price">${{item.Price}}</div>
           <div class="name">{{item.Name}}</div>
           <div class="qty">
-            {{$t('QTY')}} {{item.QTY}}
+            {{$t('QTY')}} {{item.Stocking || '--'}}
             <span class="buy" @click="stepToDetail(item)">{{$t('Buy')}}</span>
           </div>
         </div>
@@ -88,8 +88,8 @@ export default class ShoppingSearch extends Vue {
   private stepToDetail(item: any) {
     this.$router.push({
       name: "shoppingDetails",
-      params: {
-        shoppingInfo: item,
+      query: {
+        id: item.Id,
       },
     });
   }

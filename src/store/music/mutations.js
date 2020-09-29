@@ -46,6 +46,7 @@ const mutations = {
     state.favoriteList = list;
   },
   setLikeSet(state,list){
+
 	  let likeSet = {};
 	  list.forEach((item,index)=>{
 		  if(item.isLike){

@@ -273,7 +273,7 @@ div.olControlZoom {
 }
 
 #geo-marker {
-	border: 1px solid #ffffff;
+	// border: 1px solid #ffffff;
 	border-radius: 50%;
 	width: 0.36rem;
 	height: 0.36rem;

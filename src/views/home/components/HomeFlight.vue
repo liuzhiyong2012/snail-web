@@ -281,7 +281,8 @@ export default class HomeFlight extends Vue {
       box-sizing: border-box;
 
       .place {
-        font-size: 0.3rem;
+        // font-size: 0.3rem;
+        font-size: 0.28rem;
         font-weight: bold;
         color: rgba(46, 46, 46, 1);
         line-height: 0.36rem;

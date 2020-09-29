@@ -20,14 +20,14 @@
         <!-- <van-icon class="wap-menu" name="wap-nav" size="24" /> -->
         <div v-if="isFilter" @click="clickIsFilter">
           Price
-          <svg class="icon i-icon" aria-hidden="true">
-            <use xlink:href="#icon-select_1" />
+          <svg class="icon i-icon icon-size" aria-hidden="true">
+            <use xlink:href="#icon-priceCopy2" />
           </svg>
         </div>
         <div v-else @click="clickIsFilter">
           Price
-          <svg class="icon i-icon icon-up" aria-hidden="true">
-            <use xlink:href="#icon-select_1" />
+          <svg class="icon i-icon icon-size" aria-hidden="true">
+            <use xlink:href="#icon-priceCopy" />
           </svg>
         </div>
       </div>
@@ -91,7 +91,7 @@
 
           <div class="goods-box">
             <div class="goods-item" v-for="(item,i) in options1[index].data" :key="i">
-              <div class="goods" v-if="item.QTY != 0">
+              <div class="goods" v-if="item.Stocking != 0">
                 <div class="goods-img" @click="stepToDetail(item)">
                   <img :src="item.SampleImgPath|addBaseUrl" :alt="item.Name" />
                 </div>
@@ -162,6 +162,7 @@ export default class ShoppingIndex extends Vue {
   private shoppingList: Array<any> = [];
   private options1: Array<any> = [];
   private tapIndex: any = "1";
+  private categoryId: any = ''
   private isActive: boolean = false;
   private isShowMenu: boolean = true;
   private isNewest: boolean = false;
@@ -207,6 +208,7 @@ export default class ShoppingIndex extends Vue {
       // category: "珠宝首饰"
       if (res.code == 200) {
         this.options1 = res.data;
+        this.categoryId = this.options1[0].Id
         this.getShoppingList();
       }
     });
@@ -233,16 +235,24 @@ export default class ShoppingIndex extends Vue {
 
   // 首次获取
   private getShoppingList() {
-    // var data = { category: "1" };
-    var data = { Category: "1" };
+    var data = { category: this.categoryId };
+    // var data = { Category: "1" };
     ShoppingService.getShoppingList(data).then((res: any) => {
       Vue.set(this.options1[0], "data", res.data.Dishes);
     });
   }
   // 点击Tap切换获取
   private getGoodsList(name: any, title: any) {
-    console.log(name)
-    this.tapIndex = name;
+    
+    this.tapIndex = 0
+    for(let i = 0; i<this.options1.length; i++){
+      if(this.options1[i].Id == name){
+        break;
+      }
+      this.tapIndex += 1
+    }
+    
+    this.categoryId = name
     this.getShoppingListFilter();
   }
   // 获取筛选后列表
@@ -250,11 +260,10 @@ export default class ShoppingIndex extends Vue {
     var data = {
       orderName: this.filterInfo,
       orderFlag: this.isFilter ? this.listDesc : this.listAsc,
-      category: this.tapIndex,
+      category: this.categoryId,
     };
-
     ShoppingService.getShoppingList(data).then((res: any) => {
-      Vue.set(this.options1[this.tapIndex - 1], "data", res.data.Dishes);
+      Vue.set(this.options1[this.tapIndex], "data", res.data.Dishes);
     });
   }
   // 点击跳转详情页
@@ -321,7 +330,10 @@ export default class ShoppingIndex extends Vue {
   width: 0.4rem !important;
   height: 0.4rem !important;
 }
-
+.icon-size{
+  width: .3rem;
+  height: .3rem;
+}
 .menu {
   box-sizing: border-box;
   // padding: 10px 0;

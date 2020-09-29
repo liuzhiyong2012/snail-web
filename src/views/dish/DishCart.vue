@@ -198,9 +198,9 @@ private get seatType():number{
       .then((res: any) => {
         if (res.code == 200) {
           if (localStorage.getItem("lang") == "en") {
-            return this.$toast("Success");
+             this.$toast("Success");
           } else {
-            return this.$toast("下单成功!");
+             this.$toast("下单成功!");
           }
            this.$store.commit("clearDishCart"); //clearDishCart();
             this.$router.push({

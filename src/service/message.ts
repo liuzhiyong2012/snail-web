@@ -58,6 +58,6 @@ export default class MessageService {
       data: data,
     });
   }
-
+  
 
 }

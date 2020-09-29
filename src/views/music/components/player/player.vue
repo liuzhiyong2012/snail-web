@@ -62,7 +62,7 @@
 				
 				<div class="icon-ctn">
 					<i v-if="!likeSet[currentSong.id]" class="icon icon-collect-undo" @click="collectSong(currentSong)"></i>
-					<i v-if="likeSet[currentSong.id]" class="icon icon-collect" @click="unCollectSong(currentSong)"></i>
+					<i v-if="likeSet[currentSong.id]" class="icon icon-collect" style="color:red;" @click="unCollectSong(currentSong)"></i>
 				</div>
 				
 				<div class="icon-ctn play-ctn" @click="togglePlaying">

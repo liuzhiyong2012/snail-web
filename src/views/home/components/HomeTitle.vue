@@ -7,7 +7,7 @@
 				<use xlink:href="#icon-scan"></use>
 			</svg>
 			<span v-if="!isVip" class="flow-ctn" @click="stepTo('internet')">
-				{{(userData.Flow.flow/1024) + 'GB' || '0GB'}}
+				{{((userData.Flow.Flow-userData.Flow.Used)/1024) + 'GB' || '0GB'}}
 			</span>
 			<span v-else class="flow-ctn" @click="stepTo('internet')">
 				VIP
@@ -58,12 +58,13 @@
 				
 				if(res.code == 200){
 					this.userData = res.data
-					if(res.data.Flow.flow == -1){
+					if(res.data.Flow.Flow == -1){
 						this.isVip = true
 					}else{
 						this.isVip = false
 					}
 					this.$store.commit("setSeatNumber", res.data.Seat.Name);
+					
 				}else{
 					this.$toast(res.message)
 				}
