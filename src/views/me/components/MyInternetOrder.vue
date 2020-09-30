@@ -5,6 +5,7 @@
         <div class="top">
           <div class="title">{{item.FlightNumber}}</div>
           <!-- <div class="status">processing</div> -->
+          <div class="status">{{$t('Complete')}}</div>
         </div>
         <div class="con">
           <div class="text">{{item.Departure}}</div>
@@ -47,11 +48,13 @@
 	{
 		"zh":{
 			"title":"机上购物",
-      "TotalAmount":"总金额"
+      "TotalAmount":"总金额",
+      "Complete":"完成"
 		},
 		"en":{
 			"title":"Shopping",
-      "TotalAmount":"Total amount"
+      "TotalAmount":"Total amount",
+      "Complete":"Complete"
 		}
 	}
 </i18n>

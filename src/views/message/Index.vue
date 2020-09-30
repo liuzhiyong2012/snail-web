@@ -101,15 +101,13 @@
 			"chat":"聊天",
       "message":"消息",
       "Send":"发送",
-      "toast1":"请输入内容",
-      "QTY":"剩余量"
+      "toast1":"请输入内容"
 		},
 		"en":{
 			"chat":"chat",
       "message":"message",
       "Send":"Send",
-      "toast1":"Please enter the content",
-      "QTY":"QTY"
+      "toast1":"Please enter the content"
 		}
 	}
 </i18n>
@@ -162,19 +160,7 @@ export default class messageIndex extends Vue {
   }
   
   private created() {
-	  let THIS = this;
-  	this.unloadHandler = (e)=>{
-  		THIS.socket&&THIS.socket.close&&THIS.socket.close();
-      THIS.socket&&THIS.socket.destroy&&THIS.socket.destroy();
-      THIS.socket = null;
-		 //e = window.event||e;
-		//e.returnValue=('确定离开当前网站吗?');
-  	};
-  	window.addEventListener('beforeunload',this.unloadHandler);
-	
     this.uInfo = localStore.get('userInfo');
-	
-    this.initWebSocket();
     if (localStorage.getItem('lang') == 'en') {
       this.$i18n.locale = 'en';
     } else {
@@ -182,6 +168,18 @@ export default class messageIndex extends Vue {
     }
   }
   private mounted() {
+    let THIS = this;
+  	this.unloadHandler = (e)=>{
+      THIS.socket&&THIS.socket.close&&THIS.socket.close();
+      THIS.socket&&THIS.socket.destroy&&THIS.socket.destroy();
+      THIS.socket = null;
+		  //e = window.event||e;
+		  //e.returnValue=('确定离开当前网站吗?');
+  	};
+    window.addEventListener('beforeunload', this.unloadHandler);
+
+    this.initWebSocket();
+
     this.getChatMessage(); // 获取聊天记录
     this.getSysNoticeList(); //获取系统通知列表
   }
@@ -193,12 +191,10 @@ export default class messageIndex extends Vue {
   }
 
   private beforeDestroy() {
-    // if(this.socket){
-     window.removeEventListener('beforeunload',this.unloadHandler);
-      this.socket.close&&this.socket.close();
-      this.socket.destroy&&this.socket.destroy();
-      this.socket = null;
-    // }
+    window.removeEventListener('beforeunload', this.unloadHandler);
+    this.socket.close&&this.socket.close();
+    this.socket.destroy&&this.socket.destroy();
+    this.socket = null;
     this.changeNoticeStatus();
   }
 
@@ -240,28 +236,29 @@ export default class messageIndex extends Vue {
     // _this.socket =  (window as any).io('http://172.16.8.69:2120');
     // _this.socket =  (window as any).io('http://kf.vpclub.cn/airbus/websocket');
     // _this.socket = io(process.env.VUE_APP_SOCKET_HOST,{path:''||process.env.VUE_APP_SOCKET_URL});
-	 //_this.socket = io(process.env.VUE_APP_SOCKET_HOST,{path:''});
+	  //_this.socket = io(process.env.VUE_APP_SOCKET_HOST,{path:''});
 	 
 	  const opt = {
-      path:process.env.VUE_APP_SOCKET_URL
+      path: process.env.VUE_APP_SOCKET_URL
     };
-	 _this.socket = io(process.env.VUE_APP_SOCKET_HOST,opt);
+	  _this.socket = io(process.env.VUE_APP_SOCKET_HOST, opt);
 
     // uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
     let uid = _this.uInfo.id.trim();
  
     // socket连接后以uid登录
     _this.socket.on('connect', function () {
-    	console.log('login:',uid.trim());
+    	console.log('chat:connect',uid.trim());
       _this.socket.emit('login', uid);
     });
     // 后端推送来消息时
     _this.socket.on('new_msg', (msg: any) => {
-    	console.log('收到消息：index');
+    	console.log('chat: new_msg');
       let midMsg = msg.replace(/&quot;/g, '"');
       let endMsg = JSON.parse(midMsg);
       // {type: "message", content: "Your netFlow order has been completed", mark: "你的流量套餐订单已完成"}
       if (endMsg.type == 'system') {
+        console.log('chat: new_msg-system');
         // 系统通知
         // _this.systemMsgList.unshift({
         //   CreatedAt: '',
@@ -275,6 +272,7 @@ export default class messageIndex extends Vue {
         _this.getSysNoticeList();
       } else if (endMsg.type == 'message') {
         // 聊天
+        console.log('chat: new_msg-chat');
         if(this.userInfo.id != endMsg.from_user_id){
           // _this.chatList.push({
           //   id: '', //消息id
@@ -322,7 +320,7 @@ export default class messageIndex extends Vue {
     let messageList: Array<any> = [];
     MessageService.getUserMessage({ read: 1 }).then((resRead) => {
       if (resRead.code == 200) {
-        console.log('聊天记录', resRead);
+        // console.log('聊天记录', resRead);
         resRead.data = resRead.data.reverse();
         _this.chatList = [...messageList, ...resRead.data];
         MessageService.getUserMessage({read: 0}).then(resUnread=>{

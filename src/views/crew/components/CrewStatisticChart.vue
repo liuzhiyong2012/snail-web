@@ -145,7 +145,7 @@ export default class CrewStatisticChart extends Vue {
         textStyle: {
           //图例文字的样式
           color: "#fff", //文字颜色
-          fontSize: 20, //文字大小
+          fontSize: 25, //文字大小
         },
       },
       graphic: [
@@ -156,7 +156,7 @@ export default class CrewStatisticChart extends Vue {
           style: {
             text: total.toFixed(2),
             fill: "#A6A8B6",
-            fontSize: 20,
+            fontSize: 30,
             fontWeight: "normal",
           },
         },
@@ -167,7 +167,7 @@ export default class CrewStatisticChart extends Vue {
           style: {
             text: "Total Revenuea",
             fill: "#A6A8B6",
-            fontSize: 12,
+            fontSize: 30,
             fontWeight: "normal",
           },
         },
@@ -180,7 +180,8 @@ export default class CrewStatisticChart extends Vue {
         selectedMode: true, //图例在垂直方向上面显示居中
         /* orient: 'vertical', */
         /*  x : 'right',   //图例显示在右边
-			                     y: 'center',  */ bottom: 0,
+        y: 'center',  */ 
+        bottom: 0,
         itemWidth: 10, //图例标记的图形宽度
         itemHeight: 10, //图例标记的图形高度
         data: ["基本工资", "福利奖金", "出差补贴", "交补话补", "岗位工资"],
@@ -195,9 +196,10 @@ export default class CrewStatisticChart extends Vue {
           name: "占比图", //代表a的值，系列名称
           type: "pie",
           center: ["50%", "45%"], //饼图的中心（圆心）坐标，数组的第一项是横坐标，第二项是纵坐标。
-          radius: ["45%", "60%"], //饼图的半径，数组的第一项是内半径，第二项是外半径。[ default: [0, '75%'] ]
+          radius: ["65%", "80%"], //饼图的半径，数组的第一项是内半径，第二项是外半径。[ default: [0, '75%'] ]
           avoidLabelOverlap: false, //是否禁用动画效果
-          /*  animation: false, */ label: {
+          /*  animation: false, */ 
+          label: {
             normal: {
               show: false, //是否显示标签
               //// 标签的位置。'outside'饼图扇区外侧，通过视觉引导线连到相应的扇区。'inside','inner' 同 'inside',饼图扇区内部。'center'在饼图中心位置。

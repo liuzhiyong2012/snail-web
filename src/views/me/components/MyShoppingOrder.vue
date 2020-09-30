@@ -57,7 +57,7 @@
       "TotalAmount":"总金额",
       "TotalPoints":"总积分",
       "Undetermined":"待定",
-      "Making":"制作中",
+      "Making":"处理中",
       "Packing":"打包中",
       "Delivery":"派送",
       "Complete":"完成",

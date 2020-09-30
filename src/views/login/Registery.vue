@@ -1,6 +1,6 @@
 <template>
   <div>
-    <abus-title :title="$t('Registery')" />
+    <abus-title :title="$t('Registery')" @stepTo="setUserDataNull()" />
     <div class="registery">
       <div class="con">
         <div class="main-item">
@@ -73,6 +73,7 @@
             type="number"
             maxlength="20"
             @change="setPhone"
+            oninput="value=value.replace(/[^\d.]/g,'')"
             @keydown="getUserPhoneLength"
             :placeholder="$t('PhoneTips')"
           />
@@ -134,8 +135,9 @@
           <input
             class="main-item-con"
             @click="showPopup"
-            :value="datetime"
+            :value="birthday"
             type="text"
+            @change="setBirthday"
             readonly="readonly"
             :placeholder="$t('DateTips')"
           />
@@ -155,6 +157,7 @@
               :title="$t('Date')"
               :min-date="minDate"
               :max-date="maxDate"
+              @cancel="show = false"
               @confirm="getConfirmData"
               :cancel-button-text="$t('Cancel')"
               :confirm-button-text="$t('Determine')"
@@ -193,6 +196,7 @@
             v-model="answer"
             class="main-item-con"
             type="text"
+            @change="setAnswer"
             :placeholder="$t('AnswerTips')"
           />
         </div>
@@ -368,6 +372,10 @@ export default class Register extends Vue {
     this.getIdCard();
     this.getConfirmPassword();
     this.getPassword();
+    this.getBirthday();
+    this.getQuestion();
+    this.getAnswer();
+    
   }
   public setUserDataNull() {
     localStore.set("nickName", "");
@@ -376,6 +384,9 @@ export default class Register extends Vue {
     localStore.set("idCard", "");
     localStore.set("uPassword", "");
     localStore.set("confirmPassword", "");
+    localStore.set("birthday", "");
+    localStore.set("question", "");
+    localStore.set("answer", "");
   }
   public setNickName(e) {
     this.nickname = e.target.value;
@@ -433,6 +444,35 @@ export default class Register extends Vue {
       this.confirmPassword = localStore.get("confirmPassword");
     }
   }
+
+  public setBirthday(e) {
+    localStore.set("birthday",e);
+  }
+  public getBirthday() {
+    if (localStore.get("birthday") != "") {
+      this.birthday = localStore.get("birthday");
+    }
+  }
+  public setQuestion(e) {
+    this.question = e;
+    localStore.set("question", this.question);
+  }
+  public getQuestion() {
+    if (localStore.get("question") != "") {
+      this.question = localStore.get("question");
+    }
+  }
+  public setAnswer(e) {
+    this.answer = e.target.value;
+    localStore.set("answer", e.target.value);
+  }
+  public getAnswer() {
+    if (localStore.get("answer") != "") {
+      this.answer = localStore.get("answer");
+    }
+  }
+
+
   public getUserPhoneLength(e: any) {
     if (e.target.value.length >= 11 && e.keyCode != 8) {
       this.$toast(this.$i18n.t("toast1"));
@@ -461,6 +501,7 @@ export default class Register extends Vue {
   public onConfirm(value: any) {
     this.question = value;
     this.showIssues = false;
+    this.setQuestion(value);
   }
   public onClickRead() {
     this.isReaded = !this.isReaded;
@@ -470,14 +511,16 @@ export default class Register extends Vue {
     this.currentDate = val;
     this.datetime =
       val.getFullYear() + "-" + (val.getMonth() + 1) + "-" + val.getDate();
-    this.birthday =
-      this.datetime +
-      " " +
-      val.getHours() +
-      ":" +
-      val.getMinutes() +
-      ":" +
-      val.getSeconds();
+    // this.birthday =
+    //   this.datetime +
+    //   " " +
+    //   val.getHours() +
+    //   ":" +
+    //   val.getMinutes() +
+    //   ":" +
+    //   val.getSeconds();
+    this.birthday = this.datetime
+    this.setBirthday(this.birthday)
     return val;
   }
   public checkUserPassword(e: any) {

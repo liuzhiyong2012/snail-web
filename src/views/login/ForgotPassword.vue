@@ -27,6 +27,7 @@
             <!-- @change="getPhoneNum($event)" -->
             <input 
             class="flex1" 
+            oninput="value=value.replace(/[^\d.]/g,'')"
             :placeholder="$t('PhoneTips')" 
             @keydown="getUserPhoneLength"
             v-model="phone" 

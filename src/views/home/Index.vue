@@ -49,12 +49,10 @@
         </div>
         <div class="con">
           We have updated our
-          <span class="txt">privacy policy</span>
+          <span class="txt" @click="">privacy policy</span>
           to comply with the latest laws and regulations. The updated policy
           explains the mechanism of how we collect and treat your personal data.
-          <span
-            class="txt"
-          >tems of service</span>
+          <span class="txt" @click="">tems of service</span>
           You can learn more about the rights you have by reading our .Please
           read them carefully.By clicking AGREE,you indicate that you have read
           and agreed to our privacy policies.
@@ -189,6 +187,7 @@ export default class Home extends Vue {
   private showRedPoint: boolean = false;
   private uInfo: any = {};
   private socket: any = null;
+  private unloadHandler: any = null;
 
   private created() {
     clearTimeout();
@@ -253,7 +252,18 @@ export default class Home extends Vue {
   }
 
   private mounted() {
+    let THIS = this;
+  	this.unloadHandler = (e)=>{
+  		THIS.socket&&THIS.socket.close&&THIS.socket.close();
+      THIS.socket&&THIS.socket.destroy&&THIS.socket.destroy();
+      THIS.socket = null;
+		  //e = window.event||e;
+		  //e.returnValue=('确定离开当前网站吗?');
+    };
+    window.addEventListener('beforeunload', this.unloadHandler);
+    
     this.initWebSocket();
+    
     this.getChatUnread({ read: 0 });
     this.getNoticeUnread({ read: 0 });
     if (localStorage.getItem('lang') == 'en') {
@@ -263,7 +273,9 @@ export default class Home extends Vue {
     }
   }
   private beforeDestroy() {
-    this.socket&&this.socket.close();
+    window.removeEventListener('beforeunload', this.unloadHandler);
+    this.socket.close&&this.socket.close();
+    this.socket.destroy&&this.socket.destroy();
     this.socket = null;
   }
 
@@ -298,11 +310,11 @@ export default class Home extends Vue {
     // _this.socket =  (window as any).io("http://172.16.8.69:2120");
     // _this.socket =  (window as any).io("http://kf.vpclub.cn/airbus/websocket");
     const opt = {
-      path:process.env.VUE_APP_SOCKET_URL
+      path: process.env.VUE_APP_SOCKET_URL
     };
-    _this.socket = io(process.env.VUE_APP_SOCKET_HOST,opt);
+    _this.socket = io( process.env.VUE_APP_SOCKET_HOST, opt);
     // uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
-    let uid = _this.uInfo.id;
+    let uid = _this.uInfo.id.trim();
     
     // socket连接后以uid登录
     _this.socket.on('connect', function () {
@@ -311,7 +323,7 @@ export default class Home extends Vue {
     });
     // 后端推送来消息时
     _this.socket.on('new_msg', (msg: any) => {
-    		console.log('home new_msg');
+    	console.log('home new_msg');
       let midMsg = msg.replace(/&quot;/g, '"');
       let endMsg = JSON.parse(midMsg);
       if (endMsg.type == 'system') {

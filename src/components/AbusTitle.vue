@@ -44,6 +44,7 @@
 		}})
 		private params?:object;
 		public back():void {
+			this.backFun();
 			if(!this.backRouteName){
 				this.$router.go(-1);
 			}else{
@@ -58,6 +59,10 @@
 				}
 				
 			}
+		}
+
+		public backFun():void {
+			this.$emit('stepTo');
 		}
 		
 	}

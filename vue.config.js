@@ -3,7 +3,7 @@ const autoprefixer = require('autoprefixer');
 const pxtorem = require('postcss-pxtorem');
   
 const baseUrl = '/';
- const vConsolePlugin = require('vconsole-webpack-plugin');
+const vConsolePlugin = require('vconsole-webpack-plugin');
 module.exports = {
 	pages: {//配置多页面入口        
 	      crew: {          
