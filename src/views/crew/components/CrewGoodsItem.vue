@@ -60,6 +60,7 @@ export default class CrewGoodsItem extends Vue {
 	overflow: hidden;
 	border: rem(4px) solid rgba(175, 213, 253, 1);
 	margin-bottom: rem(40px);
+	margin-right: 0.4rem;
 
 	.img-ctn {
 		position: absolute;
