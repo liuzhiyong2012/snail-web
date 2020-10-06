@@ -20,11 +20,12 @@
 			   <h1 v-if="currentShow != 'lyric'" class="title-sing-name" v-html="currentSong.name"></h1>
 			   <h1 v-if="currentShow != 'lyric'" class="title-singer" v-html="currentSong.singer"></h1>
 		  </div>
+		  
           <p :class="playImgTxt" class="cd-lyric">
             {{playingLyric}}
           </p>
 	
-          <scroll class="middle-r middleTime" ref="lyricList" :data="currentLyric && currentLyric.lines">
+          <scroll  class="middle-r middleTime" ref="lyricList" :data="currentLyric && currentLyric.lines">
             <div class="lyric-wrapper">
               <div v-if="currentLyric">
                 <p ref="lyricLine" class="text" :class="{'current': currentLineNum ===index}" v-for="(line, index) in currentLyric.lines" :key="index">{{line.txt}}</p>
@@ -449,6 +450,9 @@ export default {
     },
     /* 旋转头像歌词左右滑动 */
     middleTouchStart(e) {
+		if((!this.currentSong)||(!this.currentSong.lyricUrl)){
+			return;
+		}
       this.touch.initiated = true;
       // 用来判断是否是一次移动
       this.touch.moved = false;
@@ -457,6 +461,9 @@ export default {
       this.touch.startY = touch.pageY;
     },
     middleTouchMove(e) {
+		if((!this.currentSong)||(!this.currentSong.lyricUrl)){
+			return;
+		}
       if (!this.touch.initiated) {
         return;
       }
@@ -488,6 +495,9 @@ export default {
       }
     },
     middleTouchEnd() {
+		if((!this.currentSong)||(!this.currentSong.lyricUrl)){
+			return;
+		}
       if (!this.touch.moved) {
         return;
       }
@@ -495,7 +505,7 @@ export default {
         this.$refs.lyricList.$el.style.transform = 'translate3d(0px,0,0)';
         this.currentShow = 'lyric';
       } else {
-        this.$refs.lyricList.$el.style.transform = 'translate3d(375px,0,0)';
+        this.$refs.lyricList.$el.style.transform = 'translate3d(7.50rem,0,0)';
         this.currentShow = 'cd';
       }
     },
@@ -538,45 +548,50 @@ export default {
 		  console.log(this.songUrlData);
 		  this.songPlay();
 		  
-        // this._getVkey(this.currentSong.mid);
-		//获取歌词
-		axios( {
-			 method:'get',
-			  url : process.env.VUE_APP_STATIC_URL + '/geci.lrc',
-			  // responseType: 'blob',
-			 headers: {
-			   'Content-Type': 'text/plain;charset=utf-8'
-			 },
-		  // headers:{'filename':'utf-8'},
-		  params: {
-			 
-		  }
-		}).then((res) => {
-		  if (res.status == '200') {
-			   //svar blobReader = new Response(res.data).text();
-			   
-			   /* var blobReader = new Response(res.data).text();
-			     blobReader.then(res => {
-			         let responObj = JSON.parse(res);
-			   
-			         if( responObj.code !== 0){
-			             reject(responObj.message);
-			         }
-			     }); */
-				 //Base64.decode(res.data)||
-		  				let lyric = res.data;
-		  				this.currentLyric = new Lyric(lyric, this.handleLyric);
-		  				if (this.playing) {
-		  				  // 如果此时正在播放则歌词也开始播放
-		  				  this.currentLyric.play();
-		  				}
-		  } else {
-		  				console.log('player组件 Lyric请求错误');
-		  				this.currentLyric = null;
-		  				this.playingLyric = '';
-		  				this.currentLineNum = 0;
-		  }
-		});
+       if(this.currentSong.lyricUrl){
+		   axios( {
+		   	 method:'get',
+		   	  url : process.env.VUE_APP_STATIC_URL + '/' + this.currentSong.lyricUrl,
+		   	  // responseType: 'blob',
+		   	 headers: {
+		   	   'Content-Type': 'text/plain;charset=utf-8'
+		   	 },
+		     // headers:{'filename':'utf-8'},
+		     params: {
+		   	 
+		     }
+		   }).then((res) => {
+		     if (res.status == '200') {
+		   	   //svar blobReader = new Response(res.data).text();
+		   	   
+		   	   /* var blobReader = new Response(res.data).text();
+		   	     blobReader.then(res => {
+		   	         let responObj = JSON.parse(res);
+		   	   
+		   	         if( responObj.code !== 0){
+		   	             reject(responObj.message);
+		   	         }
+		   	     }); */
+		   		 //Base64.decode(res.data)||
+		     				let lyric = res.data;
+		     				this.currentLyric = new Lyric(lyric, this.handleLyric);
+		     				if (this.playing) {
+		     				  // 如果此时正在播放则歌词也开始播放
+		     				  this.currentLyric.play();
+		     				}
+		     } else {
+		     				console.log('player组件 Lyric请求错误');
+		     				this.currentLyric = null;
+		     				this.playingLyric = '';
+		     				this.currentLineNum = 0;
+		     }
+		   });
+	   }else{
+		   this.currentLyric = null;
+		   this.playingLyric = '';
+		   this.currentLineNum = 0;
+	   }
+		
 		
 			/* getLyric(this.currentSong.mid).then(res => {
 			  this.currentLyric = null;
