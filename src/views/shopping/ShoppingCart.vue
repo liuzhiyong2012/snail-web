@@ -19,7 +19,7 @@
       <div class="price">${{item.Price}}</div>
       <van-field class="field-ctn" name="stepper" label>
         <template #input>
-          <van-stepper v-model="item.orderNumber" @change="chengeStepper" />
+          <van-stepper v-model="item.orderNumber" @change="chengeStepper" :max="item.Stocking" />
         </template>
       </van-field>
     </van-swipe-cell>

@@ -1,6 +1,6 @@
 <template>
   <div class="abus-height">
-      <abus-title :title="$t('Comments')" backRouteName="videoPlay" :params="params"></abus-title>
+      <abus-title :title="$t('Comments')" :backRouteName="[isLikePlay?'likePlay':'videoPlay']" :params="params"></abus-title>
     <div class="comment-mask">
       
       <div class="comment-list">
@@ -58,6 +58,7 @@ export default class videoComment extends Vue{
     private videoListIndex: any = ''
     private Comments: Array<any> = []
     private Comment: any = ''
+    private isLikePlay: Boolean = false
     private params: Object = {}
     
     private mounted() {
@@ -72,6 +73,9 @@ export default class videoComment extends Vue{
         console.log(this.$route.params.videoListIndex)
         this.params = {
             index:this.$route.params.videoListIndex
+        }
+        if(this.$route.params.type == 'likePlay'){
+          this.isLikePlay = true
         }
     }
     public getVideoCommentsList(id:any){

@@ -27,7 +27,7 @@
           <div class="top-ctn">
             <span>{{ item.Name }}</span>
             <span class="dot"></span>
-            <span>{{ item.getMoney }}</span>
+            <span>${{ item.getMoney }}</span>
           </div>
 
           <div class="bottom-ctn">

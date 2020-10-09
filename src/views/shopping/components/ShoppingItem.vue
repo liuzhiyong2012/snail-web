@@ -72,12 +72,20 @@ export default {
       });
     },
     stepToDetail(item) {
-      this.$router.push({
-        name: "shoppingDetails",
-        query: {
-          id: item.Id,
-        },
-      });
+      if (item.Stocking > 0) {
+        this.$router.push({
+          name: "shoppingDetails",
+          query: {
+            id: item.Id,
+          },
+        });
+      } else {
+        if (localStorage.getItem("lang") == "en") {
+          this.$toast("Stockout!");
+        } else {
+          this.$toast("暂时缺货");
+        }
+      }
     },
   },
 };
