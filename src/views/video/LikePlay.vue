@@ -366,6 +366,7 @@ export default class VideoPlay extends Vue {
       params: {
         videoListIndex: index,
         videoId: id,
+        type: 'likePlay'
       },
     });
   }

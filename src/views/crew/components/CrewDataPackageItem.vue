@@ -1,6 +1,6 @@
 2<template>
 	<section class="crew-catering-item" >
-		<div v-if="data.Name == 'ALL-DAY Pass'" class="img-ctn" :style="{ backgroundImage: `url(${imageMap[data.Name]})` }">
+		<!-- <div v-if="data.Name == 'ALL-DAY Pass'" class="img-ctn" :style="{ backgroundImage: `url(${imageMap[data.Name]})` }">
 			{{data.Name}}
 		</div>
 		<div v-if="data.Name == '1GB'" class="img-ctn" :style="{ backgroundImage: `url(${imageMap[data.Name]})` }">
@@ -8,8 +8,22 @@
 		</div>
 		<div v-if="data.Name != 'ALL-DAY Pass'&&data.Name != '1GB'" class="img-ctn" :style="{ backgroundImage: `url(${imageMap['50M']})` }">
 			{{data.Name}}
+		</div> -->
+		<div v-if="data.Name == 'ALL-DAY Pass'" class="img-ctn" :style="{ backgroundImage: `url(${UrlUtils.addBaseUrl(
+            UrlUtils.delBaseUrl(data.CoverImgPath)
+          )})` }">
+			{{data.Name}}
 		</div>
-
+		<div v-if="data.Name == '1GB'" class="img-ctn" :style="{ backgroundImage: `url(${UrlUtils.addBaseUrl(
+            UrlUtils.delBaseUrl(data.CoverImgPath)
+          )})` }">
+			{{data.Name}}
+		</div>
+		<div v-if="data.Name != 'ALL-DAY Pass'&&data.Name != '1GB'" class="img-ctn" :style="{ backgroundImage: `url(${UrlUtils.addBaseUrl(
+            UrlUtils.delBaseUrl(data.CoverImgPath)
+          )})` }">
+			{{data.Name}}
+		</div>
 		<div class="info-ctn">
 			<div class="info-left-ctn">
 				<div class="line-one">
@@ -38,7 +52,7 @@
 </i18n>
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-
+import UrlUtils from '../../../utils/url-utils';
 @Component({
 	name: 'CrewDataPackageItem',
 	components: {}
