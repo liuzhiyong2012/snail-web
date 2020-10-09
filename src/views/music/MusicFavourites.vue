@@ -35,7 +35,7 @@
 									</div>
 
 									<div class="oper-ctn">
-										<abus-music-icon v-if="currentSong.id == item.Id"></abus-music-icon>
+										<abus-music-icon v-if="currentSong.id == item.Id" :playingStatus='playing'></abus-music-icon>
 									</div>
 								</div>
 							</van-swipe-cell>
@@ -104,18 +104,24 @@ import UrlUtils from '../../utils/url-utils';
 export default class MusicFavourites extends Vue {
 	private recomendList: Array<any> = [];
 	private activePage = 'song';
+	private playing: any;
 
 	private get currentSong() {
+		this.playing = this.$store.getters.playing;
 		return this.$store.getters.currentSong;
 	}
 
 	private tabList: any[] = [
 		{
 			name: 'Song',
+			EName:'Song',
+			ZhName:'音乐',
 			value: 'song'
 		},
 		{
 			name: 'PlayList',
+			EName:'PlayList',
+			ZhName:'专辑',
 			value: 'playList'
 		}
 	];
@@ -138,9 +144,15 @@ export default class MusicFavourites extends Vue {
 		this.getAllSong();
 		if (localStorage.getItem('lang') == 'en') {
 			this.$i18n.locale = 'en';
-			} else {
+			this.tabList.forEach(item=>{
+				item.name = item.EName
+			})
+		} else {
 			this.$i18n.locale = 'zh';
-			}
+			this.tabList.forEach(item=>{
+				item.name = item.ZhName
+			})
+		}
 	}
 
 

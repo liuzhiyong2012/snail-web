@@ -4,7 +4,7 @@
       <div class="playlist" @click.stop>
         <!-- 头部 -->
         <div class="list-header">
-			<span class="song-total">Currently playing (117)</span>
+			<span class="song-total">Currently playing ({{sequenceList.length}})</span>
 			<i class="icon icon-toggle-down" @click="hide"></i> 
           <!-- <h1>
             <img v-if="modeText === '顺序播放'" src="./img/sequence.png" alt="顺序">
@@ -21,12 +21,11 @@
           <!-- <transition-group ref="list" name="list-li" tag="ul"> -->
             <li ref="listItem" :class="{playing:getCurrentIcon(item)}" v-for="(item, index) in sequenceList" :key="index" @click="selectItem(item, index)">
               <div class="lihear-img-box">
-				  <span class="number-ctn">
-					  {{index + 1}}
-				  </span>
-				  
-				  <abus-music-icon class="music-ctn" color="#ffffff"></abus-music-icon>
-				
+                <span class="number-ctn">
+                  {{index + 1}}
+                </span>
+                
+                <abus-music-icon class="music-ctn" color="#ffffff" :playingStatus='playing'></abus-music-icon>
               </div>
               <p class="list2-con">{{ item.name }}</p>
 			  
@@ -124,7 +123,7 @@ export default {
         ? '顺序播放'
         : this.mode === playMode.random ? '随机播放' : '单曲循环';
     },
-    ...mapGetters(['sequenceList', 'currentSong', 'playlist', 'mode'])
+    ...mapGetters(['sequenceList', 'currentSong', 'playlist', 'mode', 'playing'])
   },
   methods: {
     show() {

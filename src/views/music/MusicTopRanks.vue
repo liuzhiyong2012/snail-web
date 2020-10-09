@@ -1,6 +1,8 @@
 <template>
   <section class="music-main-ctn">
-    <abus-title :title="$t('title')"></abus-title>
+    <abus-title :title="$t('title')">
+      <div slot style="width: 0.3rem"></div>
+    </abus-title>
     <section class="content-ctn">
       <section class="type-item" v-for="(type,index) in typeList" :key="index">
         <div class="type-name">{{type.Name}}</div>

@@ -1,8 +1,8 @@
 <template>
 	<section class="music-icon-ctn">
-		  <span class="bar-item bar-item1" :style="{backgroundColor:color}"></span>
-		  <span class="bar-item bar-item2" :style="{backgroundColor:color}"></span>
-		  <span class="bar-item bar-item3" :style="{backgroundColor:color}"></span>
+		  <span class="bar-item" :class="{'bar-item1': playingStatus }" :style="{backgroundColor:color}"></span>
+		  <span class="bar-item" :class="{'bar-item2': playingStatus }" :style="{backgroundColor:color}"></span>
+		  <span class="bar-item" :class="{'bar-item3': playingStatus }" :style="{backgroundColor:color}"></span>
 	</section>
 </template>
 
@@ -18,7 +18,7 @@
 </i18n>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 
 @Component({
 	name: 'AbusMusicIcon',
@@ -31,6 +31,16 @@ export default class AbusMusicIcon extends Vue {
 		default:'#00205b'
 	})
 	color:string;
+	
+	@Prop({
+		type: Boolean,
+		required: false, 
+		default: true
+	}) playingStatus!: boolean;
+	@Watch("playingStatus",{ deep: true, immediate: true })
+	playingStatusWatch(newVal: boolean, oldVal: boolean) {
+		this.playingStatus = newVal;
+	}
 	
 }
 </script>

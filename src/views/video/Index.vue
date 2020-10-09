@@ -1,6 +1,8 @@
 <template>
   <div class="home">
-    <abus-title :title="$t('title')" backRouteName="home"></abus-title>
+    <abus-title :title="$t('title')" backRouteName="home">
+      <div slot style="width: 0.3rem"></div>
+    </abus-title>
     <!-- backRouteName -->
     <van-tabs
       sticky

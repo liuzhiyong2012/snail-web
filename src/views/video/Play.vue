@@ -252,7 +252,6 @@ export default class VideoPlay extends Vue {
   }
   // 切换操作
   public onChange(index: any) {
-    // console.log(index)
     let video = document.querySelectorAll("video")[this.current];
     video.currentTime = 0;
     video.pause();
@@ -312,7 +311,7 @@ export default class VideoPlay extends Vue {
   // 获取广告
   public postAdvertList() {
     VideoService.postAdvertList().then((res: any) => {
-      if (res.code == 200 && res.data.length!=0) {
+      if (res.code == 200 && res.data.length != 0) {
         this.adDataList = res.data;
         this.adData = res.data[0];
       }
@@ -335,7 +334,7 @@ export default class VideoPlay extends Vue {
     clearTimeout(this.adShowTime);
     this.adShowTime = setTimeout(() => {
       this.isShowAd = true;
-    }, 60000);
+    }, 30000);
   }
   // 喜欢
   public clickLike(index: any, id: any) {
@@ -352,23 +351,21 @@ export default class VideoPlay extends Vue {
         this.videoListOne[index].LikeCount + 1;
       Vue.set(this.videoListOne, index, this.videoListOne[index]);
       // 接口交互
-      VideoService.postVideoLike({ id: id }).then((res: any) => {
-      });
+      VideoService.postVideoLike({ id: id }).then((res: any) => {});
     } else {
       this.videoListOne[index].LikeCount =
         this.videoListOne[index].LikeCount - 1;
       Vue.set(this.videoListOne, index, this.videoListOne[index]);
-      VideoService.postVideoUnLike({ id: id }).then((res: any) => {
-      });
+      VideoService.postVideoUnLike({ id: id }).then((res: any) => {});
     }
   }
   // 发送评论
   public sendComment(index: any, id: any) {
-    if(!this.Comment){
+    if (!this.Comment) {
       if (localStorage.getItem("lang") == "en") {
-        this.$toast('please input content!')
+        this.$toast("please input content!");
       } else {
-        this.$toast('请输入评论！')
+        this.$toast("请输入评论！");
       }
       return;
     }
@@ -658,18 +655,6 @@ export default class VideoPlay extends Vue {
     width: 0.6rem;
     height: 0.6rem;
     padding: 0.2rem 0.2rem 0;
-    .icon-on {
-      color: red;
-      position: absolute;
-      right: 0.35rem;
-      top: 0.45rem;
-    }
-    .icon-off {
-      color: #ffffff;
-      position: absolute;
-      right: 0.35rem;
-      top: 0.45rem;
-    }
   }
   .right-icon1 {
     width: 0.5rem;

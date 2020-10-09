@@ -1,8 +1,11 @@
 <template>
   <div class="abus-height">
-    <abus-title :title="$t('title')" backRouteName="home">
-      <cart-icon @toCart="stepToCart()"></cart-icon>
-    </abus-title>
+    <van-sticky>
+      <abus-title :title="$t('title')" backRouteName="home">
+        <cart-icon @toCart="stepToCart()"></cart-icon>
+      </abus-title>
+    </van-sticky>
+
     <van-search :placeholder="$t('Search')"  @focus="stepToSearch"/>
     <div class="banner">
       <shopping-item />

@@ -34,7 +34,8 @@
           <span>{{ total }}</span>
         </div>
 
-        <div class="title-right" @click="playAll()">
+        <!-- <div class="title-right" @click="playAll()"> -->
+        <div class="title-right" @click="playSong(0)">
           <i class="icon icon-play"></i>
           <span class="play-btn">{{$t('PlayAll')}}</span>
         </div>
@@ -53,7 +54,7 @@
             <div>{{ item.Name }}</div>
             <div>{{ computeAuthorName(item) }}</div>
           </div>
-          <abus-music-icon v-if="currentSong.id == item.Id" class="music-status-icon-ctn"></abus-music-icon>
+          <abus-music-icon v-if="currentSong.id == item.Id" :playingStatus='playing' class="music-status-icon-ctn"></abus-music-icon>
         </div>
       </div>
     </section>
@@ -108,8 +109,10 @@ export default class MusicPlaylistDetail extends Vue {
   private playListObj: any = {
     Tracks: [],
   };
+  private playing: any;
 
   private get currentSong() {
+    this.playing = this.$store.getters.playing;
     return this.$store.getters.currentSong;
   }
 
@@ -130,7 +133,7 @@ export default class MusicPlaylistDetail extends Vue {
       if (res.code == '200') {
         this.total = res.data.TrackCount;
         this.playListObj = res.data;
-		this.playListObj.CoverImgUrl = UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(this.playListObj.CoverImgUrl));
+		    this.playListObj.CoverImgUrl = UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(this.playListObj.CoverImgUrl));
 
         let songs = [];
 
@@ -143,18 +146,18 @@ export default class MusicPlaylistDetail extends Vue {
               UrlUtils.delBaseUrl(this.playListObj.CoverImgUrl)
             ),
             mid: '',
-			isLike:item.isLike,
+			      isLike:item.isLike,
             name: item.Name,
             singer: this.computeAuthorName(item),
-			lyricUrl:UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(item.LyricUrl)),
+			      lyricUrl:UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(item.LyricUrl)),
             url: UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(item.Url))
           });
         });
-/* axios.get(url, {
-    params: data
-  }).then((res) => {
-    return Promise.resolve(res.data)
-  }) */
+        /* axios.get(url, {
+            params: data
+          }).then((res) => {
+            return Promise.resolve(res.data)
+          }) */
         this.allSong = songs;
 
         this.isCollected = Boolean(this.playListObj.isLike);
@@ -201,7 +204,7 @@ export default class MusicPlaylistDetail extends Vue {
     });
   }
 
-  private playAll() {}
+  // private playAll() {}
 }
 </script>
 

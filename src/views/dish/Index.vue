@@ -1,6 +1,10 @@
 <template>
 	<section class="dish-main-ctn">
-		<abus-title :title="$t('title')" backRouteName="home"></abus-title>
+		<van-sticky>
+			<abus-title :title="$t('title')" backRouteName="home">
+				<div slot style="width:0.3rem"></div>
+			</abus-title>
+		</van-sticky>
 		<van-swipe :autoplay="3000">
 			<van-swipe-item class="dish-recomend-item" v-for="(item, index) in recomendList" :key="index" @click="stepToDetail(item)">
 				<!-- <div class="dish-recomend-img" :style="{ backgroundImage: `url(${item.BannerImgPath})` }"></div> -->

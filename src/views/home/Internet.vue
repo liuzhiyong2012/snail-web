@@ -1,6 +1,8 @@
 <template>
   <div class="internet">
-    <abus-title :title="$t('Internet')" backRouteName="home"></abus-title>
+    <abus-title :title="$t('Internet')" backRouteName="home">
+      <div slot style="width: 0.3rem"></div>
+    </abus-title>
     <div class="padding">
       <div class="card" v-for="(item, index) in cardList" :key="index">
         <div class="header">

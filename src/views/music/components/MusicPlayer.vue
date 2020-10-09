@@ -1,15 +1,17 @@
 <template>
-	<section class="music-play-ctn" @click="toUp">
-		<div class="song-img" :style="{backgroundImage:	`url(${coverImage})`}" :class="{'abus-animat-rotate':playing}"></div>
-		<div class="song-name">{{currentSong.name}}</div>
-		<div class="play-ctn" @click.stop="togglePlaying">
-			<i v-if="!playing" class="icon icon-play"></i>
-			<i v-if="playing" class="icon icon-pause"></i>
-		</div>
-		<div class="play-ctn-close" @click.stop="closePlaying">
-			<i class="icon icon-close"></i>
-		</div>
-	</section>
+	<transition name="small-music-fade">
+		<section class="music-play-ctn" @click="toUp" >
+			<div class="song-img" :style="{backgroundImage:	`url(${coverImage})`}" :class="{'abus-animat-rotate':playing}"></div>
+			<div class="song-name">{{currentSong.name}}</div>
+			<div class="play-ctn" @click.stop="togglePlaying">
+				<i v-if="!playing" class="icon icon-play"></i>
+				<i v-if="playing" class="icon icon-pause"></i>
+			</div>
+			<div class="play-ctn-close" @click.stop="closePlaying">
+				<i class="icon icon-close"></i>
+			</div>
+		</section>
+	</transition>
 </template>
 <i18n>
 	{
@@ -142,6 +144,22 @@
 				color: #fff;
 			}
 		}
+	}
+
+
+	.small-music-fade-enter {
+		transform: translate3d(0, 100%, 0);
+		opacity: 0;
+	}
+	.small-music-fade-leave-to {
+		transform: translate3d(0, 100%, 0);
+	}
+	.small-music-fade-leave {
+		opacity: 1;
+	}
+	.small-music-fade-enter-active,
+	.small-music-fade-leave-active {
+		transition: all 0.3s;
 	}
 	
 	

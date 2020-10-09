@@ -15,11 +15,11 @@
         
         <!-- 旋转大头像 -->
         <div class="middle" @touchstart.prevent="middleTouchStart" @touchmove.prevent="middleTouchMove" @touchend="middleTouchEnd">
-		  <div class="title-ctn">
-			  <img :class="playImg" class="album-img" :src="coverImage" alt="">
-			   <h1 v-if="currentShow != 'lyric'" class="title-sing-name" v-html="currentSong.name"></h1>
-			   <h1 v-if="currentShow != 'lyric'" class="title-singer" v-html="currentSong.singer"></h1>
-		  </div>
+          <div class="title-ctn">
+            <img :class="playImg" class="album-img" :src="coverImage" alt="">
+            <h1 v-if="currentShow != 'lyric'" class="title-sing-name" v-html="currentSong.name"></h1>
+            <h1 v-if="currentShow != 'lyric'" class="title-singer" v-html="currentSong.singer"></h1>
+          </div>
 		  
           <p :class="playImgTxt" class="cd-lyric">
             {{playingLyric}}
@@ -179,6 +179,7 @@ import Lyric from 'lyric-parser';
 import Scroll from '../../base/scroll/scroll';
 import MusicService from '../../../../service/music';
 import axios from 'axios';
+import UrlUtils from '../../../../utils/url-utils';
 
 export default {
   components: {
@@ -193,7 +194,7 @@ export default {
       'playlist',
       'currentSong',
       'vkey',
-	  'likeSet',
+	    'likeSet',
       'playing',
       'currentIndex',
       'mode',
@@ -551,7 +552,8 @@ export default {
        if(this.currentSong.lyricUrl){
 		   axios( {
 		   	 method:'get',
-		   	  url : process.env.VUE_APP_STATIC_URL + '/' + this.currentSong.lyricUrl,
+		   	  // url : process.env.VUE_APP_STATIC_URL + '/' + this.currentSong.lyricUrl,
+          url: UrlUtils.addBaseUrl(UrlUtils.delBaseUrl(this.currentSong.lyricUrl)),
 		   	  // responseType: 'blob',
 		   	 headers: {
 		   	   'Content-Type': 'text/plain;charset=utf-8'
