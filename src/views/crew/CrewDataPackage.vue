@@ -158,6 +158,11 @@ export default class CrewCatering extends Vue {
         });
 
         this.dataList = this.dataList.concat(resData.data.data);
+        this.dataList.forEach((item,index) =>{
+          item.CoverImgPath = UrlUtils.addBaseUrl(
+            UrlUtils.delBaseUrl(item.CoverImgPath)
+          );
+        })
         this.loading = false;
         this.refreshing = false;
       } else {
