@@ -1,35 +1,44 @@
 <template>
-  <div class="abus-scroller-box" :style="{'backgroundColor': isHaveData?'#fff':'#f2f4f7'}">
+  <div
+    class="abus-scroller-box"
+    :style="{ backgroundColor: isHaveData ? '#fff' : '#f2f4f7' }"
+  >
     <scroller>
       <div slot="list" v-for="(item, index) of shoppingList" :key="index">
         <div
           @click="stepToDetail(item)"
           class="s-box s-box-right"
-          v-if="index+1 == shoppingList.length"
+          v-if="index + 1 == shoppingList.length"
         >
           <div class="img-box">
             <div class="img">
-              <img  :src="item.SampleImgPath|addBaseUrl" :alt="item.Name" width="100%"/>
+              <img
+                :src="item.SampleImgPath | addBaseUrl"
+                :alt="item.Name"
+                width="100%"
+              />
             </div>
-            
           </div>
-          <div class="name">{{item.Name}}</div>
+          <div class="name">{{ item.Name }}</div>
           <div class="price">
-            ${{item.Price}}
-            <span>${{item.Price+2}}</span>
+            ${{ item.Price }}
+            <span>${{ item.Price + 2 }}</span>
           </div>
         </div>
         <div @click="stepToDetail(item)" class="s-box" v-else>
           <div class="img-box">
             <div class="img">
-              <img  :src="item.SampleImgPath|addBaseUrl" :alt="item.Name" width="100%"/>
+              <img
+                :src="item.SampleImgPath | addBaseUrl"
+                :alt="item.Name"
+                width="100%"
+              />
             </div>
-            
           </div>
-          <div class="name">{{item.Name}}</div>
+          <div class="name">{{ item.Name }}</div>
           <div class="price">
-            ${{item.Price}}
-            <span>${{item.Price+2}}</span>
+            ${{ item.Price }}
+            <span>${{ item.Price + 2 }}</span>
           </div>
         </div>
       </div>
@@ -50,7 +59,7 @@ export default {
   data() {
     return {
       shoppingList: [],
-      isHaveData: false
+      isHaveData: false,
     };
   },
   created() {
@@ -64,21 +73,28 @@ export default {
   methods: {
     getShoppingList() {
       var data = {
-        type: '1'
-      }
+        type: "1",
+      };
       ShoppingService.getShoppingList(data).then((res) => {
         this.shoppingList = res.data.Dishes;
-        this.isHaveData = true
+        this.isHaveData = true;
       });
     },
     stepToDetail(item) {
-      this.$router.push({
-        name: "shoppingDetails",
-        query: {
-          id: item.Id,
-        },
-      });
-      
+      if (item.Stocking > 0) {
+        this.$router.push({
+          name: "shoppingDetails",
+          query: {
+            id: item.Id,
+          },
+        });
+      } else {
+        if (localStorage.getItem("lang") == "en") {
+          this.$toast("Stockout!");
+        } else {
+          this.$toast("暂时缺货");
+        }
+      }
     },
   },
 };

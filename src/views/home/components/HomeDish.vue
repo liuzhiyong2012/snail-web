@@ -100,12 +100,27 @@ export default {
   },
   methods: {
     stepToDetail(item) {
-      this.$router.push({
-        name: "dishDetail",
-        query: {
-          id: item.Id,
-        },
-      });
+      var _this = this
+      if (item.Stocking > 0) {
+        _this.$router.push({
+          name: "dishDetail",
+          query: {
+            id: item.Id,
+          },
+        });
+      } else {
+        if (localStorage.getItem("lang") == "en") {
+          _this.$toast("Stockout!");
+        } else {
+          _this.$toast("暂时缺货");
+        }
+      }
+      // this.$router.push({
+      //   name: "dishDetail",
+      //   query: {
+      //     id: item.Id,
+      //   },
+      // });
     },
     getDishesRecommendedList() {
       DishService.getDishesRecommendedList({}).then((res) => {

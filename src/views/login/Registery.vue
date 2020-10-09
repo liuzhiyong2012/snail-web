@@ -149,7 +149,7 @@
           <van-popup
             v-model="show"
             position="bottom"
-            :style="{ height: '40%' }"
+            :style="{ height: '36%' }"
           >
             <van-datetime-picker
               v-model="currentDate"

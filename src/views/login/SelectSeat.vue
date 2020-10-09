@@ -52,7 +52,7 @@
     "Seat":"Seat",
     "SeatTips":"Please enter your seat",
     "Cancel":"Cancel",
-    "Determine":"Determine",
+    "Determine":"OK",
     "Confirm":"Confirm",
     "SeatSelection":"Seat selection"
   }

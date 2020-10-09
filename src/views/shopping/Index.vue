@@ -189,7 +189,7 @@ export default class ShoppingIndex extends Vue {
     document.removeEventListener("scroll", this.handleScroll);
   }
   private showToast() {
-    this.$i18n.t('OutOfStock')
+    this.$toast(this.$i18n.t('OutOfStock'))
   }
   public stepToCart(): void {
     this.$router.push({

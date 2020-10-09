@@ -49,10 +49,10 @@
         </div>
         <div class="con">
           We have updated our
-          <span class="txt" @click="">privacy policy</span>
+          <span class="txt">privacy policy</span>
           to comply with the latest laws and regulations. The updated policy
           explains the mechanism of how we collect and treat your personal data.
-          <span class="txt" @click="">tems of service</span>
+          <span class="txt" >tems of service</span>
           You can learn more about the rights you have by reading our .Please
           read them carefully.By clicking AGREE,you indicate that you have read
           and agreed to our privacy policies.
