@@ -16,7 +16,6 @@
           <van-list
             v-model="loading"
             :finished="finished"
-            
             @load="loadList"
             :offset="100"
             :immediate-check="false"
@@ -31,10 +30,13 @@
               <!-- <crew-catering-item v-for="(item,index) in dataList" :key="index" :data="item"></crew-catering-item> -->
             </div>
           </van-list>
-		  <div v-if="finished" class="v-finished-text">
+          <!-- <div v-if="finished" class="v-finished-text">
         {{$t('noMore')}}
-		</div>
+		</div> -->
         </van-pull-refresh>
+      </div>
+      <div v-if="finished" class="v-finished-text">
+        {{ $t("noMore") }}
       </div>
     </section>
   </section>
@@ -174,9 +176,9 @@ export default class CrewCatering extends Vue {
 @function rem($px) {
   @return $px / 100px * 1rem;
 }
-.v-finished-text{
+.v-finished-text {
   width: 100% !important;
-  font-size: .28rem !important;
+  font-size: 0.28rem !important;
   text-align: center;
   line-height: 1rem;
   color: #fff;

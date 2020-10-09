@@ -47,6 +47,48 @@ import IncomeStatisticsService from "../../service/crew/income-statistics";
 export default class CrewCatering extends Vue {
   private dishStatistic: any = {};
   private netFlowStatistic: any = {};
+  private arr: Array<any> = [
+    {
+      Name: "No data available ",
+      getMoney: 0,
+    },
+    {
+      Name: "No data available  ",
+      getMoney: 0,
+    },
+    {
+      Name: "No data available   ",
+      getMoney: 0,
+    },
+  ];
+  private arr1: Array<any> = [
+    {
+      Name: "No data available ",
+      getMoney: 0,
+    },
+    {
+      Name: "No data available  ",
+      getMoney: 0,
+    },
+    {
+      Name: "No data available   ",
+      getMoney: 0,
+    },
+  ];
+  private arr2: Array<any> = [
+    {
+      Name: "No data available ",
+      getMoney: 0,
+    },
+    {
+      Name: "No data available  ",
+      getMoney: 0,
+    },
+    {
+      Name: "No data available   ",
+      getMoney: 0,
+    },
+  ];
   private shoppingStatistic: any = {};
   public created() {
     if (localStorage.getItem("lang") == "en") {
@@ -63,9 +105,14 @@ export default class CrewCatering extends Vue {
   }
 
   private getAccountForDish(): void {
+    var _this = this;
     IncomeStatisticsService.getAccountForDish({}).then((resData: any) => {
       if (resData.code == "200") {
-        (this.$refs.dishStatisticChart as any).renderCharts(resData.data);
+        if (resData.data.length > 0) {
+          (this.$refs.dishStatisticChart as any).renderCharts(resData.data);
+        } else {
+          (this.$refs.dishStatisticChart as any).renderCharts(this.arr);
+        }
       } else {
         this.$toast(this.$i18n.t("toast1"));
       }
@@ -75,7 +122,12 @@ export default class CrewCatering extends Vue {
   private getAccountForNetFlow(): void {
     IncomeStatisticsService.getAccountForNetFlow({}).then((resData: any) => {
       if (resData.code == "200") {
-        (this.$refs.netFlowStatisticChart as any).renderCharts(resData.data);
+        if (resData.data.length > 0) {
+          (this.$refs.netFlowStatisticChart as any).renderCharts(resData.data);
+        } else {
+          (this.$refs.netFlowStatisticChart as any).renderCharts(this.arr1);
+        }
+        
       } else {
         this.$toast(this.$i18n.t("toast1"));
       }
@@ -85,7 +137,12 @@ export default class CrewCatering extends Vue {
   private getAccountForShopping(): void {
     IncomeStatisticsService.getAccountForShopping({}).then((resData: any) => {
       if (resData.code == "200") {
-        (this.$refs.shoppingStatisticChart as any).renderCharts(resData.data);
+        if (resData.data.length > 0) {
+          (this.$refs.shoppingStatisticChart as any).renderCharts(resData.data);
+        } else {
+          (this.$refs.shoppingStatisticChart as any).renderCharts(this.arr2);
+        }
+        
       } else {
         this.$toast(this.$i18n.t("toast1"));
       }

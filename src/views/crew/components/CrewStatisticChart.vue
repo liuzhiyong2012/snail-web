@@ -12,15 +12,15 @@
         <div
           v-if="type == 'dataPackage'"
           class="img-ctn"
-          :style="{ backgroundImage: `url(${imageMap[item.Name]})` }"
+          :style="[imageMap[item.Name]?{ backgroundImage: `url(${imageMap[item.Name]})`}:{backgroundColor:colorArr[index]}]"
         >
-          {{ item.Name }}
+          {{ item.Name.substring(0,2) }}
         </div>
 
         <div
           v-if="type != 'dataPackage'"
           class="img-ctn"
-          :style="{ backgroundImage: `url(${item.SampleImgPath})` }"
+          :style="[item.SampleImgPath?{ backgroundImage: `url(${item.SampleImgPath})` }:{backgroundColor:colorArr[index]}]"
         ></div>
 
         <div class="progress-ctn">
@@ -116,17 +116,31 @@ export default class CrewStatisticChart extends Vue {
       total = total + item.getMoney;
     });
 
-    dataArr.forEach((item: any, index: number) => {
-      chartArr.push({
-        name: item.Name,
-        value: item.getMoney,
-      });
+    if (total != 0) {
+      dataArr.forEach((item: any, index: number) => {
+        chartArr.push({
+          name: item.Name,
+          value: item.getMoney,
+        });
 
-      item.percent = ((item.getMoney / total) * 100).toFixed();
-      item.SampleImgPath = UrlUtils.addBaseUrl(
-        UrlUtils.delBaseUrl(item.SampleImgPath)
-      );
-    });
+        item.percent = ((item.getMoney / total) * 100).toFixed();
+        item.SampleImgPath = UrlUtils.addBaseUrl(
+          UrlUtils.delBaseUrl(item.SampleImgPath)
+        );
+      });
+    } else {
+      dataArr.forEach((item: any, index: number) => {
+        chartArr.push({
+          name: item.Name,
+          value: item.getMoney,
+        });
+
+        item.percent = 0
+        item.SampleImgPath = UrlUtils.addBaseUrl(
+          UrlUtils.delBaseUrl(item.SampleImgPath)
+        );
+      });
+    }
 
     this.dataList = dataArr.splice(0, 3);
 
@@ -180,7 +194,7 @@ export default class CrewStatisticChart extends Vue {
         selectedMode: true, //图例在垂直方向上面显示居中
         /* orient: 'vertical', */
         /*  x : 'right',   //图例显示在右边
-        y: 'center',  */ 
+        y: 'center',  */
         bottom: 0,
         itemWidth: 10, //图例标记的图形宽度
         itemHeight: 10, //图例标记的图形高度
@@ -198,7 +212,7 @@ export default class CrewStatisticChart extends Vue {
           center: ["50%", "45%"], //饼图的中心（圆心）坐标，数组的第一项是横坐标，第二项是纵坐标。
           radius: ["65%", "80%"], //饼图的半径，数组的第一项是内半径，第二项是外半径。[ default: [0, '75%'] ]
           avoidLabelOverlap: false, //是否禁用动画效果
-          /*  animation: false, */ 
+          /*  animation: false, */
           label: {
             normal: {
               show: false, //是否显示标签
@@ -252,7 +266,7 @@ export default class CrewStatisticChart extends Vue {
 
 .crew-statistic-chart {
   padding-top: rem(20px);
-//   padding-top: rem(120px);
+  //   padding-top: rem(120px);
 
   .charts-ctn {
     // margin-bottom: rem(80px);

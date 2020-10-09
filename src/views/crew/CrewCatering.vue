@@ -12,7 +12,7 @@
     <section class="item-ctn">
       <div class="item-ctt">
         <van-pull-refresh v-model="refreshing" @refresh="refreshList">
-			<!-- :finished-text="$t('noMore')" -->
+          <!-- :finished-text="$t('noMore')" -->
           <van-list
             v-model="loading"
             :finished="finished"
@@ -30,10 +30,13 @@
               ></crew-catering-item>
             </div>
           </van-list>
-		  <div v-if="finished" class="v-finished-text">
+          <!-- <div v-if="finished" class="v-finished-text">
         {{$t('noMore')}}
-      </div>
+      </div> -->
         </van-pull-refresh>
+      </div>
+      <div v-if="finished" class="v-finished-text">
+        {{ $t("noMore") }}
       </div>
     </section>
   </section>
@@ -231,12 +234,12 @@ export default class CrewCatering extends Vue {
 @function rem($px) {
   @return $px / 100px * 1rem;
 }
-.van-list__finished-text{
-	font-size: .28rem !important;
+.van-list__finished-text {
+  font-size: 0.28rem !important;
 }
-.v-finished-text{
+.v-finished-text {
   width: 100% !important;
-  font-size: .28rem !important;
+  font-size: 0.28rem !important;
   text-align: center;
   line-height: 1rem;
   color: #fff;

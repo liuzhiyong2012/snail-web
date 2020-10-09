@@ -29,10 +29,14 @@
               ></crew-goods-item>
             </div>
           </van-list>
-		  <div v-if="finished" class="v-finished-text">
+		  <!-- <div v-if="finished" class="v-finished-text">
         {{$t('noMore')}}
-		</div>
+		</div> -->
         </van-pull-refresh>
+        
+      </div>
+      <div v-if="finished" class="v-finished-text">
+        {{$t('noMore')}}
       </div>
     </section>
   </section>
