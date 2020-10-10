@@ -200,6 +200,7 @@ export default class VideoPlay extends Vue {
   private Comment: string = "";
 
   private mounted() {
+    this.$store.dispatch('deleteSongList');
     if (localStorage.getItem("lang") == "en") {
       this.$i18n.locale = "en";
     } else {

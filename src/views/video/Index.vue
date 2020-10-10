@@ -78,6 +78,7 @@ export default {
     };
   },
   created() {
+    this.$store.dispatch('deleteSongList');
     if (localStorage.getItem("lang") == "en") {
       this.$i18n.locale = "en";
     } else {

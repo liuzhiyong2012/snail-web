@@ -1,6 +1,8 @@
 <template>
   <section class="flight-main-ctn" :class="{ collapsed: isCollapsed }">
-    <abus-title :title="$t('Flight')"></abus-title>
+    <abus-title :title="$t('Flight')">
+      <div slot style="width:0.3rem"></div>
+    </abus-title>
 
     <section class="flight-content-ctn">
       <abus-map class="map-ctn" :style="calcStyle('map')"></abus-map>

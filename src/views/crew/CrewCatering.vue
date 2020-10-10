@@ -144,7 +144,6 @@ export default class CrewCatering extends Vue {
 
   private loadList(): void {
     this.pageNumber = this.pageNumber + 1;
-    // this.pageSize = 12;
     this.pageSize = 3 * 12;
     this.getList();
   }
@@ -156,7 +155,6 @@ export default class CrewCatering extends Vue {
 
   resetList() {
     this.pageNumber = 1;
-    // this.pageSize = 12;
     this.pageSize = 3 * 12;
     this.dataList = [];
     this.getList();
@@ -239,11 +237,11 @@ export default class CrewCatering extends Vue {
 }
 .v-finished-text {
   width: 100% !important;
-  font-size: 0.28rem !important;
+  font-size: .28rem !important;
   text-align: center;
   line-height: 1rem;
   color: #fff;
-  text-indent: 1em;
+  text-indent: 1rem;
 }
 .crew-catering {
   padding: 0 rem(90px);

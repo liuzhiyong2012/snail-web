@@ -8,7 +8,8 @@
 				<i v-if="playing" class="icon icon-pause"></i>
 			</div>
 			<div class="play-ctn-close" @click.stop="closePlaying">
-				<i class="icon icon-close"></i>
+				<!-- <i class="icon icon-close"></i> -->
+				<i class="icon icon-select_3"></i> 
 			</div>
 		</section>
 	</transition>
@@ -82,7 +83,7 @@
 		bottom: 0;
 		z-index: 120;
 		width: 100%;
-		height: 1.70rem;
+		height: 1.20rem;
 		background:#ffffff;
 		// display: flex;
 		box-sizing: border-box;
@@ -132,15 +133,15 @@
 
 		.play-ctn-close{
 			position: absolute;
-			top:0.20rem;
+			top:0.19rem;
 			right: 0.30rem;
 			.icon{
 				line-height: 0.50rem;
-				font-size: 0.48rem;
+				// font-size: 0.48rem;
+				font-size: 0.3rem;
 				background: #00205b;
 				border-radius: 50%;
-			}
-			.icon-close{
+				padding: 0.08rem;
 				color: #fff;
 			}
 		}

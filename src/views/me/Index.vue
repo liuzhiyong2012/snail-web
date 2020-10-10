@@ -64,14 +64,14 @@
             </svg>
           </div>
         </div>
-        <div class="cell-item" @click="stepToPage('thirdaccount')">
+        <!-- <div class="cell-item" @click="stepToPage('thirdaccount')">
           <div class="title">{{$t('OtherAccountNumber')}}</div>
           <div class="f1">
             <svg class="icon icon-right" aria-hidden="true">
               <use xlink:href="#icon-youjiantou_1" />
             </svg>
           </div>
-        </div>
+        </div> -->
         <div class="cell-item" @click="stepToPage('lang')">
           <div class="title">{{$t('Language')}}</div>
           <div class="f1">
@@ -227,8 +227,9 @@ export default class meIndex extends Vue {
   public logout(pageType: any) {
 	  this.$router.push({
 		  path:'login'
-	  });
-	  this.$store.dispatch('logout');
+    });
+    this.$store.dispatch('deleteSongList');
+    this.$store.dispatch('logout');
   }
   
 }

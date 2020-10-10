@@ -328,7 +328,7 @@ export default {
           index = 0;
         }
         this.setCurrentIndex(index);
-        this.setPlayingState('true'); // 点击下一曲后自动播放
+        this.setPlayingState(true); // 点击下一曲后自动播放
       }
       this.songReadey = false;
     },

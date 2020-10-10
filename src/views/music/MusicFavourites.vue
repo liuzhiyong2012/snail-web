@@ -1,7 +1,10 @@
 <template>
 	<section class="music-main-ctn">
-		<abus-title :title="$t('title')"></abus-title>
-
+		<van-sticky>
+			<abus-title :title="$t('title')">
+				<div slot style="width: 0.3rem"></div>
+			</abus-title>
+		</van-sticky>
 		<music-tab :active="activePage" :tabList="tabList" @switch="switchPage($event)" class="music-tab-ctn"></music-tab>
 
 		<section class="content-ctn">
@@ -391,6 +394,7 @@ export default class MusicFavourites extends Vue {
 			background: #ffffff;
 			z-index: 12;
 			box-sizing: border-box;
+			line-height: 0.42rem;
 
 			.title-left {
 				font-size: 0.22rem;

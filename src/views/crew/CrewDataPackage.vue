@@ -137,6 +137,7 @@ export default class CrewCatering extends Vue {
       take: this.pageSize,
       skip: (this.pageNumber - 1) * this.pageSize,
       status: this.status = "3",
+      seat: this.seat,
     }).then((resData: any) => {
       if (resData.code == "200") {
         //无数据

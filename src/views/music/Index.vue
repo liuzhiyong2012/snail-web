@@ -53,7 +53,7 @@
 					  {{$t('popAlbum')}}
 				  </div>
 				  <div class="album-list-ctn">
-					  <van-list v-model="loading" class="album-item-ctn" :finished="finished" finished-text="没有更多了" @load="onLoad" :offset="100" :immediate-check="false" ref="mylist">
+					  <van-list v-model="loading" class="album-item-ctn" :finished="finished" :finished-text='nomore' @load="onLoad" :offset="100" :immediate-check="false" ref="mylist">
 							<div class="album-item-ctn">
 								<div class="album-item" v-for="(item,index) in playList" :key="index" @click="stepToPage(item)">
 									  <div class="album-image" :style="{backgroundImage:`url(${item.CoverImgUrl})`}">
@@ -117,7 +117,7 @@
 		 
 		 private loading: boolean = false;
 		 private finished: boolean = false;
-		 
+		 private nomore: string='';
 		 
 		 private pageSize: number = 10;
 		 private pageNumber: number = 1;
@@ -128,8 +128,10 @@
 			 this.getPlayList();
 			if (localStorage.getItem('lang') == 'en') {
 			this.$i18n.locale = 'en';
+			this.nomore = 'no more'
 			} else {
 			this.$i18n.locale = 'zh';
+			this.nomore = '没有更多了'
 			}
 		 }
 		 

@@ -94,7 +94,7 @@
     </div>
 
     <div class="login-other">
-      <div class="f1">
+      <!-- <div class="f1">
         <i class="icon icon-facebook_11 icon-text"></i>
         <div class="login-other-name">facebook</div>
       </div>
@@ -105,7 +105,7 @@
       <div class="f1">
         <i class="icon icon-wechat_11 icon-text"></i>
         <div class="login-other-name">Wechat</div>
-      </div>
+      </div> -->
     </div>
     <div class="line">
       <div class="other"></div>

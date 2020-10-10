@@ -187,7 +187,7 @@ export default class CrewCatering extends Vue {
   text-align: center;
   line-height: 1rem;
   color: #fff;
-  text-indent: 1em;
+  text-indent: 1rem;
 }
 .crew-catering {
   padding: 0 rem(90px);

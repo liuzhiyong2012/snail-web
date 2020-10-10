@@ -1,8 +1,10 @@
 <template>
   <section class="music-main-ctn">
-    <abus-title :title="$t('title')">
-      <div slot style="width: 0.3rem"></div>
-    </abus-title>
+    <van-sticky>
+      <abus-title :title="$t('title')">
+        <div slot style="width: 0.3rem"></div>
+      </abus-title>
+    </van-sticky>
     <section class="content-ctn">
       <section class="type-item" v-for="(type,index) in typeList" :key="index">
         <div class="type-name">{{type.Name}}</div>
@@ -18,7 +20,7 @@
             <div class="track-list-ctn">
               <div
                 class="track-item"
-                v-for="(tracksItem,tracksIndex) in playItem.Tracks"
+                v-for="(tracksItem,tracksIndex) in playItem.Tracks.slice(0,3)"
                 :key="tracksIndex"
               >
                 <div
@@ -109,6 +111,7 @@ export default class MusicTopRanks extends Vue {
 <style lang="scss" scoped>
 .music-main-ctn {
   .content-ctn {
+    margin-bottom: 1.0rem;
     .type-item {
       .type-name {
         padding: 0 0.3rem;

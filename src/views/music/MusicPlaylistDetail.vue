@@ -348,6 +348,7 @@ export default class MusicPlaylistDetail extends Vue {
       width: 100%;
       overflow-y: auto;
       padding-top: 0.32rem;
+      padding-bottom: 1rem;
       .mysong-item {
         position: relative;
         margin-bottom: 0.44rem;
