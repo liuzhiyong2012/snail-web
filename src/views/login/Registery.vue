@@ -375,7 +375,7 @@ export default class Register extends Vue {
     this.getBirthday();
     this.getQuestion();
     this.getAnswer();
-    
+    this.getCheckPassword();
   }
   public setUserDataNull() {
     localStore.set("nickName", "");
@@ -387,6 +387,7 @@ export default class Register extends Vue {
     localStore.set("birthday", "");
     localStore.set("question", "");
     localStore.set("answer", "");
+    localStore.set("getCheckPassword", "");
   }
   public setNickName(e) {
     this.nickname = e.target.value;
@@ -471,6 +472,11 @@ export default class Register extends Vue {
       this.answer = localStore.get("answer");
     }
   }
+  public getCheckPassword() {
+    if (localStore.get("getCheckPassword") != "") {
+      this.isCheckPassword = localStore.get("getCheckPassword");
+    }
+  }
 
 
   public getUserPhoneLength(e: any) {
@@ -531,9 +537,11 @@ export default class Register extends Vue {
   public checkPassword() {
     if (this.password != this.confirmPassword) {
       this.isCheckPassword = false;
+      localStore.set("getCheckPassword", false)
       this.$toast(this.$i18n.t("toast4"));
     } else {
       this.isCheckPassword = true;
+      localStore.set("getCheckPassword", true)
     }
   }
   public onClickRegistery() {

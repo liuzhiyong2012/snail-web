@@ -217,10 +217,6 @@ export default class VideoPlay extends Vue {
       // item.isHaveComment = false;
       item.Comments = [];
     });
-    clearTimeout(this.adShowTime);
-    this.adShowTime = setTimeout(() => {
-      this.isShowAd = true;
-    }, 30000);
   }
   // public postVideoList() {
   //   VideoService.postVideoList().then((res: any) => {
@@ -315,6 +311,12 @@ export default class VideoPlay extends Vue {
       if (res.code == 200 && res.data.length != 0) {
         this.adDataList = res.data;
         this.adData = res.data[0];
+        if (this.adDataList.length > 0) {
+          clearTimeout(this.adShowTime);
+          this.adShowTime = setTimeout(() => {
+            this.isShowAd = true;
+          }, 30000);
+        }
       }
     });
   }
@@ -450,7 +452,7 @@ export default class VideoPlay extends Vue {
       params: {
         videoListIndex: index,
         videoId: id,
-        type: 'videoPlay'
+        type: "videoPlay",
       },
     });
   }

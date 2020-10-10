@@ -56,7 +56,7 @@
 			LoginService.getUserMe().then((res:any) => {
 				if(res.code == 200){
 					this.userData = res.data
-					if(res.data.Flow.Flow == -1){
+					if(res.data.Vip == 1 || res.data.Flow.Flow == -1){
 						this.isVip = true
 					}else{
 						this.isVip = false
