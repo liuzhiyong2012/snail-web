@@ -120,6 +120,12 @@
           </div>
         </van-tab>
         <van-tab disabled></van-tab>
+        <van-tab disabled></van-tab>
+        <van-tab disabled></van-tab>
+        <van-tab disabled></van-tab>
+        <van-tab disabled></van-tab>
+        <van-tab disabled></van-tab>
+        <van-tab disabled></van-tab>
       </van-tabs>
       <!-- <div class="nav-menu"></div> -->
     </div>
