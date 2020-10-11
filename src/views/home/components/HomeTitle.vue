@@ -42,7 +42,7 @@
 		private userData: any = {}
 		private isVip: boolean = true
 		@Prop() private showRed!: boolean;
-		@Watch("showRed", { immediate: true })
+		@Watch('showRed', { immediate: true })
 		showRedWatch(newVal: boolean, oldVal: boolean) {
 			this.showRed = newVal;
 		}
@@ -50,27 +50,31 @@
 			this.$emit('stepTo',page);
 		}
 		public created() {
-			this.getUserMe()
+			this.getUserMe();
 		}
 		public getUserMe(){
 			LoginService.getUserMe().then((res:any) => {
 				if(res.code == 200){
-					this.userData = res.data
+					this.userData = res.data;
 					if(res.data.Vip == 1 || res.data.Flow.Flow == -1){
-						this.isVip = true
+						this.isVip = true;
 					}else{
-						this.isVip = false
+						this.isVip = false;
 					}
-					this.$store.commit("setSeatNumber", res.data.Seat.Name);
+					this.$store.commit('setSeatNumber', res.data.Seat.Name);
 					
 				}else{
-					this.$toast(res.message)
+					this.$toast(res.message);
 				}
-			})
+			});
 		}
 		public stepToScan(){
-			let proHref = window.location.href
-			window.location.href = `https://kf.vpclub.cn/scan/?name=`+proHref;
+			this.$router.push({
+				name:'scan'
+			});
+			/* let proHref = window.location.href
+			window.location.href = `https://kf.vpclub.cn/scan/?name=`+proHref; */
+			
 			
 		}
 	}

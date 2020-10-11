@@ -39,6 +39,7 @@ export default class LayoutIndex extends Vue {
   /* isDemo */
   
  private created(){
+	 return;
   	  this.getFlightInfo();
   	  this.startTimer();
   }

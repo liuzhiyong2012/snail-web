@@ -1,7 +1,8 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import Home from "../views/home/Index.vue";
-import Scan from "../views/home/Scan.vue";
+// import Scan from "../views/home/Scan.vue";
+import Scan from "./scan/router";
 import ScanH5 from "../views/home/ScanH5.vue";
 import Internet from "../views/home/Internet.vue";
 import InternetCart from "../views/home/components/InternetCart.vue";
@@ -17,6 +18,7 @@ import GameRouter from "./game/router";
 import MessageRouter from "./message/router";
 import MusicRouter from "./music/router";
 import Me from "./me/router";
+// import Scan from "./scan/router";
 import AboutUs from "../views/home/AboutUs.vue";
 import {localStore} from '../utils/data-management';
 
@@ -28,6 +30,7 @@ const routes: Array<RouteConfig> = [
     name: "layout",
     component: LayoutIndex,
     children: [
+		...Scan,
       ...FlightRouter,
       ...DishRouter,
       ...ShoppingRouter,
@@ -46,14 +49,14 @@ const routes: Array<RouteConfig> = [
           keepAlive: false
         }
       },
-      {
+     /* {
         path: "/scan",
         name: "scan",
         component: Scan,
         meta:{
           keepAlive: false
         }
-      },
+      }, */
       {
         path: "/scanH5",
         name: "scanH5",
@@ -109,12 +112,14 @@ router.beforeEach((to, from, next) => {
 	
   let islogin = localStore.get('token');
   islogin = Boolean(islogin);
-  if(to.meta.noRequireAuth ||islogin) {
+    next();
+	
+/*  if(false&&to.meta.noRequireAuth ||islogin) {
     next();
   }else{
-	  // next();
-    next("/login");
-  }  
+	  
+   next("/login");
+  }  */
   
   /* if(to.name == "/login"){
     if(islogin){
