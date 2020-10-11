@@ -285,6 +285,7 @@ $screen-width: 37.5;
   width: 100%;
   max-height: 61.8vh;
   overflow: hidden;
+  overflow-y: auto;
   
    li{
 	   font-size: 0;

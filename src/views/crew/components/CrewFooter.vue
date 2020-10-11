@@ -9,13 +9,13 @@
     <div class="info-ctn second">
       <i class="icon icon-location"></i>
       <span class="start-position">
-        {{ flightResData.Flight.BaseInfo.Departure }}</span
+        {{ flightResData.Flight.BaseInfo.DepartureTerminal }}</span
       >
-      <span>-</span>
+      <span>--</span>
       <i class="icon icon-flight-horizatal"></i>
-      <span>-</span>
+      <span>--</span>
       <span class="end-position">
-        {{ flightResData.Flight.BaseInfo.Arrival }}</span
+        {{ flightResData.Flight.BaseInfo.ArrivalTerminal }}</span
       >
     </div>
 

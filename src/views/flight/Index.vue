@@ -296,6 +296,12 @@ export default class FlightIndex extends Vue {
       altitudesData.push(item.Altitude);
     });
 
+    // let first =  DateUtils.formate(this.flightInfo.DepartureTime, 'hh:mm');
+    // let end =  DateUtils.formate(this.flightInfo.ArrivalTime, 'hh:mm');
+
+    // timesData.unshift(first);
+    // timesData.push(end);
+    
     this.chart = echarts.init((this as any).$refs.chartCtn);
     this.chart.clear();
 

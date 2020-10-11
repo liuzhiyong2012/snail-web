@@ -12,11 +12,11 @@
           <!-- <span>3min</span> -->
           <span>{{ data.TimeAgo }}</span>
         </div>
-        <div class="line-two">{{ data.Name }}</div>
+        <div class="line-two">{{ data.Name }}  ${{ data.Price }}  <i>X{{data.Quantity}}</i></div>
       </div>
 
       <div class="info-right-ctn">
-        <span class="price-ctn">${{ data.Price }}</span>
+        <span class="price-ctn">${{ Number(data.Price)*data.Quantity }}</span>
         <span class="finish-ctn" v-if="data.status == '0'" @click="finish">{{
           $t("Finish")
         }}</span>

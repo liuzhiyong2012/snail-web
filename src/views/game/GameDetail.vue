@@ -1,6 +1,7 @@
 <template>
   <div class="game-detail-ctn">
         <abus-title :title="$t('title')" backRouteName="game">
+			<div slot style="width: 0.3rem"></div>
         </abus-title>
 		
 		<div class="content-ctn">
