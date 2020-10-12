@@ -78,7 +78,7 @@ export default {
 	logout(context: any, state: any){
 		context.commit('setName', '')
 		context.commit('setToken', '')
-		// context.commit('setAirbusId', '')
+		context.commit('setAirbusId', '')
 		context.commit('setUserInfo', {})
 		context.commit('setVoyageInfo', {})
 	},

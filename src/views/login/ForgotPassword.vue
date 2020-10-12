@@ -25,11 +25,19 @@
           <div class="main-box">
             <div class="title">{{$t('Phone')}}</div>
             <!-- @change="getPhoneNum($event)" -->
-            <input 
+            <!-- 限制11位 -->
+            <!-- <input 
             class="flex1" 
             oninput="value=value.replace(/[^\d.]/g,'')"
             :placeholder="$t('PhoneTips')" 
             @keydown="getUserPhoneLength"
+            v-model="phone" 
+            type="number" /> -->
+            <!-- 不限制11位 -->
+            <input 
+            class="flex1" 
+            oninput="value=value.replace(/[^\d.]/g,'')"
+            :placeholder="$t('PhoneTips')" 
             v-model="phone" 
             type="number" />
           </div>

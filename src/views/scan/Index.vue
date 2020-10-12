@@ -262,7 +262,7 @@
 		private getCameraList() {
 			QrcodeScaner.Html5Qrcode.getCameras()
 				.then((res: any) => {
-
+debugger
 					this.cameraList = res;
 					if (this.cameraList && this.cameraList.length > 0) {
 						this.selectCamera(this.cameraList[0],0);

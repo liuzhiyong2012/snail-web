@@ -40,13 +40,22 @@
           </svg>
         </div>
         <!-- @keyup="getUserPhone" -->
-        <input
+        <!-- 限制11位 -->
+        <!-- <input
           v-model="userPhone"
           class="form-input padding1"
           maxlength="20"
           :placeholder="$t('placeholderPhone')"
           type="number"
           @keydown="getUserPhoneLength"
+        /> -->
+        <!-- 不限制位数 -->
+        <input
+          v-model="userPhone"
+          class="form-input padding1"
+          maxlength="20"
+          :placeholder="$t('placeholderPhone')"
+          type="number"
         />
         <div class="area-code" @click="clickShowAreaCode">+ {{ areaCode }}</div>
         <div class="area-code-line"></div>
@@ -258,9 +267,17 @@ export default class Login extends Vue {
   }
   public postUserLogin() {
     // console.log(this.$store.state.login.name)
-    if (!/^1[3456789]\d{9}$/.test(this.userPhone)) {
+    // if (!/^1[3456789]\d{9}$/.test(this.userPhone)) {
+    //   this.$toast(this.$i18n.t("showError"));
+    //   return false;
+    // } else if (this.userPassword == "") {
+    //   this.$toast(this.$i18n.t("noPassword"));
+    // } else if (this.userPhone != "" && this.userPassword != "") {
+    //   this.getOnLineDetails();
+    // }
+    if (this.userPhone== "") {
       this.$toast(this.$i18n.t("showError"));
-      return false;
+      // return false;
     } else if (this.userPassword == "") {
       this.$toast(this.$i18n.t("noPassword"));
     } else if (this.userPhone != "" && this.userPassword != "") {
