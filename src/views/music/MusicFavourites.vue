@@ -21,8 +21,8 @@
 			</div>
 
 			<div class="item-content-ctn">
-				<van-pull-refresh v-model="refreshing" @refresh="onRefresh">
-					<van-list  v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :offset="100" :immediate-check="false" ref="mylist">
+				<!-- <van-pull-refresh v-model="refreshing" @refresh="onRefresh"> -->
+					<!-- <van-list  v-model="loading" :finished="finished" :finished-text="nomore" @load="onLoad" :offset="100" :immediate-check="false" ref="mylist"> -->
 						<div  v-if="activePage == 'song'" refs="aaa" class="collect-list-ctn song">
 							<van-swipe-cell v-for="(item, index) in resultList" :key="index" class="mysong-swipe-item">
 								<template #right>
@@ -62,8 +62,11 @@
 								</div>
 							</van-swipe-cell>
 						</div>
-					</van-list>
-				</van-pull-refresh>
+						<div class="v-finished-text">
+							{{ $t("noMore") }}
+						</div>
+					<!-- </van-list> -->
+				<!-- </van-pull-refresh> -->
 			</div>
 		</section>
 	</section>
@@ -75,14 +78,16 @@
 			"TotalSong":"全部",
 			"PlayAll":"播放全部",
 			"CancelledSuccessfully":"取消收藏歌单成功",
-			"fail":"获取列表失败!"
+			"fail":"获取列表失败!",
+			"noMore":"没有更多了"
 		},
 		"en":{
 			"title":"Favourites",
 			"TotalSong":"Total song",
 			"PlayAll":"Play all",
 			"CancelledSuccessfully":"Collection of song list cancelled successfully",
-			"fail":"Failed to get list!"
+			"fail":"Failed to get list!",
+			"noMore":"no more"
 		}
 	}
 </i18n>
@@ -124,10 +129,11 @@ export default class MusicFavourites extends Vue {
 		{
 			name: 'PlayList',
 			EName:'PlayList',
-			ZhName:'专辑',
+			ZhName:'榜单',
 			value: 'playList'
 		}
 	];
+	private nomore: string = "";
 	
     private allSongs: any[] = [];
 	
@@ -147,11 +153,13 @@ export default class MusicFavourites extends Vue {
 		this.getAllSong();
 		if (localStorage.getItem('lang') == 'en') {
 			this.$i18n.locale = 'en';
+			this.nomore = 'no more'
 			this.tabList.forEach(item=>{
 				item.name = item.EName
 			})
 		} else {
 			this.$i18n.locale = 'zh';
+			this.nomore = '没有更多了'
 			this.tabList.forEach(item=>{
 				item.name = item.ZhName
 			})
@@ -159,9 +167,9 @@ export default class MusicFavourites extends Vue {
 	}
 
 
-	public deleteSong(item:any){
+	// public deleteSong(item:any){
 		
-	}
+	// }
 	
 	private stepToPage(item:any):void{
 				 this.$router.push({
@@ -226,21 +234,20 @@ export default class MusicFavourites extends Vue {
 		}
 	}
 
-	public delectMySong(item: any) {
-		MusicService.unSubscribePlaylist().then(() => {});
-	}
-
 	public getMySongList(): void {
-		
+		this.resultList = [];
 		MusicService.getMySongList({
-			take: this.pageSize,
-			skip: (this.pageNumber - 1) * this.pageSize
+			// take: this.pageSize,
+			// skip: (this.pageNumber - 1) * this.pageSize
+			take: 9999,
+			skip: 0
 		}).then((resData: any) => {
 				if (resData.code == '200'){
 					if (resData.data.EOF) {
 						this.finished = true;
 					}
-					this.resultList = this.resultList.concat(resData.data.palyList);
+					// this.resultList = this.resultList.concat(resData.data.palyList);
+					this.resultList = resData.data.palyList;
 					this.total = resData.data.count;
 				} else {
 					this.$toast(this.$i18n.t('fail'));
@@ -256,9 +263,12 @@ export default class MusicFavourites extends Vue {
 	}
 
 	public getMyPlaylist(): void {
+		this.resultList = [];
 		MusicService.getMyPlaylist({
-			take: this.pageSize,
-			skip: (this.pageNumber - 1) * this.pageSize
+			// take: this.pageSize,
+			// skip: (this.pageNumber - 1) * this.pageSize
+			take: 9999,
+			skip: 0
 		}).then((resData: any) => {
 			if (resData.code == '200') {
 				
@@ -266,7 +276,8 @@ export default class MusicFavourites extends Vue {
 					item.CoverImgUrl = UrlUtils.addBaseUrl( UrlUtils.delBaseUrl(item.CoverImgUrl));
 				});
 				
-				this.resultList = this.resultList.concat(resData.data.Playlist); 
+				// this.resultList = this.resultList.concat(resData.data.Playlist); 
+				this.resultList = resData.data.Playlist; 
 				this.total = resData.data.count;
 				
 				this.loading = false;
@@ -344,7 +355,6 @@ export default class MusicFavourites extends Vue {
 					});
 					
 					this.allSongs = songs;
-					
 				} else {
 					this.$toast(this.$i18n.t('fail'));
 				}
@@ -434,12 +444,11 @@ export default class MusicFavourites extends Vue {
 			left: 0;
 			bottom: 0;
 			padding-top: 1rem;
-			padding-bottom: 1.7rem;
-			overflow: auto;
 
 			.collect-list-ctn {
 				// padding: 0 0.3rem;
-
+				// overflow: hidden;
+				// overflow-y: auto;
 				&.song {
 					.mysong-swipe-item {
 						// padding:0.22rem 0;
@@ -573,6 +582,15 @@ export default class MusicFavourites extends Vue {
 						}
 					}
 				}
+			}
+
+			.v-finished-text {
+				width: 100% !important;
+				font-size: .24rem !important;
+				text-align: center;
+				line-height: 0.5rem;
+				color: #969799;
+				margin-bottom: 1.2rem;
 			}
 		}
 	}

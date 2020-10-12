@@ -32,15 +32,6 @@
               :poster="item.CoverImgPath | addBaseUrl"
               class="video-box"
             ></video>
-            <!-- <div class="video-main">
-              <video
-                preload="auto"
-                @click="playVideo(index)"
-                :src="item.FilePath | addBaseUrl"
-                :poster="item.CoverImgPath | addBaseUrl"
-                class="video-box"
-              ></video>
-            </div> -->
             <!-- 右侧栏 -->
             <div class="right-box">
               <svg
@@ -120,16 +111,15 @@
             <div class="bottom-box">
               <div
                 :class="[isShowAd ? 'ad active' : 'ad']"
-                @click="stepToDetail(adData)"
               >
-                <div class="img-box1">
+                <div class="img-box1" @click="stepToDetail(adData)">
                   <img
                     class="img"
                     :src="adData.BannerImgPath | addBaseUrl"
                     alt
                   />
                 </div>
-                <div class="r-box">
+                <div class="r-box" @click="stepToDetail(adData)">
                   <div class="r-name">{{ adData.Name }}</div>
                   <div class="r-price">${{ adData.Price }}</div>
                 </div>
@@ -324,8 +314,9 @@ export default class VideoPlay extends Vue {
   private stepToDetail(item: any) {
     this.$router.push({
       name: "shoppingDetails",
-      params: {
+      query: {
         shoppingInfo: item,
+        id: item.Id
       },
     });
   }

@@ -13,9 +13,11 @@ export default {
       1000,
     ];
     var unit = ["years", "days", "hours", "minutes", "seconds"];
-    var ct = new Date().getTime() - new Date(atime).getTime();
+    // var ct = new Date().getTime() - new Date(atime).getTime();
+    var ct = new Date().getTime() - new Date(atime).getTime() - 8*60*60*1000;
     if (ct < 0) {
-      return "瞎糊闹！";
+      // return "瞎糊闹！";
+      return '';
     }
 
     var sb = [];

@@ -288,7 +288,6 @@ export default class FlightIndex extends Vue {
     let timesData: Array<any> = [];
     let speedsData: Array<any> = [];
     let altitudesData: Array<any> = [];
-
     this.flightInfo.FlightAltitudes.forEach((item: any, index: number) => {
       let time = DateUtils.formate(item.TimePoint, 'hh:mm');
       timesData.push(time);
@@ -296,6 +295,63 @@ export default class FlightIndex extends Vue {
       altitudesData.push(item.Altitude);
     });
 
+    let FlightFirst = this.flightInfo.FlightSpeeds[0].TimePoint;
+    let FlightEnd = this.flightInfo.FlightSpeeds[this.flightInfo.FlightSpeeds.length-1].TimePoint;
+
+    let headTimeArr = [];
+    let headSpeedArr = [];
+    let headAltitudeArr = [];
+
+    let tailTimeArr = [];
+    let tailSpeedArr = [];
+    let tailAltitudeArr = [];
+    
+    let headEnpty = FlightFirst - this.flightInfo.Flight.BaseInfo.DeparturePlanTimestamp;
+    if(headEnpty > 0) {
+      headTimeArr.push( DateUtils.formate(this.flightInfo.Flight.BaseInfo.DeparturePlanTimestamp, 'hh:mm'))
+      headSpeedArr.push('-');
+      headAltitudeArr.push('-');
+      let len = Math.floor((headEnpty / (5*60*1000)));
+      for(let i=1;i<=len; i++){
+        headTimeArr.push(
+          DateUtils.formate(this.flightInfo.Flight.BaseInfo.DeparturePlanTimestamp + i * 5 * 60 * 1000, 'hh:mm')
+        );
+        headSpeedArr.push('-');
+        headAltitudeArr.push('-');
+      }
+    }
+
+    let tailEnpty = this.flightInfo.Flight.BaseInfo.ArrivalPlanTimestamp - FlightEnd;
+    if(tailEnpty > 0){
+      let len = Math.floor(tailEnpty/(5*60*1000))
+      for(let i = 1; i<=len; i++){
+        tailTimeArr.push(
+          DateUtils.formate( FlightEnd + i * 5 * 60 * 1000, 'hh:mm')
+        )
+        tailSpeedArr.push('-');
+        tailAltitudeArr.push('-');
+      }
+      tailTimeArr.push(
+        DateUtils.formate( this.flightInfo.Flight.BaseInfo.ArrivalPlanTimestamp, 'hh:mm')
+      )
+      tailSpeedArr.push('-');
+      tailAltitudeArr.push('-');
+    }
+
+    if(headEnpty > 0 && tailEnpty > 0){
+      timesData = [...headTimeArr, ...timesData, ...tailTimeArr];
+      speedsData = [...headSpeedArr,...speedsData, ...tailSpeedArr];
+      altitudesData = [...headAltitudeArr,...altitudesData, ...tailAltitudeArr];
+    }else if(headEnpty <= 0 && tailEnpty > 0){
+      timesData = [...timesData, ...tailTimeArr];
+      speedsData = [...speedsData, ...tailSpeedArr];
+      altitudesData = [...altitudesData, ...tailAltitudeArr];
+    }else if(headEnpty > 0 && tailEnpty <= 0){
+      timesData = [...headTimeArr, ...timesData];
+      speedsData = [...headSpeedArr,...speedsData];
+      altitudesData = [...headAltitudeArr,...altitudesData];
+    }
+    
     this.chart = echarts.init((this as any).$refs.chartCtn);
     this.chart.clear();
 

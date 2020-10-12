@@ -10,13 +10,14 @@
         <div class="line-one">
           <span>{{ data.Seat }}</span>
           <!-- <span>3min</span> -->
-          <span>{{ data.TimeAgo }}</span>
+          <!-- <span>{{ data.TimeAgo }}</span> -->
+          <span>{{ data.CreatedAt }}</span>
         </div>
-        <div class="line-two">{{ data.Name }}</div>
+        <div class="line-two">{{ data.Name }}  ${{ data.Price }}  <i>X{{data.Quantity}}</i></div>
       </div>
 
       <div class="info-right-ctn">
-        <span class="price-ctn">${{ data.Price }}</span>
+        <span class="price-ctn">${{ Number(data.Price)*data.Quantity }}</span>
         <span class="finish-ctn" v-if="data.status == '0'" @click="finish">{{
           $t("Finish")
         }}</span>
@@ -58,7 +59,8 @@ export default class CrewGoodsItem extends Vue {
 
 .crew-catering-item {
   position: relative;
-  width: rem(976px);
+  // width: rem(976px);
+  width: rem(830px);
   height: rem(140px);
   border-radius: rem(30px);
   box-sizing: border-box;

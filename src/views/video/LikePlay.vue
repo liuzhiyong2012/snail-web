@@ -109,16 +109,15 @@
             <div class="bottom-box">
               <div
                 :class="[isShowAd ? 'ad active' : 'ad']"
-                @click="stepToDetail(adData)"
               >
-                <div class="img-box1">
+                <div class="img-box1" @click="stepToDetail(adData)">
                   <img
                     class="img"
                     :src="adData.BannerImgPath | addBaseUrl"
                     alt
                   />
                 </div>
-                <div class="r-box">
+                <div class="r-box" @click="stepToDetail(adData)">
                   <div class="r-name">{{ adData.Name }}</div>
                   <div class="r-price">${{ adData.Price }}</div>
                 </div>
@@ -198,10 +197,10 @@ export default class VideoPlay extends Vue {
       // item.isHaveComment = false;
       item.Comments = [];
     });
-    clearTimeout(this.adShowTime);
-    this.adShowTime = setTimeout(() => {
-      this.isShowAd = true;
-    }, 30000);
+    // clearTimeout(this.adShowTime);
+    // this.adShowTime = setTimeout(() => {
+    //   this.isShowAd = true;
+    // }, 30000);
   }
   // public postVideoList() {
   //   VideoService.postVideoList().then((res: any) => {
@@ -274,6 +273,12 @@ export default class VideoPlay extends Vue {
       if (res.code == 200 && res.data.length != 0) {
         this.adDataList = res.data;
         this.adData = res.data[0];
+        if (this.adDataList.length > 0) {
+          clearTimeout(this.adShowTime);
+          this.adShowTime = setTimeout(() => {
+            this.isShowAd = true;
+          }, 30000);
+        }
       }
     });
   }
@@ -281,8 +286,9 @@ export default class VideoPlay extends Vue {
   private stepToDetail(item: any) {
     this.$router.push({
       name: "shoppingDetails",
-      params: {
+      query: {
         shoppingInfo: item,
+        id: item.Id
       },
     });
   }
@@ -643,7 +649,6 @@ export default class VideoPlay extends Vue {
     padding: 0.1rem;
     width: 0.35rem;
     height: 0.35rem;
-    z-index: 1000;
   }
   .ad {
     position: absolute;
@@ -655,7 +660,6 @@ export default class VideoPlay extends Vue {
     border: 1px dashed rgba(53, 53, 53, 0.6);
     background-color: rgba(255, 255, 255, 0.6);
     border-radius: 0.1rem;
-    z-index: 900;
     &.active {
       display: flex;
     }

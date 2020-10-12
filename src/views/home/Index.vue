@@ -310,6 +310,7 @@ export default class Home extends Vue {
     // _this.socket =  (window as any).io("http://172.16.8.69:2120");
     // _this.socket =  (window as any).io("http://kf.vpclub.cn/airbus/websocket");
     const opt = {
+      forceNew: true,
       path: process.env.VUE_APP_SOCKET_URL
     };
     _this.socket = io( process.env.VUE_APP_SOCKET_HOST, opt);
@@ -318,12 +319,12 @@ export default class Home extends Vue {
     
     // socket连接后以uid登录
     _this.socket.on('connect', function () {
-    	console.log('home connect');
+    	console.log('home:connect');
       _this.socket.emit('login', uid);
     });
     // 后端推送来消息时
     _this.socket.on('new_msg', (msg: any) => {
-    	console.log('home new_msg');
+    	console.log('home:new_msg');
       let midMsg = msg.replace(/&quot;/g, '"');
       let endMsg = JSON.parse(midMsg);
       if (endMsg.type == 'system') {
@@ -338,7 +339,7 @@ export default class Home extends Vue {
     });
     // 后端推送来在线数据时
     _this.socket.on('update_online_count', (online_stat: any) => {
-      // console.log("后端推送来在线数据时", online_stat);
+      console.log('home:update_online_count');
     });
   }
 

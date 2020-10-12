@@ -66,7 +66,7 @@ import {Stroke, Style} from 'ol/style'; */
 })
 export default class AbusMap extends Vue {
 	@Prop({
-		default:8
+		default:7
 	})
 	zoom?: string | number;
 
@@ -206,7 +206,7 @@ export default class AbusMap extends Vue {
 			view: new View({
 				projection: 'EPSG:4326', //使用这个坐标系
 				center: [114.064839, 22.548857], //深圳
-				zoom: 8
+				zoom: 7
 			}),
 			controls: defaults({
 				attributionOptions: {
@@ -220,7 +220,8 @@ export default class AbusMap extends Vue {
 		let markerEl = document.getElementById('geo-marker');
 		// 'OverlayPositioning
 		let marker = new Overlay({
-			positioning:OverlayPositioning.BOTTOM_CENTER,// 'bottom-center',
+			// positioning:OverlayPositioning.BOTTOM_CENTER,// 'bottom-center',
+			positioning:OverlayPositioning.CENTER_CENTER,// 'center-center',
 			stopEvent: false,
 			// dragging: false,
 			offset: [0, 0],

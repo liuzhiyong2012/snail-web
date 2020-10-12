@@ -145,7 +145,8 @@ export default class HomeFlight extends Vue {
 		}else{
 			this.currentTime = null;
 		}
-		this.remainingTime = DateUtils.calcRemaingTime(this.flightResData.DepartureTime,this.flightResData.ArrivalTime,this.currentTime);
+    // this.remainingTime = DateUtils.calcRemaingTime(this.flightResData.DepartureTime,this.flightResData.ArrivalTime,this.currentTime);
+    this.remainingTime = DateUtils.calcRemaingTime(this.baseInfo.DeparturePlanTimestamp,this.baseInfo.ArrivalPlanTimestamp,this.currentTime);
   }
   
 }

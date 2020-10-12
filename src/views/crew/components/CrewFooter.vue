@@ -9,20 +9,23 @@
     <div class="info-ctn second">
       <i class="icon icon-location"></i>
       <span class="start-position">
-        {{ flightResData.Flight.BaseInfo.Departure }}</span
+        {{ flightResData.Flight.BaseInfo.DepartureTerminal }}</span
       >
-      <span>-</span>
+      <span>--</span>
       <i class="icon icon-flight-horizatal"></i>
-      <span>-</span>
+      <span>--</span>
       <span class="end-position">
-        {{ flightResData.Flight.BaseInfo.Arrival }}</span
+        {{ flightResData.Flight.BaseInfo.ArrivalTerminal }}</span
       >
     </div>
 
     <div class="info-ctn third">
       <i class="icon icon-time"></i>
-      <span class="start-time">{{
+      <!-- <span class="start-time">{{
         flightResData.DepartureTime | dateFormate("hh:mm")
+      }}</span> -->
+      <span class="start-time">{{
+        flightResData.Flight.BaseInfo.DeparturePlanTimestamp | dateFormate("hh:mm")
       }}</span>
       <div class="progress-ctn">
         <div
@@ -30,8 +33,11 @@
           :style="{ width: flightResData.Flight.BaseInfo.OntimeRate }"
         ></div>
       </div>
-      <span class="end-time">{{
+      <!-- <span class="end-time">{{
         flightResData.ArrivalTime | dateFormate("hh:mm")
+      }}</span> -->
+      <span class="end-time">{{
+        flightResData.Flight.BaseInfo.ArrivalPlanTimestamp | dateFormate("hh:mm")
       }}</span>
     </div>
 

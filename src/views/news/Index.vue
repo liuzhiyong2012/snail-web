@@ -106,6 +106,7 @@ export default class NewsList extends Vue {
         item.endName = item.EName
       })
     } else {
+	
       this.$i18n.locale = "zh";
       this.navTar.forEach(item=>{
         item.endName = item.Name

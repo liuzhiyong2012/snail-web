@@ -351,7 +351,7 @@
 				}
 				
 				.album-list-ctn{
-					padding-bottom: 1.80rem;
+					padding-bottom: 0.8rem;
 					
 					.album-item-ctn{
 						
