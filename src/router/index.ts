@@ -112,16 +112,10 @@ router.beforeEach((to, from, next) => {
 	
   let islogin = localStore.get('token');
   islogin = Boolean(islogin);
-    next();
-	
-/*  if(false&&to.meta.noRequireAuth ||islogin) {
-    next();
-  }else{
-	  
-   next("/login");
-  }  */
+    // next();
+
   
-  /* if(to.name == "/login"){
+  if(to.name == "/login"){
     if(islogin){
       next("/table");
     }else{
@@ -133,7 +127,7 @@ router.beforeEach((to, from, next) => {
     }else{
       next("/login");
     }
-  } */
+  }
 });
 
 export default router;
