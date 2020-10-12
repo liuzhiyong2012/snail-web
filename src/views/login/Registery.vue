@@ -67,7 +67,8 @@
         </div> -->
         <div class="main-item">
           <div class="title line-h">{{ $t("Phone") }}</div>
-          <input
+          <!-- 限制11位数 -->
+          <!-- <input
             v-model="phone"
             class="main-item-con padding4"
             type="number"
@@ -75,6 +76,16 @@
             @change="setPhone"
             oninput="value=value.replace(/[^\d.]/g,'')"
             @keydown="getUserPhoneLength"
+            :placeholder="$t('PhoneTips')"
+          /> -->
+          <!-- 不限制位数 -->
+          <input
+            v-model="phone"
+            class="main-item-con padding4"
+            type="number"
+            maxlength="20"
+            @change="setPhone"
+            oninput="value=value.replace(/[^\d.]/g,'')"
             :placeholder="$t('PhoneTips')"
           />
           <div class="area-code" @click="clickShowAreaCode">
