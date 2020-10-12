@@ -2,14 +2,13 @@
 	<div class="scan-ctn">
 		<div class="header-ctn">
 			<i class="icon  icon-back" @click="stepToHome()"></i>
-			scan
+			 {{$t("title")}}
 		</div>
 
 		<div ref="contentCtn" class="content-ctn">
 			<div ref="infoCtn" class="info-ctn">
 				{{infoTxt}}
 			</div>
-
 
 			<!-- 摄像头状态 -->
 			<div class="scan-content-ctn camera-ctn" v-show="pageStatus == 'cameraInput'">
@@ -36,16 +35,18 @@
 				
 
 				<div v-if="!fileImageUrl" class="file-noimage-ctn">
-					No File
+					 {{$t("noFile")}}
 				</div>
 
 				<input ref="fileInput" class="file-input" accept="image/*" type="file" @change="selectFile($event)" />
 
 				<div class="file-upload-ctn" @click="uploadImage()">
-					拍照/上传
+					{{$t("Upload")}}
+					
 				</div>
 
 			</div>
+			
 		</div>
 		<div class="footer-ctn">
 			<!-- pageStatus = 'cameraInput'  pageStatus = 'fileInput' -->
@@ -55,7 +56,7 @@
 						<use xlink:href="#icon-camera-scan" />
 					</svg>
 				</div>
-				<p class="swtich-txt">摄像头扫描</p>
+				<p class="swtich-txt"> {{$t("cameraScan")}} </p>
 			</div>
 			<div v-show="pageStatus == 'cameraInput'" class="swtich-ctn" @click="switchTo('fileInput')">
 				<div class="swtich-img">
@@ -63,19 +64,40 @@
 						<use xlink:href="#icon-file-scan" />
 					</svg>
 				</div>
-				<p class="swtich-txt">拍照扫描</p>
+				<p class="swtich-txt"> {{$t("takeAPicture")}}</p>
 			</div>
 		</div>
 	</div>
 </template>
 
+<!-- No File
+			Take /上传
+			摄像头扫描
+			拍照扫描 -->
+			
 <i18n>
 	{
-	"zh":{
-	"title":"新闻"
-	},
 	"en":{
-	"title":"News"
+	  "title":"Scan",
+	  "noFile":"No File",
+	  "takeAPicture":"Take A Picture To Scan",
+	   "cameraScan":"Camera Scan",
+	   "Upload":"upload",
+	   "scanning":"Scanning...",
+	   "scanningSuccess":"Success,The page is about to jump...",
+	   "imageSupportType":"Only suport png,jpg,jpeg",
+	   "noCameres":"No cameras available"
+	},
+	"zh":{
+	   "title":"扫码",
+	   "noFile":"No File",
+	   "takeAPicture":"拍摄上传",
+	    "cameraScan":"扫描",
+	    "Upload":"上传",
+		"scanning":"扫描中",
+		"scanningSuccess":"扫描成功,即将跳转...",
+		"imageSupportType":"仅支持png,jpg,jpeg的文件类型",
+		"noCameres":"未查询到可用摄像头"
 	}
 	}
 </i18n>
@@ -101,7 +123,9 @@
 
 		private qrcodeWidth: number = 250;
 		
-		private infoTxt: string = '扫描中';
+		private infoTxt: string = this.$i18n.t("scanning");
+		
+		
 
 		/* <div ref="infoCtn" class="info-ctn">
 			{{infoTxt}}
@@ -129,7 +153,11 @@
 		}
 
 		private mounted() {
-
+            if (localStorage.getItem("lang") == "en") {
+              this.$i18n.locale = "en";
+            } else {
+              this.$i18n.locale = "zh";
+            }
 
 		}
 		
@@ -168,7 +196,9 @@
 			}, (res) => {
 				this.stopCameraScan();
 				
-				this.infoTxt = '扫描成功,即将跳转...' + res;
+				
+				
+				this.infoTxt = this.$i18n.t("scanningSuccess") + res;
 				window.setTimeout(()=>{
 					this.processScanResult(res);
 				},800);
@@ -210,9 +240,13 @@
 			firstFile = files[0];
 
 			if (!reg.test(files[0].name)) {
-				this.infoTxt = '仅支持png,jpg,jpeg的文件类型';
+				this.infoTxt = this.$i18n.t("imageSupportType");
 				return;
 			}
+			
+			
+			
+			
             
 			this.renderFileImage(firstFile);
 			
@@ -234,8 +268,12 @@
 					if (this.cameraList && this.cameraList.length > 0) {
 						this.selectCamera(this.cameraList[0],0);
 					} else {
-						this.infoTxt = '未查询到可用摄像头';
+						this.infoTxt = this.$i18n.t("noCameres");
 					}
+					
+					
+					
+					
 					/* this.cameraList = [{
 						 id:'11111',
 						 label:'摄像头111'
@@ -314,7 +352,6 @@
 			reader.readAsDataURL(file);
 			reader.onloadend = function(f) {
 				let base64Url = f.target.result;
-				
 				This.fileImageUrl = base64Url;
 			};
 		}
