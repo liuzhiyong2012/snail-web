@@ -191,9 +191,6 @@
 				qrbox: this.qrcodeWidth
 			}, (res) => {
 				this.stopCameraScan();
-				
-				
-				
 				this.infoTxt = this.$i18n.t("scanningSuccess");
 				this.$toast(this.infoTxt);
 				window.setTimeout(()=>{
@@ -249,20 +246,20 @@
 			
 			this.html5Qrcode.scanFile(firstFile, this.$refs.fileCtn, this.$refs.fileCanvas).then(res => {
 				      this.infoTxt = this.$i18n.t("scanningSuccess");
-                       window.setTimeout(()=>{
+					  this.$toast(this.infoTxt);
+                      window.setTimeout(()=>{
                        	this.processScanResult(res);
                        },1500);
 			}).finally((error)=>{
-				//this.infoTxt = error;
-				this.infoTxt = this.$i18n.t("fileScanFail");
 				e.target.value = '';
+			}).catch(()=>{
+				this.infoTxt = this.$i18n.t("fileScanFail");
 			});
 		}
 
 		private getCameraList() {
 			QrcodeScaner.Html5Qrcode.getCameras()
 				.then((res: any) => {
-debugger
 					this.cameraList = res;
 					if (this.cameraList && this.cameraList.length > 0) {
 						this.selectCamera(this.cameraList[0],0);

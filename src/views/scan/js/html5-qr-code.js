@@ -1279,7 +1279,6 @@ var Html5Qrcode = function() {
 			}
 			
 			var m = function(a, b) {
-				    //debugger;
 					var c = h.qrbox;
 					c > b && console.warn("[Html5Qrcode] config.qrboxsize is greater than video height. Shading will be ignored");
 					var d = i && c <= b,
@@ -1320,7 +1319,6 @@ var Html5Qrcode = function() {
 						var d = function() {
 							var d = f._createVideoElement(k);
 							
-							/* debugger; */
 							 d.style.width = h.video.width + 'px';
 							 d.style.height = h.video.height + 'px';
 							
@@ -1401,7 +1399,6 @@ var Html5Qrcode = function() {
 						throw "Invalid type of 'cameraIdOrConfig' = ".concat(j)
 					}
 				};
-				//debugger;
 			return new Promise(function(a, c) {
 				if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 					var d = q(b);
@@ -1440,22 +1437,32 @@ var Html5Qrcode = function() {
 			var b = this;
 			
 			return new Promise(function(c) {
-				/* b.vueCtx */
-				/* b.qrcode.callback = null;
-				var d = b._localMediaStream.getVideoTracks().length,
-					e = 0,
-					f = function() {
-						for (; b._element.getElementsByClassName(a.SHADED_REGION_CLASSNAME).length;) {
-							var c = b._element.getElementsByClassName(a.SHADED_REGION_CLASSNAME)[0];
-							b._element.removeChild(c)
-						}
-					},
-					g = function() {
-						b._localMediaStream = null, b._element.removeChild(b._videoElement), b._element.removeChild(b._canvasElement), f(), b._isScanning = !1, b._qrRegion && (b._qrRegion = null), b._context && (b._context = null), c(!0)
-					};
-				b._localMediaStream.getVideoTracks().forEach(function(a) {
-					a.stop(), ++e, e >= d && g()
-				}) */
+				
+			          if(b.qrcode){
+						  b.qrcode.callback = null;
+					  }
+				
+				if(b._localMediaStream){
+					
+					var d = b._localMediaStream.getVideoTracks().length,
+						e = 0,
+						f = function() {
+							/* for (; b._element.getElementsByClassName(a.SHADED_REGION_CLASSNAME).length;) {
+								var c = b._element.getElementsByClassName(a.SHADED_REGION_CLASSNAME)[0];
+								b._element.removeChild(c)
+							} */
+						},
+						g = function() {
+							b._localMediaStream = null, b._isScanning = !1, b._qrRegion && (b._qrRegion = null), b._context && (b._context = null), c(!0)
+						};
+						
+					b._localMediaStream.getVideoTracks().forEach(function(a) {
+						a.stop(), ++e, e >= d && g()
+					}) 
+				}else{
+					c(!0)
+				}
+				
 			})
 		}
 	}, {
@@ -1508,7 +1515,6 @@ var Html5Qrcode = function() {
 					k.appendChild(q);
 					var r = q.getContext("2d");
 					r.canvas.width = n.width, r.canvas.height = n.height, r.drawImage(h, 0, 0, i, j, 0, 0, n.width, n.height);
-					// debugger;
 					try {
 						f(d.qrcode.decode())
 					} catch (a) {
