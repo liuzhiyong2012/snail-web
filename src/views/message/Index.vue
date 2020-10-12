@@ -7,7 +7,7 @@
           slot="left"
           @click="gotoChatMessage('message')"
         >
-          <span>{{$t('chat')}}</span>
+          <span>{{ $t("chat") }}</span>
         </div>
         <div
           slot="right"
@@ -15,7 +15,9 @@
             showMessage == true ? 'header-message' : 'header-message-disable'
           "
         >
-          <span class="message-mr" @click="gotoChatMessage('notice')">{{$t('message')}}</span>
+          <span class="message-mr" @click="gotoChatMessage('notice')">{{
+            $t("message")
+          }}</span>
           <span>
             <!-- <i class="icon icon-able3_1" v-show="showDelete == false" @click="deleteMsgShow"></i>
             <i
@@ -23,10 +25,19 @@
               style="color: rgba(46, 46, 46, 0.3);"
               v-show="showDelete == true"
             ></i> -->
-            <svg class="icon icon-p" v-show="showDelete == false" @click="deleteMsgShow" aria-hidden="true">
+            <svg
+              class="icon icon-p"
+              v-show="showDelete == false"
+              @click="deleteMsgShow"
+              aria-hidden="true"
+            >
               <use xlink:href="#icon-able3_1" />
             </svg>
-            <svg class="icon icon-p" v-show="showDelete == true" aria-hidden="true">
+            <svg
+              class="icon icon-p"
+              v-show="showDelete == true"
+              aria-hidden="true"
+            >
               <use xlink:href="#icon-diasable_1" />
             </svg>
           </span>
@@ -48,7 +59,9 @@
                   <img src="./images/vadarImg.png" alt />
                 </div>
                 <div class="item-content">
-                  <p class="item-content-name" v-if="item.type != 1">Air Hostess</p>
+                  <p class="item-content-name" v-if="item.type != 1">
+                    Air Hostess
+                  </p>
                   <span class="item-content-word">{{ item.content }}</span>
                 </div>
               </div>
@@ -58,8 +71,18 @@
       </div>
 
       <div class="send-box">
-        <input type="text" class="word-input" v-model="wordContent" @keyup.enter="sendMsgToManager" />
-        <input type="button" :value="$t('Send')" class="send-btn" @click="sendMsgToManager" />
+        <input
+          type="text"
+          class="word-input"
+          v-model="wordContent"
+          @keyup.enter="sendMsgToManager"
+        />
+        <input
+          type="button"
+          :value="$t('Send')"
+          class="send-btn"
+          @click="sendMsgToManager"
+        />
       </div>
     </section>
 
@@ -75,7 +98,7 @@
             <svg class="icon icon-p" v-if="item.Read == 0" aria-hidden="true">
               <use xlink:href="#icon-unread1_1" />
             </svg>
-            <svg class="icon icon-p" v-if="item.Read == 1" aria-hidden="true" >
+            <svg class="icon icon-p" v-if="item.Read == 1" aria-hidden="true">
               <use xlink:href="#icon-readed_11" />
             </svg>
             <!-- <i class="icon icon-unread1_1" v-if="item.Read == 0"></i>
@@ -89,7 +112,9 @@
             :class="
               item.Read == 0 ? 'message-content' : 'message-content-readed'
             "
-          >{{ item.Title }}</p>
+          >
+            {{ item.Title }}
+          </p>
         </div>
       </div>
     </section>
@@ -112,13 +137,13 @@
 	}
 </i18n>
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import MessageTitle from './components/MessageTitle.vue';
-import MessageService from '../../service/message';
-import { localStore } from '../../utils/data-management';
+import { Component, Prop, Vue } from "vue-property-decorator";
+import MessageTitle from "./components/MessageTitle.vue";
+import MessageService from "../../service/message";
+import { localStore } from "../../utils/data-management";
 declare let io: any;
 @Component({
-  name: 'messageIndex',
+  name: "messageIndex",
   components: {
     MessageTitle,
   },
@@ -144,7 +169,7 @@ export default class messageIndex extends Vue {
     // },
   ];
 
-  private wordContent: string = '';
+  private wordContent: string = "";
   private systemMsgList: Array<any> = [
     // {
     //   CreatedAt: "2020-07-31 09:17:21",
@@ -154,46 +179,46 @@ export default class messageIndex extends Vue {
     //   Title: "",
     // },
   ]; //系统消息
-  
-  private get userInfo(){
-	  return this.$store.state.login.userInfo;
+
+  private get userInfo() {
+    return this.$store.state.login.userInfo;
   }
-  
+
   private created() {
-    this.uInfo = localStore.get('userInfo');
-    if (localStorage.getItem('lang') == 'en') {
-      this.$i18n.locale = 'en';
+    this.uInfo = localStore.get("userInfo");
+    if (localStorage.getItem("lang") == "en") {
+      this.$i18n.locale = "en";
     } else {
-      this.$i18n.locale = 'zh';
+      this.$i18n.locale = "zh";
     }
   }
   private mounted() {
     let THIS = this;
-  	this.unloadHandler = (e)=>{
-      THIS.socket&&THIS.socket.close&&THIS.socket.close();
-      THIS.socket&&THIS.socket.destroy&&THIS.socket.destroy();
+    this.unloadHandler = (e) => {
+      THIS.socket && THIS.socket.close && THIS.socket.close();
+      THIS.socket && THIS.socket.destroy && THIS.socket.destroy();
       THIS.socket = null;
-		  //e = window.event||e;
-		  //e.returnValue=('确定离开当前网站吗?');
-  	};
-    window.addEventListener('beforeunload', this.unloadHandler);
-
-    this.initWebSocket();
+      //e = window.event||e;
+      //e.returnValue=('确定离开当前网站吗?');
+    };
+    window.addEventListener("beforeunload", this.unloadHandler);
 
     this.getChatMessage(); // 获取聊天记录
     this.getSysNoticeList(); //获取系统通知列表
+
+    this.initWebSocket();
   }
 
   private updated() {
     // 聊天定位到底部
-    let ele: any = document.getElementById('chat-inner');
+    let ele: any = document.getElementById("chat-inner");
     ele.scrollTop = ele.scrollHeight;
   }
 
   private beforeDestroy() {
-    window.removeEventListener('beforeunload', this.unloadHandler);
-    this.socket.close&&this.socket.close();
-    this.socket.destroy&&this.socket.destroy();
+    window.removeEventListener("beforeunload", this.unloadHandler);
+    this.socket && this.socket.close && this.socket.close();
+    this.socket && this.socket.destroy && this.socket.destroy();
     this.socket = null;
     this.changeNoticeStatus();
   }
@@ -204,10 +229,10 @@ export default class messageIndex extends Vue {
 
   // 切换聊天与系统消息
   public gotoChatMessage(type: string) {
-    if (type == 'message') {
+    if (type == "message") {
       this.showChat = true;
       this.showMessage = false;
-    } else if (type == 'notice') {
+    } else if (type == "notice") {
       this.showChat = false;
       this.showMessage = true;
 
@@ -225,40 +250,41 @@ export default class messageIndex extends Vue {
     this.showDelete = this.systemMsgList.every((item) => {
       return item.Read == 1;
     });
-    this.$store.dispatch('saveNoticeList', this.systemMsgList);
+    this.$store.dispatch("saveNoticeList", this.systemMsgList);
     this.changeNoticeStatus();
   }
 
   // 初始化websocket
-  public initWebSocket() {
+  private initWebSocket() {
     const _this = this;
     // 连接服务端，workerman.net:2120换成实际部署web-msg-sender服务的域名或者ip
     // _this.socket =  (window as any).io('http://172.16.8.69:2120');
     // _this.socket =  (window as any).io('http://kf.vpclub.cn/airbus/websocket');
     // _this.socket = io(process.env.VUE_APP_SOCKET_HOST,{path:''||process.env.VUE_APP_SOCKET_URL});
-	  //_this.socket = io(process.env.VUE_APP_SOCKET_HOST,{path:''});
-	 
-	  const opt = {
+    //_this.socket = io(process.env.VUE_APP_SOCKET_HOST,{path:''});
+
+    const opt = {
+      forceNew: true,
       path: process.env.VUE_APP_SOCKET_URL
     };
-	  _this.socket = io(process.env.VUE_APP_SOCKET_HOST, opt);
+    _this.socket = io(process.env.VUE_APP_SOCKET_HOST, opt);
 
     // uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
     let uid = _this.uInfo.id.trim();
- 
+
     // socket连接后以uid登录
-    _this.socket.on('connect', function () {
-    	console.log('chat:connect',uid.trim());
-      _this.socket.emit('login', uid);
+    _this.socket.on("connect", function() {
+      console.log("chat:connect", uid.trim());
+      _this.socket.emit("login", uid);
     });
     // 后端推送来消息时
-    _this.socket.on('new_msg', (msg: any) => {
-    	console.log('chat: new_msg');
+    _this.socket.on("new_msg", (msg: any) => {
+      console.log("chat: new_msg");
       let midMsg = msg.replace(/&quot;/g, '"');
       let endMsg = JSON.parse(midMsg);
       // {type: "message", content: "Your netFlow order has been completed", mark: "你的流量套餐订单已完成"}
-      if (endMsg.type == 'system') {
-        console.log('chat: new_msg-system');
+      if (endMsg.type == "system") {
+        console.log("chat: new_msg-system");
         // 系统通知
         // _this.systemMsgList.unshift({
         //   CreatedAt: '',
@@ -270,10 +296,10 @@ export default class messageIndex extends Vue {
         // _this.$store.dispatch('saveNoticeList', _this.systemMsgList);
         // _this.changeNoticeStatus();
         _this.getSysNoticeList();
-      } else if (endMsg.type == 'message') {
+      } else if (endMsg.type == "message") {
         // 聊天
-        console.log('chat: new_msg-chat');
-        if(this.userInfo.id != endMsg.from_user_id){
+        console.log("chat: new_msg-chat");
+        if (this.userInfo.id != endMsg.from_user_id) {
           // _this.chatList.push({
           //   id: '', //消息id
           //   from_user_id: '', //发送人id
@@ -290,11 +316,10 @@ export default class messageIndex extends Vue {
         }
       }
     });
-	
-	
+
     // 后端推送来在线数据时
-    _this.socket.on('update_online_count', (online_stat: any) => {
-      console.log('后端推送来在线数据时', online_stat);
+    _this.socket.on("update_online_count", (online_stat: any) => {
+      console.log("后端推送来在线数据时", online_stat);
     });
   }
 
@@ -323,7 +348,7 @@ export default class messageIndex extends Vue {
         // console.log('聊天记录', resRead);
         resRead.data = resRead.data.reverse();
         _this.chatList = [...messageList, ...resRead.data];
-        MessageService.getUserMessage({read: 0}).then(resUnread=>{
+        MessageService.getUserMessage({ read: 0 }).then((resUnread) => {
           resUnread.data = resUnread.data.reverse();
           _this.chatList = [..._this.chatList, ...resUnread.data];
         });
@@ -334,14 +359,14 @@ export default class messageIndex extends Vue {
   // 发送消息给空乘
   public sendMsgToManager() {
     const _this = this;
-    if (!this.wordContent) return this.$toast(this.$i18n.t('toast1'));
+    if (!this.wordContent) return this.$toast(this.$i18n.t("toast1"));
     let req = {
-      id: '', //消息id
+      id: "", //消息id
       from_user_id: this.uInfo.id, //发送人id
-      to_user_id: '', //接收人id
+      to_user_id: "", //接收人id
       content: this.wordContent, //发送的消息
-      created_time: '', // 发送时间
-      airbus_id: '', //航班id
+      created_time: "", // 发送时间
+      airbus_id: "", //航班id
       read: 0, // 已读  0未读 1已读
       type: 1, // 1 发送给空乘  2发送给用户
     };
@@ -352,11 +377,11 @@ export default class messageIndex extends Vue {
       if (res.code == 200) {
         // _this.chatList.push(req);
         // _this.$store.dispatch('saveChatList', _this.chatList);
-        _this.wordContent = '';
+        _this.wordContent = "";
         _this.getChatMessage();
       }
     });
-    this.wordContent = '';
+    this.wordContent = "";
   }
 
   // 获取系统消息 1已读 0未读
@@ -378,7 +403,7 @@ export default class messageIndex extends Vue {
             // } else {
             //   _this.systemMsgList = [...unreadList, ...readList];
             // }
-            _this.systemMsgList = [...unreadList, ...readList ];
+            _this.systemMsgList = [...unreadList, ...readList];
             _this.showDelete = _this.systemMsgList.every((item) => {
               return item.Read == 1;
             });
@@ -407,15 +432,15 @@ export default class messageIndex extends Vue {
 
   // 点击某条系统通知
   public changeReadStatus(item: any) {
-    console.log('某条系统通知', item);
+    console.log("某条系统通知", item);
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.icon-p{
-  width: .3rem;
-  height: .3rem;
+.icon-p {
+  width: 0.3rem;
+  height: 0.3rem;
 }
 .header-wrap {
   .header-chat {

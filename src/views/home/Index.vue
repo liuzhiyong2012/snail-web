@@ -310,6 +310,7 @@ export default class Home extends Vue {
     // _this.socket =  (window as any).io("http://172.16.8.69:2120");
     // _this.socket =  (window as any).io("http://kf.vpclub.cn/airbus/websocket");
     const opt = {
+      forceNew: true,
       path: process.env.VUE_APP_SOCKET_URL
     };
     _this.socket = io( process.env.VUE_APP_SOCKET_HOST, opt);

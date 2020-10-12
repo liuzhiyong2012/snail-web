@@ -220,7 +220,8 @@ export default class AbusMap extends Vue {
 		let markerEl = document.getElementById('geo-marker');
 		// 'OverlayPositioning
 		let marker = new Overlay({
-			positioning:OverlayPositioning.BOTTOM_CENTER,// 'bottom-center',
+			// positioning:OverlayPositioning.BOTTOM_CENTER,// 'bottom-center',
+			positioning:OverlayPositioning.CENTER_CENTER,// 'center-center',
 			stopEvent: false,
 			// dragging: false,
 			offset: [0, 0],

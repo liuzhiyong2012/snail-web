@@ -9,7 +9,8 @@
       <div class="info-left-ctn">
         <div class="line-one">
           <span>{{ data.Seat }}</span>
-          <span>{{ data.TimeAgo }}</span>
+          <!-- <span>{{ data.TimeAgo }}</span> -->
+          <span>{{ data.CreatedAt }}</span>
         </div>
         <div class="line-two">{{ data.Name }} ${{ data.Price }} <i>X{{data.Quantity}}</i> </div>
       </div>
@@ -75,7 +76,8 @@ export default class CrewCateringItem extends Vue {
 
 .crew-catering-item {
   position: relative;
-  width: rem(976px);
+  // width: rem(976px);
+  width: rem(830px);
   height: rem(140px);
   border-radius: rem(30px);
   box-sizing: border-box;
