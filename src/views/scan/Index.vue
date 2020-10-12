@@ -198,7 +198,7 @@
 				this.$toast(this.infoTxt);
 				window.setTimeout(()=>{
 					this.processScanResult(res);
-				},800);
+				},1500);
 				
 			}, (res) => {
 				this.infoTxt = this.$i18n.t("scanning...");
@@ -251,7 +251,7 @@
 				      this.infoTxt = this.$i18n.t("scanningSuccess");
                        window.setTimeout(()=>{
                        	this.processScanResult(res);
-                       },800);
+                       },1500);
 			}).finally((error)=>{
 				//this.infoTxt = error;
 				this.infoTxt = this.$i18n.t("fileScanFail");
