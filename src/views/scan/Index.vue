@@ -194,7 +194,7 @@
 				
 				
 				
-				this.infoTxt = this.$i18n.t("scanningSuccess") + res;
+				this.infoTxt = this.$i18n.t("scanningSuccess");
 				this.$toast(this.infoTxt);
 				window.setTimeout(()=>{
 					this.processScanResult(res);
@@ -248,7 +248,7 @@
 			this.renderFileImage(firstFile);
 			
 			this.html5Qrcode.scanFile(firstFile, this.$refs.fileCtn, this.$refs.fileCanvas).then(res => {
-				      this.infoTxt = this.$i18n.t("scanningSuccess") + res;
+				      this.infoTxt = this.$i18n.t("scanningSuccess");
                        window.setTimeout(()=>{
                        	this.processScanResult(res);
                        },800);
@@ -269,9 +269,6 @@
 					} else {
 						this.infoTxt = this.$i18n.t("noCameres");
 					}
-					
-					
-					
 					
 					/* this.cameraList = [{
 						 id:'11111',
