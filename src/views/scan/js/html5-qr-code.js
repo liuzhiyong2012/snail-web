@@ -1462,6 +1462,12 @@ var Html5Qrcode = function() {
 		key: "scanFile",
 		value: function(b, fileEle,fileCanvas,c) {
 			var d = this;
+			
+			var qrCanvasEle = document.querySelector('#qr-canvas');
+			if(qrCanvasEle){
+				qrCanvasEle.parentNode.removeChild(qrCanvasEle);  
+			}
+			
 			if (!b || !(b instanceof File)) throw "imageFile argument is mandatory and should be instance of File. Use 'event.target.files[0]'";
 //			if (c = void 0 === c || c, d._isScanning) throw "Close ongoing scan before scanning a file.";
 			var e = function b(c, d, e, f) {
@@ -1502,7 +1508,7 @@ var Html5Qrcode = function() {
 					k.appendChild(q);
 					var r = q.getContext("2d");
 					r.canvas.width = n.width, r.canvas.height = n.height, r.drawImage(h, 0, 0, i, j, 0, 0, n.width, n.height);
-					debugger;
+					// debugger;
 					try {
 						f(d.qrcode.decode())
 					} catch (a) {

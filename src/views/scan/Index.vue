@@ -213,9 +213,11 @@
 			this.renderFileImage(firstFile);
 			
 			this.html5Qrcode.scanFile(firstFile, this.$refs.fileCtn, this.$refs.fileCanvas).then(res => {
-                       
-			}).finally((e)=>{
-				this.infoTxt = 'e';
+                       window.setTimeout(()=>{
+                       	this.processScanResult(res);
+                       },800);
+			}).finally((error)=>{
+				this.infoTxt = error;
 				e.target.value = '';
 			});
 		}
@@ -255,18 +257,19 @@
 		private processScanResult(result) {
 			/* http://kf.vpclub.cn/airbus/index.html#/dish/detail?id=4390739d-fffe-ea11-9737-4cbb5897acf9
 			http://kf.vpclub.cn/airbus/index.html#/shopping/details?id=ee3f9347-fafe-ea11-9737-4cbb5897acf9 */
-			
-		    if(result.indexof('/dish/detail')> -1){
+			// debugger;
+			result = 'http://kf.vpclub.cn/airbus/index.html#/shopping/details?id=ee3f9347-fafe-ea11-9737-4cbb5897acf9';
+		    if(result.indexOf('/dish/detail')> -1){
 				this.$router.push({
-				  name: "shoppingDetails",
+				  name: "dishDetail",
 				  query: {
 				    id:this.getUrlParam(result,'id')
 				  },
 				});
 				
-			}else if(result.indexof('/shopping/detail')> -1){
+			}else if(result.indexOf('/shopping/detail')> -1){
 				this.$router.push({
-				  name: "dishDetail",
+				  name: "shoppingDetails",
 				  query: {
 				    id: this.getUrlParam(result,'id')
 				  }
@@ -278,6 +281,9 @@
 		
         private getUrlParam(result,name) {
             //构造一个含有目标参数的正则表达式对象
+			var resultIndex = result.indexOf('?');
+			result = result.substr(resultIndex); 
+			
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); 
 			
             var r = result.substr(1).match(reg); //匹配目标参数
