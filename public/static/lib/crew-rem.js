@@ -5,8 +5,9 @@
      */
     var change = 'orientationchange' in window ? 'orientationchange' : 'resize';
     function calculate() {
+		// debugger;
         var deviceWidth = document.documentElement.clientWidth;
-        if (deviceWidth <= 1024) {
+       /* if (deviceWidth <= 1024) {
             deviceWidth = 1024;
             document.documentElement.style.fontSize = deviceWidth / 10.24 + 'px';
         } else if (deviceWidth > 1024 && deviceWidth <= 1920) {
@@ -21,7 +22,8 @@
         } else if (deviceWidth > 2224 ) {
             deviceWidth = 2224;
             document.documentElement.style.fontSize = deviceWidth / 22.24 + 'px';
-        } 
+        } */
+		  document.documentElement.style.fontSize = deviceWidth / 22.24 + 'px';
         // document.documentElement.style.fontSize = deviceWidth / 22.24 + 'px';
     };
     if('addEventListener' in window){
