@@ -248,6 +248,7 @@
 			this.renderFileImage(firstFile);
 			
 			this.html5Qrcode.scanFile(firstFile, this.$refs.fileCtn, this.$refs.fileCanvas).then(res => {
+				      this.infoTxt = this.$i18n.t("scanningSuccess") + res;
                        window.setTimeout(()=>{
                        	this.processScanResult(res);
                        },800);
