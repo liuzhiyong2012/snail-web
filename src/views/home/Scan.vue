@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import AbusTitle from "../../components/AbusTitle.vue";
+import AbusTitle from '../../components/AbusTitle.vue';
 export default {
   components: {
     AbusTitle,
@@ -30,14 +30,13 @@ export default {
   created() {
     // this.qrCodeUrl = ` https://qrcodescan.in/`
     // window.location.href = `https://qrcodescan.in/`;
-
     // this.qrCodeUrl = `https://kf.vpclub.cn/scan/`
-    window.location.href = `https://kf.vpclub.cn/scan/`;
+    window.location.href = 'https://kf.vpclub.cn/scan/';
   },
   mounted() {
-    const oIframe = document.getElementById("child");
+    const oIframe = document.getElementById('child');
     const deviceHeight = document.documentElement.clientHeight;
-    oIframe.style.height = Number(deviceHeight) - 48 + "px"; //数字是页面布局高度差
+    oIframe.style.height = Number(deviceHeight) - 48 + 'px'; //数字是页面布局高度差
   },
 
   destroyed() {},
