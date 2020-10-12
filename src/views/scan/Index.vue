@@ -13,7 +13,7 @@
 			<!-- 摄像头状态 -->
 			<div class="scan-content-ctn camera-ctn" v-show="pageStatus == 'cameraInput'">
 				<div class="camera-select-ctn">
-					<div v-for="(item, index) in cameraList" :key="index" @click="selectCamera(item,index)" class="camera-item":class="{active:activeCameraIndex == index}">{{ item.label }}</div>
+					<div v-for="(item, index) in cameraList" :key="index" @click="selectCamera(item,index)" class="camera-item":class="{active:activeCameraIndex == index}">{{ item.label||'camera' }}</div>
 				</div>
 
 				<div ref="scannerCtn" class="camera-scan-ctn">
