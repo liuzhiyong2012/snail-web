@@ -86,7 +86,8 @@
 	   "scanning":"Scanning...",
 	   "scanningSuccess":"Success,The page is about to jump...",
 	   "imageSupportType":"Only suport png,jpg,jpeg",
-	   "noCameres":"No cameras available"
+	   "noCameres":"No cameras available",
+	   "fileScanFail":"Image Scan Fail..."
 	},
 	"zh":{
 	   "title":"扫码",
@@ -94,10 +95,11 @@
 	   "takeAPicture":"拍摄上传",
 	    "cameraScan":"扫描",
 	    "Upload":"上传",
-		"scanning":"扫描中",
+		"scanning":"扫描中...",
 		"scanningSuccess":"扫描成功,即将跳转...",
 		"imageSupportType":"仅支持png,jpg,jpeg的文件类型",
-		"noCameres":"未查询到可用摄像头"
+		"noCameres":"未查询到可用摄像头",
+		"fileScanFail":"图片识别失败!"
 	}
 	}
 </i18n>
@@ -199,16 +201,17 @@
 				
 				
 				this.infoTxt = this.$i18n.t("scanningSuccess") + res;
+				this.$toast(this.infoTxt);
 				window.setTimeout(()=>{
 					this.processScanResult(res);
 				},800);
 				
 			}, (res) => {
-				this.infoTxt = res;
+				this.infoTxt = this.$i18n.t("scanning...");
 			}).then(function() {
 
 			}).catch(function(error) {
-                 this.infoTxt = error;
+                 this.infoTxt = this.$i18n.t("scanning...");
 			});
 		}
 
@@ -255,7 +258,8 @@
                        	this.processScanResult(res);
                        },800);
 			}).finally((error)=>{
-				this.infoTxt = error;
+				//this.infoTxt = error;
+				this.infoTxt = this.$i18n.t("fileScanFail");
 				e.target.value = '';
 			});
 		}
@@ -299,6 +303,7 @@
 		private processScanResult(result) {
 			console.log('result:' + '');  
 			// return ;
+			/* fileScanFail */
 			/* http://kf.vpclub.cn/airbus/index.html#/dish/detail?id=4390739d-fffe-ea11-9737-4cbb5897acf9
 			http://kf.vpclub.cn/airbus/index.html#/shopping/details?id=ee3f9347-fafe-ea11-9737-4cbb5897acf9 */
 			// debugger;
