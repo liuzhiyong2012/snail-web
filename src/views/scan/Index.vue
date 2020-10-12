@@ -28,8 +28,12 @@
 
 			<!-- 拍照获取状态 -->
 			<div v-show="pageStatus == 'fileInput'" ref="fileCtn" class="scan-content-ctn file-ctn">
-				<div v-if="fileImageUrl" class="file-image-ctn" :style="{backgroundImage:`url(${fileImageUrl})`}">
+				<!-- <div v-if="fileImageUrl" class="file-image-ctn" :style="{backgroundImage:`url(${fileImageUrl})`}">
+				</div> -->
+				<div v-if="fileImageUrl" class="file-image-ctn" >
+					<img :src="fileImageUrl"/>
 				</div>
+				
 
 				<div v-if="!fileImageUrl" class="file-noimage-ctn">
 					No File
@@ -96,7 +100,7 @@
 		private cameraErrorTxt: any = '';
 
 		private qrcodeWidth: number = 250;
-
+		
 		private infoTxt: string = '扫描中';
 
 		/* <div ref="infoCtn" class="info-ctn">
@@ -255,6 +259,8 @@
 		}
 		
 		private processScanResult(result) {
+			console.log('result:' + '');  
+			return ;
 			/* http://kf.vpclub.cn/airbus/index.html#/dish/detail?id=4390739d-fffe-ea11-9737-4cbb5897acf9
 			http://kf.vpclub.cn/airbus/index.html#/shopping/details?id=ee3f9347-fafe-ea11-9737-4cbb5897acf9 */
 			// debugger;
@@ -475,6 +481,12 @@
 						width: 100%;
 						left: 50%;
 						transform: translate(-50%, 0);
+						>img{
+							margin:auto;
+							display: block;
+							max-width: 100%;
+							max-height: 100%;
+						}
 					}
 
 					.file-noimage-ctn {
