@@ -239,8 +239,10 @@ export default class messageIndex extends Vue {
 	  //_this.socket = io(process.env.VUE_APP_SOCKET_HOST,{path:''});
 	 
 	  const opt = {
+		  forceNew:true,
       path: process.env.VUE_APP_SOCKET_URL
     };
+	// debugger;
 	  _this.socket = io(process.env.VUE_APP_SOCKET_HOST, opt);
 
     // uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
@@ -294,7 +296,7 @@ export default class messageIndex extends Vue {
 	
     // 后端推送来在线数据时
     _this.socket.on('update_online_count', (online_stat: any) => {
-      console.log('后端推送来在线数据时', online_stat);
+      console.log('chat:update_online_count');
     });
   }
 
