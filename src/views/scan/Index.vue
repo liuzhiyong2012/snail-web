@@ -298,7 +298,7 @@
 		
 		private processScanResult(result) {
 			console.log('result:' + '');  
-			return ;
+			// return ;
 			/* http://kf.vpclub.cn/airbus/index.html#/dish/detail?id=4390739d-fffe-ea11-9737-4cbb5897acf9
 			http://kf.vpclub.cn/airbus/index.html#/shopping/details?id=ee3f9347-fafe-ea11-9737-4cbb5897acf9 */
 			// debugger;
@@ -319,7 +319,10 @@
 				  }
 				});
 			}else {
-				window.location.href = result;
+				if(result.indexOf('http')> -1){
+					window.location.href = result;
+				}
+				
 			}
 		}
 		
