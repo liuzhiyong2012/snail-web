@@ -123,7 +123,7 @@
 
 		private qrcodeWidth: number = 250;
 		
-		private infoTxt: string = this.$i18n.t("scanning");
+		private infoTxt: any = this.$i18n.t("scanning");
 		
 		
 
