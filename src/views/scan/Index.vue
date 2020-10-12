@@ -69,11 +69,6 @@
 		</div>
 	</div>
 </template>
-
-<!-- No File
-			Take /上传
-			摄像头扫描
-			拍照扫描 -->
 			
 <i18n>
 	{
@@ -120,13 +115,12 @@
 		private bannerData: any = [];
 		private pageStatus: string = 'cameraInput'; //'cameraInput','fileInput'
 		private html5Qrcode: any = null; //'cameraInput','fileInput'
-
 		private cameraErrorTxt: any = '';
-
 		private qrcodeWidth: number = 250;
+		private infoTxt: any = "scanning...."; 
 		
-		private infoTxt: any = this.$i18n.t("scanning");
 		
+		//this.$i18n.t
 		
 
 		/* <div ref="infoCtn" class="info-ctn">
