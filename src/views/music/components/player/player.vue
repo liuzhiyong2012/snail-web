@@ -306,6 +306,9 @@ export default {
     // 关闭底部的播放器
     closePlaying(){
       this.showBottomMusic= false;
+      if(this.playing){
+        this.togglePlaying();
+      }
     },
 
     toDown() {
