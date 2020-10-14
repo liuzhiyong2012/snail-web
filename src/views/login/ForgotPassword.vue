@@ -158,7 +158,7 @@
       "VerificationCode":"Verification Code",
       "VerificationCodeTips":"Enter Verification Code",
       "SecurityProblem":"Security problem verification",
-      "SecurityIssues":"Security issues",
+      "SecurityIssues":"security questions",
       "SecurityAnswer":"Security answer",
       "SecurityAnswerTips":"Please enter your answer",
       "NewPasswordTips":"Please set new password",

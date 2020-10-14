@@ -29,7 +29,7 @@
       "title":"Shopping address",
       "address":"Please enter the address",
       "noAddress":"The address cannot be empty",
-      "Sure":"Sure"
+      "Sure":"OK"
 		}
 	}
 </i18n>

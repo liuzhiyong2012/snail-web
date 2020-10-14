@@ -145,6 +145,7 @@
 			this.qrcodeWidth = window.innerWidth * (300 / 440);
 			this.html5Qrcode = new QrcodeScaner.Html5Qrcode(this);
 			this.getCameraList();
+			
 
 		}
 
@@ -178,13 +179,14 @@
 		}
 
 		private selectCamera(camera,index) {
+			
 			this.activeCameraIndex = index;
 			this.stopCameraScan();
 			this.videoWh = {
 				width: (this as any).$refs.contentCtn.clientWidth,
 				height: (this as any).$refs.contentCtn.clientHeight
 			};
-
+debugger
 			this.html5Qrcode.start(camera.id, {
 				fps: 10,
 				video: this.videoWh,
@@ -262,7 +264,7 @@
 		private getCameraList() {
 			QrcodeScaner.Html5Qrcode.getCameras()
 				.then((res: any) => {
-debugger
+
 					this.cameraList = res;
 					if (this.cameraList && this.cameraList.length > 0) {
 						this.selectCamera(this.cameraList[0],0);

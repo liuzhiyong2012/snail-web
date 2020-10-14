@@ -60,7 +60,7 @@
                 </div>
                 <div class="item-content">
                   <p class="item-content-name" v-if="item.type != 1">
-                    Air Hostess
+                    Cabin crew
                   </p>
                   <span class="item-content-word">{{ item.content }}</span>
                 </div>

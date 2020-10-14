@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve --mode development",
     "lzy": "vue-cli-service serve --mode development_lzy",
+    "l": "vue-cli-service serve --mode development_l",
     "build": "vue-cli-service build --mode production",
     "airbus": "vue-cli-service build --mode airbus",
     "test:unit": "vue-cli-service test:unit",

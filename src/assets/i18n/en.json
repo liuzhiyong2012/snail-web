@@ -23,7 +23,7 @@
 			"Password":"Password",
 			"Confirm-password":"Confirm password",
 			"Date":"Date",
-			"Security-issues":"Security issues",
+			"Security-issues":"security questions",
 			"Security-answer":"Security answer"
 		}
 	}

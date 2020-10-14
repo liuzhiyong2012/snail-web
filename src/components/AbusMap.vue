@@ -142,7 +142,7 @@ export default class AbusMap extends Vue {
 		this.updateMarkPosition(this.flightPositionIndex);
 		this.timeFlag = window.setInterval(()=>{
 			this.flightPositionIndex++;
-			if(this.flightPositionIndex > len){
+			if(this.flightPositionIndex >= len){
 				this.flightPositionIndex = 0;
 			}
 			this.updateMarkPosition(this.flightPositionIndex);
