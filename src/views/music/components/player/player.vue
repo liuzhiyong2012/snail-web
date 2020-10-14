@@ -306,6 +306,9 @@ export default {
     // 关闭底部的播放器
     closePlaying(){
       this.showBottomMusic= false;
+      if(this.playing){
+        this.togglePlaying();
+      }
     },
 
     toDown() {
@@ -811,6 +814,7 @@ $screen-width: 37.5;
 		// border: rem(10) solid hsla(0, 0%, 100%, 0.1);
 		opacity: 1;
 		transition: all 0.5s;
+		border: 0.12rem solid #616161;
 	}
 }
 /* 大头像 */

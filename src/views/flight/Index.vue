@@ -9,7 +9,11 @@
       <section class="camera-ctn" :style="calcStyle('camera')">
         <div class="camera-switch-ctn">
           <div class="camera-switch-item">
-            <svg v-if="activeCamera == 'frontCamera'" class="icon" aria-hidden="true">
+            <svg
+              v-if="activeCamera == 'frontCamera'"
+              class="icon"
+              aria-hidden="true"
+            >
               <use xlink:href="#icon-front-camera" />
             </svg>
             <svg
@@ -23,7 +27,11 @@
           </div>
 
           <div class="camera-switch-item">
-            <svg v-if="activeCamera == 'centralCamera'" class="icon" aria-hidden="true">
+            <svg
+              v-if="activeCamera == 'centralCamera'"
+              class="icon"
+              aria-hidden="true"
+            >
               <use xlink:href="#icon-central-camera" />
             </svg>
             <svg
@@ -37,7 +45,11 @@
           </div>
 
           <div class="camera-switch-item">
-            <svg v-if="activeCamera == 'backCamera'" class="icon" aria-hidden="true">
+            <svg
+              v-if="activeCamera == 'backCamera'"
+              class="icon"
+              aria-hidden="true"
+            >
               <use xlink:href="#icon-back-camera" />
             </svg>
             <svg
@@ -56,8 +68,8 @@
             autoplay
             loop
             class="camera-video"
-            v-if="cameraUrl[activeCamera] && active=='camera'"
-            :src="cameraUrl[activeCamera]|addBaseUrl"
+            v-if="cameraUrl[activeCamera] && active == 'camera'"
+            :src="cameraUrl[activeCamera] | addBaseUrl"
             alt
             x5-playsinline
             playsinline
@@ -66,9 +78,8 @@
           ></video>
         </div>
       </section>
-
-      <section class="content-ctn">
-        <div class="switch-ctn">
+      <section ref="infoContentCtn" class="content-ctn" :class="{isAnimate:isAnimate}" :style="{bottom:bottomDistance + 'px'}">
+        <div ref="switchCtn" class="switch-ctn">
           <div class="switch-item" @click="switchPageTo('map')">
             <svg v-if="active == 'map'" class="icon" aria-hidden="true">
               <use xlink:href="#icon-map" />
@@ -89,7 +100,7 @@
         </div>
 
         <div class="voyage-ctn">
-          <div class="top-ctn">
+          <div ref="topCtn" class="top-ctn">
             <abus-flight></abus-flight>
           </div>
           <div class="bottom-ctn">
@@ -157,35 +168,58 @@ export default class FlightIndex extends Vue {
   };
 
   private isCollapsed: boolean = false;
+  
+   private isAnimate: boolean = false;
 
   private touchStartHandle: any = null;
   private touchMoveHandle: any = null;
   private touchEndHandle: any = null;
   
+  //@doing
+  private bottomDistance: number = 0;
+  //隐藏状态下的距离
+  private hideDistance: number = 0;
+
   private updateFlightHandler: any = null;
-  
-  private get airbusId():string{
-  	return this.$store.state.login.airbusId;
-  }
-  
-  private get flightResData():string{
-  	return this.$store.state.login.flightInfo;
+
+  private get airbusId(): string {
+    return this.$store.state.login.airbusId;
   }
 
-  private created() {
-	  
+  private get flightResData(): string {
+    return this.$store.state.login.flightInfo;
   }
+
+  private created() {}
 
   private mounted() {
+	  
+	  /* infoContentCtn
+	  topCtn
+	  switchCtn */
+	  //@doing
+	  //private bottomDistance: number = 0;
+	  //隐藏状态下的距离
+	 // private hideDistance: number = 0;
+	 
+	 this.$nextTick(()=>{
+		 this.hideDistance = (this as any).$refs.infoContentCtn.clientHeight - (this as any).$refs.switchCtn.clientHeight - (this as any).$refs.topCtn.clientHeight;
+	 });
+	 
+	 
+	  
     this.listenScroll();
-	
-	this.updateFlightHandler = (e)=>{
-			  this.getFlightInfo();
-	};
-	(this as any).$globalEvent.$on('updateFlightInfo',this.updateFlightHandler);
-	this.getFlightInfo();
-	
-	if (localStorage.getItem('lang') == 'en') {
+
+    this.updateFlightHandler = (e) => {
+      this.getFlightInfo();
+    };
+    (this as any).$globalEvent.$on(
+      'updateFlightInfo',
+      this.updateFlightHandler
+    );
+    this.getFlightInfo();
+
+    if (localStorage.getItem('lang') == 'en') {
       this.$i18n.locale = 'en';
     } else {
       this.$i18n.locale = 'zh';
@@ -193,56 +227,87 @@ export default class FlightIndex extends Vue {
   }
 
   private beforeDestroy() {
-	  (this as any).$globalEvent.$off('updateFlightInfo',this.updateFlightHandler);
-    document.removeEventListener('touchstart', this.touchStartHandle);
-    document.removeEventListener('touchmove', this.touchMoveHandle);
-    document.removeEventListener('touchend', this.touchEndHandle);
+    (this as any).$globalEvent.$off(
+      'updateFlightInfo',
+      this.updateFlightHandler
+    );
+	
+    (this as any).$refs.infoContentCtn.removeEventListener('touchstart', this.touchStartHandle);
+    (this as any).$refs.infoContentCtn.removeEventListener('touchmove', this.touchMoveHandle);
+    (this as any).$refs.infoContentCtn.removeEventListener('touchend', this.touchEndHandle);
+	
   }
 
   public listenScroll(): void {
     var startX: any, startY: any, endX: any, endY: any;
+	var startBottomDistance = 0;
 
     this.touchStartHandle = (event: any) => {
+		this.isAnimate = false;
       var touch = event.touches[0];
       startY = touch.pageY;
       startX = touch.pageX;
+	  startBottomDistance = this.bottomDistance;
     };
 
     this.touchMoveHandle = (event: any) => {
+		this.isAnimate = false;
       var touch = event.touches[0];
       endY = startY - touch.pageY;
       endX = startX - touch.pageX;
+	  
+	  this.bottomDistance = startBottomDistance + endY;
+	  console.log('startBottomDistance:' + startBottomDistance);
+	  console.log('endY:' + endY);
+	  if(this.bottomDistance > 0){
+		  this.bottomDistance = 0;
+	  }
+	  if(this.bottomDistance < (- this.hideDistance)){
+		  this.bottomDistance = - this.hideDistance;
+	  }
+	  
     };
 
     this.touchEndHandle = (event: any) => {
+		this.isAnimate = true;
       //100是给定触上下方向摸起始的坐标差
       if (endY > 100) {
         console.log('向上滑动');
-        this.isCollapsed = false;
+       // this.isCollapsed = false; 
+	     this.bottomDistance = 0;
       } else if (endY < -100) {
-        console.log('向上滑动');
-        this.isCollapsed = true;
+		  console.log('向下滑动');
+		  this.bottomDistance = - this.hideDistance;
+		  
       } else {
+		  this.bottomDistance = startBottomDistance;
         //啥也不干
         console.log('啥也不干');
       }
     };
 
-    document.addEventListener('touchstart', this.touchStartHandle, false);
-    document.addEventListener('touchmove', this.touchMoveHandle, false);
-    document.addEventListener('touchend', this.touchEndHandle, false);
+    (this as any).$refs.infoContentCtn.addEventListener('touchstart', this.touchStartHandle, false);
+    (this as any).$refs.infoContentCtn.addEventListener('touchmove', this.touchMoveHandle, false);
+    (this as any).$refs.infoContentCtn.addEventListener('touchend', this.touchEndHandle, false);
+	
   }
 
   public getFlightInfo(): void {
-        this.flightInfo = this.flightResData;
+    this.flightInfo = this.flightResData;
 
-        this.cameraUrl = {
-          frontCamera: this.flightInfo.Flight.BaseInfo.FrontLink ? this.flightInfo.Flight.BaseInfo.FrontLink : this.flightInfo.Flight.BaseInfo.FrontVideo,
-          centralCamera: this.flightInfo.Flight.BaseInfo.MiddleLink ? this.flightInfo.Flight.BaseInfo.MiddleLink : this.flightInfo.Flight.BaseInfo.MiddleVideo,
-          backCamera: this.flightInfo.Flight.BaseInfo.RearLink ? this.flightInfo.Flight.BaseInfo.RearLink : this.flightInfo.Flight.BaseInfo.RearVideo,
-        };
+    this.cameraUrl = {
+      frontCamera: this.flightInfo.Flight.BaseInfo.FrontLink
+        ? this.flightInfo.Flight.BaseInfo.FrontLink
+        : this.flightInfo.Flight.BaseInfo.FrontVideo,
+      centralCamera: this.flightInfo.Flight.BaseInfo.MiddleLink
+        ? this.flightInfo.Flight.BaseInfo.MiddleLink
+        : this.flightInfo.Flight.BaseInfo.MiddleVideo,
+      backCamera: this.flightInfo.Flight.BaseInfo.RearLink
+        ? this.flightInfo.Flight.BaseInfo.RearLink
+        : this.flightInfo.Flight.BaseInfo.RearVideo,
+    };
 
-        this.renderCharts();
+    this.renderCharts();
   }
 
   public calcStyle(page: string) {
@@ -296,7 +361,9 @@ export default class FlightIndex extends Vue {
     });
 
     let FlightFirst = this.flightInfo.FlightSpeeds[0].TimePoint;
-    let FlightEnd = this.flightInfo.FlightSpeeds[this.flightInfo.FlightSpeeds.length-1].TimePoint;
+    let FlightEnd = this.flightInfo.FlightSpeeds[
+      this.flightInfo.FlightSpeeds.length - 1
+    ].TimePoint;
 
     let headTimeArr = [];
     let headSpeedArr = [];
@@ -305,53 +372,71 @@ export default class FlightIndex extends Vue {
     let tailTimeArr = [];
     let tailSpeedArr = [];
     let tailAltitudeArr = [];
-    
-    let headEnpty = FlightFirst - this.flightInfo.Flight.BaseInfo.DeparturePlanTimestamp;
-    if(headEnpty > 0) {
-      headTimeArr.push( DateUtils.formate(this.flightInfo.Flight.BaseInfo.DeparturePlanTimestamp, 'hh:mm'))
+
+    let headEnpty =
+      FlightFirst - this.flightInfo.Flight.BaseInfo.DeparturePlanTimestamp;
+    if (headEnpty > 0) {
+      headTimeArr.push(
+        DateUtils.formate(
+          this.flightInfo.Flight.BaseInfo.DeparturePlanTimestamp,
+          'hh:mm'
+        )
+      );
       headSpeedArr.push('-');
       headAltitudeArr.push('-');
-      let len = Math.floor((headEnpty / (5*60*1000)));
-      for(let i=1;i<=len; i++){
+      let len = Math.floor(headEnpty / (5 * 60 * 1000));
+      for (let i = 1; i <= len; i++) {
         headTimeArr.push(
-          DateUtils.formate(this.flightInfo.Flight.BaseInfo.DeparturePlanTimestamp + i * 5 * 60 * 1000, 'hh:mm')
+          DateUtils.formate(
+            this.flightInfo.Flight.BaseInfo.DeparturePlanTimestamp +
+              i * 5 * 60 * 1000,
+            'hh:mm'
+          )
         );
         headSpeedArr.push('-');
         headAltitudeArr.push('-');
       }
     }
 
-    let tailEnpty = this.flightInfo.Flight.BaseInfo.ArrivalPlanTimestamp - FlightEnd;
-    if(tailEnpty > 0){
-      let len = Math.floor(tailEnpty/(5*60*1000))
-      for(let i = 1; i<=len; i++){
+    let tailEnpty =
+      this.flightInfo.Flight.BaseInfo.ArrivalPlanTimestamp - FlightEnd;
+    if (tailEnpty > 0) {
+      let len = Math.floor(tailEnpty / (5 * 60 * 1000));
+      for (let i = 1; i <= len; i++) {
         tailTimeArr.push(
-          DateUtils.formate( FlightEnd + i * 5 * 60 * 1000, 'hh:mm')
-        )
+          DateUtils.formate(FlightEnd + i * 5 * 60 * 1000, 'hh:mm')
+        );
         tailSpeedArr.push('-');
         tailAltitudeArr.push('-');
       }
       tailTimeArr.push(
-        DateUtils.formate( this.flightInfo.Flight.BaseInfo.ArrivalPlanTimestamp, 'hh:mm')
-      )
+        DateUtils.formate(
+          this.flightInfo.Flight.BaseInfo.ArrivalPlanTimestamp,
+          'hh:mm'
+        )
+      );
       tailSpeedArr.push('-');
       tailAltitudeArr.push('-');
     }
 
-    if(headEnpty > 0 && tailEnpty > 0){
+    if (headEnpty > 0 && tailEnpty > 0) {
       timesData = [...headTimeArr, ...timesData, ...tailTimeArr];
-      speedsData = [...headSpeedArr,...speedsData, ...tailSpeedArr];
-      altitudesData = [...headAltitudeArr,...altitudesData, ...tailAltitudeArr];
-    }else if(headEnpty <= 0 && tailEnpty > 0){
+      speedsData = [...headSpeedArr, ...speedsData, ...tailSpeedArr];
+      altitudesData = [
+        ...headAltitudeArr,
+        ...altitudesData,
+        ...tailAltitudeArr,
+      ];
+    } else if (headEnpty <= 0 && tailEnpty > 0) {
       timesData = [...timesData, ...tailTimeArr];
       speedsData = [...speedsData, ...tailSpeedArr];
       altitudesData = [...altitudesData, ...tailAltitudeArr];
-    }else if(headEnpty > 0 && tailEnpty <= 0){
+    } else if (headEnpty > 0 && tailEnpty <= 0) {
       timesData = [...headTimeArr, ...timesData];
-      speedsData = [...headSpeedArr,...speedsData];
-      altitudesData = [...headAltitudeArr,...altitudesData];
+      speedsData = [...headSpeedArr, ...speedsData];
+      altitudesData = [...headAltitudeArr, ...altitudesData];
     }
-    
+
     this.chart = echarts.init((this as any).$refs.chartCtn);
     this.chart.clear();
 
@@ -468,7 +553,6 @@ export default class FlightIndex extends Vue {
   &.collapsed {
     .content-ctn {
       height: 4.4rem !important;
-
       .voyage-ctn {
         .top-ctn {
           margin-bottom: 0;
@@ -563,6 +647,11 @@ export default class FlightIndex extends Vue {
       bottom: 0;
       z-index: 200;
       box-sizing: border-box;
+	  
+	  &.isAnimate{
+		  transition: all  linear 0.2s;
+		  
+	  }
 
       .switch-ctn {
         width: 1.72rem;
@@ -570,7 +659,7 @@ export default class FlightIndex extends Vue {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 0.28rem;
+        padding-bottom: 0.28rem;
         .switch-item {
           width: 0.76rem;
           height: 0.5rem;
@@ -593,7 +682,7 @@ export default class FlightIndex extends Vue {
         .top-ctn {
           width: 100%;
           height: 3.4rem;
-          margin-bottom: 0.4rem;
+          padding-bottom: 0.4rem;
         }
         .bottom-ctn {
           .chart-ctn {

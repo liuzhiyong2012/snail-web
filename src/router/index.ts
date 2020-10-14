@@ -112,7 +112,6 @@ router.beforeEach((to, from, next) => {
 	
  /* let islogin = localStore.get('token');
   islogin = Boolean(islogin); */
-    // next();
 
    let islogin = localStore.get('token');
                // debugger;   
