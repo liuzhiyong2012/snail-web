@@ -274,14 +274,15 @@ export default class messageIndex extends Vue {
 
     // socket连接后以uid登录
     _this.socket.on("connect", function() {
-      console.log("chat:connect", uid.trim());
+      console.log("聊天页:connect", uid.trim());
       _this.socket.emit("login", uid);
     });
     // 后端推送来消息时
     _this.socket.on("new_msg", (msg: any) => {
-      console.log("chat: new_msg");
+      console.log("聊天页:new_msg", msg);
       let midMsg = msg.replace(/&quot;/g, '"');
       let endMsg = JSON.parse(midMsg);
+      console.log("聊天页:new_msg格式化", endMsg);
       // {type: "message", content: "Your netFlow order has been completed", mark: "你的流量套餐订单已完成"}
       if (endMsg.type == "system") {
         console.log("chat: new_msg-system");
@@ -319,7 +320,7 @@ export default class messageIndex extends Vue {
 
     // 后端推送来在线数据时
     _this.socket.on("update_online_count", (online_stat: any) => {
-      console.log("后端推送来在线数据时", online_stat);
+      console.log("聊天页：update_online_count", online_stat);
     });
   }
 

@@ -319,14 +319,16 @@ export default class Home extends Vue {
     
     // socket连接后以uid登录
     _this.socket.on('connect', function () {
-    	console.log('home:connect');
+    	console.log('首页:connect');
       _this.socket.emit('login', uid);
     });
     // 后端推送来消息时
     _this.socket.on('new_msg', (msg: any) => {
-    	console.log('home:new_msg');
+    	console.log('首页:new_msg', msg);
       let midMsg = msg.replace(/&quot;/g, '"');
       let endMsg = JSON.parse(midMsg);
+      console.log('首页:new_msg格式化', endMsg);
+      
       if (endMsg.type == 'system') {
         // 系统通知
         _this.showRedPoint = true;
@@ -339,7 +341,7 @@ export default class Home extends Vue {
     });
     // 后端推送来在线数据时
     _this.socket.on('update_online_count', (online_stat: any) => {
-      console.log('home:update_online_count');
+      console.log('首页:update_online_count', online_stat);
     });
   }
 
