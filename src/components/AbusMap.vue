@@ -2,6 +2,7 @@
 	<section class="homeflight-main-ctn">
 		<div id="homeMap" class="map-ctn" ref="mapCtn">
 			<div id="geo-marker"><i class="icon icon-plane"></i></div>
+			<div class="map-tag">© <a target="_blank" href="https://www.openstreetmap.org/copyright/en" class="map-tag-color">OpenStreetMap</a> contributors</div>
 		</div>
 	</section>
 </template>
@@ -345,6 +346,20 @@ div.olControlZoom {
 		position: relative;
 		width: 100%;
 		height: 100%;
+		.map-tag{
+        position: absolute;
+        right: .05rem;
+        bottom: .05rem;
+        font-size: .20rem;
+        color: #666;
+        padding: .01rem;
+        background-color: rgba(255, 255, 255, .3);
+		z-index: 99;
+        .map-tag-color{
+          color: royalblue;
+          // font-weight: 600;
+        }
+      }
 	}
 }
 </style>

@@ -48,6 +48,7 @@
       </div>
       <div class="map-box">
         <abus-map zoom="4"></abus-map>
+        <!-- <div class="map-tag">© <a target="_blank" href="https://www.openstreetmap.org/copyright/en" class="map-tag-color">OpenStreetMap</a> contributors</div> -->
       </div>
     </div>
   </section>
@@ -133,7 +134,11 @@ export default class HomeFlight extends Vue {
   private beforeDestroy() {
   	(this as any).$globalEvent.$off('updateFlightInfo',this.updateFlightHandler);
   }
+  // private navToOpenStreetMap(){
+  //   this.$router.push({
 
+  //   })
+  // }
   public getFlightInfo(): void {
         this.flightResData = this.flightInfo;
         this.baseInfo = this.flightResData.Flight.BaseInfo;
@@ -348,7 +353,21 @@ export default class HomeFlight extends Vue {
       }
     }
     .map-box {
+      position: relative;
       height: 2.2rem;
+      .map-tag{
+        position: absolute;
+        right: .05rem;
+        bottom: .05rem;
+        font-size: .20rem;
+        color: #666;
+        padding: .01rem;
+        background-color: rgba(255, 255, 255, .3);
+        .map-tag-color{
+          color: royalblue;
+          // font-weight: 600;
+        }
+      }
     }
   }
 }

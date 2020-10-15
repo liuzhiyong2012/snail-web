@@ -348,7 +348,7 @@ export default class CrewLayoutCtn extends Vue {
     this.socket.on("connect", () => {
       this.socket.emit("login", airbusId);
     });
-debugger
+
     // 后端推送来消息时
     this.socket.on("new_msg", (msg) => {
       console.log("crew:new_msg");

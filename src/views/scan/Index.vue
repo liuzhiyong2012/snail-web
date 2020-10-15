@@ -186,7 +186,6 @@
 				width: (this as any).$refs.contentCtn.clientWidth,
 				height: (this as any).$refs.contentCtn.clientHeight
 			};
-debugger
 			this.html5Qrcode.start(camera.id, {
 				fps: 10,
 				video: this.videoWh,
