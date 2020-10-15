@@ -1,5 +1,5 @@
 <template>
-  <div class="abus-height">
+  <div class="abus-height" v-if="isShow">
     <div class="cell-group" v-for="(item,index) in orderList" :key="index">
       <div class="header">
         <div class="top">
@@ -50,6 +50,9 @@
       </div>
     </div>
   </div>
+  <div v-else  class="abus-height">
+    <div class="no-data">{{$t('noData')}}</div>
+  </div>
 </template>
 <i18n>
 	{
@@ -61,6 +64,7 @@
       "Packing":"打包中",
       "Delivery":"派送",
       "Complete":"完成",
+      "noData":"暂无数据",
       "Cancel":"取消"
 		},
 		"en":{
@@ -71,6 +75,7 @@
       "Packing":"packing",
       "Delivery":"Delivery",
       "Complete":"Complete",
+      "noData":"No data available",
       "Cancel":"Cancel"
 		}
 	}
@@ -84,6 +89,7 @@ import DateUtils from '../../../utils/date-utils';
 })
 export default class MyShoppingOrder extends Vue {
   private orderList: Array<any>=[]
+  private isShow: boolean = false
   private created() {
     if (localStorage.getItem("lang") == "en") {
       this.$i18n.locale = "en";
@@ -96,6 +102,11 @@ export default class MyShoppingOrder extends Vue {
     MeService.getShoppingOrder().then((res: any) => {
       if(res.code == 200) {
         this.orderList = res.data.Orders
+        if(this.orderList.length > 0){
+          this.isShow = true
+        } else {
+          this.isShow = false
+        }
       }
     });
   }
@@ -109,6 +120,14 @@ export default class MyShoppingOrder extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.no-data{
+  width: 100%;
+  height: 3rem;
+  line-height: 3rem;
+  font-size: .28rem;
+  color: #666;
+  text-align: center;
+}
 .cell-group {
   margin: 0.3rem 0 0;
   background: #fff;
