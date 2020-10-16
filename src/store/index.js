@@ -3,9 +3,9 @@ import Vuex from 'vuex'
 import Login from './login'
 
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
-debugger;
+//debugger;
 const store = new Vuex.Store({
   state:{
 		showHeadAndFoot:true,
