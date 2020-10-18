@@ -117,7 +117,8 @@ router.beforeEach((to, from, next) => {
                // debugger;   
     
     islogin = Boolean(islogin);
-    
+    next();
+	return ;  
     if(to.meta.noRequireAuth ||islogin) {
       next();
     }else{

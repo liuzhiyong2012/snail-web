@@ -53,7 +53,8 @@ service.interceptors.response.use(
      * TODO: 补充服务端状态码规范
      */
 	  //状态编码
-    if (response.status === 200&&(!response.data.error)&&response.data.code=="200") {
+	  debugger;
+    if (response.status === 200&&(!response.data.error)&&response.data.code=="1000") {
        return response.data;
     } else if(response.status === 200&&(!response.data.error)&&response.data.code=="401"){
 		//当token失效跳转登录页面

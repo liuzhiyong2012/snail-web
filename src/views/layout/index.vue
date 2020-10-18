@@ -24,23 +24,14 @@ import FlightService from '../../service/flight';
 export default class LayoutIndex extends Vue {
   @Prop() private msg!: string;
   
-  private socket:any = null;
+
   
-  private timer: any = null;
-  
-  private get airbusId():string{
-  	return this.$store.state.login.airbusId;
-  }
-  
-  private get isDemo():string{
-  	return this.$store.state.login.isDemo;
-  }
+
   
   /* isDemo */
   
  private created(){
-  	  this.getFlightInfo();
-  	  this.startTimer();
+  	
   }
   
   private mounted(){
@@ -64,33 +55,6 @@ export default class LayoutIndex extends Vue {
 	   }else{
 	  		this.$toast('获取航班信息失败!');
 	   }  
-  }
-  
-  private startTimer(){
-  	let timePeriod = 20000;
-  	
-  	this.timer = window.setInterval(()=>{
-  		FlightService.getFlightInfo().then((res: any) => {
-  			if(res.code == 200){
-  				//如果飞机航班改变了，则跳转登录页面，并且重新开始实时推送。
-  				if((this.airbusId&&(this.airbusId != res.data.Flight.BaseInfo.Id))||(this.airbusId&&(this.isDemo != res.data.Flight.BaseInfo.IsDemo))){
-					this.$store.dispatch('setFlightInfo',res.data);
-					// this.$store.dispatch('logout');
-					// debugger;
-					if(this.$route.path.indexOf('/login') < 0){
-						this.$toast('飞机航班已经切换,请重新登录!');
-						this.$router.push({
-							path:'/login'
-						});
-					}
-					
-  				}else{
-					this.$store.dispatch('setFlightInfo',res.data);
-					(this as any).$globalEvent.$emit('updateFlightInfo',res.data);
-  				}
-  			}
-  		});
-  	},timePeriod);
   }
   
   

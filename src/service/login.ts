@@ -10,15 +10,15 @@ export default class LoginService {
     // 注册
     static postUserRegistery(data?: Object) {   
 		return request({
-			url: '/v1/Register',
+			url: '/user/insert',
 			method: 'POST',
 			data: data
 		});
 	}
     // 登录
     static postUserLogin(data?: Object) {   
-		return request({
-			url: '/v1/Token',
+		return request({  
+			url: '/user/login',
 			method: 'POST',
 			data: data
 		});
