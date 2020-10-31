@@ -22,8 +22,31 @@
    <script src='<%= VUE_APP_PUBLIC_PATH %>static/lib/socket.io.js'></script>
    <script src='<%= VUE_APP_PUBLIC_PATH %>static/lib/font_1932862_ghhueve3zb4.js'></script>
    <script src='<%= VUE_APP_PUBLIC_PATH %>static/lib/html5-qrcode.min.js'></script>
-
    <link rel="stylesheet" href="<%= VUE_APP_PUBLIC_PATH %>static/lib/font_1932862_ghhueve3zb4.css">
+   <script>
+     //处理一下完整的前缀问题
+   	(function() {
+        let href = window.location.href,
+            hrefHashIndex = href.indexOf('#');
+   
+       if(hrefHashIndex > -1){
+         let hashStr = href.slice(hrefHashIndex);
+         if(hashStr == '#/'){
+            window.location.href = window.location.href + 'login';
+         }else if(hashStr == '#'){
+           window.location.href = window.location.href + '/login';
+         }
+       }else{
+         //没有#号
+         //如果最后一行是/
+         if(href[href.length - 1] == '/'){
+            window.location.href = window.location.href + '#/login';
+         }else{
+           window.location.href = window.location.href + '/#/login';
+         }
+       }
+     })();
+   </script>
 </head>
 
 <body>
