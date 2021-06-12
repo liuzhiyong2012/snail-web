@@ -1,0 +1,43 @@
+
+//图片背景居中
+.gm-global-img-center{
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+//after伪类的替代元素
+.gm-global-after-placeholder{
+  display: inline-block;
+  width: 100%;
+  height: 0;
+}
+
+
+.gm-clear{
+ &::after{
+   display: table;
+   content: '';
+   height: 0;
+   width: 100%;
+ }
+}
+
+.gm-left{
+  float: left;
+}
+
+
+.gm-right{
+  float: right;
+}
+
+
+.nowrap{
+  white-space: nowrap;
+}
+
+
+.gm-animate-ctn{
+  transform: translateZ(0);
+}

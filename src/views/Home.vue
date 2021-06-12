@@ -7,12 +7,22 @@
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import HelloWorld from '@/components/HelloWorld.vue';
+import HomeService from '../service/HomeService';
 
 export default {
   name: 'Home',
   components: {
     HelloWorld
+  },
+  created(){
+
+  },
+  mounted(){
+    debugger;
+           HomeService.getWeixinAuth().then(()=>{
+
+           });
   }
 }
 </script>

@@ -1,0 +1,261 @@
+/* .btn	为按钮添加基本样式	尝试一下
+.btn-default	默认/标准按钮	尝试一下
+.btn-primary	原始按钮样式（未被操作）	尝试一下
+.btn-success	表示成功的动作	尝试一下
+.btn-info	该样式可用于要弹出信息的按钮	尝试一下
+.btn-warning	表示需要谨慎操作的按钮	尝试一下
+.btn-danger	表示一个危险动作的按钮操作	尝试一下
+.btn-link	让按钮看起来像个链接 (仍然保留按钮行为)	尝试一下
+.btn-lg	制作一个大按钮	尝试一下
+.btn-sm	制作一个小按钮	尝试一下
+.btn-xs	制作一个超小按钮	尝试一下
+.btn-block	块级按钮(拉伸至父元素100%的宽度)	尝试一下
+.active	按钮被点击	尝试一下
+.disabled */
+//按钮
+//===========================================按钮公共样式====================================================
+.zb-btn{
+	 cursor: pointer;
+	display: inline-block;
+    padding: 11px 12px;
+    margin-bottom: 0;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+	box-sizing: border-box;
+	transition: all 0.2s;
+}
+.zb-btn-primary{
+	color: #fff;
+    background-color: #6466FF;
+    border-color: #6466FF;
+	&:hover{
+		background-color: #4749E4;
+		border-color: #4749E4;
+	}
+}
+
+.zb-btn-primary-pain{
+	color: #6466FF;
+    background-color: #ffffff;
+    border-color: #6466FF;
+	&:hover{
+		color: #6466FF;
+		background-color: #ffffff;
+		border-color: #6466FF;
+	}
+}
+
+.zb-btn-pain{
+	color: #979797;
+	background-color: #ffffff;
+	border-color: #979797;
+	&:hover{
+		background-color: #ffffff;
+		border-color: #979797;
+	}
+}
+
+.zb-btn-block{
+	display: block;
+    width: 100%;
+}
+
+.zb-btn-lg{
+	padding: 14px 20px;
+	font-size: 18px;
+	line-height: 30px;
+    border-radius: 6px;
+}
+
+.zb-btn-small{
+	font-size: 16px;
+	padding: 5px 10px;
+	min-width: 70px;
+	font-size: 18px;
+	line-height: 20px;
+    border-radius: 4px;
+}
+
+
+
+
+
+//===========================================按钮组公共样式====================================================
+.zb-btn-group{
+	&:before{
+		display: table;
+        content: "";
+	}
+	&:after{
+		display: table;
+	    content: "";
+		clear: both;
+	}
+	display: inline-block;
+    vertical-align: middle;
+	
+	>.zb-btn{
+	  float: left;
+      position: relative;
+	  &:first-child{
+		  border-right-color:hsla(0,0%,100%,.5);
+		  border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+	  }
+	  &:not(:last-child) {
+          margin-right: -1px;
+       }
+	   &:last-child{
+		   border-left-color: hsla(0,0%,100%,.5);
+		    border-top-left-radius: 0;
+		   border-bottom-left-radius: 0;
+	   }
+	   &+.zb-btn{
+		   margin-left: 0;
+	   }    
+	}
+}
+
+.zb-btn-group-primary{
+	.zb-btn{
+		&.active{
+			color: #ffffff;
+			background-color: #6466FF;
+			border-color: #6466FF;
+		}
+		color: #6466FF;
+		background-color: #ffffff;
+		border-color: #6466FF;
+	}
+}
+
+//===========================================输入框公共样式====================================================
+.zb-input{
+	cursor: text;
+	display: inline-block;
+    padding: 11px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    //text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    background-image: none;
+    border: 1px solid #C3C3C3;
+    border-radius: 4px;
+	box-sizing: border-box;
+	&:focus{
+		border: 1px solid #6466FF;
+        box-shadow: 0 0 6px 0 rgba(100,102,255,0.40);
+	}
+}
+
+.zb-input-lg{
+	padding: 14px 20px;
+	font-size: 18px;
+	line-height: 30px;
+	border-radius: 6px;
+}
+.zb-input-primary{
+	color: #fff;
+    background-color: #6466FF;
+    border-color: #6466FF;
+	&:hover{
+		background-color: #4749E4;
+		border-color: #4749E4;
+	}
+}
+.zb-input-block{
+	display: block;
+    width: 100%;
+}
+
+//===========================================输入框公共样式====================================================
+.zb-search-ctn{
+	position: relative;
+	font-size: 0;
+	line-height: 0;
+	background:#ffffff;
+	>.icon{
+		    position: absolute;
+    top: 10px;
+    left: 8px;
+    font-size: 16px;
+    color: #CECECE;
+    display: inline-block;
+    line-height: 20px;
+		
+	}
+	
+	.zb-search-input-ctt{
+		margin-right:68px;
+		height:100%;
+			>input{
+				cursor: text;
+			&:focus{
+				border: 1px solid #C3C3C3;
+				border-right: none;
+				box-shadow: none;
+			}
+			display: block;
+			border: 1px solid #C3C3C3;
+			border-right: none;
+		    border-radius: 6px 0 0 6px;
+			padding:8px 8px 8px 30px;
+			width:100%;
+			line-height: 20px;
+			font-size: 14px;
+			color: #383838;
+			box-sizing: border-box;
+		}
+	}
+
+	>button{
+		    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: 1px solid #7881FF;
+    border-radius: 0px 6px 6px 0px;
+    padding: 8px 0px;
+    width: 68px;
+    text-align: center;
+    line-height: 20px;
+    font-size: 14px;
+    color: #7881FF;
+    background: transparent;
+	}
+} 
+
+.zb-search-small{
+	
+}
+
+//===========================================公共样式====================================================
+.zb-right{
+	float:right;
+}
+
+.zb-left{
+	float:left;
+}
+
+.zb-clear{
+	&:before{
+		content:'';
+		display: block;
+	}
+	&:after{
+		clear:both;
+		content:'';
+		display: block;
+	}
+}
